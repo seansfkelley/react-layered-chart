@@ -1,15 +1,15 @@
-const gulp = require('gulp');
-const browserify = require('browserify');
-const watchify = require('watchify');
-const notify = require('gulp-notify');
-const sourceStream = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const sourcemaps = require('gulp-sourcemaps');
-const filter = require('gulp-filter');
-const livereload = require('gulp-livereload');
-const rename = require('gulp-rename');
-const stylus = require('gulp-stylus');
-const concat = require('gulp-concat');
+import gulp from 'gulp';
+import browserify from 'browserify';
+import watchify from 'watchify';
+import notify from 'gulp-notify';
+import sourceStream from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
+import sourcemaps from 'gulp-sourcemaps';
+import filter from 'gulp-filter';
+import livereload from 'gulp-livereload';
+import rename from 'gulp-rename';
+import stylus from 'gulp-stylus';
+import concat from 'gulp-concat';
 
 function buildScripts(watch = false, dieOnError = false) {
   let bundler = browserify('./index.js', {
