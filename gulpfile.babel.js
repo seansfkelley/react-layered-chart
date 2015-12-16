@@ -17,9 +17,9 @@ function buildScripts(watch = false, dieOnError = false) {
     debug        : true,
     cache        : {},
     packageCache : {},
-    fullPaths    : true
-  })
-  .transform('babelify');
+    fullPaths    : true,
+    transform    : [ 'babelify' ]
+  });
 
   if (watch) {
     bundler = watchify(bundler);
@@ -42,7 +42,6 @@ function buildScripts(watch = false, dieOnError = false) {
       .pipe(notify({
         title   : 'Finished compiling Javascript',
         message : '<%= file.relative %>',
-        wait    : true
       }))
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('./dist'))
