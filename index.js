@@ -1,1 +1,1 @@
-const React = require('react');
+const LayeredChart = require('./lib/LayeredChart');

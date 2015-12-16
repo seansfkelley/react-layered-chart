@@ -18,7 +18,8 @@ function buildScripts(watch = false, dieOnError = false) {
     cache        : {},
     packageCache : {},
     fullPaths    : true
-  });
+  })
+  .transform('babelify');
 
   if (watch) {
     bundler = watchify(bundler);
