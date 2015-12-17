@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "start": "./node_modules/http-server/bin/http-server",
+    "start": "./node_modules/http-server/bin/http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.1",
+    "d3": "^3.5.12",
     "pure-render-decorator": "^0.2.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
