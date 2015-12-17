@@ -65,7 +65,6 @@ function buildStyles() {
     .pipe(notify({
       title   : 'Finished compiling CSS',
       message : '<%= file.relative %>',
-      wait    : true,
       sound   : 'Glass'
     }))
     .pipe(sourcemaps.write('./'))

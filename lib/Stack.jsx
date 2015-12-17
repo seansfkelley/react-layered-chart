@@ -3,12 +3,14 @@ import PureRender from 'pure-render-decorator';
 
 @PureRender
 class Stack extends React.Component {
-  static propTypes = {
-
-  }
+  static propTypes = {}
 
   render() {
-    return <div/>;
+    return (
+      <div className='stack'>
+        {this.props.children}
+      </div>
+    );
   }
 }
 
