@@ -1,11 +1,7 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import CanvasRender from './CanvasRender';
-
-function linearScale(value, domain, range) {
-  const p = (value - domain.start) / (domain.end - domain.start);
-  return p * (range.end - range.start) + range.start;
-}
+import d3 from 'd3';
 
 @PureRender
 @CanvasRender
@@ -32,7 +28,7 @@ class LineLayer extends React.Component {
   };
 
   static defaultProps = {
-    yScale: linearScale
+    yScale: d3.scale.linear
   };
 
   render() {
@@ -48,20 +44,24 @@ class LineLayer extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    const xRange = { start: 0, end: canvas.width };
-    const yRange = { start: 0, end: canvas.height };
+    // Should we draw something if there is one data point?
+    if (this.props.data.length < 2) {
+      return;
+    }
+
+    const xScale = d3.scale.linear();
+    xScale.domain([ this.props.xDomain.start, this.props.xDomain.end ]);
+    xScale.range([ 0, this.state.width ]);
+
+    const yScale = this.props.yScale();
+    yScale.domain([ this.props.yDomain.start, this.props.yDomain.end ]);
+    yScale.range([ 0, this.state.height ]);
 
     context.beginPath();
-    context.moveTo(
-      linearScale(this.props.data[0].timestamp, this.props.xDomain, xRange),
-      this.props.yScale(this.props.data[0].value, this.props.yDomain, yRange)
-    );
+    context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
 
     for (let i = 1; i < this.props.data.length; ++i) {
-      context.lineTo(
-        linearScale(this.props.data[i].timestamp, this.props.xDomain, xRange),
-        this.props.yScale(this.props.data[i].value, this.props.yDomain, yRange)
-      );
+      context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
     }
 
     context.stroke();
