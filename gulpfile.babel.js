@@ -12,7 +12,7 @@ import stylus from 'gulp-stylus';
 import concat from 'gulp-concat';
 
 function buildScripts(watch = false, dieOnError = false) {
-  let bundler = browserify('./index.js', {
+  let bundler = browserify('./lib/index.js', {
     extensions   : [ '.js', '.jsx' ],
     debug        : true,
     cache        : {},
@@ -36,7 +36,7 @@ function buildScripts(watch = false, dieOnError = false) {
     }
 
     return bundle
-      .pipe(sourceStream('./index.js'))
+      .pipe(sourceStream('index.js'))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps : true}))
       .pipe(notify({
@@ -69,7 +69,7 @@ function buildStyles() {
       sound   : 'Glass'
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./.dist'))
+    .pipe(gulp.dest('./dist'))
     .pipe(filter([ '*', '!*.map' ]))
     .pipe(livereload());
 }
