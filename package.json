@@ -2,8 +2,9 @@
   "name": "react-layered-chart",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "start": "./node_modules/http-server/bin/http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -36,6 +37,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.1.1",
+    "http-server": "^0.8.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
