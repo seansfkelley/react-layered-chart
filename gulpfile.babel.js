@@ -12,7 +12,7 @@ import stylus from 'gulp-stylus';
 import concat from 'gulp-concat';
 
 function buildScripts(watch = false, dieOnError = false) {
-  let bundler = browserify('./lib/index.js', {
+  let bundler = browserify('./lib/index.jsx', {
     extensions   : [ '.js', '.jsx' ],
     debug        : true,
     cache        : {},
