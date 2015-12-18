@@ -69,6 +69,7 @@ class LineLayer extends React.Component {
     }
 
     if (this.props.stroke) {
+      context.lineWidth = 1;
       context.strokeStyle = this.props.stroke;
       context.stroke();
     }
