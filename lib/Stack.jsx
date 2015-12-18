@@ -29,17 +29,18 @@ class Stack extends React.Component {
   }
 
   _chooseLayerType(seriesId) {
-    const metadata = this.state.seriesMetadataById[seriesId];
+    const metadata = this.state.seriesMetadataById[seriesId] || {};
+
     const layerProps = {
-      seriesId,
-      metadata,
       xDomain: this.state.xAxis,
       yDomain: this.state.yAxis,
       data: this.state.seriesDataById[seriesId],
+      stroke: metadata.stroke,
+      fill: metadata.fill,
       key: seriesId
     };
 
-    switch((metadata || {}).chartType) {
+    switch(metadata.chartType) {
       case 'line':
         return <LineLayer {...layerProps}/>;
 

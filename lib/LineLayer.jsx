@@ -19,11 +19,15 @@ class LineLayer extends React.Component {
       start: React.PropTypes.number,
       end: React.PropTypes.number
     }).isRequired,
+    stroke: React.PropTypes.string,
+    fill: React.PropTypes.string,
     yScale: React.PropTypes.func
   };
 
   static defaultProps = {
-    yScale: d3.scale.linear
+    yScale: d3.scale.linear,
+    stroke: 'rgba(0, 0, 0, 0.7)',
+    fill: null
   };
 
   state = {
@@ -55,16 +59,27 @@ class LineLayer extends React.Component {
 
     const yScale = this.props.yScale()
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .range([ 0, this.state.height ]);
+      .range([ this.state.height, 0 ]);
 
     context.beginPath();
-    context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
 
+    context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
     for (let i = 1; i < this.props.data.length; ++i) {
       context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
     }
 
-    context.stroke();
+    if (this.props.stroke) {
+      context.strokeStyle = this.props.stroke;
+      context.stroke();
+    }
+
+    if (this.props.fill) {
+      context.lineTo(xScale(this.props.data[this.props.data.length - 1].timestamp), this.state.height);
+      context.lineTo(xScale(this.props.data[0].timestamp), this.state.height);
+      context.closePath();
+      context.fillStyle = this.props.fill;
+      context.fill();
+    }
   }
 
   componentDidMount() {

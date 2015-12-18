@@ -53,10 +53,12 @@ store.dispatch({
   type: ActionType.SET_SERIES_METADATA,
   payload: {
     'uuid-1': {
-      chartType: 'line'
+      chartType: 'line',
+      stroke: 'green'
     },
     'uuid-2': {
-      chartType: 'line'
+      chartType: 'line',
+      stroke: 'red'
     }
   }
 });
