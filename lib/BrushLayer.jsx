@@ -1,20 +1,27 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import SelectFromStore from './SelectFromStore';
 import CanvasRender from './CanvasRender';
 import d3 from 'd3';
 
 @PureRender
-@SelectFromStore
 @CanvasRender
 class BrushLayer extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired
+    selection: React.PropTypes.shape({
+      start: React.PropTypes.number,
+      end: React.PropTypes.number
+    }),
+    xDomain: React.PropTypes.shape({
+      start: React.PropTypes.number,
+      end: React.PropTypes.number
+    }).isRequired,
+    stroke: React.PropTypes.string,
+    fill: React.PropTypes.string
   };
 
-  static selectFromStore = {
-    xAxis: 'xAxis',
-    selection: 'selection'
+  static defaultProps = {
+    stroke: 'rgba(0, 0, 0, 0.7)',
+    fill: null
   };
 
   state = {
@@ -35,24 +42,28 @@ class BrushLayer extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (!this.state.selection) {
+    if (!this.props.selection) {
       return;
     }
 
     const xScale = d3.scale.linear()
-      .domain([ this.state.xAxis.start, this.state.xAxis.end ])
+      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .range([ 0, this.state.width ]);
 
-    const left = xScale(this.state.selection.start);
-    const right = xScale(this.state.selection.end);
+    const left = xScale(this.props.selection.start);
+    const right = xScale(this.props.selection.end);
     context.beginPath();
     context.rect(left, 0, right - left, this.state.height);
 
-    context.strokeStyle = 'rgba(0, 0, 0, 0.4)';
-    context.stroke();
+    if (this.props.stroke) {
+      context.strokeStyle = this.props.stroke;
+      context.stroke();
+    }
 
-    context.fillStyle = 'rgba(0, 0, 0, 0.1)';
-    context.fill();
+    if (this.props.fill) {
+      context.fillStyle = this.props.fill;
+      context.fill();
+    }
   }
 
   componentDidMount() {

@@ -14,13 +14,20 @@ class DefaultChart extends React.Component {
   };
 
   static selectFromStore = {
-    seriesIds: 'seriesIds'
+    seriesIds: 'seriesIds',
+    xAxis: 'xAxis',
+    selection: 'selection'
   };
 
   render() {
     return (
       <Stack store={this.props.store} seriesIds={this.state.seriesIds}>
-        <BrushLayer store={this.props.store}/>
+        <BrushLayer
+          xDomain={this.state.xAxis}
+          selection={this.state.selection}
+          stroke='rgba(0, 0, 0, 0.7)'
+          fill='rgba(0, 0, 0, 0.1)'
+        />
         <InteractionCaptureLayer store={this.props.store}/>
       </Stack>
     );
