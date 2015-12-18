@@ -5,6 +5,7 @@ import PureRender from 'pure-render-decorator';
 import SelectFromStore from './SelectFromStore';
 import Stack from './Stack';
 import ActionType from './ActionType';
+import Actions from './Actions';
 
 @PureRender
 @SelectFromStore
@@ -24,13 +25,18 @@ class DefaultChart extends React.Component {
           className='layer interaction-capture'
           onMouseMove={this._onMouseMove}
           onMouseLeave={this._onMouseLeave}
+          onWheel={this._onWheel}
         />
       </Stack>
     );
   }
 
+  _getBoundingClientRect() {
+    return ReactDOM.findDOMNode(this.refs.stack).getBoundingClientRect();
+  }
+
   _onMouseMove = (event) => {
-    const boundingClientRect = ReactDOM.findDOMNode(this.refs.stack).getBoundingClientRect();
+    const boundingClientRect = this._getBoundingClientRect();
     this.props.store.dispatch({
       type: ActionType.SET_CURSOR,
       payload: {
@@ -45,6 +51,19 @@ class DefaultChart extends React.Component {
       type: ActionType.SET_CURSOR,
       payload: null
     });
+  };
+
+  _onWheel = (event) => {
+    if (event.shiftKey) {
+      const boundingClientRect = this._getBoundingClientRect();
+      if (event.deltaY) {
+        const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
+        this.props.store.dispatch(Actions.zoom(1 + (-event.deltaY / 20), focus));
+      }
+      if (event.deltaX) {
+        // Scroll left/right...
+      }
+    }
   };
 }
 
