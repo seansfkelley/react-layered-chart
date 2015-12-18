@@ -12,6 +12,7 @@ class InteractionCaptureLayer extends React.Component {
     onZoom: React.PropTypes.func,
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
+    onHover: React.PropTypes.func,
     xDomain: React.PropTypes.shape({
       start: React.PropTypes.number,
       end: React.PropTypes.number
@@ -43,6 +44,13 @@ class InteractionCaptureLayer extends React.Component {
     return ReactDOM.findDOMNode(this.refs.layer).getBoundingClientRect();
   }
 
+  _createPhysicalToLogicalXScale() {
+    const boundingClientRect = this._getBoundingClientRect();
+    return d3.scale.linear()
+      .domain([ boundingClientRect.left, boundingClientRect.right ])
+      .range([ this.props.xDomain.start, this.props.xDomain.end ]);
+  }
+
   _onMouseDown = (event) => {
     if (this.props.onPan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
       this.setState({ isPanning: true, lastPanClientX: event.clientX });
@@ -52,16 +60,13 @@ class InteractionCaptureLayer extends React.Component {
   };
 
   _dispatchPanAndBrushEvents(event) {
-    const boundingClientRect = this._getBoundingClientRect();
-    const scale = d3.scale.linear()
-      .domain([ 0, boundingClientRect.width ])
-      .range([ this.props.xDomain.start, this.props.xDomain.end ]);
-
     if (this.props.onPan && this.state.isPanning) {
+      const scale = this._createPhysicalToLogicalXScale();
       this.setState({ lastPanClientX: event.clientX });
       this.props.onPan(scale(this.state.lastPanClientX) - scale(event.clientX));
     } else if (this.props.onBrush && this.state.isBrushing) {
       if (Math.abs(this.state.startBrushClientX - event.clientX) > 2) {
+        const scale = this._createPhysicalToLogicalXScale();
         const a = scale(this.state.startBrushClientX);
         const b = scale(event.clientX);
         this.props.onBrush({ start: Math.min(a, b), end: Math.max(a, b) });
@@ -87,11 +92,18 @@ class InteractionCaptureLayer extends React.Component {
 
   _onMouseMove = (event) => {
     this._dispatchPanAndBrushEvents(event);
+    if (this.props.onHover) {
+      const scale = this._createPhysicalToLogicalXScale();
+      this.props.onHover(scale(event.clientX));
+    }
   };
 
   _onMouseLeave = (event) => {
     this._dispatchPanAndBrushEvents(event);
     this._clearPanAndBrushState();
+    if (this.props.onHover) {
+      this.props.onHover(null);
+    }
   };
 
   _onWheel = (event) => {

@@ -5,6 +5,7 @@ import SelectFromStore from './SelectFromStore';
 import Stack from './Stack';
 import BrushLayer from './BrushLayer';
 import InteractionCaptureLayer from './InteractionCaptureLayer';
+import HoverLayer from './HoverLayer';
 
 import ActionType from './ActionType';
 import Actions from './Actions';
@@ -19,7 +20,8 @@ class DefaultChart extends React.Component {
   static selectFromStore = {
     seriesIds: 'seriesIds',
     xAxis: 'xAxis',
-    selection: 'selection'
+    selection: 'selection',
+    hover: 'hover'
   };
 
   render() {
@@ -31,13 +33,22 @@ class DefaultChart extends React.Component {
         />
         <InteractionCaptureLayer
           xDomain={this.state.xAxis}
+          onHover={this._onHover}
           onPan={this._onPan}
           onZoom={this._onZoom}
           onBrush={this._onBrush}
         />
+        <HoverLayer
+          xDomain={this.state.xAxis}
+          hover={this.state.hover}
+        />
       </Stack>
     );
   }
+
+  _onHover = (xPos) => {
+    this.props.store.dispatch(Actions.hover(xPos));
+  };
 
   _onPan = (deltaX) => {
     this.props.store.dispatch(Actions.pan(deltaX));
