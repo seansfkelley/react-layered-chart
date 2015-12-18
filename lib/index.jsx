@@ -70,6 +70,16 @@ store.dispatch({
   }
 });
 
+setInterval(() => {
+  store.dispatch({
+    type: ActionType.SET_SERIES_DATA,
+    payload: {
+      'uuid-1': makeFakeData(),
+      'uuid-2': makeFakeData()
+    }
+  });
+}, 2000)
+
 const chart = <Stack store={store}/>
 
 ReactDOM.render(chart, document.getElementById('test-container'));
