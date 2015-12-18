@@ -49,13 +49,13 @@ class LineLayer extends React.Component {
       return;
     }
 
-    const xScale = d3.scale.linear();
-    xScale.domain([ this.props.xDomain.start, this.props.xDomain.end ]);
-    xScale.range([ 0, this.state.width ]);
+    const xScale = d3.scale.linear()
+      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .range([ 0, this.state.width ]);
 
-    const yScale = this.props.yScale();
-    yScale.domain([ this.props.yDomain.start, this.props.yDomain.end ]);
-    yScale.range([ 0, this.state.height ]);
+    const yScale = this.props.yScale()
+      .domain([ this.props.yDomain.start, this.props.yDomain.end ])
+      .range([ 0, this.state.height ]);
 
     context.beginPath();
     context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
