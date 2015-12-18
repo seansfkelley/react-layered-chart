@@ -6,10 +6,14 @@ import d3 from 'd3';
 import Stack from './Stack';
 import LineLayer from './LineLayer';
 
+import ActionType from './ActionType';
+
+import storeFactory from './storeFactory';
+
 const X_RANGE = 1000;
 const Y_RANGE = 100000;
 
-function fakeData() {
+function makeFakeData() {
   const data = [];
   for (let i = 0; i < 10; ++i) {
     data.push({ timestamp: Math.random() * X_RANGE, value: Math.random() * Y_RANGE });
@@ -18,14 +22,54 @@ function fakeData() {
   return data;
 }
 
-const data1 = fakeData();
-const data2 = fakeData();
+const store = storeFactory();
 
-const chart = (
-  <Stack>
-    <LineLayer xDomain={{ start: 0, end: X_RANGE }} yDomain={{ start: 0, end: Y_RANGE }} data={data1}/>
-    <LineLayer xDomain={{ start: 0, end: X_RANGE }} yDomain={{ start: 1, end: Y_RANGE }} yScale={d3.scale.log} data={data2}/>
-  </Stack>
-);
+store.dispatch({
+  type: ActionType.SET_X_AXIS,
+  payload: {
+    start: 0,
+    end: X_RANGE
+  }
+});
+
+store.dispatch({
+  type: ActionType.SET_Y_AXIS,
+  payload: {
+    start: 0,
+    end: Y_RANGE
+  }
+});
+
+store.dispatch({
+  type: ActionType.ADD_SERIES,
+  payload: 'uuid-1'
+});
+
+store.dispatch({
+  type: ActionType.ADD_SERIES,
+  payload: 'uuid-2'
+});
+
+store.dispatch({
+  type: ActionType.SET_SERIES_METADATA,
+  payload: {
+    'uuid-1': {
+      chartType: 'line'
+    },
+    'uuid-2': {
+      chartType: 'line'
+    }
+  }
+});
+
+store.dispatch({
+  type: ActionType.SET_SERIES_DATA,
+  payload: {
+    'uuid-1': makeFakeData(),
+    'uuid-2': makeFakeData()
+  }
+});
+
+const chart = <Stack store={store}/>
 
 ReactDOM.render(chart, document.getElementById('test-container'));
