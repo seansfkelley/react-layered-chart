@@ -3,11 +3,10 @@ import React from 'react';
 
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
-import Stack from './Stack';
+
+import DefaultChart from './DefaultChart';
 import LineLayer from './LineLayer';
-
 import ActionType from './ActionType';
-
 import storeFactory from './storeFactory';
 
 const X_RANGE = 1000;
@@ -70,16 +69,6 @@ store.dispatch({
   }
 });
 
-setInterval(() => {
-  store.dispatch({
-    type: ActionType.SET_SERIES_DATA,
-    payload: {
-      'uuid-1': makeFakeData(),
-      'uuid-2': makeFakeData()
-    }
-  });
-}, 2000)
-
-const chart = <Stack store={store}/>
+const chart = <DefaultChart store={store}/>
 
 ReactDOM.render(chart, document.getElementById('test-container'));

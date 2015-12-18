@@ -8,11 +8,11 @@ import SelectFromStore from './SelectFromStore';
 @SelectFromStore
 class Stack extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired
+    store: React.PropTypes.object.isRequired,
+    seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
   };
 
   static selectFromStore = {
-    seriesIds: 'seriesIds',
     xAxis: 'xAxis',
     yAxis: 'yAxis',
     seriesMetadataById: 'seriesMetadataById',
@@ -21,9 +21,9 @@ class Stack extends React.Component {
 
   render() {
     return (
-      // TODO: Make a mixin for the store so that we rerender when state change.
       <div className='stack'>
-        {this.state.seriesIds.map(this._chooseLayerType.bind(this))}
+        {this.props.seriesIds.map(this._chooseLayerType.bind(this))}
+        {this.props.children}
       </div>
     );
   }
