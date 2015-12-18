@@ -21,7 +21,7 @@ class BrushLayer extends React.Component {
 
   static defaultProps = {
     stroke: 'rgba(0, 0, 0, 0.7)',
-    fill: null
+    fill: 'rgba(0, 0, 0, 0.1)'
   };
 
   state = {

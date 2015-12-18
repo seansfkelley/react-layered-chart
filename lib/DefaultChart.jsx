@@ -6,6 +6,9 @@ import Stack from './Stack';
 import BrushLayer from './BrushLayer';
 import InteractionCaptureLayer from './InteractionCaptureLayer';
 
+import ActionType from './ActionType';
+import Actions from './Actions';
+
 @PureRender
 @SelectFromStore
 class DefaultChart extends React.Component {
@@ -25,13 +28,28 @@ class DefaultChart extends React.Component {
         <BrushLayer
           xDomain={this.state.xAxis}
           selection={this.state.selection}
-          stroke='rgba(0, 0, 0, 0.7)'
-          fill='rgba(0, 0, 0, 0.1)'
         />
-        <InteractionCaptureLayer store={this.props.store}/>
+        <InteractionCaptureLayer
+          xDomain={this.state.xAxis}
+          onPan={this._onPan}
+          onZoom={this._onZoom}
+          onBrush={this._onBrush}
+        />
       </Stack>
     );
   }
+
+  _onPan = (deltaX) => {
+    this.props.store.dispatch(Actions.pan(deltaX));
+  };
+
+  _onZoom = (factor, focus) => {
+    this.props.store.dispatch(Actions.zoom(factor, focus));
+  };
+
+  _onBrush = (brush) => {
+    this.props.store.dispatch(Actions.brush(brush));
+  };
 }
 
 export default DefaultChart;

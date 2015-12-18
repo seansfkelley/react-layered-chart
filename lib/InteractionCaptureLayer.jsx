@@ -1,33 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PureRender from 'pure-render-decorator';
-
-import ActionType from './ActionType';
-import SelectFromStore from './SelectFromStore';
-import Actions from './Actions';
 import d3 from 'd3';
 
 const MAC_TRACKPAD_ZOOM_FACTOR = 0.05;
 const LEFT_MOUSE_BUTTON = 0;
 
 @PureRender
-@SelectFromStore
 class InteractionCaptureLayer extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired,
-    enableZoom: React.PropTypes.bool,
-    enablePan: React.PropTypes.bool,
-    enableBrush: React.PropTypes.bool
-  };
-
-  static defaultProps = {
-    enableZoom: true,
-    enablePan: true,
-    enableBrush: true
-  };
-
-  static selectFromStore = {
-    xAxis: 'xAxis'
+    onZoom: React.PropTypes.func,
+    onPan: React.PropTypes.func,
+    onBrush: React.PropTypes.func,
+    xDomain: React.PropTypes.shape({
+      start: React.PropTypes.number,
+      end: React.PropTypes.number
+    }).isRequired
   };
 
   state = {
@@ -56,9 +44,9 @@ class InteractionCaptureLayer extends React.Component {
   }
 
   _onMouseDown = (event) => {
-    if (this.props.enablePan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
+    if (this.props.onPan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
       this.setState({ isPanning: true, lastPanClientX: event.clientX });
-    } else if (this.props.enableBrush && event.button === LEFT_MOUSE_BUTTON) {
+    } else if (this.props.onBrush && event.button === LEFT_MOUSE_BUTTON) {
       this.setState({ isBrushing: true, startBrushClientX: event.clientX });
     }
   };
@@ -67,15 +55,15 @@ class InteractionCaptureLayer extends React.Component {
     const boundingClientRect = this._getBoundingClientRect();
     const scale = d3.scale.linear()
       .domain([ 0, boundingClientRect.width ])
-      .range([ this.state.xAxis.start, this.state.xAxis.end ]);
+      .range([ this.props.xDomain.start, this.props.xDomain.end ]);
 
-    if (this.state.isPanning) {
-      this.props.store.dispatch(Actions.pan(scale(this.state.lastPanClientX) - scale(event.clientX)));
+    if (this.props.onPan && this.state.isPanning) {
       this.setState({ lastPanClientX: event.clientX });
-    } else if (this.state.isBrushing) {
+      this.props.onPan(scale(this.state.lastPanClientX) - scale(event.clientX));
+    } else if (this.props.onBrush && this.state.isBrushing) {
       const a = scale(this.state.startBrushClientX);
       const b = scale(event.clientX);
-      this.props.store.dispatch(Actions.brush(Math.min(a, b), Math.max(a, b)));
+      this.props.onBrush({ start: Math.min(a, b), end: Math.max(a, b) });
     }
   }
 
@@ -103,15 +91,10 @@ class InteractionCaptureLayer extends React.Component {
   };
 
   _onWheel = (event) => {
-    if (this.props.enableZoom && event.shiftKey) {
+    if (this.props.onZoom && event.shiftKey && event.deltaY) {
       const boundingClientRect = this._getBoundingClientRect();
-      if (event.deltaY) {
-        const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
-        this.props.store.dispatch(Actions.zoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus));
-      }
-      if (event.deltaX) {
-        // Scroll left/right...
-      }
+      const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
+      this.props.onZoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus);
     }
   };
 }
