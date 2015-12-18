@@ -3,6 +3,7 @@ import PureRender from 'pure-render-decorator';
 
 import SelectFromStore from './SelectFromStore';
 import Stack from './Stack';
+import BrushLayer from './BrushLayer';
 import InteractionCaptureLayer from './InteractionCaptureLayer';
 
 @PureRender
@@ -19,6 +20,7 @@ class DefaultChart extends React.Component {
   render() {
     return (
       <Stack store={this.props.store} seriesIds={this.state.seriesIds}>
+        <BrushLayer store={this.props.store}/>
         <InteractionCaptureLayer store={this.props.store}/>
       </Stack>
     );

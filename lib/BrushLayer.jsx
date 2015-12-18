@@ -1,29 +1,20 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
+import SelectFromStore from './SelectFromStore';
 import CanvasRender from './CanvasRender';
 import d3 from 'd3';
 
 @PureRender
+@SelectFromStore
 @CanvasRender
-class LineLayer extends React.Component {
+class BrushLayer extends React.Component {
   static propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timestamp: React.PropTypes.number,
-      value: React.PropTypes.number
-    })).isRequired,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
-    }).isRequired,
-    yDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
-    }).isRequired,
-    yScale: React.PropTypes.func
+    store: React.PropTypes.object.isRequired
   };
 
-  static defaultProps = {
-    yScale: d3.scale.linear
+  static selectFromStore = {
+    xAxis: 'xAxis',
+    selection: 'selection'
   };
 
   state = {
@@ -44,27 +35,24 @@ class LineLayer extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Should we draw something if there is one data point?
-    if (this.props.data.length < 2) {
+    if (!this.state.selection) {
       return;
     }
 
     const xScale = d3.scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.state.xAxis.start, this.state.xAxis.end ])
       .range([ 0, this.state.width ]);
 
-    const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .range([ 0, this.state.height ]);
-
+    const left = xScale(this.state.selection.start);
+    const right = xScale(this.state.selection.end);
     context.beginPath();
-    context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
+    context.rect(left, 0, right - left, this.state.height);
 
-    for (let i = 1; i < this.props.data.length; ++i) {
-      context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
-    }
-
+    context.strokeStyle = 'rgba(0, 0, 0, 0.4)';
     context.stroke();
+
+    context.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    context.fill();
   }
 
   componentDidMount() {
@@ -85,4 +73,4 @@ class LineLayer extends React.Component {
   }
 }
 
-export default LineLayer;
+export default BrushLayer;

@@ -73,7 +73,9 @@ class InteractionCaptureLayer extends React.Component {
       this.props.store.dispatch(Actions.pan(scale(this.state.lastPanClientX) - scale(event.clientX)));
       this.setState({ lastPanClientX: event.clientX });
     } else if (this.state.isBrushing) {
-      this.props.store.dispatch(Actions.brush(scale(this.state.startBrushClientX), scale(event.clientX)));
+      const a = scale(this.state.startBrushClientX);
+      const b = scale(event.clientX);
+      this.props.store.dispatch(Actions.brush(Math.min(a, b), Math.max(a, b)));
     }
   }
 
