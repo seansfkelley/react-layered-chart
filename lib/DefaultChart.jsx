@@ -1,14 +1,14 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 
-import SelectFromStore from './SelectFromStore';
+import SelectFromStore from './mixins/SelectFromStore';
 import Stack from './Stack';
-import BrushLayer from './BrushLayer';
-import InteractionCaptureLayer from './InteractionCaptureLayer';
-import HoverLayer from './HoverLayer';
+import BrushLayer from './layers/BrushLayer';
+import InteractionCaptureLayer from './layers/InteractionCaptureLayer';
+import HoverLayer from './layers/HoverLayer';
 
-import ActionType from './ActionType';
-import Actions from './Actions';
+import ActionType from './flux/ActionType';
+import Actions from './flux/Actions';
 
 @PureRender
 @SelectFromStore

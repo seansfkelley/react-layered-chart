@@ -1,8 +1,8 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 
-import LineLayer from './LineLayer';
-import SelectFromStore from './SelectFromStore';
+import LineLayer from './layers/LineLayer';
+import SelectFromStore from './mixins/SelectFromStore';
 
 @PureRender
 @SelectFromStore

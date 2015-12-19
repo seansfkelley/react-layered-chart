@@ -2,7 +2,7 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 import d3 from 'd3';
 
-import CanvasRender from './CanvasRender';
+import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 
 @PureRender

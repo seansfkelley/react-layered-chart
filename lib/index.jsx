@@ -5,9 +5,8 @@ import ReactDOM from 'react-dom';
 import d3 from 'd3';
 
 import DefaultChart from './DefaultChart';
-import LineLayer from './LineLayer';
-import ActionType from './ActionType';
-import storeFactory from './storeFactory';
+import ActionType from './flux/ActionType';
+import storeFactory from './flux/storeFactory';
 
 const X_RANGE = 1000;
 const Y_RANGE = 100000;
