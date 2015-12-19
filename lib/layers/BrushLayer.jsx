@@ -47,7 +47,7 @@ class BrushLayer extends React.Component {
     const left = xScale(this.props.selection.start);
     const right = xScale(this.props.selection.end);
     context.beginPath();
-    context.rect(left, 1, right - left, height - 2);
+    context.rect(left, -1, right - left, height + 2);
 
     if (this.props.stroke) {
       context.lineWidth = 1;

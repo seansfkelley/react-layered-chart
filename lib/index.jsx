@@ -33,8 +33,8 @@ store.dispatch({
 store.dispatch({
   type: ActionType.SET_Y_AXIS,
   payload: {
-    start: 0,
-    end: Y_RANGE
+    start: -0.1 * Y_RANGE,
+    end: Y_RANGE * 1.1
   }
 });
 
