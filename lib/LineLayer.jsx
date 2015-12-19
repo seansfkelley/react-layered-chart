@@ -2,6 +2,7 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 import CanvasRender from './CanvasRender';
 import d3 from 'd3';
+import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 
 @PureRender
 @CanvasRender
@@ -30,23 +31,15 @@ class LineLayer extends React.Component {
     fill: null
   };
 
-  state = {
-    width: 0,
-    height: 0
-  };
-
   render() {
-    return (
-      <div className='layer resizing-wrapper' ref='wrapper'>
-        <canvas className='canvas' ref='canvas' width={this.state.width} height={this.state.height}/>
-      </div>
-    );
+    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
   }
 
-  canvasRender() {
-    const canvas = this.refs.canvas;
+  canvasRender = () => {
+    const canvas = this.refs.canvasLayer.getCanvasElement();
+    const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, width, height);
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {
@@ -55,11 +48,11 @@ class LineLayer extends React.Component {
 
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .range([ 0, this.state.width ]);
+      .range([ 0, width ]);
 
     const yScale = this.props.yScale()
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .range([ this.state.height, 0 ]);
+      .range([ height, 0 ]);
 
     context.beginPath();
 
@@ -75,29 +68,12 @@ class LineLayer extends React.Component {
     }
 
     if (this.props.fill) {
-      context.lineTo(xScale(this.props.data[this.props.data.length - 1].timestamp), this.state.height);
-      context.lineTo(xScale(this.props.data[0].timestamp), this.state.height);
+      context.lineTo(xScale(this.props.data[this.props.data.length - 1].timestamp), height);
+      context.lineTo(xScale(this.props.data[0].timestamp), height);
       context.closePath();
       context.fillStyle = this.props.fill;
       context.fill();
     }
-  }
-
-  componentDidMount() {
-    // This stuff should either be in a mixin or a component, but we need access to width and height to render the canvas correctly.
-    this.setSizeFromWrapper();
-    this.__setSizeInterval = setInterval(this.setSizeFromWrapper.bind(this), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.__setSizeInterval);
-  }
-
-  setSizeFromWrapper() {
-    this.setState({
-      width: this.refs.wrapper.offsetWidth,
-      height: this.refs.wrapper.offsetHeight
-    });
   }
 }
 
