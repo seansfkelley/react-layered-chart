@@ -8,13 +8,18 @@ import DefaultChart from './DefaultChart';
 import ActionType from './flux/ActionType';
 import storeFactory from './flux/storeFactory';
 
+import _ from 'lodash';
+
+// For debugging!
+window._ = _;
+
 const NOW = Date.now();
 const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
 
 function makeFakeData() {
   const data = [];
-  for (let i = 0; i < 10; ++i) {
+  for (let i = 0; i < 100; ++i) {
     data.push({ timestamp: NOW - Math.random() * TIME_RANGE, value: Math.random() * Y_RANGE });
   }
   data.sort((a, b) => a.timestamp - b.timestamp);
