@@ -1,8 +1,10 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import CanvasRender from './CanvasRender';
 import d3 from 'd3';
 import _ from 'lodash';
+
+import CanvasRender from './CanvasRender';
+import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 
 @PureRender
 @CanvasRender
@@ -20,21 +22,13 @@ class HoverLayer extends React.Component {
     stroke: 'rgba(0, 0, 0, 1)'
   };
 
-  state = {
-    width: 0,
-    height: 0
-  };
-
   render() {
-    return (
-      <div className='layer resizing-wrapper' ref='wrapper'>
-        <canvas className='canvas' ref='canvas' width={this.state.width} height={this.state.height}/>
-      </div>
-    );
+    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
   }
 
-  canvasRender() {
-    const canvas = this.refs.canvas;
+  canvasRender = () => {
+    const canvas = this.refs.canvasLayer.getCanvasElement();
+    const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -44,35 +38,18 @@ class HoverLayer extends React.Component {
 
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .range([ 0, this.state.width ]);
+      .range([ 0, width ]);
     const xPos = xScale(this.props.hover);
 
     context.beginPath();
     context.moveTo(xPos, 0);
-    context.lineTo(xPos, this.state.height);
+    context.lineTo(xPos, height);
 
     if (this.props.stroke) {
       context.lineWidth = 1;
       context.strokeStyle = this.props.stroke;
       context.stroke();
     }
-  }
-
-  componentDidMount() {
-    // This stuff should either be in a mixin or a component, but we need access to width and height to render the canvas correctly.
-    this.setSizeFromWrapper();
-    this.__setSizeInterval = setInterval(this.setSizeFromWrapper.bind(this), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.__setSizeInterval);
-  }
-
-  setSizeFromWrapper() {
-    this.setState({
-      width: this.refs.wrapper.offsetWidth,
-      height: this.refs.wrapper.offsetHeight
-    });
   }
 }
 
