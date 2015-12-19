@@ -17,7 +17,7 @@ function makeFakeData() {
   for (let i = 0; i < 10; ++i) {
     data.push({ timestamp: NOW - Math.random() * TIME_RANGE, value: Math.random() * Y_RANGE });
   }
-  data.sort((a, b) => b.timestamp - a.timestamp);
+  data.sort((a, b) => a.timestamp - b.timestamp);
   return data;
 }
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import d3 from 'd3';
+import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
@@ -47,6 +49,11 @@ class LineLayer extends React.Component {
       return;
     }
 
+    const { firstIndex, lastIndex } = getVisibleIndexBounds(this.props.data, this.props.xDomain);
+    if (firstIndex === lastIndex) {
+      return;
+    }
+
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .range([ 0, width ]);
@@ -57,8 +64,8 @@ class LineLayer extends React.Component {
 
     context.beginPath();
 
-    context.moveTo(xScale(this.props.data[0].timestamp), yScale(this.props.data[0].value));
-    for (let i = 1; i < this.props.data.length; ++i) {
+    context.moveTo(xScale(this.props.data[firstIndex].timestamp), yScale(this.props.data[firstIndex].value));
+    for (let i = firstIndex; i <= lastIndex; ++i) {
       context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
     }
 
@@ -69,8 +76,8 @@ class LineLayer extends React.Component {
     }
 
     if (this.props.fill) {
-      context.lineTo(xScale(this.props.data[this.props.data.length - 1].timestamp), height);
-      context.lineTo(xScale(this.props.data[0].timestamp), height);
+      context.lineTo(xScale(this.props.data[lastIndex].timestamp), height);
+      context.lineTo(xScale(this.props.data[firstIndex].timestamp), height);
       context.closePath();
       context.fillStyle = this.props.fill;
       context.fill();
