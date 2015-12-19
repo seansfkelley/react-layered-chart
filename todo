@@ -2,7 +2,6 @@ Plottable for axes
 multiple axes of probably both types
 dot layer
 grid line layer
-some unified canvas-layer component
 test perf
 storing series IDs in the store doesn't make a whole lot of sense; perhaps they should be layer IDs and then you can inject data into different layers; this would also include the brush layer and stuff
 nested groupings of layers -- so I can just do some kind of line-with-dot pairing, and then save that off as a separate component

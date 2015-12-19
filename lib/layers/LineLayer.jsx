@@ -21,9 +21,9 @@ class LineLayer extends React.Component {
       start: React.PropTypes.number,
       end: React.PropTypes.number
     }).isRequired,
+    yScale: React.PropTypes.func,
     stroke: React.PropTypes.string,
-    fill: React.PropTypes.string,
-    yScale: React.PropTypes.func
+    fill: React.PropTypes.string
   };
 
   static defaultProps = {

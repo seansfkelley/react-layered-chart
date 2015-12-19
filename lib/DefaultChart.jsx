@@ -10,6 +10,8 @@ import HoverLayer from './layers/HoverLayer';
 import ActionType from './flux/ActionType';
 import Actions from './flux/Actions';
 
+import YAxis from './axes/YAxis';
+
 @PureRender
 @SelectFromStore
 class DefaultChart extends React.Component {
@@ -20,6 +22,7 @@ class DefaultChart extends React.Component {
   static selectFromStore = {
     seriesIds: 'seriesIds',
     xAxis: 'xAxis',
+    yAxis: 'yAxis',
     selection: 'selection',
     hover: 'hover'
   };
@@ -41,6 +44,9 @@ class DefaultChart extends React.Component {
         <HoverLayer
           xDomain={this.state.xAxis}
           hover={this.state.hover}
+        />
+        <YAxis
+          yDomain={this.state.yAxis}
         />
       </Stack>
     );

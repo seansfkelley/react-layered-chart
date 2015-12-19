@@ -50,7 +50,7 @@ class HoverLayer extends React.Component {
       context.strokeStyle = this.props.stroke;
       context.stroke();
     }
-  }
+  };
 }
 
 export default HoverLayer;

@@ -51,14 +51,6 @@ class InteractionCaptureLayer extends React.Component {
       .range([ this.props.xDomain.start, this.props.xDomain.end ]);
   }
 
-  _onMouseDown = (event) => {
-    if (this.props.onPan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
-      this.setState({ isPanning: true, lastPanClientX: event.clientX });
-    } else if (this.props.onBrush && event.button === LEFT_MOUSE_BUTTON) {
-      this.setState({ isBrushing: true, startBrushClientX: event.clientX });
-    }
-  };
-
   _dispatchPanAndBrushEvents(event) {
     if (this.props.onPan && this.state.isPanning) {
       const scale = this._createPhysicalToLogicalXScale();
@@ -85,9 +77,19 @@ class InteractionCaptureLayer extends React.Component {
     });
   }
 
+  _onMouseDown = (event) => {
+    if (this.props.onPan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
+      this.setState({ isPanning: true, lastPanClientX: event.clientX });
+    } else if (this.props.onBrush && event.button === LEFT_MOUSE_BUTTON) {
+      this.setState({ isBrushing: true, startBrushClientX: event.clientX });
+    }
+    event.stopPropagation();
+  };
+
   _onMouseUp = (event) => {
     this._dispatchPanAndBrushEvents(event);
     this._clearPanAndBrushState();
+    event.stopPropagation();
   };
 
   _onMouseMove = (event) => {
@@ -96,6 +98,7 @@ class InteractionCaptureLayer extends React.Component {
       const scale = this._createPhysicalToLogicalXScale();
       this.props.onHover(scale(event.clientX));
     }
+    event.stopPropagation();
   };
 
   _onMouseLeave = (event) => {
@@ -104,6 +107,7 @@ class InteractionCaptureLayer extends React.Component {
     if (this.props.onHover) {
       this.props.onHover(null);
     }
+    event.stopPropagation();
   };
 
   _onWheel = (event) => {
@@ -112,6 +116,7 @@ class InteractionCaptureLayer extends React.Component {
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
       this.props.onZoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus);
     }
+    event.stopPropagation();
   };
 }
 
