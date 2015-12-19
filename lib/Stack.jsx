@@ -1,52 +1,19 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-
-import LineLayer from './layers/LineLayer';
-import SelectFromStore from './mixins/SelectFromStore';
+import classnames from 'classnames';
 
 @PureRender
-@SelectFromStore
 class Stack extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired,
-    seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
-  };
-
-  static selectFromStore = {
-    xAxis: 'xAxis',
-    yAxis: 'yAxis',
-    seriesMetadataById: 'seriesMetadataById',
-    seriesDataById: 'seriesDataById'
+    className: React.PropTypes.string
   };
 
   render() {
     return (
-      <div className='stack'>
-        {this.props.seriesIds.map(this._chooseLayerType.bind(this))}
+      <div className={classnames('stack', this.props.className)}>
         {this.props.children}
       </div>
     );
-  }
-
-  _chooseLayerType(seriesId) {
-    const metadata = this.state.seriesMetadataById[seriesId] || {};
-
-    const layerProps = {
-      xDomain: this.state.xAxis,
-      yDomain: this.state.yAxis,
-      data: this.state.seriesDataById[seriesId],
-      stroke: metadata.stroke,
-      fill: metadata.fill,
-      key: seriesId
-    };
-
-    switch(metadata.chartType) {
-      case 'line':
-        return <LineLayer {...layerProps}/>;
-
-      default:
-        return null;
-    }
   }
 }
 

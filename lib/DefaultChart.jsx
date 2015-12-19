@@ -2,10 +2,11 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 
 import SelectFromStore from './mixins/SelectFromStore';
-import Stack from './Stack';
+import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 import BrushLayer from './layers/BrushLayer';
 import InteractionCaptureLayer from './layers/InteractionCaptureLayer';
 import HoverLayer from './layers/HoverLayer';
+import Stack from './Stack';
 
 import ActionType from './flux/ActionType';
 import Actions from './flux/Actions';
@@ -30,8 +31,12 @@ class DefaultChart extends React.Component {
 
   render() {
     return (
-      <div>
-        <Stack store={this.props.store} seriesIds={this.state.seriesIds}>
+      <div className='default-chart'>
+        <Stack className='chart-body'>
+          <MetadataDrivenDataLayer
+            store={this.props.store}
+            seriesIds={this.state.seriesIds}
+          />
           <BrushLayer
             xDomain={this.state.xAxis}
             selection={this.state.selection}
@@ -51,11 +56,11 @@ class DefaultChart extends React.Component {
             yDomain={this.state.yAxis}
           />
         </Stack>
-        <div className='stack'>
+        <Stack className='time-axis'>
           <XAxis
             xDomain={this.state.xAxis}
           />
-        </div>
+        </Stack>
       </div>
     );
   }

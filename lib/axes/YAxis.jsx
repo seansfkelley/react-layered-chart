@@ -27,7 +27,11 @@ class YAxis extends React.Component {
   };
 
   render() {
-    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
+    return <AutoresizingCanvasLayer
+      className='y-axis'
+      ref='canvasLayer'
+      onSizeChange={this.canvasRender}
+    />;
   }
 
   canvasRender = () => {
