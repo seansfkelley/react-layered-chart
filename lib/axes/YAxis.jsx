@@ -6,6 +6,9 @@ import _ from 'lodash';
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
 
+const HORIZONTAL_PADDING = 6;
+const TICK_LENGTH = 4;
+
 @PureRender
 @CanvasRender
 class YAxis extends React.Component {
@@ -46,23 +49,22 @@ class YAxis extends React.Component {
     context.textBaseline = 'middle';
     context.fillStyle = this.props.color;
     context.font = '12px sans-serif';
+    context.strokeStyle = '#777';
 
     const maxTextWidth = _.max(ticks.map(t => context.measureText(format(t)).width));
 
     for (let i = 0; i < ticks.length; ++i) {
-      const yHeight = height - yScale(ticks[i]);
+      const yOffset = height - yScale(ticks[i]);
 
-      context.fillText(format(ticks[i]), maxTextWidth + 6, yHeight);
+      context.fillText(format(ticks[i]), maxTextWidth + HORIZONTAL_PADDING, yOffset);
 
-      context.moveTo(maxTextWidth + 18, yHeight);
-      context.lineTo(maxTextWidth + 12, yHeight)
-      context.strokeStyle = '#777';
+      context.moveTo(maxTextWidth + HORIZONTAL_PADDING * 2, yOffset);
+      context.lineTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, yOffset)
       context.stroke();
     }
 
-    context.moveTo(maxTextWidth + 18, 0);
-    context.lineTo(maxTextWidth + 18, height)
-    context.strokeStyle = '#777';
+    context.moveTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, 0);
+    context.lineTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, height)
     context.stroke();
   };
 }

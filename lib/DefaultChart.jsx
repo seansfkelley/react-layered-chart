@@ -11,6 +11,7 @@ import ActionType from './flux/ActionType';
 import Actions from './flux/Actions';
 
 import YAxis from './axes/YAxis';
+import XAxis from './axes/XAxis';
 
 @PureRender
 @SelectFromStore
@@ -29,26 +30,33 @@ class DefaultChart extends React.Component {
 
   render() {
     return (
-      <Stack store={this.props.store} seriesIds={this.state.seriesIds}>
-        <BrushLayer
-          xDomain={this.state.xAxis}
-          selection={this.state.selection}
-        />
-        <InteractionCaptureLayer
-          xDomain={this.state.xAxis}
-          onHover={this._onHover}
-          onPan={this._onPan}
-          onZoom={this._onZoom}
-          onBrush={this._onBrush}
-        />
-        <HoverLayer
-          xDomain={this.state.xAxis}
-          hover={this.state.hover}
-        />
-        <YAxis
-          yDomain={this.state.yAxis}
-        />
-      </Stack>
+      <div>
+        <Stack store={this.props.store} seriesIds={this.state.seriesIds}>
+          <BrushLayer
+            xDomain={this.state.xAxis}
+            selection={this.state.selection}
+          />
+          <InteractionCaptureLayer
+            xDomain={this.state.xAxis}
+            onHover={this._onHover}
+            onPan={this._onPan}
+            onZoom={this._onZoom}
+            onBrush={this._onBrush}
+          />
+          <HoverLayer
+            xDomain={this.state.xAxis}
+            hover={this.state.hover}
+          />
+          <YAxis
+            yDomain={this.state.yAxis}
+          />
+        </Stack>
+        <div className='stack'>
+          <XAxis
+            xDomain={this.state.xAxis}
+          />
+        </div>
+      </div>
     );
   }
 

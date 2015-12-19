@@ -8,13 +8,14 @@ import DefaultChart from './DefaultChart';
 import ActionType from './flux/ActionType';
 import storeFactory from './flux/storeFactory';
 
-const X_RANGE = 1000;
+const NOW = Date.now();
+const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
 
 function makeFakeData() {
   const data = [];
   for (let i = 0; i < 10; ++i) {
-    data.push({ timestamp: Math.random() * X_RANGE, value: Math.random() * Y_RANGE });
+    data.push({ timestamp: NOW - Math.random() * TIME_RANGE, value: Math.random() * Y_RANGE });
   }
   data.sort((a, b) => b.timestamp - a.timestamp);
   return data;
@@ -25,8 +26,8 @@ const store = storeFactory();
 store.dispatch({
   type: ActionType.SET_X_AXIS,
   payload: {
-    start: 0,
-    end: X_RANGE
+    start: NOW - TIME_RANGE,
+    end: NOW
   }
 });
 

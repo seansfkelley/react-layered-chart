@@ -1,10 +1,12 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
+import classnames from 'classnames';
 
 @PureRender
 class AutoresizingCanvasLayer extends React.Component {
   static propTypes = {
-    onSizeChange: React.PropTypes.func.isRequired
+    onSizeChange: React.PropTypes.func.isRequired,
+    className: React.PropTypes.string
   };
 
   state = {
@@ -14,7 +16,7 @@ class AutoresizingCanvasLayer extends React.Component {
 
   render() {
     return (
-      <div className='layer resizing-wrapper' ref='wrapper'>
+      <div className={classnames('layer resizing-wrapper', this.props.className)} ref='wrapper'>
         <canvas className='canvas' ref='canvas' width={this.state.width} height={this.state.height}/>
       </div>
     );
