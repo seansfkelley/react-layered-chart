@@ -77,21 +77,23 @@ store.dispatch({
       stroke: 'green'
     },
     'uuid-2': {
-      chartType: ChartType.SIMPLE_LINE,
-      stroke: 'red'
+      chartType: ChartType.POINT,
+      fill: 'red'
     },
     'uuid-3': {
       chartType: ChartType.TIME_SPAN,
-      defaultColor: 'blue'
+      fill: 'blue'
     }
   }
 });
 
+const lineData1 = makeFakeLineData();
+
 store.dispatch({
   type: ActionType.SET_SERIES_DATA,
   payload: {
-    'uuid-1': makeFakeLineData(),
-    'uuid-2': makeFakeLineData(),
+    'uuid-1': lineData1,
+    'uuid-2': lineData1,
     'uuid-3': makeFakeEventData()
   }
 });

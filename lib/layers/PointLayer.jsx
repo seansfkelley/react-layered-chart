@@ -9,7 +9,7 @@ import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
-class SimpleLineLayer extends React.Component {
+class PointLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       timestamp: React.PropTypes.number.isRequired,
@@ -25,13 +25,15 @@ class SimpleLineLayer extends React.Component {
     }).isRequired,
     yScale: React.PropTypes.func,
     stroke: React.PropTypes.string,
-    fill: React.PropTypes.string
+    fill: React.PropTypes.string,
+    radius: React.PropTypes.number
   };
 
   static defaultProps = {
     yScale: d3.scale.linear,
-    stroke: 'rgba(0, 0, 0, 0.7)',
-    fill: null
+    stroke: null,
+    fill: 'rgba(0, 0, 0, 0.7)',
+    radius: 3
   };
 
   render() {
@@ -62,27 +64,26 @@ class SimpleLineLayer extends React.Component {
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
       .range([ height, 0 ]);
 
-    context.beginPath();
+    context.strokeStyle = this.props.stroke;
+    context.fillStyle = this.props.fill;
 
-    context.moveTo(xScale(this.props.data[firstIndex].timestamp), yScale(this.props.data[firstIndex].value));
-    for (let i = firstIndex + 1; i <= lastIndex; ++i) {
-      context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
+    context.beginPath();
+    for (let i = firstIndex; i <= lastIndex; ++i) {
+      const x = xScale(this.props.data[i].timestamp);
+      const y = yScale(this.props.data[i].value);
+
+      context.moveTo(x, y);
+      context.arc(x, y, this.props.radius, 0, Math.PI * 2);
     }
 
     if (this.props.stroke) {
-      context.lineWidth = 1;
-      context.strokeStyle = this.props.stroke;
       context.stroke();
     }
 
     if (this.props.fill) {
-      context.lineTo(xScale(this.props.data[lastIndex].timestamp), height);
-      context.lineTo(xScale(this.props.data[firstIndex].timestamp), height);
-      context.closePath();
-      context.fillStyle = this.props.fill;
       context.fill();
     }
   }
 }
 
-export default SimpleLineLayer;
+export default PointLayer;
