@@ -10,12 +10,12 @@ import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 class BrushLayer extends React.Component {
   static propTypes = {
     selection: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }),
     xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string

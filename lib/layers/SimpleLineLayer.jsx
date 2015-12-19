@@ -9,19 +9,19 @@ import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
-class LineLayer extends React.Component {
+class SimpleLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timestamp: React.PropTypes.number,
-      value: React.PropTypes.number
+      timestamp: React.PropTypes.number.isRequired,
+      value: React.PropTypes.number.isRequired
     })).isRequired,
     xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired,
     yDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired,
     yScale: React.PropTypes.func,
     stroke: React.PropTypes.string,
@@ -85,4 +85,4 @@ class LineLayer extends React.Component {
   }
 }
 
-export default LineLayer;
+export default SimpleLineLayer;

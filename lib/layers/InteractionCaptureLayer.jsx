@@ -14,8 +14,8 @@ class InteractionCaptureLayer extends React.Component {
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
     xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired
   };
 

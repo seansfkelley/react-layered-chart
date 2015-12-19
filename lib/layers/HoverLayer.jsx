@@ -12,8 +12,8 @@ class HoverLayer extends React.Component {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired,
     stroke: React.PropTypes.string
   };

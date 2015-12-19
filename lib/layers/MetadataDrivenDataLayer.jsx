@@ -1,8 +1,10 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 
-import LineLayer from './LineLayer';
+import SimpleLineLayer from './SimpleLineLayer';
+import TimeSpanLayer from './TimeSpanLayer';
 import SelectFromStore from '../mixins/SelectFromStore';
+import ChartType from '../ChartType';
 
 @PureRender
 @SelectFromStore
@@ -40,8 +42,11 @@ class MetadataDrivenDataLayer extends React.Component {
     };
 
     switch(metadata.chartType) {
-      case 'line':
-        return <LineLayer {...layerProps}/>;
+      case ChartType.SIMPLE_LINE:
+        return <SimpleLineLayer {...layerProps}/>;
+
+      case ChartType.TIME_SPAN:
+        return <TimeSpanLayer {...layerProps}/>;
 
       default:
         return null;
