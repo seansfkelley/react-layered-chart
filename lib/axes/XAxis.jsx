@@ -53,7 +53,7 @@ class XAxis extends React.Component {
     context.textBaseline = 'top';
     context.fillStyle = this.props.color;
     context.font = '12px sans-serif';
-    context.strokeStyle = '#777';
+    context.strokeStyle = this.props.color;
 
     for (let i = 0; i < ticks.length; ++i) {
       const xOffset = xScale(ticks[i]);
@@ -64,10 +64,6 @@ class XAxis extends React.Component {
       context.lineTo(xOffset, height)
       context.stroke();
     }
-
-    context.moveTo(0, 0);
-    context.lineTo(width, 0)
-    context.stroke();
   };
 }
 
