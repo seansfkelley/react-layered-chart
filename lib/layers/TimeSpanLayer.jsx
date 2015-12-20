@@ -25,7 +25,7 @@ class TimeSpanLayer extends React.Component {
   };
 
   static defaultProps = {
-    fill: 'rgba(0, 0, 0, 0.2)'
+    fill: 'rgba(0, 0, 0, 0.1)'
   };
 
   render() {

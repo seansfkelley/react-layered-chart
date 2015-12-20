@@ -9,6 +9,8 @@ import ActionType from './flux/ActionType';
 import ChartType from './ChartType';
 import storeFactory from './flux/storeFactory';
 
+import DataActions from './flux/DataActions';
+
 import _ from 'lodash';
 
 // For debugging!
@@ -36,67 +38,38 @@ function makeFakeEventData() {
   return data;
 }
 
-const store = storeFactory();
-
-store.dispatch({
-  type: ActionType.SET_X_AXIS,
-  payload: {
+const store = storeFactory({
+  xAxis: {
     start: NOW - TIME_RANGE,
     end: NOW
-  }
-});
-
-store.dispatch({
-  type: ActionType.SET_Y_AXIS,
-  payload: {
+  },
+  yAxis: {
     start: -0.1 * Y_RANGE,
     end: Y_RANGE * 1.1
   }
 });
 
-store.dispatch({
-  type: ActionType.ADD_SERIES,
-  payload: 'uuid-1'
-});
+store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3'));
 
-store.dispatch({
-  type: ActionType.ADD_SERIES,
-  payload: 'uuid-2'
-});
-
-store.dispatch({
-  type: ActionType.ADD_SERIES,
-  payload: 'uuid-3'
-});
-
-store.dispatch({
-  type: ActionType.SET_SERIES_METADATA,
-  payload: {
-    'uuid-1': {
-      chartType: ChartType.SIMPLE_LINE,
-      stroke: 'green'
-    },
-    'uuid-2': {
-      chartType: ChartType.POINT,
-      fill: 'red'
-    },
-    'uuid-3': {
-      chartType: ChartType.TIME_SPAN,
-      fill: 'blue'
-    }
+store.dispatch(DataActions.setMetadata({
+  'uuid-1': {
+    chartType: ChartType.SIMPLE_LINE
+  },
+  'uuid-2': {
+    chartType: ChartType.POINT
+  },
+  'uuid-3': {
+    chartType: ChartType.TIME_SPAN
   }
-});
+}));
 
 const lineData1 = makeFakeLineData();
 
-store.dispatch({
-  type: ActionType.SET_SERIES_DATA,
-  payload: {
-    'uuid-1': lineData1,
-    'uuid-2': lineData1,
-    'uuid-3': makeFakeEventData()
-  }
-});
+store.dispatch(DataActions.setData({
+  'uuid-1': lineData1,
+  'uuid-2': lineData1,
+  'uuid-3': makeFakeEventData()
+}));
 
 const chart = <DefaultChart store={store}/>
 

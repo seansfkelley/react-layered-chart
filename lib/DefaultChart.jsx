@@ -9,7 +9,7 @@ import HoverLayer from './layers/HoverLayer';
 import Stack from './Stack';
 
 import ActionType from './flux/ActionType';
-import Actions from './flux/Actions';
+import InteractionActions from './flux/InteractionActions';
 
 import YAxis from './axes/YAxis';
 import XAxis from './axes/XAxis';
@@ -66,19 +66,19 @@ class DefaultChart extends React.Component {
   }
 
   _onHover = (xPos) => {
-    this.props.store.dispatch(Actions.hover(xPos));
+    this.props.store.dispatch(InteractionActions.hover(xPos));
   };
 
   _onPan = (deltaX) => {
-    this.props.store.dispatch(Actions.pan(deltaX));
+    this.props.store.dispatch(InteractionActions.pan(deltaX));
   };
 
   _onZoom = (factor, focus) => {
-    this.props.store.dispatch(Actions.zoom(factor, focus));
+    this.props.store.dispatch(InteractionActions.zoom(factor, focus));
   };
 
   _onBrush = (brush) => {
-    this.props.store.dispatch(Actions.brush(brush));
+    this.props.store.dispatch(InteractionActions.brush(brush));
   };
 }
 
