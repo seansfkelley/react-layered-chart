@@ -44,7 +44,9 @@ class PointLayer extends React.Component {
     const canvas = this.refs.canvasLayer.getCanvasElement();
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
+    context.resetTransform();
     context.clearRect(0, 0, width, height);
+    context.translate(0.5, 0.5);
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {
@@ -58,11 +60,11 @@ class PointLayer extends React.Component {
 
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .range([ 0, width ]);
+      .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .range([ height, 0 ]);
+      .rangeRound([ height, 0 ]);
 
     context.strokeStyle = this.props.stroke;
     context.fillStyle = this.props.fill;

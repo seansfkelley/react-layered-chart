@@ -36,11 +36,13 @@ class XAxis extends React.Component {
     const canvas = this.refs.canvasLayer.getCanvasElement();
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.resetTransform();
+    context.clearRect(0, 0, width, height);
+    context.translate(0.5, 0.5);
 
     const xScale = d3.time.scale()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .range([ 0, width ]);
+      .rangeRound([ 0, width ]);
 
     const ticks = xScale.ticks(5);
     const format = xScale.tickFormat(5);

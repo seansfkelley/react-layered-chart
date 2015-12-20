@@ -38,11 +38,13 @@ class YAxis extends React.Component {
     const canvas = this.refs.canvasLayer.getCanvasElement();
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.resetTransform();
+    context.clearRect(0, 0, width, height);
+    context.translate(0.5, 0.5);
 
     const yScale = this.props.yScale()
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .range([ 0, height ]);
+      .rangeRound([ 0, height ]);
 
     const ticks = yScale.ticks(5);
     const format = yScale.tickFormat(5);
@@ -55,7 +57,7 @@ class YAxis extends React.Component {
     context.font = '12px sans-serif';
     context.strokeStyle = '#777';
 
-    const maxTextWidth = _.max(ticks.map(t => context.measureText(format(t)).width));
+    const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
 
     for (let i = 0; i < ticks.length; ++i) {
       const yOffset = height - yScale(ticks[i]);

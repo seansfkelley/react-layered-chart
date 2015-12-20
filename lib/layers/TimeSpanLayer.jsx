@@ -38,17 +38,11 @@ class TimeSpanLayer extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, width, height);
 
-    // Should we draw something if there is one data point?
-    if (this.props.data.length < 2) {
-      return;
-    }
-
     const [ firstIndex, lastIndex ] = [ 0, this.props.data.length - 1 ];
 
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .range([ 0, width ]);
-
+      .rangeRound([ 0, width ]);
 
     for (let i = firstIndex; i <= lastIndex; ++i) {
       const left = xScale(this.props.data[i].timeSpan.start);
