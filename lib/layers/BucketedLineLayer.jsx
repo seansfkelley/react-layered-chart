@@ -36,16 +36,57 @@ class BucketedLineLayer extends React.Component {
       end: React.PropTypes.number.isRequired
     }).isRequired,
     yScale: React.PropTypes.func,
-    color: React.PropTypes.string
+    color: React.PropTypes.string,
+    yAnimationDuration: React.PropTypes.number
   };
 
   static defaultProps = {
     yScale: d3.scale.linear,
-    color: 'rgba(0, 0, 0, 0.7)'
+    color: 'rgba(0, 0, 0, 0.7)',
+    yAnimationDuration: 300
+  };
+
+  state = {
+    animatingYDomain: {
+      start: this.props.yDomain.start,
+      end: this.props.yDomain.end
+    }
   };
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.yDomain !== nextProps.yDomain) {
+      if (this.props.yAnimationDuration > 0) {
+        this._animateYDomain(this.state.animatingYDomain, nextProps.yDomain);
+      } else {
+        this.setState({
+          animatingYDomain: nextProps.yDomain
+        });
+      }
+    }
+  }
+
+  _animateYDomain(fromDomain, toDomain) {
+    clearInterval(this.__yDomainAnimator);
+
+    const interpolator = d3.interpolateObject(fromDomain, toDomain);
+    const ease = d3.ease('cubic-in-out');
+
+    let frame = 0;
+    this.__yDomainAnimator = setInterval(() => {
+      const t = ease(frame / 30);
+      this.setState({
+        animatingYDomain: _.clone(interpolator(t))
+      });
+
+      frame++;
+      if (frame === 30) {
+        clearInterval(this.__yDomainAnimator);
+      }
+    }, this.props.yAnimationDuration / 30);
   }
 
   canvasRender = () => {
@@ -73,7 +114,7 @@ class BucketedLineLayer extends React.Component {
       .range([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.start, this.props.yDomain.end ])
+      .domain([ this.state.animatingYDomain.start, this.state.animatingYDomain.end ])
       .range([ height, 0 ]);
 
     const getComputedValuesForIndex = _.memoize(i => {
