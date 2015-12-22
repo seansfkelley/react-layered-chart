@@ -7,8 +7,11 @@ import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getVisibleIndexBounds, animateOnce } from '../util';
 
+import AnimateProps from '../mixins/AnimateProps';
+
 @PureRender
 @CanvasRender
+@AnimateProps
 class BucketedLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -36,49 +39,20 @@ class BucketedLineLayer extends React.Component {
       end: React.PropTypes.number.isRequired
     }).isRequired,
     yScale: React.PropTypes.func,
-    color: React.PropTypes.string,
-    yAnimationDuration: React.PropTypes.number
+    color: React.PropTypes.string
   };
 
   static defaultProps = {
     yScale: d3.scale.linear,
-    color: 'rgba(0, 0, 0, 0.7)',
-    yAnimationDuration: 300
+    color: 'rgba(0, 0, 0, 0.7)'
   };
 
-  state = {
-    animatingYDomain: {
-      start: this.props.yDomain.start,
-      end: this.props.yDomain.end
-    }
+  animatedProps = {
+    yDomain: 300
   };
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.yDomain !== nextProps.yDomain) {
-      if (this.props.yAnimationDuration > 0) {
-        this._animateYDomain(this.state.animatingYDomain, nextProps.yDomain);
-      } else {
-        this.setState({
-          animatingYDomain: nextProps.yDomain
-        });
-      }
-    }
-  }
-
-  _animateYDomain(fromDomain, toDomain) {
-    if (this.__yDomainAnimatorCancel) {
-      this.__yDomainAnimatorCancel();
-    }
-
-    this.__yDomainAnimatorCancel = animateOnce(fromDomain, toDomain, this.props.yAnimationDuration, v => {
-      this.setState({
-        animatingYDomain: _.clone(v)
-      });
-    });
   }
 
   canvasRender = () => {
@@ -106,7 +80,7 @@ class BucketedLineLayer extends React.Component {
       .range([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state.animatingYDomain.start, this.state.animatingYDomain.end ])
+      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
       .range([ height, 0 ]);
 
     const getComputedValuesForIndex = _.memoize(i => {

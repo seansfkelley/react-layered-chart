@@ -4,6 +4,7 @@ import d3 from 'd3';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
+import AnimateProps from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
 
 import { animateOnce } from '../util';
@@ -13,6 +14,7 @@ const TICK_LENGTH = 4;
 
 @PureRender
 @CanvasRender
+@AnimateProps
 class YAxis extends React.Component {
   static propTypes = {
     yDomain: React.PropTypes.shape({
@@ -26,15 +28,11 @@ class YAxis extends React.Component {
 
   static defaultProps = {
     yScale: d3.scale.linear,
-    color: '#444',
-    yAnimationDuration: 300
+    color: '#444'
   };
 
-  state = {
-    animatingYDomain: {
-      start: this.props.yDomain.start,
-      end: this.props.yDomain.end
-    }
+  animatedProps = {
+    yDomain: 300
   };
 
   render() {
@@ -43,30 +41,6 @@ class YAxis extends React.Component {
       ref='canvasLayer'
       onSizeChange={this.canvasRender}
     />;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.yDomain !== nextProps.yDomain) {
-      if (this.props.yAnimationDuration > 0) {
-        this._animateYDomain(this.state.animatingYDomain, nextProps.yDomain);
-      } else {
-        this.setState({
-          animatingYDomain: nextProps.yDomain
-        });
-      }
-    }
-  }
-
-  _animateYDomain(fromDomain, toDomain) {
-    if (this.__yDomainAnimatorCancel) {
-      this.__yDomainAnimatorCancel();
-    }
-
-    this.__yDomainAnimatorCancel = animateOnce(fromDomain, toDomain, this.props.yAnimationDuration, v => {
-      this.setState({
-        animatingYDomain: _.clone(v)
-      });
-    });
   }
 
   canvasRender = () => {
@@ -78,7 +52,7 @@ class YAxis extends React.Component {
     context.translate(0.5, 0.5);
 
     const yScale = this.props.yScale()
-      .domain([ this.state.animatingYDomain.start, this.state.animatingYDomain.end ])
+      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
       .rangeRound([ 0, height ]);
 
     const ticks = yScale.ticks(5);
