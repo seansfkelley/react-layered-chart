@@ -6,21 +6,17 @@ import _ from 'lodash';
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 
+import propTypes from '../propTypes';
+
 @PureRender
 @CanvasRender
 class TimeSpanLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timeSpan: React.PropTypes.shape({
-        start: React.PropTypes.number.isRequired,
-        end: React.PropTypes.number.isRequired
-      }).isRequired,
+      timeSpan: propTypes.timeSpan.isRequired,
       color: React.PropTypes.string
     })).isRequired,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    xDomain: propTypes.domain.isRequired,
     color: React.PropTypes.string
   };
 

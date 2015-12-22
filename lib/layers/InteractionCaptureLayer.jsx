@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import PureRender from 'pure-render-decorator';
 import d3Scale from 'd3-scale';
 
+import propTypes from '../propTypes';
+
 const MAC_TRACKPAD_ZOOM_FACTOR = 0.05;
 const LEFT_MOUSE_BUTTON = 0;
 
@@ -13,10 +15,7 @@ class InteractionCaptureLayer extends React.Component {
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired
+    xDomain: propTypes.domain.isRequired
   };
 
   state = {

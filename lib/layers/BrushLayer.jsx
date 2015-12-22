@@ -4,19 +4,14 @@ import d3Scale from 'd3-scale';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import propTypes from '../propTypes';
 
 @PureRender
 @CanvasRender
 class BrushLayer extends React.Component {
   static propTypes = {
-    selection: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }),
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    selection: propTypes.timeSpan.isRequired,
+    xDomain: propTypes.domain.isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string
   };

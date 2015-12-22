@@ -5,16 +5,14 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import propTypes from '../propTypes';
 
 @PureRender
 @CanvasRender
 class HoverLayer extends React.Component {
   static propTypes = {
     hover: React.PropTypes.number,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    xDomain: propTypes.domain.isRequired,
     stroke: React.PropTypes.string
   };
 

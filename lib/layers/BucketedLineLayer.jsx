@@ -8,6 +8,7 @@ import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getVisibleIndexBounds } from '../util';
+import propTypes from '../propTypes';
 
 @PureRender
 @CanvasRender
@@ -21,23 +22,11 @@ class BucketedLineLayer extends React.Component {
         minValue: React.PropTypes.number.isRequired,
         maxValue: React.PropTypes.number.isRequired
       }).isRequired,
-      earliestPoint: React.PropTypes.shape({
-        timestamp: React.PropTypes.number.isRequired,
-        value: React.PropTypes.number.isRequired
-      }).isRequired,
-      latestPoint: React.PropTypes.shape({
-        timestamp: React.PropTypes.number.isRequired,
-        value: React.PropTypes.number.isRequired
-      }).isRequired
+      earliestPoint: propTypes.dataPoint.isRequired,
+      latestPoint: propTypes.dataPoint.isRequired
     })).isRequired,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
-    yDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    xDomain: propTypes.domain.isRequired,
+    yDomain: propTypes.domain.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
   };

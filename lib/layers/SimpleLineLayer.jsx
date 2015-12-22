@@ -8,24 +8,16 @@ import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getVisibleIndexBounds } from '../util';
+import propTypes from '../propTypes';
 
 @PureRender
 @CanvasRender
 @AnimateProps
 class SimpleLineLayer extends React.Component {
   static propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timestamp: React.PropTypes.number.isRequired,
-      value: React.PropTypes.number.isRequired
-    })).isRequired,
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
-    yDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
+    xDomain: propTypes.domain.isRequired,
+    yDomain: propTypes.domain.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
   };

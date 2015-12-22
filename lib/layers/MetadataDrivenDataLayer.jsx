@@ -8,18 +8,13 @@ import SimpleLineLayer from './SimpleLineLayer';
 import TimeSpanLayer from './TimeSpanLayer';
 
 import ChartType from '../ChartType';
+import propTypes from '../propTypes';
 
 @PureRender
 class MetadataDrivenDataLayer extends React.Component {
   static propTypes = {
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
-    }).isRequired,
-    yDomainBySeriesId: React.PropTypes.objectOf(React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    })).isRequired,
+    xDomain: propTypes.domain.isRequired,
+    yDomainBySeriesId: React.PropTypes.objectOf(propTypes.domain).isRequired,
     metadataBySeriesId: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
     dataBySeriesId: React.PropTypes.object.isRequired,
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
