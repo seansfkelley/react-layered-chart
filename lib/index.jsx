@@ -42,11 +42,15 @@ store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3', 'uuid-4'));
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
     chartType: ChartType.SIMPLE_LINE,
-    color: 'rgba(255, 0, 0, 0.5)'
+    color: 'rgba(255, 0, 0, 0.5)',
+    unit: 'some-unit',
+    unitType: 'some-unit-type'
   },
   'uuid-2': {
     chartType: ChartType.POINT,
-    color: 'rgba(255, 0, 0, 0.5)'
+    color: 'rgba(255, 0, 0, 0.5)',
+    unit: 'some-unit',
+    unitType: 'some-unit-type'
   },
   'uuid-3': {
     chartType: ChartType.TIME_SPAN,
