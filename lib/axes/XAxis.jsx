@@ -1,6 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -40,12 +40,12 @@ class XAxis extends React.Component {
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
-    const xScale = d3.time.scale()
+    const xScale = d3Scale.time()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .rangeRound([ 0, width ]);
 
     const ticks = xScale.ticks(5);
-    const format = xScale.tickFormat(5);
+    const format = xScale.tickFormat();
 
     context.beginPath();
 

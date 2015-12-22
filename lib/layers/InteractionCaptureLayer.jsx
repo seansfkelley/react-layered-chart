@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 
 const MAC_TRACKPAD_ZOOM_FACTOR = 0.05;
 const LEFT_MOUSE_BUTTON = 0;
@@ -46,7 +46,7 @@ class InteractionCaptureLayer extends React.Component {
 
   _createPhysicalToLogicalXScale() {
     const boundingClientRect = this._getBoundingClientRect();
-    return d3.scale.linear()
+    return d3Scale.linear()
       .domain([ boundingClientRect.left, boundingClientRect.right ])
       .range([ this.props.xDomain.start, this.props.xDomain.end ]);
   }

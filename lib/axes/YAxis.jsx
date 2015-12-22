@@ -1,6 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -25,7 +25,7 @@ class YAxis extends React.Component {
   };
 
   static defaultProps = {
-    yScale: d3.scale.linear,
+    yScale: d3Scale.linear,
     color: '#444'
   };
 

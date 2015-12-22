@@ -1,6 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -43,7 +43,7 @@ class BucketedLineLayer extends React.Component {
   };
 
   static defaultProps = {
-    yScale: d3.scale.linear,
+    yScale: d3Scale.linear,
     color: 'rgba(0, 0, 0, 0.7)'
   };
 
@@ -75,7 +75,7 @@ class BucketedLineLayer extends React.Component {
     const lastIndex = this.props.data.length - 1;
 
     // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
-    const xScale = d3.scale.linear()
+    const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .range([ 0, width ]);
 

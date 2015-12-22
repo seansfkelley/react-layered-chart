@@ -1,6 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -33,7 +33,7 @@ class PointLayer extends React.Component {
   };
 
   static defaultProps = {
-    yScale: d3.scale.linear,
+    yScale: d3Scale.linear,
     stroke: null,
     fill: 'rgba(0, 0, 0, 0.7)',
     radius: 3
@@ -65,7 +65,7 @@ class PointLayer extends React.Component {
       return;
     }
 
-    const xScale = d3.scale.linear()
+    const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .rangeRound([ 0, width ]);
 

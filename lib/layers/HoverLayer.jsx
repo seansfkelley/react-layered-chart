@@ -1,6 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3 from 'd3';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -38,7 +38,7 @@ class HoverLayer extends React.Component {
       return;
     }
 
-    const xScale = d3.scale.linear()
+    const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
       .rangeRound([ 0, width ]);
     const xPos = xScale(this.props.hover);
