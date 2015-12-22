@@ -15,7 +15,28 @@ import InteractionActions from './flux/InteractionActions';
 import YAxis from './axes/YAxis';
 import XAxis from './axes/XAxis';
 
-import { shallowMemoize } from './util';
+import { shallowMemoize, mergeRangesOfSameType } from './util';
+
+function getMergedYDomains(shouldMerge, seriesIds, yAxisBySeriesId, metadataBySeriesId) {
+  const rangeGroups = shouldMerge
+    ? mergeRangesOfSameType(seriesIds, yAxisBySeriesId, metadataBySeriesId)
+    : seriesIds.map(seriesId => ({
+        range: yAxisBySeriesId[seriesId],
+        color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
+        seriesIds: [ seriesId ]
+      }));
+
+  let yDomainBySeriesId = {};
+  _.each(rangeGroups, ({ seriesIds, range }) =>
+    _.each(seriesIds, seriesId => yDomainBySeriesId[seriesId] = range)
+  );
+
+  return {
+    yDomainBySeriesId,
+    orderedYDomains: _.pluck(rangeGroups, 'range'),
+    orderedColors: _.pluck(rangeGroups, 'color')
+  }
+}
 
 @PureRender
 @SelectFromStore
@@ -40,16 +61,16 @@ class DefaultChart extends React.Component {
   };
 
   render() {
-    const yDomainsWithColors = this._getYDomainColorPairs(
+    const {
+      yDomainBySeriesId,
+      orderedYDomains,
+      orderedColors
+    } = this._memoizedGetMergedYDomains(
+      this.props.mergeAxesOfSameType,
+      this.state.seriesIds,
       this.state.yAxisBySeriesId,
-      this.state.metadataBySeriesId,
-      this.state.seriesIds
+      this.state.metadataBySeriesId
     );
-
-    const yDomainBySeriesId = {};
-    _.each(yDomainsWithColors, ({ yDomain, seriesIds }) => {
-      _.each(seriesIds, seriesId => yDomainBySeriesId[seriesId] = yDomain);
-    });
 
     return (
       <div className='default-chart'>
@@ -77,8 +98,8 @@ class DefaultChart extends React.Component {
             hover={this.state.hover}
           />
           <YAxis
-            yDomains={_.pluck(yDomainsWithColors, 'yDomain')}
-            colors={_.pluck(yDomainsWithColors, 'color')}
+            yDomains={orderedYDomains}
+            colors={orderedColors}
           />
         </Stack>
         <Stack className='time-axis'>
@@ -90,56 +111,7 @@ class DefaultChart extends React.Component {
     );
   }
 
-  _getYDomainColorPairs = shallowMemoize(function(yAxisBySeriesId, metadataBySeriesId, seriesIds) {
-    if (this.props.mergeAxesOfSameType) {
-      const yDomainsAndColorByUnitByUnitType = {};
-      const mergedDomainColorPairs = [];
-
-      _.each(seriesIds, seriesId => {
-        const metadata = metadataBySeriesId[seriesId] || {};
-        if (metadata.unit && metadata.unitType) {
-          const existingMergeGroup = _.get(yDomainsAndColorByUnitByUnitType, [ metadata.unitType, metadata.unit ]);
-          const yDomainAndColor = {
-            yDomain: yAxisBySeriesId[seriesId],
-            color: metadata.color,
-            seriesIds: [ seriesId ]
-          };
-          if (existingMergeGroup) {
-            existingMergeGroup.push(yDomainAndColor);
-          } else {
-            _.set(yDomainsAndColorByUnitByUnitType, [ metadata.unitType, metadata.unit ], [ yDomainAndColor ]);
-          }
-        } else {
-          mergedDomainColorPairs.push({
-            yDomain: yAxisBySeriesId[seriesId],
-            color: metadata.color,
-            seriesIds: [ seriesId ]
-          });
-        }
-      });
-
-      _.each(yDomainsAndColorByUnitByUnitType, yDomainsAndColorByUnit => {
-        _.each(yDomainsAndColorByUnit, yDomainsAndColor => {
-          mergedDomainColorPairs.push({
-            yDomain: {
-              min: _.min(_.pluck(yDomainsAndColor, 'yDomain.min')),
-              max: _.max(_.pluck(yDomainsAndColor, 'yDomain.max'))
-            },
-            color: _.pluck(yDomainsAndColor, 'color').reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)'),
-            seriesIds: _.flatten(_.pluck(yDomainsAndColor, 'seriesIds'))
-          })
-        });
-      });
-
-      return mergedDomainColorPairs;
-    } else {
-      return seriesIds.map(seriesId => ({
-        yDomain: yAxisBySeriesId[seriesId],
-        color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
-        seriesIds: [ seriesId ]
-      }));
-    }
-  });
+  _memoizedGetMergedYDomains = shallowMemoize(getMergedYDomains);
 
   _onHover = (xPos) => {
     this.props.store.dispatch(InteractionActions.hover(xPos));
