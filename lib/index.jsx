@@ -13,78 +13,14 @@ import DataActions from './flux/DataActions';
 
 import _ from 'lodash';
 
+import fakeDataGenerators from './fakeDataGenerators';
+
 // For debugging!
 window._ = _;
 
 const NOW = Date.now();
 const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
-
-function makeFakeLineData() {
-  const data = [];
-  for (let i = 0; i < 100; ++i) {
-    data.push({ timestamp: NOW - Math.random() * TIME_RANGE, value: Math.random() * Y_RANGE });
-  }
-  data.sort((a, b) => a.timestamp - b.timestamp);
-  return data;
-}
-
-function makeFakeEventData() {
-  const data = [];
-  for (let i = 0; i < 10; ++ i) {
-    const start = NOW - Math.random() * TIME_RANGE;
-    data.push({ timeSpan: { start, end: start + (1000 * 60 * 60 * (24 * Math.random())) }});
-  }
-  return data;
-}
-
-function makeFakeBucketedData() {
-  const data = [];
-  let startTime = NOW - TIME_RANGE;
-  while (startTime < NOW) {
-    const endTime = startTime + 1000 * 60 * 60 * 24;
-    if (Math.random() > 0.9) {
-      startTime = endTime;
-      continue;
-    }
-
-    const actualStartTime = startTime + Math.random() * 1000 * 60 * 60 * 24 * 0.1;
-    const actualEndTime = endTime - Math.random() * 1000 * 60 * 60 * 24 * 0.1;
-
-    let value1;
-    let value2;
-    if (data.length) {
-      value1 = data[data.length - 1].bounds.minValue + (Math.random() - 0.5) * Y_RANGE * 0.1;
-      value2 = data[data.length - 1].bounds.maxValue + (Math.random() - 0.5) * Y_RANGE * 0.1;
-    } else {
-      value1 = Math.random() * Y_RANGE * 0.1 + Y_RANGE / 2;
-      value2 = Math.random() * Y_RANGE * 0.1 + Y_RANGE / 2;
-    }
-
-    const minValue = Math.min(value1, value2);
-    const maxValue = Math.max(value1, value2);
-
-    data.push({
-      bounds: {
-        startTime,
-        endTime,
-        minValue,
-        maxValue
-      },
-      earliestPoint: {
-        timestamp: actualStartTime,
-        value: Math.random() * (maxValue - minValue) + minValue
-      },
-      latestPoint: {
-        timestamp: actualEndTime,
-        value: Math.random() * (maxValue - minValue) + minValue
-      }
-    });
-
-    startTime = endTime;
-  }
-  return data;
-}
 
 const store = storeFactory({
   xAxis: {
@@ -114,14 +50,31 @@ store.dispatch(DataActions.setMetadata({
   }
 }));
 
-const lineData1 = makeFakeLineData();
+const lineData1 = fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE);
 
 store.dispatch(DataActions.setData({
   'uuid-1': lineData1,
   'uuid-2': lineData1,
-  'uuid-3': makeFakeEventData(),
-  'uuid-4': makeFakeBucketedData()
+  'uuid-3': fakeDataGenerators.makeFakeEventData(NOW, TIME_RANGE, Y_RANGE),
+  'uuid-4': fakeDataGenerators.makeFakeBucketedData(NOW, TIME_RANGE, Y_RANGE)
 }));
+
+let latestXAxis;
+const onTimeRangeChange = _.debounce((xAxis) => {
+  if (xAxis === latestXAxis) {
+    return;
+  } else {
+    latestXAxis = xAxis;
+    const { start, end } = xAxis;
+    store.dispatch(DataActions.setData({
+      'uuid-4': fakeDataGenerators.makeFakeBucketedData(end, end - start, Y_RANGE, (end - start) / 400)
+    }));
+  }
+}, 1000);
+
+store.subscribe(() => {
+  onTimeRangeChange(store.getState().xAxis);
+});
 
 const chart = <DefaultChart store={store}/>
 
