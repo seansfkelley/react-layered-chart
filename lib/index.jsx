@@ -15,9 +15,6 @@ import _ from 'lodash';
 
 import fakeDataGenerators from './fakeDataGenerators';
 
-// For debugging!
-window._ = _;
-
 const NOW = Date.now();
 const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
@@ -79,3 +76,8 @@ store.subscribe(() => {
 const chart = <DefaultChart store={store}/>
 
 ReactDOM.render(chart, document.getElementById('test-container'));
+
+
+// For debugging!
+window._ = _;
+window.store = store;
