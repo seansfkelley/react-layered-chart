@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getVisibleIndexBounds } from '../util';
+import { getVisibleIndexBounds, animateOnce } from '../util';
 
 @PureRender
 @CanvasRender
@@ -70,23 +70,15 @@ class BucketedLineLayer extends React.Component {
   }
 
   _animateYDomain(fromDomain, toDomain) {
-    clearInterval(this.__yDomainAnimator);
+    if (this.__yDomainAnimatorCancel) {
+      this.__yDomainAnimatorCancel();
+    }
 
-    const interpolator = d3.interpolateObject(fromDomain, toDomain);
-    const ease = d3.ease('cubic-in-out');
-
-    let frame = 0;
-    this.__yDomainAnimator = setInterval(() => {
-      const t = ease(frame / 30);
+    this.__yDomainAnimatorCancel = animateOnce(fromDomain, toDomain, this.props.yAnimationDuration, v => {
       this.setState({
-        animatingYDomain: _.clone(interpolator(t))
+        animatingYDomain: _.clone(v)
       });
-
-      frame++;
-      if (frame === 30) {
-        clearInterval(this.__yDomainAnimator);
-      }
-    }, this.props.yAnimationDuration / 30);
+    });
   }
 
   canvasRender = () => {
