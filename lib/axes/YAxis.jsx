@@ -4,10 +4,8 @@ import d3 from 'd3';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
-import AnimateProps from '../mixins/CanvasRender';
+import AnimateProps from '../mixins/AnimateProps';
 import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
-
-import { animateOnce } from '../util';
 
 const HORIZONTAL_PADDING = 6;
 const TICK_LENGTH = 4;
