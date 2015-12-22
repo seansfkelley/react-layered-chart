@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "./node_modules/http-server/bin/http-server -c-1",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "multi=\"mocha-osx-reporter=- spec=-\" ./node_modules/.bin/mocha --reporter mocha-multi"
   },
   "babel": {
     "presets": [
@@ -30,6 +30,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
     "gulp": "^3.9.0",
@@ -43,6 +44,10 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.1.1",
     "http-server": "^0.8.5",
+    "mocha": "^2.3.4",
+    "mocha-multi": "^0.7.2",
+    "mocha-osx-reporter": "^0.1.2",
+    "should": "^8.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
