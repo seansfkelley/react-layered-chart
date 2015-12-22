@@ -52,9 +52,7 @@ class BucketedLineLayer extends React.Component {
     const canvas = this.refs.canvasLayer.getCanvasElement();
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
-    context.resetTransform();
     context.clearRect(0, 0, width, height);
-    context.translate(0.5, 0.5);
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {
@@ -69,61 +67,78 @@ class BucketedLineLayer extends React.Component {
     const firstIndex = 0;
     const lastIndex = this.props.data.length - 1;
 
+    // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
     const xScale = d3.scale.linear()
       .domain([ this.props.xDomain.start, this.props.xDomain.end ])
-      .rangeRound([ 0, width ]);
+      .range([ 0, width ]);
 
     const yScale = this.props.yScale()
       .domain([ this.props.yDomain.start, this.props.yDomain.end ])
-      .rangeRound([ height, 0 ]);
+      .range([ height, 0 ]);
 
     const getComputedValuesForIndex = _.memoize(i => {
       const datum = this.props.data[i];
+
+      const earliestX = Math.floor(xScale(datum.earliestPoint.timestamp));
+      const latestX = Math.floor(xScale(datum.latestPoint.timestamp));
+
+      let preferredX1;
+      let preferredX2;
+      if (latestX - earliestX < 2) {
+        // Arbitrarily choose one, for now...
+        // TODO: Should do something smarter here; this jitters badly during zooming if all the bounds don't
+        // match up exactly, since some will hit this branch earlier than others.
+        preferredX1 = earliestX;
+        preferredX2 = earliestX + 1;
+      } else {
+        preferredX1 = earliestX;
+        preferredX2 = latestX;
+      }
+
       return {
-        bounds: {
-          x1: xScale(datum.bounds.startTime),
-          x2: xScale(datum.bounds.endTime),
-          y1: yScale(datum.bounds.minValue),
-          y2: yScale(datum.bounds.maxValue)
-        },
         earliestPoint: {
-          x: xScale(datum.earliestPoint.timestamp),
-          y: yScale(datum.earliestPoint.value)
+          x: earliestX,
+          y: Math.floor(yScale(datum.earliestPoint.value))
         },
         latestPoint: {
-          x: xScale(datum.latestPoint.timestamp),
-          y: yScale(datum.latestPoint.value)
+          x: latestX,
+          y: Math.floor(yScale(datum.latestPoint.value))
+        },
+        preferredBounds: {
+          x1: preferredX1,
+          x2: preferredX2,
+          y1: Math.floor(yScale(datum.bounds.minValue)),
+          y2: Math.floor(yScale(datum.bounds.maxValue))
         }
       };
     });
 
-    context.beginPath();
-
     // Bars
+    context.beginPath();
     for (let i = firstIndex; i <= lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
       context.rect(
-        computedValues.earliestPoint.x,
-        height - computedValues.bounds.y2,
-        computedValues.latestPoint.x - computedValues.earliestPoint.x,
-        computedValues.bounds.y2 - computedValues.bounds.y1
+        computedValues.preferredBounds.x1,
+        height - computedValues.preferredBounds.y2,
+        computedValues.preferredBounds.x2 - computedValues.preferredBounds.x1,
+        computedValues.preferredBounds.y2 - computedValues.preferredBounds.y1
       );
     }
-
-    // Lines
-    const firstComputedValues = getComputedValuesForIndex(firstIndex);
-    context.moveTo(firstComputedValues.latestPoint.x, height - firstComputedValues.latestPoint.y)
-    for (let i = firstIndex + 1; i <= lastIndex; ++i) {
-      const computedValues = getComputedValuesForIndex(i);
-      // TODO: Skip any that have touching rectangles.
-      context.lineTo(computedValues.earliestPoint.x, height - computedValues.earliestPoint.y);
-      context.moveTo(computedValues.latestPoint.x, height - computedValues.latestPoint.y);
-    }
-
-    context.strokeStyle = this.props.color;
-    context.stroke();
     context.fillStyle = this.props.color;
     context.fill();
+
+    // Lines
+    context.beginPath();
+    const firstComputedValues = getComputedValuesForIndex(firstIndex);
+    context.moveTo(firstComputedValues.preferredBounds.x2, height - firstComputedValues.latestPoint.y)
+    for (let i = firstIndex + 1; i <= lastIndex; ++i) {
+      const computedValues = getComputedValuesForIndex(i);
+      // TODO: Skip any that have touching rectangles?
+      context.lineTo(computedValues.preferredBounds.x1, height - computedValues.earliestPoint.y);
+      context.moveTo(computedValues.preferredBounds.x2, height - computedValues.latestPoint.y);
+    }
+    context.strokeStyle = this.props.color;
+    context.stroke();
   }
 }
 
