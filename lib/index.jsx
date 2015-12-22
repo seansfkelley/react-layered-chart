@@ -38,6 +38,54 @@ function makeFakeEventData() {
   return data;
 }
 
+function makeFakeBucketedData() {
+  const data = [];
+  let startTime = NOW - TIME_RANGE;
+  while (startTime < NOW) {
+    const endTime = startTime + 1000 * 60 * 60 * 24;
+    if (Math.random() > 0.9) {
+      startTime = endTime;
+      continue;
+    }
+
+    const actualStartTime = startTime + Math.random() * 1000 * 60 * 60 * 24 * 0.1;
+    const actualEndTime = endTime - Math.random() * 1000 * 60 * 60 * 24 * 0.1;
+
+    let value1;
+    let value2;
+    if (data.length) {
+      value1 = data[data.length - 1].bounds.minValue + (Math.random() - 0.5) * Y_RANGE * 0.3;
+      value2 = data[data.length - 1].bounds.maxValue + (Math.random() - 0.5) * Y_RANGE * 0.3;
+    } else {
+      value1 = Math.random() * Y_RANGE * 0.2 + Y_RANGE / 2;
+      value2 = Math.random() * Y_RANGE * 0.2 + Y_RANGE / 2;
+    }
+
+    const minValue = Math.min(value1, value2);
+    const maxValue = Math.max(value1, value2);
+
+    data.push({
+      bounds: {
+        startTime,
+        endTime,
+        minValue,
+        maxValue
+      },
+      earliestPoint: {
+        timestamp: actualStartTime,
+        value: Math.random() * (maxValue - minValue) + minValue
+      },
+      latestPoint: {
+        timestamp: actualEndTime,
+        value: Math.random() * (maxValue - minValue) + minValue
+      }
+    });
+
+    startTime = endTime;
+  }
+  return data;
+}
+
 const store = storeFactory({
   xAxis: {
     start: NOW - TIME_RANGE,
@@ -49,7 +97,7 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3'));
+store.dispatch(DataActions.addSeries('uuid-4'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
@@ -60,6 +108,9 @@ store.dispatch(DataActions.setMetadata({
   },
   'uuid-3': {
     chartType: ChartType.TIME_SPAN
+  },
+  'uuid-4': {
+    chartType: ChartType.BUCKETED_LINE
   }
 }));
 
@@ -68,7 +119,8 @@ const lineData1 = makeFakeLineData();
 store.dispatch(DataActions.setData({
   'uuid-1': lineData1,
   'uuid-2': lineData1,
-  'uuid-3': makeFakeEventData()
+  'uuid-3': makeFakeEventData(),
+  'uuid-4': makeFakeBucketedData()
 }));
 
 const chart = <DefaultChart store={store}/>

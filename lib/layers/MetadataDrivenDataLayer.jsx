@@ -1,9 +1,11 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 
+import BucketedLineLayer from './BucketedLineLayer';
+import PointLayer from './PointLayer';
 import SimpleLineLayer from './SimpleLineLayer';
 import TimeSpanLayer from './TimeSpanLayer';
-import PointLayer from './PointLayer';
+
 import SelectFromStore from '../mixins/SelectFromStore';
 import ChartType from '../ChartType';
 
@@ -46,6 +48,9 @@ class MetadataDrivenDataLayer extends React.Component {
       case ChartType.SIMPLE_LINE:
         return <SimpleLineLayer {...layerProps}/>;
 
+      case ChartType.BUCKETED_LINE:
+        return <BucketedLineLayer {...layerProps}/>;
+
       case ChartType.POINT:
         return <PointLayer {...layerProps}/>;
 
@@ -53,6 +58,7 @@ class MetadataDrivenDataLayer extends React.Component {
         return <TimeSpanLayer {...layerProps}/>;
 
       default:
+        console.warn('not rendering data layer of unknown type ' + metadata.chartType);
         return null;
     }
   }
