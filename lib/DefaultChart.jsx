@@ -35,7 +35,8 @@ class DefaultChart extends React.Component {
     xAxis: 'xAxis',
     seriesIds: 'seriesIds',
     yAxisBySeriesId: 'yAxisBySeriesId',
-    metadataBySeriesId: 'metadataBySeriesId'
+    metadataBySeriesId: 'metadataBySeriesId',
+    dataBySeriesId: 'dataBySeriesId'
   };
 
   render() {
@@ -45,11 +46,19 @@ class DefaultChart extends React.Component {
       this.state.seriesIds
     );
 
+    const yDomainBySeriesId = {};
+    _.each(yDomainsWithColors, ({ yDomain, seriesIds }) => {
+      _.each(seriesIds, seriesId => yDomainBySeriesId[seriesId] = yDomain);
+    });
+
     return (
       <div className='default-chart'>
         <Stack className='chart-body'>
           <MetadataDrivenDataLayer
-            store={this.props.store}
+            xDomain={this.state.xAxis}
+            yDomainBySeriesId={yDomainBySeriesId}
+            metadataBySeriesId={this.state.metadataBySeriesId}
+            dataBySeriesId={this.state.dataBySeriesId}
             seriesIds={this.state.seriesIds}
           />
           <BrushLayer
@@ -92,7 +101,8 @@ class DefaultChart extends React.Component {
           const existingMergeGroup = _.get(yDomainsAndColorByUnitByUnitType, [ metadata.unitType, metadata.unit ]);
           const yDomainAndColor = {
             yDomain: yAxisBySeriesId[seriesId],
-            color: metadata.color
+            color: metadata.color,
+            seriesIds: [ seriesId ]
           };
           if (existingMergeGroup) {
             existingMergeGroup.push(yDomainAndColor);
@@ -102,7 +112,8 @@ class DefaultChart extends React.Component {
         } else {
           mergedDomainColorPairs.push({
             yDomain: yAxisBySeriesId[seriesId],
-            color: metadata.color
+            color: metadata.color,
+            seriesIds: [ seriesId ]
           });
         }
       });
@@ -114,7 +125,8 @@ class DefaultChart extends React.Component {
               start: _.min(_.pluck(yDomainsAndColor, 'yDomain.start')),
               end: _.max(_.pluck(yDomainsAndColor, 'yDomain.end'))
             },
-            color: _.pluck(yDomainsAndColor, 'color').reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)')
+            color: _.pluck(yDomainsAndColor, 'color').reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)'),
+            seriesIds: _.flatten(_.pluck(yDomainsAndColor, 'seriesIds'))
           })
         });
       });
@@ -123,7 +135,8 @@ class DefaultChart extends React.Component {
     } else {
       return seriesIds.map(seriesId => ({
         yDomain: yAxisBySeriesId[seriesId],
-        color: _.get(metadataBySeriesId, [ seriesId, 'color' ])
+        color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
+        seriesIds: [ seriesId ]
       }));
     }
   });

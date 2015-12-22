@@ -14,8 +14,8 @@ const HORIZONTAL_PADDING = 6;
 class XAxis extends React.Component {
   static propTypes = {
     xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
     }).isRequired,
     color: React.PropTypes.string
   };

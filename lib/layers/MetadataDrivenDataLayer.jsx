@@ -7,39 +7,39 @@ import PointLayer from './PointLayer';
 import SimpleLineLayer from './SimpleLineLayer';
 import TimeSpanLayer from './TimeSpanLayer';
 
-import SelectFromStore from '../mixins/SelectFromStore';
 import ChartType from '../ChartType';
 
 @PureRender
-@SelectFromStore
 class MetadataDrivenDataLayer extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired,
+    xDomain: React.PropTypes.shape({
+      start: React.PropTypes.number,
+      end: React.PropTypes.number
+    }).isRequired,
+    yDomainBySeriesId: React.PropTypes.objectOf(React.PropTypes.shape({
+      start: React.PropTypes.number.isRequired,
+      end: React.PropTypes.number.isRequired
+    })).isRequired,
+    metadataBySeriesId: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
+    dataBySeriesId: React.PropTypes.object.isRequired,
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
-  };
-
-  static selectFromStore = {
-    xAxis: 'xAxis',
-    yAxisBySeriesId: 'yAxisBySeriesId',
-    metadataBySeriesId: 'metadataBySeriesId',
-    dataBySeriesId: 'dataBySeriesId'
   };
 
   render() {
     return (
       <div className='layer metadata-driven-data-layer'>
-        {this.props.seriesIds.map(this._chooseLayerType.bind(this))}
+        {this.props.seriesIds.map(this._chooseLayerType)}
       </div>
     );
   }
 
-  _chooseLayerType(seriesId) {
-    const metadata = this.state.metadataBySeriesId[seriesId] || {};
+  _chooseLayerType = (seriesId) => {
+    const metadata = this.props.metadataBySeriesId[seriesId] || {};
 
     const layerProps = _.extend({
-      xDomain: this.state.xAxis,
-      yDomain: this.state.yAxisBySeriesId[seriesId],
-      data: this.state.dataBySeriesId[seriesId],
+      xDomain: this.props.xDomain,
+      yDomain: this.props.yDomainBySeriesId[seriesId],
+      data: this.props.dataBySeriesId[seriesId],
       key: seriesId
     }, metadata);
 

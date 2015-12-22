@@ -33,11 +33,12 @@ const store = storeFactory({
     'uuid-1': _.clone(BASE_Y_DOMAIN),
     'uuid-2': _.clone(BASE_Y_DOMAIN),
     'uuid-3': _.clone(BASE_Y_DOMAIN),
-    'uuid-4': _.clone(BASE_Y_DOMAIN)
+    'uuid-4': _.clone(BASE_Y_DOMAIN),
+    'uuid-5': _.clone(BASE_Y_DOMAIN)
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3', 'uuid-4'));
+store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3', 'uuid-4', 'uuid-5'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
@@ -58,7 +59,15 @@ store.dispatch(DataActions.setMetadata({
   },
   'uuid-4': {
     chartType: ChartType.BUCKETED_LINE,
-    color: 'rgba(0, 0, 255, 0.5)'
+    color: 'rgba(0, 0, 255, 0.5)',
+    unit: 'some-other-unit',
+    unitType: 'some-other-unit-type'
+  },
+  'uuid-5': {
+    chartType: ChartType.SIMPLE_LINE,
+    color: 'rgba(255, 0, 255, 0.5)',
+    unit: 'some-other-unit',
+    unitType: 'some-other-unit-type'
   }
 }));
 
@@ -68,7 +77,8 @@ store.dispatch(DataActions.setData({
   'uuid-1': lineData1,
   'uuid-2': lineData1,
   'uuid-3': fakeDataGenerators.makeFakeEventData(NOW, TIME_RANGE, Y_RANGE),
-  'uuid-4': fakeDataGenerators.makeFakeBucketedData(NOW, TIME_RANGE, Y_RANGE)
+  'uuid-4': fakeDataGenerators.makeFakeBucketedData(NOW, TIME_RANGE, Y_RANGE),
+  'uuid-5': fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE)
 }));
 
 let latestXAxis;
