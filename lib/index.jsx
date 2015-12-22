@@ -37,20 +37,24 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-4'));
+store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3', 'uuid-4'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
-    chartType: ChartType.SIMPLE_LINE
+    chartType: ChartType.SIMPLE_LINE,
+    color: 'rgba(255, 0, 0, 0.5)'
   },
   'uuid-2': {
-    chartType: ChartType.POINT
+    chartType: ChartType.POINT,
+    color: 'rgba(255, 0, 0, 0.5)'
   },
   'uuid-3': {
-    chartType: ChartType.TIME_SPAN
+    chartType: ChartType.TIME_SPAN,
+    color: 'rgba(0, 255, 0, 0.5)'
   },
   'uuid-4': {
-    chartType: ChartType.BUCKETED_LINE
+    chartType: ChartType.BUCKETED_LINE,
+    color: 'rgba(0, 0, 255, 0.5)'
   }
 }));
 

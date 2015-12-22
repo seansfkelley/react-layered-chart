@@ -27,15 +27,13 @@ class PointLayer extends React.Component {
       end: React.PropTypes.number.isRequired
     }).isRequired,
     yScale: React.PropTypes.func,
-    stroke: React.PropTypes.string,
-    fill: React.PropTypes.string,
+    color: React.PropTypes.string,
     radius: React.PropTypes.number
   };
 
   static defaultProps = {
     yScale: d3Scale.linear,
-    stroke: null,
-    fill: 'rgba(0, 0, 0, 0.7)',
+    color: 'rgba(0, 0, 0, 0.7)',
     radius: 3
   };
 
@@ -73,9 +71,6 @@ class PointLayer extends React.Component {
       .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
       .rangeRound([ height, 0 ]);
 
-    context.strokeStyle = this.props.stroke;
-    context.fillStyle = this.props.fill;
-
     context.beginPath();
     for (let i = firstIndex; i <= lastIndex; ++i) {
       const x = xScale(this.props.data[i].timestamp);
@@ -85,13 +80,8 @@ class PointLayer extends React.Component {
       context.arc(x, y, this.props.radius, 0, Math.PI * 2);
     }
 
-    if (this.props.stroke) {
-      context.stroke();
-    }
-
-    if (this.props.fill) {
-      context.fill();
-    }
+    context.fillStyle = this.props.color;
+    context.fill();
   }
 }
 

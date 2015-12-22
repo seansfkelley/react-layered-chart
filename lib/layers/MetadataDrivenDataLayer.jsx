@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
+import _ from 'lodash';
 
 import BucketedLineLayer from './BucketedLineLayer';
 import PointLayer from './PointLayer';
@@ -35,14 +36,12 @@ class MetadataDrivenDataLayer extends React.Component {
   _chooseLayerType(seriesId) {
     const metadata = this.state.metadataBySeriesId[seriesId] || {};
 
-    const layerProps = {
+    const layerProps = _.extend({
       xDomain: this.state.xAxis,
       yDomain: this.state.yAxisBySeriesId[seriesId],
       data: this.state.dataBySeriesId[seriesId],
-      stroke: metadata.stroke,
-      fill: metadata.fill,
       key: seriesId
-    };
+    }, metadata);
 
     switch(metadata.chartType) {
       case ChartType.SIMPLE_LINE:

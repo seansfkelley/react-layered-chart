@@ -15,15 +15,19 @@ const TICK_LENGTH = 4;
 @AnimateProps
 class YAxis extends React.Component {
   static propTypes = {
+    // This awkward index-matching is because animation only supports animating top-level keys and we don't
+    // want to animate a bunch of extraneous metadata.
     yDomains: React.PropTypes.arrayOf(React.PropTypes.shape({
       start: React.PropTypes.number,
       end: React.PropTypes.number
     })).isRequired,
-    color: React.PropTypes.string
+    colors: React.PropTypes.arrayOf(React.PropTypes.string),
+    defaultColor: React.PropTypes.string
   };
 
   static defaultProps = {
-    color: '#444'
+    colors: [],
+    defaultColor: '#444'
   };
 
   animatedProps = {
@@ -48,13 +52,10 @@ class YAxis extends React.Component {
 
     context.textAlign = 'end';
     context.textBaseline = 'middle';
-    context.fillStyle = this.props.color;
     context.font = '12px sans-serif';
-    context.strokeStyle = '#777';
 
-    context.beginPath();
     let xOffset = 0;
-    _.each(this.state['animated-yDomains'], yDomain => {
+    _.each(this.state['animated-yDomains'], (yDomain, i) => {
       const yScale = d3Scale.linear()
         .domain([ yDomain.start, yDomain.end ])
         .rangeRound([ 0, height ]);
@@ -64,6 +65,8 @@ class YAxis extends React.Component {
 
       const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
 
+      context.beginPath();
+      context.fillStyle = context.strokeStyle = (this.props.colors[i] || this.props.defaultColor);
       for (let i = 0; i < ticks.length; ++i) {
         const yOffset = height - yScale(ticks[i]);
 
@@ -76,10 +79,10 @@ class YAxis extends React.Component {
       context.moveTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, 0);
       context.lineTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, height)
 
+      context.stroke();
+
       xOffset += maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH;
     });
-
-    context.stroke();
   };
 }
 

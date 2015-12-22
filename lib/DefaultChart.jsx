@@ -25,11 +25,12 @@ class DefaultChart extends React.Component {
   };
 
   static selectFromStore = {
-    seriesIds: 'seriesIds',
-    xAxis: 'xAxis',
-    yAxisBySeriesId: 'yAxisBySeriesId',
     selection: 'selection',
-    hover: 'hover'
+    hover: 'hover',
+    xAxis: 'xAxis',
+    seriesIds: 'seriesIds',
+    yAxisBySeriesId: 'yAxisBySeriesId',
+    metadataBySeriesId: 'metadataBySeriesId'
   };
 
   render() {
@@ -57,6 +58,7 @@ class DefaultChart extends React.Component {
           />
           <YAxis
             yDomains={this._getYDomains(this.state.yAxisBySeriesId, this.state.seriesIds)}
+            colors={this._getYColors(this.state.metadataBySeriesId, this.state.seriesIds)}
           />
         </Stack>
         <Stack className='time-axis'>
@@ -70,6 +72,10 @@ class DefaultChart extends React.Component {
 
   _getYDomains = shallowMemoize(function(yAxisBySeriesId, seriesIds) {
     return _.values(_.pick(yAxisBySeriesId, seriesIds));
+  });
+
+  _getYColors = shallowMemoize(function(metadataBySeriesId, seriesIds) {
+    return _.pluck(_.pick(metadataBySeriesId, seriesIds), 'color');
   });
 
   _onHover = (xPos) => {

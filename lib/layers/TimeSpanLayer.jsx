@@ -21,11 +21,11 @@ class TimeSpanLayer extends React.Component {
       start: React.PropTypes.number.isRequired,
       end: React.PropTypes.number.isRequired
     }).isRequired,
-    fill: React.PropTypes.string
+    color: React.PropTypes.string
   };
 
   static defaultProps = {
-    fill: 'rgba(0, 0, 0, 0.1)'
+    color: 'rgba(0, 0, 0, 0.1)'
   };
 
   render() {
@@ -49,7 +49,7 @@ class TimeSpanLayer extends React.Component {
       const right = xScale(this.props.data[i].timeSpan.end);
       context.beginPath();
       context.rect(left, 0, right - left, height);
-      context.fillStyle = this.props.data[i].color || this.props.fill;
+      context.fillStyle = this.props.data[i].color || this.props.color;
       context.fill();
     }
   }

@@ -27,14 +27,12 @@ class SimpleLineLayer extends React.Component {
       end: React.PropTypes.number.isRequired
     }).isRequired,
     yScale: React.PropTypes.func,
-    stroke: React.PropTypes.string,
-    fill: React.PropTypes.string
+    color: React.PropTypes.string
   };
 
   static defaultProps = {
     yScale: d3Scale.linear,
-    stroke: 'rgba(0, 0, 0, 0.7)',
-    fill: null
+    color: 'rgba(0, 0, 0, 0.7)'
   };
 
   animatedProps = {
@@ -78,19 +76,8 @@ class SimpleLineLayer extends React.Component {
       context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
     }
 
-    if (this.props.stroke) {
-      context.lineWidth = 1;
-      context.strokeStyle = this.props.stroke;
-      context.stroke();
-    }
-
-    if (this.props.fill) {
-      context.lineTo(xScale(this.props.data[lastIndex].timestamp), height);
-      context.lineTo(xScale(this.props.data[firstIndex].timestamp), height);
-      context.closePath();
-      context.fillStyle = this.props.fill;
-      context.fill();
-    }
+    context.strokeStyle = this.props.color;
+    context.stroke();
   }
 }
 
