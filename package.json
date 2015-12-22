@@ -1,13 +1,18 @@
 {
   "name": "react-layered-chart",
   "version": "0.0.1",
-  "description": "",
+  "description": "A high-performance canvas-based time series visualization in React.",
   "main": "lib/index.js",
+  "author": "Sean Kelley <seansfkelley@gmail.com>",
+  "license": "none yet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seansfkelley/react-layered-chart.git"
+  },
   "scripts": {
     "start": "./node_modules/http-server/bin/http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
   "babel": {
     "presets": [
       "es2015",
@@ -53,5 +58,12 @@
     "react-dom": "^0.14.3",
     "redux": "^3.0.5",
     "redux-thunk": "^1.0.2"
-  }
+  },
+  "keywords": [
+    "timeline",
+    "time",
+    "series",
+    "canvas",
+    "react"
+  ]
 }
