@@ -1,4 +1,3 @@
-multiple axes of probably both types
 grid line layer
 test perf
 storing series IDs in the store doesn't make a whole lot of sense; perhaps they should be layer IDs and then you can inject data into different layers; this would also include the brush layer and stuff
