@@ -54,11 +54,11 @@ function makeFakeBucketedData() {
     let value1;
     let value2;
     if (data.length) {
-      value1 = data[data.length - 1].bounds.minValue + (Math.random() - 0.5) * Y_RANGE * 0.3;
-      value2 = data[data.length - 1].bounds.maxValue + (Math.random() - 0.5) * Y_RANGE * 0.3;
+      value1 = data[data.length - 1].bounds.minValue + (Math.random() - 0.5) * Y_RANGE * 0.1;
+      value2 = data[data.length - 1].bounds.maxValue + (Math.random() - 0.5) * Y_RANGE * 0.1;
     } else {
-      value1 = Math.random() * Y_RANGE * 0.2 + Y_RANGE / 2;
-      value2 = Math.random() * Y_RANGE * 0.2 + Y_RANGE / 2;
+      value1 = Math.random() * Y_RANGE * 0.1 + Y_RANGE / 2;
+      value2 = Math.random() * Y_RANGE * 0.1 + Y_RANGE / 2;
     }
 
     const minValue = Math.min(value1, value2);
