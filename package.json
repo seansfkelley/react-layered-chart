@@ -48,6 +48,7 @@
     "mocha-multi": "^0.7.2",
     "mocha-osx-reporter": "^0.1.2",
     "should": "^8.0.2",
+    "sinon": "^1.17.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
