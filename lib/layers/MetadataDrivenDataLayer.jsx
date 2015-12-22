@@ -19,7 +19,7 @@ class MetadataDrivenDataLayer extends React.Component {
 
   static selectFromStore = {
     xAxis: 'xAxis',
-    yAxis: 'yAxis',
+    seriesYAxisById: 'seriesYAxisById',
     seriesMetadataById: 'seriesMetadataById',
     seriesDataById: 'seriesDataById'
   };
@@ -37,7 +37,7 @@ class MetadataDrivenDataLayer extends React.Component {
 
     const layerProps = {
       xDomain: this.state.xAxis,
-      yDomain: this.state.yAxis,
+      yDomain: this.state.seriesYAxisById[seriesId],
       data: this.state.seriesDataById[seriesId],
       stroke: metadata.stroke,
       fill: metadata.fill,

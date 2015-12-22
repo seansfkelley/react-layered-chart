@@ -19,14 +19,21 @@ const NOW = Date.now();
 const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
 
+const BASE_Y_DOMAIN = {
+  start: -0.1 * Y_RANGE,
+  end: Y_RANGE * 1.1
+}
+
 const store = storeFactory({
   xAxis: {
     start: NOW - TIME_RANGE,
     end: NOW
   },
-  yAxis: {
-    start: -0.1 * Y_RANGE,
-    end: Y_RANGE * 1.1
+  seriesYAxisById: {
+    'uuid-1': _.clone(BASE_Y_DOMAIN),
+    'uuid-2': _.clone(BASE_Y_DOMAIN),
+    'uuid-3': _.clone(BASE_Y_DOMAIN),
+    'uuid-4': _.clone(BASE_Y_DOMAIN)
   }
 });
 
@@ -71,9 +78,11 @@ const onTimeRangeChange = _.debounce((xAxis) => {
       'uuid-4': data
     }));
 
-    store.dispatch(AxesActions.setYAxis({
-      start: minValue - (maxValue - minValue) * 0.1,
-      end: maxValue + (maxValue - minValue) * 0.1
+    store.dispatch(AxesActions.setYAxes({
+      'uuid-4': {
+        start: minValue - (maxValue - minValue) * 0.1,
+        end: maxValue + (maxValue - minValue) * 0.1
+      }
     }));
   }
 }, 1000);

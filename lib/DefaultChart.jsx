@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
+import _ from 'lodash';
 
 import SelectFromStore from './mixins/SelectFromStore';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
@@ -14,6 +15,8 @@ import InteractionActions from './flux/InteractionActions';
 import YAxis from './axes/YAxis';
 import XAxis from './axes/XAxis';
 
+import { shallowMemoize } from './util';
+
 @PureRender
 @SelectFromStore
 class DefaultChart extends React.Component {
@@ -24,7 +27,7 @@ class DefaultChart extends React.Component {
   static selectFromStore = {
     seriesIds: 'seriesIds',
     xAxis: 'xAxis',
-    yAxis: 'yAxis',
+    seriesYAxisById: 'seriesYAxisById',
     selection: 'selection',
     hover: 'hover'
   };
@@ -53,7 +56,7 @@ class DefaultChart extends React.Component {
             hover={this.state.hover}
           />
           <YAxis
-            yDomain={this.state.yAxis}
+            yDomains={this._getYDomains(this.state.seriesYAxisById, this.state.seriesIds)}
           />
         </Stack>
         <Stack className='time-axis'>
@@ -64,6 +67,10 @@ class DefaultChart extends React.Component {
       </div>
     );
   }
+
+  _getYDomains = shallowMemoize(function(seriesYAxisById, seriesIds) {
+    return _.values(_.pick(seriesYAxisById, seriesIds));
+  });
 
   _onHover = (xPos) => {
     this.props.store.dispatch(InteractionActions.hover(xPos));

@@ -15,22 +15,19 @@ const TICK_LENGTH = 4;
 @AnimateProps
 class YAxis extends React.Component {
   static propTypes = {
-    yDomain: React.PropTypes.shape({
+    yDomains: React.PropTypes.arrayOf(React.PropTypes.shape({
       start: React.PropTypes.number,
       end: React.PropTypes.number
-    }).isRequired,
-    yScale: React.PropTypes.func,
-    color: React.PropTypes.string,
-    yAnimationDuration: React.PropTypes.number
+    })).isRequired,
+    color: React.PropTypes.string
   };
 
   static defaultProps = {
-    yScale: d3Scale.linear,
     color: '#444'
   };
 
   animatedProps = {
-    yDomain: 1000
+    yDomains: 1000
   };
 
   render() {
@@ -49,35 +46,39 @@ class YAxis extends React.Component {
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
-    const yScale = this.props.yScale()
-      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
-      .rangeRound([ 0, height ]);
-
-    const ticks = yScale.ticks(5);
-    const format = yScale.tickFormat(5);
-
-    context.beginPath();
-
     context.textAlign = 'end';
     context.textBaseline = 'middle';
     context.fillStyle = this.props.color;
     context.font = '12px sans-serif';
     context.strokeStyle = '#777';
 
-    const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
+    context.beginPath();
+    let xOffset = 0;
+    _.each(this.state['animated-yDomains'], yDomain => {
+      const yScale = d3Scale.linear()
+        .domain([ yDomain.start, yDomain.end ])
+        .rangeRound([ 0, height ]);
 
-    for (let i = 0; i < ticks.length; ++i) {
-      const yOffset = height - yScale(ticks[i]);
+      const ticks = yScale.ticks(5);
+      const format = yScale.tickFormat(5);
 
-      context.fillText(format(ticks[i]), maxTextWidth + HORIZONTAL_PADDING, yOffset);
+      const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
 
-      context.moveTo(maxTextWidth + HORIZONTAL_PADDING * 2, yOffset);
-      context.lineTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, yOffset)
-      context.stroke();
-    }
+      for (let i = 0; i < ticks.length; ++i) {
+        const yOffset = height - yScale(ticks[i]);
 
-    context.moveTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, 0);
-    context.lineTo(maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, height)
+        context.fillText(format(ticks[i]), xOffset + maxTextWidth + HORIZONTAL_PADDING, yOffset);
+
+        context.moveTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2, yOffset);
+        context.lineTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, yOffset)
+      }
+
+      context.moveTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, 0);
+      context.lineTo(xOffset + maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH, height)
+
+      xOffset += maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH;
+    });
+
     context.stroke();
   };
 }
