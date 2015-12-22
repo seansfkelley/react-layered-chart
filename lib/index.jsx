@@ -10,6 +10,7 @@ import ChartType from './ChartType';
 import storeFactory from './flux/storeFactory';
 
 import DataActions from './flux/DataActions';
+import AxesActions from './flux/AxesActions';
 
 import _ from 'lodash';
 
@@ -63,8 +64,17 @@ const onTimeRangeChange = _.debounce((xAxis) => {
   } else {
     latestXAxis = xAxis;
     const { start, end } = xAxis;
+    const data = fakeDataGenerators.makeFakeBucketedData(end, end - start, Y_RANGE, (end - start) / 400);
+    const minValue = _.min(data, d => d.bounds.minValue).bounds.minValue;
+    const maxValue = _.max(data, d => d.bounds.maxValue).bounds.maxValue;
+
     store.dispatch(DataActions.setData({
-      'uuid-4': fakeDataGenerators.makeFakeBucketedData(end, end - start, Y_RANGE, (end - start) / 400)
+      'uuid-4': data
+    }));
+
+    store.dispatch(AxesActions.setYAxis({
+      start: minValue - (maxValue - minValue) * 0.1,
+      end: maxValue + (maxValue - minValue) * 0.1
     }));
   }
 }, 1000);
