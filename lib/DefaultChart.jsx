@@ -122,8 +122,8 @@ class DefaultChart extends React.Component {
         _.each(yDomainsAndColorByUnit, yDomainsAndColor => {
           mergedDomainColorPairs.push({
             yDomain: {
-              start: _.min(_.pluck(yDomainsAndColor, 'yDomain.start')),
-              end: _.max(_.pluck(yDomainsAndColor, 'yDomain.end'))
+              min: _.min(_.pluck(yDomainsAndColor, 'yDomain.min')),
+              max: _.max(_.pluck(yDomainsAndColor, 'yDomain.max'))
             },
             color: _.pluck(yDomainsAndColor, 'color').reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)'),
             seriesIds: _.flatten(_.pluck(yDomainsAndColor, 'seriesIds'))

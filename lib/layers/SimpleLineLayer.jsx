@@ -16,8 +16,8 @@ import propTypes from '../propTypes';
 class SimpleLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
-    xDomain: propTypes.domain.isRequired,
-    yDomain: propTypes.domain.isRequired,
+    xDomain: propTypes.range.isRequired,
+    yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
   };
@@ -54,11 +54,11 @@ class SimpleLineLayer extends React.Component {
     }
 
     const xScale = d3Scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
+      .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .rangeRound([ height, 0 ]);
 
     context.beginPath();

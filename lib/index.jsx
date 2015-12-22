@@ -20,14 +20,14 @@ const TIME_RANGE = 1000 * 60 * 60 * 24 * 30;
 const Y_RANGE = 100000;
 
 const BASE_Y_DOMAIN = {
-  start: -0.1 * Y_RANGE,
-  end: Y_RANGE * 1.1
+  min: -0.1 * Y_RANGE,
+  max: Y_RANGE * 1.1
 }
 
 const store = storeFactory({
   xAxis: {
-    start: NOW - TIME_RANGE,
-    end: NOW
+    min: NOW - TIME_RANGE,
+    max: NOW
   },
   yAxisBySeriesId: {
     'uuid-1': _.clone(BASE_Y_DOMAIN),
@@ -87,8 +87,8 @@ const onTimeRangeChange = _.debounce((xAxis) => {
     return;
   } else {
     latestXAxis = xAxis;
-    const { start, end } = xAxis;
-    const data = fakeDataGenerators.makeFakeBucketedData(end, end - start, Y_RANGE, (end - start) / 400);
+    const { min, max } = xAxis;
+    const data = fakeDataGenerators.makeFakeBucketedData(max, max - min, Y_RANGE, (max - min) / 400);
     const minValue = _.min(data, d => d.bounds.minValue).bounds.minValue;
     const maxValue = _.max(data, d => d.bounds.maxValue).bounds.maxValue;
 
@@ -98,8 +98,8 @@ const onTimeRangeChange = _.debounce((xAxis) => {
 
     store.dispatch(AxesActions.setYAxes({
       'uuid-4': {
-        start: minValue - (maxValue - minValue) * 0.1,
-        end: maxValue + (maxValue - minValue) * 0.1
+        min: minValue - (maxValue - minValue) * 0.1,
+        max: maxValue + (maxValue - minValue) * 0.1
       }
     }));
   }

@@ -15,7 +15,7 @@ class InteractionCaptureLayer extends React.Component {
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
-    xDomain: propTypes.domain.isRequired
+    xDomain: propTypes.range.isRequired
   };
 
   state = {
@@ -47,7 +47,7 @@ class InteractionCaptureLayer extends React.Component {
     const boundingClientRect = this._getBoundingClientRect();
     return d3Scale.linear()
       .domain([ boundingClientRect.left, boundingClientRect.right ])
-      .range([ this.props.xDomain.start, this.props.xDomain.end ]);
+      .range([ this.props.xDomain.min, this.props.xDomain.max ]);
   }
 
   _dispatchPanAndBrushEvents(event) {
@@ -60,7 +60,7 @@ class InteractionCaptureLayer extends React.Component {
         const scale = this._createPhysicalToLogicalXScale();
         const a = scale(this.state.startBrushClientX);
         const b = scale(event.clientX);
-        this.props.onBrush({ start: Math.min(a, b), end: Math.max(a, b) });
+        this.props.onBrush({ min: Math.min(a, b), max: Math.max(a, b) });
       } else {
         this.props.onBrush(null);
       }

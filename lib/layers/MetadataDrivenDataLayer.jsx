@@ -13,8 +13,8 @@ import propTypes from '../propTypes';
 @PureRender
 class MetadataDrivenDataLayer extends React.Component {
   static propTypes = {
-    xDomain: propTypes.domain.isRequired,
-    yDomainBySeriesId: React.PropTypes.objectOf(propTypes.domain).isRequired,
+    xDomain: propTypes.range.isRequired,
+    yDomainBySeriesId: React.PropTypes.objectOf(propTypes.range).isRequired,
     metadataBySeriesId: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
     dataBySeriesId: React.PropTypes.object.isRequired,
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired

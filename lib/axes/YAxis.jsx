@@ -6,6 +6,7 @@ import _ from 'lodash';
 import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
 import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
+import propTypes from '../propTypes';
 
 const HORIZONTAL_PADDING = 6;
 const TICK_LENGTH = 4;
@@ -17,10 +18,7 @@ class YAxis extends React.Component {
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.
-    yDomains: React.PropTypes.arrayOf(React.PropTypes.shape({
-      start: React.PropTypes.number,
-      end: React.PropTypes.number
-    })).isRequired,
+    yDomains: React.PropTypes.arrayOf(propTypes.range).isRequired,
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
     defaultColor: React.PropTypes.string
   };
@@ -57,7 +55,7 @@ class YAxis extends React.Component {
     let xOffset = 0;
     _.each(this.state['animated-yDomains'], (yDomain, i) => {
       const yScale = d3Scale.linear()
-        .domain([ yDomain.start, yDomain.end ])
+        .domain([ yDomain.min, yDomain.max ])
         .rangeRound([ 0, height ]);
 
       const ticks = yScale.ticks(5);

@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
+import propTypes from '../propTypes';
 
 const VERTICAL_PADDING = 4;
 const HORIZONTAL_PADDING = 6;
@@ -13,10 +14,7 @@ const HORIZONTAL_PADDING = 6;
 @CanvasRender
 class XAxis extends React.Component {
   static propTypes = {
-    xDomain: React.PropTypes.shape({
-      start: React.PropTypes.number.isRequired,
-      end: React.PropTypes.number.isRequired
-    }).isRequired,
+    xDomain: propTypes.range.isRequired,
     color: React.PropTypes.string
   };
 
@@ -41,7 +39,7 @@ class XAxis extends React.Component {
     context.translate(0.5, 0.5);
 
     const xScale = d3Scale.time()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
     const ticks = xScale.ticks(5);

@@ -25,8 +25,8 @@ class BucketedLineLayer extends React.Component {
       earliestPoint: propTypes.dataPoint.isRequired,
       latestPoint: propTypes.dataPoint.isRequired
     })).isRequired,
-    xDomain: propTypes.domain.isRequired,
-    yDomain: propTypes.domain.isRequired,
+    xDomain: propTypes.range.isRequired,
+    yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
   };
@@ -65,11 +65,11 @@ class BucketedLineLayer extends React.Component {
 
     // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
     const xScale = d3Scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .range([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
+      .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .range([ height, 0 ]);
 
     const getComputedValuesForIndex = _.memoize(i => {

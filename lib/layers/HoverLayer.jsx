@@ -12,7 +12,7 @@ import propTypes from '../propTypes';
 class HoverLayer extends React.Component {
   static propTypes = {
     hover: React.PropTypes.number,
-    xDomain: propTypes.domain.isRequired,
+    xDomain: propTypes.range.isRequired,
     stroke: React.PropTypes.string
   };
 
@@ -37,7 +37,7 @@ class HoverLayer extends React.Component {
     }
 
     const xScale = d3Scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
     const xPos = xScale(this.props.hover);
 

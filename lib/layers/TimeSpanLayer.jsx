@@ -13,10 +13,10 @@ import propTypes from '../propTypes';
 class TimeSpanLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timeSpan: propTypes.timeSpan.isRequired,
+      timeSpan: propTypes.range.isRequired,
       color: React.PropTypes.string
     })).isRequired,
-    xDomain: propTypes.domain.isRequired,
+    xDomain: propTypes.range.isRequired,
     color: React.PropTypes.string
   };
 
@@ -37,12 +37,12 @@ class TimeSpanLayer extends React.Component {
     const [ firstIndex, lastIndex ] = [ 0, this.props.data.length - 1 ];
 
     const xScale = d3Scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
     for (let i = firstIndex; i <= lastIndex; ++i) {
-      const left = xScale(this.props.data[i].timeSpan.start);
-      const right = xScale(this.props.data[i].timeSpan.end);
+      const left = xScale(this.props.data[i].timeSpan.min);
+      const right = xScale(this.props.data[i].timeSpan.max);
       context.beginPath();
       context.rect(left, 0, right - left, height);
       context.fillStyle = this.props.data[i].color || this.props.color;

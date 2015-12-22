@@ -10,8 +10,8 @@ import propTypes from '../propTypes';
 @CanvasRender
 class BrushLayer extends React.Component {
   static propTypes = {
-    selection: propTypes.timeSpan.isRequired,
-    xDomain: propTypes.domain.isRequired,
+    selection: propTypes.range.isRequired,
+    xDomain: propTypes.range.isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string
   };
@@ -38,11 +38,11 @@ class BrushLayer extends React.Component {
     }
 
     const xScale = d3Scale.linear()
-      .domain([ this.props.xDomain.start, this.props.xDomain.end ])
+      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    const left = xScale(this.props.selection.start);
-    const right = xScale(this.props.selection.end);
+    const left = xScale(this.props.selection.min);
+    const right = xScale(this.props.selection.max);
     context.beginPath();
     context.rect(left, -1, right - left, height + 2);
 
