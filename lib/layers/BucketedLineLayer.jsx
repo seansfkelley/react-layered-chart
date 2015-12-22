@@ -4,10 +4,10 @@ import d3 from 'd3';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
-import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getVisibleIndexBounds, animateOnce } from '../util';
-
 import AnimateProps from '../mixins/AnimateProps';
+
+import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
@@ -48,7 +48,7 @@ class BucketedLineLayer extends React.Component {
   };
 
   animatedProps = {
-    yDomain: 300
+    yDomain: 1000
   };
 
   render() {

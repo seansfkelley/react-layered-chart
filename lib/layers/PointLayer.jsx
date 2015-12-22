@@ -4,11 +4,14 @@ import d3 from 'd3';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
+import AnimateProps from '../mixins/AnimateProps';
+
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
+@AnimateProps
 class PointLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -34,6 +37,10 @@ class PointLayer extends React.Component {
     stroke: null,
     fill: 'rgba(0, 0, 0, 0.7)',
     radius: 3
+  };
+
+  animatedProps = {
+    yDomain: 1000
   };
 
   render() {
@@ -63,7 +70,7 @@ class PointLayer extends React.Component {
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.start, this.props.yDomain.end ])
+      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
       .rangeRound([ height, 0 ]);
 
     context.strokeStyle = this.props.stroke;

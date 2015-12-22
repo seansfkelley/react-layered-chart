@@ -30,7 +30,7 @@ class YAxis extends React.Component {
   };
 
   animatedProps = {
-    yDomain: 300
+    yDomain: 1000
   };
 
   render() {

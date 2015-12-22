@@ -4,11 +4,14 @@ import d3 from 'd3';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
+import AnimateProps from '../mixins/AnimateProps';
+
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getVisibleIndexBounds } from '../util';
 
 @PureRender
 @CanvasRender
+@AnimateProps
 class SimpleLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -32,6 +35,10 @@ class SimpleLineLayer extends React.Component {
     yScale: d3.scale.linear,
     stroke: 'rgba(0, 0, 0, 0.7)',
     fill: null
+  };
+
+  animatedProps = {
+    yDomain: 1000
   };
 
   render() {
@@ -61,7 +68,7 @@ class SimpleLineLayer extends React.Component {
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.start, this.props.yDomain.end ])
+      .domain([ this.state['animated-yDomain'].start, this.state['animated-yDomain'].end ])
       .rangeRound([ height, 0 ]);
 
     context.beginPath();
