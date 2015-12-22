@@ -27,7 +27,7 @@ class DefaultChart extends React.Component {
   static selectFromStore = {
     seriesIds: 'seriesIds',
     xAxis: 'xAxis',
-    seriesYAxisById: 'seriesYAxisById',
+    yAxisBySeriesId: 'yAxisBySeriesId',
     selection: 'selection',
     hover: 'hover'
   };
@@ -56,7 +56,7 @@ class DefaultChart extends React.Component {
             hover={this.state.hover}
           />
           <YAxis
-            yDomains={this._getYDomains(this.state.seriesYAxisById, this.state.seriesIds)}
+            yDomains={this._getYDomains(this.state.yAxisBySeriesId, this.state.seriesIds)}
           />
         </Stack>
         <Stack className='time-axis'>
@@ -68,8 +68,8 @@ class DefaultChart extends React.Component {
     );
   }
 
-  _getYDomains = shallowMemoize(function(seriesYAxisById, seriesIds) {
-    return _.values(_.pick(seriesYAxisById, seriesIds));
+  _getYDomains = shallowMemoize(function(yAxisBySeriesId, seriesIds) {
+    return _.values(_.pick(yAxisBySeriesId, seriesIds));
   });
 
   _onHover = (xPos) => {

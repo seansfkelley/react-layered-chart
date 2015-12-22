@@ -29,7 +29,7 @@ const store = storeFactory({
     start: NOW - TIME_RANGE,
     end: NOW
   },
-  seriesYAxisById: {
+  yAxisBySeriesId: {
     'uuid-1': _.clone(BASE_Y_DOMAIN),
     'uuid-2': _.clone(BASE_Y_DOMAIN),
     'uuid-3': _.clone(BASE_Y_DOMAIN),
