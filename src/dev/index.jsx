@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import DefaultChart from '../ext/DefaultChart';
-import ChartType from '../ext/ChartType';
+import LayerType from '../ext/LayerType';
 
 import ActionType from './flux/ActionType';
 import storeFactory from './flux/storeFactory';
@@ -43,35 +43,35 @@ store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-5-group'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
-    chartType: ChartType.SIMPLE_LINE,
+    layerType: LayerType.SIMPLE_LINE,
     color: 'rgba(255, 0, 0, 0.5)',
     unit: 'some-unit',
     unitType: 'some-unit-type'
   },
   'uuid-2': {
-    chartType: ChartType.POINT,
+    layerType: LayerType.POINT,
     color: 'rgba(255, 0, 0, 0.5)',
     unit: 'some-unit',
     unitType: 'some-unit-type'
   },
   'uuid-3': {
-    chartType: ChartType.TIME_SPAN,
+    layerType: LayerType.TIME_SPAN,
     color: 'rgba(0, 255, 0, 0.5)'
   },
   'uuid-4': {
-    chartType: ChartType.BUCKETED_LINE,
+    layerType: LayerType.BUCKETED_LINE,
     color: 'rgba(0, 0, 255, 0.5)',
     unit: 'some-other-unit',
     unitType: 'some-other-unit-type'
   },
   'uuid-5-group': {
-    chartType: ChartType.GROUP,
+    layerType: LayerType.GROUP,
     color: 'rgba(255, 0, 255, 0.5)',
     unit: 'some-other-unit',
     unitType: 'some-other-unit-type',
     groupedSeries: [
-      { seriesId: 'uuid-5', chartType: ChartType.SIMPLE_LINE },
-      { seriesId: 'uuid-5-hover', chartType: ChartType.POINT }
+      { seriesId: 'uuid-5', layerType: LayerType.SIMPLE_LINE },
+      { seriesId: 'uuid-5-hover', layerType: LayerType.POINT }
     ]
   }
 }));

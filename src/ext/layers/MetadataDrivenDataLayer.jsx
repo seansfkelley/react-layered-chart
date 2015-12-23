@@ -7,14 +7,14 @@ import PointLayer from '../../core/layers/PointLayer';
 import SimpleLineLayer from '../../core/layers/SimpleLineLayer';
 import TimeSpanLayer from '../../core/layers/TimeSpanLayer';
 
-import ChartType from '../ChartType';
+import LayerType from '../LayerType';
 import propTypes from '../../core/propTypes';
 
 const LAYER_BY_TYPE = {
-  [ChartType.SIMPLE_LINE]: SimpleLineLayer,
-  [ChartType.BUCKETED_LINE]: BucketedLineLayer,
-  [ChartType.POINT]: PointLayer,
-  [ChartType.TIME_SPAN]: TimeSpanLayer
+  [LayerType.SIMPLE_LINE]: SimpleLineLayer,
+  [LayerType.BUCKETED_LINE]: BucketedLineLayer,
+  [LayerType.POINT]: PointLayer,
+  [LayerType.TIME_SPAN]: TimeSpanLayer
 };
 
 @PureRender
@@ -43,23 +43,23 @@ class MetadataDrivenDataLayer extends React.Component {
       yDomain: this.props.yDomainBySeriesId[seriesId]
     }, metadata);
 
-    if (metadata.chartType === ChartType.GROUP) {
+    if (metadata.layerType === LayerType.GROUP) {
       return <div className='layer-group' key={seriesId}>
-        {metadata.groupedSeries.map(({ seriesId, chartType}) =>
-          this._renderBaseLayer(chartType, seriesId, baseLayerProps)
+        {metadata.groupedSeries.map(({ seriesId, layerType}) =>
+          this._renderBaseLayer(layerType, seriesId, baseLayerProps)
         )}
       </div>
     } else {
-      return this._renderBaseLayer(metadata.chartType, seriesId, baseLayerProps);
+      return this._renderBaseLayer(metadata.layerType, seriesId, baseLayerProps);
     }
   }
 
-  _renderBaseLayer(chartType, seriesId, baseLayerProps) {
-    const LayerClass = LAYER_BY_TYPE[chartType];
+  _renderBaseLayer(layerType, seriesId, baseLayerProps) {
+    const LayerClass = LAYER_BY_TYPE[layerType];
     if (LayerClass) {
       return <LayerClass {...baseLayerProps} key={seriesId} data={this.props.dataBySeriesId[seriesId]}/>
     } else {
-      console.warn('not rendering data layer of unknown type ' + metadata.chartType);
+      console.warn('not rendering data layer of unknown type ' + metadata.layerType);
       return null;
     }
   }
