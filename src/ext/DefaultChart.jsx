@@ -2,19 +2,15 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
 
+import BrushLayer from '../core/layers/BrushLayer';
+import InteractionCaptureLayer from '../core/layers/InteractionCaptureLayer';
+import HoverLayer from '../core/layers/HoverLayer';
+import YAxisLayer from '../core/layers/YAxisLayer';
+import XAxisLayer from '../core/layers/XAxisLayer';
+import Stack from '../core/Stack';
+
 import SelectFromStore from './mixins/SelectFromStore';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
-import BrushLayer from './layers/BrushLayer';
-import InteractionCaptureLayer from './layers/InteractionCaptureLayer';
-import HoverLayer from './layers/HoverLayer';
-import Stack from './Stack';
-
-import ActionType from './flux/ActionType';
-import InteractionActions from './flux/InteractionActions';
-
-import YAxis from './axes/YAxis';
-import XAxis from './axes/XAxis';
-
 import { shallowMemoize, mergeRangesOfSameType } from './util';
 
 function getMergedYDomains(shouldMerge, seriesIds, yAxisBySeriesId, metadataBySeriesId) {
@@ -43,7 +39,11 @@ function getMergedYDomains(shouldMerge, seriesIds, yAxisBySeriesId, metadataBySe
 class DefaultChart extends React.Component {
   static propTypes = {
     store: React.PropTypes.object.isRequired,
-    mergeAxesOfSameType: React.PropTypes.bool
+    mergeAxesOfSameType: React.PropTypes.bool,
+    onPan: React.PropTypes.func,
+    onZoom: React.PropTypes.func,
+    onHover: React.PropTypes.func,
+    onBrush: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -88,22 +88,22 @@ class DefaultChart extends React.Component {
           />
           <InteractionCaptureLayer
             xDomain={this.state.xAxis}
-            onHover={this._onHover}
-            onPan={this._onPan}
-            onZoom={this._onZoom}
-            onBrush={this._onBrush}
+            onHover={this.props.onHover}
+            onPan={this.props.onPan}
+            onZoom={this.props.onZoom}
+            onBrush={this.props.onBrush}
           />
           <HoverLayer
             xDomain={this.state.xAxis}
             hover={this.state.hover}
           />
-          <YAxis
+          <YAxisLayer
             yDomains={orderedYDomains}
             colors={orderedColors}
           />
         </Stack>
         <Stack className='time-axis'>
-          <XAxis
+          <XAxisLayer
             xDomain={this.state.xAxis}
           />
         </Stack>
@@ -112,22 +112,6 @@ class DefaultChart extends React.Component {
   }
 
   _memoizedGetMergedYDomains = shallowMemoize(getMergedYDomains);
-
-  _onHover = (xPos) => {
-    this.props.store.dispatch(InteractionActions.hover(xPos));
-  };
-
-  _onPan = (deltaX) => {
-    this.props.store.dispatch(InteractionActions.pan(deltaX));
-  };
-
-  _onZoom = (factor, focus) => {
-    this.props.store.dispatch(InteractionActions.zoom(factor, focus));
-  };
-
-  _onBrush = (brush) => {
-    this.props.store.dispatch(InteractionActions.brush(brush));
-  };
 }
 
 export default DefaultChart;

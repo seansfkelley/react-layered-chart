@@ -4,7 +4,7 @@ import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
-import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
+import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 
 const VERTICAL_PADDING = 4;

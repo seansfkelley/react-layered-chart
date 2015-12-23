@@ -3,11 +3,12 @@ import React from 'react';
 
 import ReactDOM from 'react-dom';
 
-import DefaultChart from './DefaultChart';
-import ActionType from './flux/ActionType';
-import ChartType from './ChartType';
-import storeFactory from './flux/storeFactory';
+import DefaultChart from '../ext/DefaultChart';
+import ChartType from '../ext/ChartType';
 
+import ActionType from './flux/ActionType';
+import storeFactory from './flux/storeFactory';
+import InteractionActions from './flux/InteractionActions';
 import DataActions from './flux/DataActions';
 import AxesActions from './flux/AxesActions';
 
@@ -124,7 +125,13 @@ store.subscribe(() => {
   onHover(store.getState().hover);
 });
 
-const chart = <DefaultChart store={store}/>
+const chart = <DefaultChart
+  store={store}
+  onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
+  onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
+  onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
+  onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
+/>
 
 ReactDOM.render(chart, document.getElementById('test-container'));
 

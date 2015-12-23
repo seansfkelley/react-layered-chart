@@ -2,13 +2,13 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
 
-import BucketedLineLayer from './BucketedLineLayer';
-import PointLayer from './PointLayer';
-import SimpleLineLayer from './SimpleLineLayer';
-import TimeSpanLayer from './TimeSpanLayer';
+import BucketedLineLayer from '../../core/layers/BucketedLineLayer';
+import PointLayer from '../../core/layers/PointLayer';
+import SimpleLineLayer from '../../core/layers/SimpleLineLayer';
+import TimeSpanLayer from '../../core/layers/TimeSpanLayer';
 
 import ChartType from '../ChartType';
-import propTypes from '../propTypes';
+import propTypes from '../../core/propTypes';
 
 @PureRender
 class MetadataDrivenDataLayer extends React.Component {

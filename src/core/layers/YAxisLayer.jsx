@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
-import AutoresizingCanvasLayer from '../layers/AutoresizingCanvasLayer';
+import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 
 const HORIZONTAL_PADDING = 6;

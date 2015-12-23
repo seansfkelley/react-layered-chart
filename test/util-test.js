@@ -1,12 +1,8 @@
 import { spy } from 'sinon';
 
-import { getVisibleIndexBounds, shallowMemoize, mergeRangesOfSameType } from '../lib/util';
+import { getVisibleIndexBounds, shallowMemoize, mergeRangesOfSameType } from '../src/ext/util';
 
 describe('util', () => {
-  describe('#getVisibleIndexBounds', () => {
-
-  });
-
   describe('#shallowMemoize', () => {
     let spiedFn;
     let memoizedFn;
@@ -58,9 +54,5 @@ describe('util', () => {
       memoizedFn(arg1);
       spiedFn.callCount.should.equal(3);
     });
-  });
-
-  describe('#mergeRangesOfSameType', () => {
-
   });
 });

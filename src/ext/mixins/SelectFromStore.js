@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import wrapAndDelegateAfter from './wrapAndDelegateAfter';
+import wrapAndDelegateAfter from '../../core/mixins/wrapAndDelegateAfter';
 
 function _makeSelectFromObject(selectorObject) {
   return function(store) {
