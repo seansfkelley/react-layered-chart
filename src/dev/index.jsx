@@ -35,11 +35,11 @@ const store = storeFactory({
     'uuid-2': _.clone(BASE_Y_DOMAIN),
     'uuid-3': _.clone(BASE_Y_DOMAIN),
     'uuid-4': _.clone(BASE_Y_DOMAIN),
-    'uuid-5': _.clone(BASE_Y_DOMAIN)
+    'uuid-5-group': _.clone(BASE_Y_DOMAIN)
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-5', 'uuid-5-hover'));
+store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-5-group'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
@@ -64,17 +64,15 @@ store.dispatch(DataActions.setMetadata({
     unit: 'some-other-unit',
     unitType: 'some-other-unit-type'
   },
-  'uuid-5': {
-    chartType: ChartType.SIMPLE_LINE,
+  'uuid-5-group': {
+    chartType: ChartType.GROUP,
     color: 'rgba(255, 0, 255, 0.5)',
     unit: 'some-other-unit',
-    unitType: 'some-other-unit-type'
-  },
-  'uuid-5-hover': {
-    chartType: ChartType.POINT,
-    inheritMetadataFrom: 'uuid-5',
-    inheritYDomainFrom: 'uuid-5',
-    showYAxis: false
+    unitType: 'some-other-unit-type',
+    groupedSeries: [
+      { seriesId: 'uuid-5', chartType: ChartType.SIMPLE_LINE },
+      { seriesId: 'uuid-5-hover', chartType: ChartType.POINT }
+    ]
   }
 }));
 

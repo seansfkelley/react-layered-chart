@@ -10,6 +10,13 @@ import TimeSpanLayer from '../../core/layers/TimeSpanLayer';
 import ChartType from '../ChartType';
 import propTypes from '../../core/propTypes';
 
+const LAYER_BY_TYPE = {
+  [ChartType.SIMPLE_LINE]: SimpleLineLayer,
+  [ChartType.BUCKETED_LINE]: BucketedLineLayer,
+  [ChartType.POINT]: PointLayer,
+  [ChartType.TIME_SPAN]: TimeSpanLayer
+};
+
 @PureRender
 class MetadataDrivenDataLayer extends React.Component {
   static propTypes = {
@@ -23,37 +30,37 @@ class MetadataDrivenDataLayer extends React.Component {
   render() {
     return (
       <div className='layer metadata-driven-data-layer'>
-        {this.props.seriesIds.map(this._chooseLayerType)}
+        {this.props.seriesIds.map(this._getLayerForSeriesId)}
       </div>
     );
   }
 
-  _chooseLayerType = (seriesId) => {
+  _getLayerForSeriesId = (seriesId) => {
     const metadata = this.props.metadataBySeriesId[seriesId] || {};
 
-    const layerProps = _.extend({
+    const baseLayerProps = _.extend({
       xDomain: this.props.xDomain,
-      yDomain: this.props.yDomainBySeriesId[seriesId],
-      data: this.props.dataBySeriesId[seriesId],
-      key: seriesId
+      yDomain: this.props.yDomainBySeriesId[seriesId]
     }, metadata);
 
-    switch(metadata.chartType) {
-      case ChartType.SIMPLE_LINE:
-        return <SimpleLineLayer {...layerProps}/>;
+    if (metadata.chartType === ChartType.GROUP) {
+      return <div className='layer-group' key={seriesId}>
+        {metadata.groupedSeries.map(({ seriesId, chartType}) =>
+          this._renderBaseLayer(chartType, seriesId, baseLayerProps)
+        )}
+      </div>
+    } else {
+      return this._renderBaseLayer(metadata.chartType, seriesId, baseLayerProps);
+    }
+  }
 
-      case ChartType.BUCKETED_LINE:
-        return <BucketedLineLayer {...layerProps}/>;
-
-      case ChartType.POINT:
-        return <PointLayer {...layerProps}/>;
-
-      case ChartType.TIME_SPAN:
-        return <TimeSpanLayer {...layerProps}/>;
-
-      default:
-        console.warn('not rendering data layer of unknown type ' + metadata.chartType);
-        return null;
+  _renderBaseLayer(chartType, seriesId, baseLayerProps) {
+    const LayerClass = LAYER_BY_TYPE[chartType];
+    if (LayerClass) {
+      return <LayerClass {...baseLayerProps} key={seriesId} data={this.props.dataBySeriesId[seriesId]}/>
+    } else {
+      console.warn('not rendering data layer of unknown type ' + metadata.chartType);
+      return null;
     }
   }
 }

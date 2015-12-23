@@ -42,35 +42,7 @@ function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBy
   }
 }
 
-function resolveInheritedYDomains(seriesIds, metadataBySeriesId, yDomainBySeriesId) {
-  const inheritedYDomainBySeriesId = _.clone(yDomainBySeriesId);
-  _.each(seriesIds, seriesId => {
-    const inheritYDomainFromId = metadataBySeriesId[seriesId].inheritYDomainFrom;
-    if (inheritYDomainFromId) {
-      inheritedYDomainBySeriesId[seriesId] = yDomainBySeriesId[inheritYDomainFromId];
-    }
-  });
-  return inheritedYDomainBySeriesId;
-}
-
-function resolveInheritedMetadata(seriesIds, metadataBySeriesId) {
-  const inheritedMetadataBySeriesId = _.clone(metadataBySeriesId);
-  _.each(seriesIds, seriesId => {
-    const inheritMetadataFromId = metadataBySeriesId[seriesId].inheritMetadataFrom;
-    if (inheritMetadataFromId) {
-      inheritedMetadataBySeriesId[seriesId] = _.extend(
-        {},
-        metadataBySeriesId[inheritMetadataFromId],
-        metadataBySeriesId[seriesId]
-      );
-    }
-  });
-  return inheritedMetadataBySeriesId;
-}
-
 const memoizedGetMergedYDomains = memoize(getMergedYDomains, { max: 10 });
-const memoizedResolveInheritedYDomains = memoize(resolveInheritedYDomains, { max: 10 });
-const memoizedResolveInheritedMetadata = memoize(resolveInheritedMetadata, { max: 10 });
 
 @PureRender
 @SelectFromStore
@@ -85,7 +57,7 @@ class DefaultChart extends React.Component {
   };
 
   static defaultProps = {
-    mergeAxesOfSameType: false
+    mergeAxesOfSameType: true
   };
 
   static selectFromStore = {
@@ -99,17 +71,6 @@ class DefaultChart extends React.Component {
   };
 
   render() {
-    const resolvedMetadataBySeriesId = memoizedResolveInheritedMetadata(
-      this.state.seriesIds,
-      this.state.metadataBySeriesId
-    );
-
-    const resolvedYDomainBySeriesId = memoizedResolveInheritedYDomains(
-      this.state.seriesIds,
-      resolvedMetadataBySeriesId,
-      this.state.yAxisBySeriesId
-    );
-
     const {
       mergedYDomainBySeriesId,
       orderedYDomains,
@@ -117,8 +78,8 @@ class DefaultChart extends React.Component {
     } = memoizedGetMergedYDomains(
       this.props.mergeAxesOfSameType,
       this.state.seriesIds,
-      resolvedYDomainBySeriesId,
-      resolvedMetadataBySeriesId
+      this.state.yAxisBySeriesId,
+      this.state.metadataBySeriesId
     );
 
     return (
@@ -127,7 +88,7 @@ class DefaultChart extends React.Component {
           <MetadataDrivenDataLayer
             xDomain={this.state.xAxis}
             yDomainBySeriesId={mergedYDomainBySeriesId}
-            metadataBySeriesId={resolvedMetadataBySeriesId}
+            metadataBySeriesId={this.state.metadataBySeriesId}
             dataBySeriesId={this.state.dataBySeriesId}
             seriesIds={this.state.seriesIds}
           />

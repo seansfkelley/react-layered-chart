@@ -63,6 +63,7 @@ class PointLayer extends React.Component {
       const x = xScale(this.props.data[i].timestamp);
       const y = yScale(this.props.data[i].value);
 
+      context.moveTo(x, y);
       context.arc(x, y, this.props.radius, 0, Math.PI * 2);
     }
 
