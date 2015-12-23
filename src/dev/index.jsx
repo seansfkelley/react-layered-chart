@@ -111,7 +111,13 @@ const onTimeRangeChange = _.debounce(xDomain => {
   }
 }, 1000);
 
+let lastTimestamp;
 const onHover = _.debounce(timestamp => {
+  if (timestamp === lastTimestamp) {
+    return;
+  }
+
+  lastTimestamp = timestamp;
   if (timestamp !== null) {
     const data = store.getState().dataBySeriesId['uuid-5'];
     const index = _.sortedIndex(data, { timestamp }, 'timestamp');

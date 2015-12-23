@@ -5,7 +5,13 @@ import thunk from 'redux-thunk';
 import ActionType from './ActionType';
 
 function mergeOverwriteArrays(objectValue, sourceValue) {
-  if (_.isArray(sourceValue) && _.isArray(objectValue)) {
+  // This rather loose conditional does two things at once:
+  //   1. Prevent lodash from being clever and attempting to deep-merge
+  //      arrays, which we definitely do not want.
+  //   2. Prevent lodash from defensively copying the array, since we do
+  //      immutable-by-convention, and copying the array circumvents all
+  //      of the PureRenders sprinkled throughout the code.
+  if (_.isArray(sourceValue)) {
     return sourceValue;
   }
   // If we don't return a value, it defaults to the normal behavior.
