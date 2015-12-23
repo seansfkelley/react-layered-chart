@@ -64,7 +64,7 @@ class SimpleLineLayer extends React.Component {
     context.beginPath();
 
     context.moveTo(xScale(this.props.data[firstIndex].timestamp), yScale(this.props.data[firstIndex].value));
-    for (let i = firstIndex + 1; i <= lastIndex; ++i) {
+    for (let i = firstIndex + 1; i < lastIndex; ++i) {
       context.lineTo(xScale(this.props.data[i].timestamp), yScale(this.props.data[i].value));
     }
 

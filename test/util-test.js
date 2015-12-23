@@ -1,6 +1,6 @@
 import { spy } from 'sinon';
 
-import { getVisibleIndexBounds, shallowMemoize, mergeRangesOfSameType } from '../src/ext/util';
+import { shallowMemoize } from '../src/ext/util';
 
 describe('util', () => {
   describe('#shallowMemoize', () => {

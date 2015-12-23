@@ -61,7 +61,7 @@ class BucketedLineLayer extends React.Component {
     // }
 
     const firstIndex = 0;
-    const lastIndex = this.props.data.length - 1;
+    const lastIndex = this.props.data.length;
 
     // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
     const xScale = d3Scale.linear()
@@ -111,7 +111,7 @@ class BucketedLineLayer extends React.Component {
 
     // Bars
     context.beginPath();
-    for (let i = firstIndex; i <= lastIndex; ++i) {
+    for (let i = firstIndex; i < lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
       context.rect(
         computedValues.preferredBounds.x1,

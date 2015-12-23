@@ -13,25 +13,58 @@ import SelectFromStore from './mixins/SelectFromStore';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 import { shallowMemoize, mergeRangesOfSameType } from './util';
 
-function getMergedYDomains(shouldMerge, seriesIds, yAxisBySeriesId, metadataBySeriesId) {
+function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBySeriesId) {
   const rangeGroups = shouldMerge
-    ? mergeRangesOfSameType(seriesIds, yAxisBySeriesId, metadataBySeriesId)
+    ? mergeRangesOfSameType(seriesIds, yDomainBySeriesId, metadataBySeriesId)
     : seriesIds.map(seriesId => ({
-        range: yAxisBySeriesId[seriesId],
+        range: yDomainBySeriesId[seriesId],
         color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
         seriesIds: [ seriesId ]
       }));
 
-  let yDomainBySeriesId = {};
+  let mergedYDomainBySeriesId = {};
   _.each(rangeGroups, ({ seriesIds, range }) =>
-    _.each(seriesIds, seriesId => yDomainBySeriesId[seriesId] = range)
+    _.each(seriesIds, seriesId => mergedYDomainBySeriesId[seriesId] = range)
   );
 
+  const filteredRangeGroups = rangeGroups.filter(rangeGroup => {
+    return _.any(rangeGroup.seriesIds, seriesId => {
+      const showYAxis = _.get(metadataBySeriesId, [ seriesId, 'showYAxis' ]);
+      return _.isUndefined(showYAxis) ? true : showYAxis;
+    });
+  });
+
   return {
-    yDomainBySeriesId,
-    orderedYDomains: _.pluck(rangeGroups, 'range'),
-    orderedColors: _.pluck(rangeGroups, 'color')
+    mergedYDomainBySeriesId,
+    orderedYDomains: _.pluck(filteredRangeGroups, 'range'),
+    orderedColors: _.pluck(filteredRangeGroups, 'color')
   }
+}
+
+function resolveInheritedYDomains(seriesIds, metadataBySeriesId, yDomainBySeriesId) {
+  const inheritedYDomainBySeriesId = _.clone(yDomainBySeriesId);
+  _.each(seriesIds, seriesId => {
+    const inheritYDomainFromId = metadataBySeriesId[seriesId].inheritYDomainFrom;
+    if (inheritYDomainFromId) {
+      inheritedYDomainBySeriesId[seriesId] = yDomainBySeriesId[inheritYDomainFromId];
+    }
+  });
+  return inheritedYDomainBySeriesId;
+}
+
+function resolveInheritedMetadata(seriesIds, metadataBySeriesId) {
+  const inheritedMetadataBySeriesId = _.clone(metadataBySeriesId);
+  _.each(seriesIds, seriesId => {
+    const inheritMetadataFromId = metadataBySeriesId[seriesId].inheritMetadataFrom;
+    if (inheritMetadataFromId) {
+      inheritedMetadataBySeriesId[seriesId] = _.extend(
+        {},
+        metadataBySeriesId[inheritMetadataFromId],
+        metadataBySeriesId[seriesId]
+      );
+    }
+  });
+  return inheritedMetadataBySeriesId;
 }
 
 @PureRender
@@ -47,7 +80,7 @@ class DefaultChart extends React.Component {
   };
 
   static defaultProps = {
-    mergeAxesOfSameType: true
+    mergeAxesOfSameType: false
   };
 
   static selectFromStore = {
@@ -61,15 +94,26 @@ class DefaultChart extends React.Component {
   };
 
   render() {
+    const resolvedMetadataBySeriesId = resolveInheritedMetadata(
+      this.state.seriesIds,
+      this.state.metadataBySeriesId
+    );
+
+    const resolvedYDomainBySeriesId = resolveInheritedYDomains(
+      this.state.seriesIds,
+      resolvedMetadataBySeriesId,
+      this.state.yAxisBySeriesId
+    );
+
     const {
-      yDomainBySeriesId,
+      mergedYDomainBySeriesId,
       orderedYDomains,
       orderedColors
     } = this._memoizedGetMergedYDomains(
       this.props.mergeAxesOfSameType,
       this.state.seriesIds,
-      this.state.yAxisBySeriesId,
-      this.state.metadataBySeriesId
+      resolvedYDomainBySeriesId,
+      resolvedMetadataBySeriesId
     );
 
     return (
@@ -77,8 +121,8 @@ class DefaultChart extends React.Component {
         <Stack className='chart-body'>
           <MetadataDrivenDataLayer
             xDomain={this.state.xAxis}
-            yDomainBySeriesId={yDomainBySeriesId}
-            metadataBySeriesId={this.state.metadataBySeriesId}
+            yDomainBySeriesId={mergedYDomainBySeriesId}
+            metadataBySeriesId={resolvedMetadataBySeriesId}
             dataBySeriesId={this.state.dataBySeriesId}
             seriesIds={this.state.seriesIds}
           />

@@ -12,6 +12,6 @@ export function getVisibleIndexBounds(timestampedData, timeRange) {
   // In the case where the data crosses a range boundary, the sortedIndex calculations will be off by one.
   return {
     firstIndex: Math.max(0, firstIndex - 1),
-    lastIndex: Math.min(timestampedData.length - 1, lastIndex + 1)
+    lastIndex: Math.min(timestampedData.length, lastIndex + 1)
   };
 }

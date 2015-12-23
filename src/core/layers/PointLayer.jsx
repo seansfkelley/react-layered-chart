@@ -45,11 +45,6 @@ class PointLayer extends React.Component {
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
-    // Should we draw something if there is one data point?
-    if (this.props.data.length < 2) {
-      return;
-    }
-
     const { firstIndex, lastIndex } = getVisibleIndexBounds(this.props.data, this.props.xDomain);
     if (firstIndex === lastIndex) {
       return;
@@ -64,11 +59,10 @@ class PointLayer extends React.Component {
       .rangeRound([ height, 0 ]);
 
     context.beginPath();
-    for (let i = firstIndex; i <= lastIndex; ++i) {
+    for (let i = firstIndex; i < lastIndex; ++i) {
       const x = xScale(this.props.data[i].timestamp);
       const y = yScale(this.props.data[i].value);
 
-      context.moveTo(x, y);
       context.arc(x, y, this.props.radius, 0, Math.PI * 2);
     }
 

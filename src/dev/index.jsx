@@ -39,7 +39,7 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-3', 'uuid-4', 'uuid-5'));
+store.dispatch(DataActions.addSeries('uuid-5', 'uuid-5-hover'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
@@ -69,6 +69,12 @@ store.dispatch(DataActions.setMetadata({
     color: 'rgba(255, 0, 255, 0.5)',
     unit: 'some-other-unit',
     unitType: 'some-other-unit-type'
+  },
+  'uuid-5-hover': {
+    chartType: ChartType.POINT,
+    inheritMetadataFrom: 'uuid-5',
+    inheritYDomainFrom: 'uuid-5',
+    showYAxis: false
   }
 }));
 
@@ -79,7 +85,8 @@ store.dispatch(DataActions.setData({
   'uuid-2': lineData1,
   'uuid-3': fakeDataGenerators.makeFakeEventData(NOW, TIME_RANGE, Y_RANGE),
   'uuid-4': fakeDataGenerators.makeFakeBucketedData(NOW, TIME_RANGE, Y_RANGE),
-  'uuid-5': fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE)
+  'uuid-5': fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE),
+  'uuid-5-hover': []
 }));
 
 let latestXAxis;
@@ -118,7 +125,7 @@ const onHover = _.debounce(timestamp => {
       'uuid-5-hover': []
     }));
   }
-}, 1000);
+}, 200);
 
 store.subscribe(() => {
   onTimeRangeChange(store.getState().xAxis);
