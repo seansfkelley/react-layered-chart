@@ -14,7 +14,7 @@ const TICK_LENGTH = 4;
 @PureRender
 @CanvasRender
 @AnimateProps
-class YAxis extends React.Component {
+class YAxisLayer extends React.Component {
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.
@@ -84,4 +84,4 @@ class YAxis extends React.Component {
   };
 }
 
-export default YAxis;
+export default YAxisLayer;

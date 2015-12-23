@@ -30,7 +30,7 @@ const store = storeFactory({
     min: NOW - TIME_RANGE,
     max: NOW
   },
-  yAxisBySeriesId: {
+  yDomainBySeriesId: {
     'uuid-1': _.clone(BASE_Y_DOMAIN),
     'uuid-2': _.clone(BASE_Y_DOMAIN),
     'uuid-3': _.clone(BASE_Y_DOMAIN),
@@ -102,7 +102,7 @@ const onTimeRangeChange = _.debounce(xDomain => {
       'uuid-4': data
     }));
 
-    store.dispatch(AxesActions.setYAxes({
+    store.dispatch(AxesActions.setYDomains({
       'uuid-4': {
         min: minValue - (maxValue - minValue) * 0.1,
         max: maxValue + (maxValue - minValue) * 0.1

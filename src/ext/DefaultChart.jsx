@@ -65,7 +65,7 @@ class DefaultChart extends React.Component {
     hover: 'hover',
     xDomain: 'xDomain',
     seriesIds: 'seriesIds',
-    yAxisBySeriesId: 'yAxisBySeriesId',
+    yDomainBySeriesId: 'yDomainBySeriesId',
     metadataBySeriesId: 'metadataBySeriesId',
     dataBySeriesId: 'dataBySeriesId'
   };
@@ -78,7 +78,7 @@ class DefaultChart extends React.Component {
     } = memoizedGetMergedYDomains(
       this.props.mergeAxesOfSameType,
       this.state.seriesIds,
-      this.state.yAxisBySeriesId,
+      this.state.yDomainBySeriesId,
       this.state.metadataBySeriesId
     );
 

@@ -41,9 +41,9 @@ function reduceXDomain(state = { min: 0, max: 1000 }, action) {
   }
 }
 
-function reduceYAxis(state = {}, action) {
+function reduceYDomain(state = {}, action) {
   switch(action.type) {
-    case ActionType.SET_SERIES_Y_AXIS:
+    case ActionType.SET_SERIES_Y_DOMAIN:
       return _.merge({}, state, action.payload, mergeOverwriteArrays);
 
     default:
@@ -89,7 +89,7 @@ export default function(initialState = undefined) {
     hover: reduceHover,
     xDomain: reduceXDomain,
     seriesIds: reduceSeriesIds,
-    yAxisBySeriesId: reduceYAxis,
+    yDomainBySeriesId: reduceYDomain,
     metadataBySeriesId: reduceMetadata,
     dataBySeriesId: reduceData
   });

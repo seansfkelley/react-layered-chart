@@ -1,12 +1,12 @@
 import ActionType from './ActionType';
 
-function setYAxes(yAxisBySeriesId) {
+function setYDomains(yDomainBySeriesId) {
   return {
-    type: ActionType.SET_SERIES_Y_AXIS,
-    payload: yAxisBySeriesId
+    type: ActionType.SET_SERIES_Y_DOMAIN,
+    payload: yDomainBySeriesId
   };
 }
 
 export default {
-  setYAxes
+  setYDomains
 };
