@@ -129,7 +129,7 @@ const onHover = _.debounce(timestamp => {
       'uuid-5-hover': []
     }));
   }
-}, 200);
+}, 15);
 
 store.subscribe(() => {
   onTimeRangeChange(store.getState().xDomain);

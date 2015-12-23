@@ -28,17 +28,10 @@ function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBy
     _.each(seriesIds, seriesId => mergedYDomainBySeriesId[seriesId] = range)
   );
 
-  const filteredRangeGroups = rangeGroups.filter(rangeGroup => {
-    return _.any(rangeGroup.seriesIds, seriesId => {
-      const showYAxis = _.get(metadataBySeriesId, [ seriesId, 'showYAxis' ]);
-      return _.isUndefined(showYAxis) ? true : showYAxis;
-    });
-  });
-
   return {
     mergedYDomainBySeriesId,
-    orderedYDomains: _.pluck(filteredRangeGroups, 'range'),
-    orderedColors: _.pluck(filteredRangeGroups, 'color')
+    orderedYDomains: _.pluck(rangeGroups, 'range'),
+    orderedColors: _.pluck(rangeGroups, 'color')
   }
 }
 
