@@ -26,7 +26,7 @@ const BASE_Y_DOMAIN = {
 }
 
 const store = storeFactory({
-  xAxis: {
+  xDomain: {
     min: NOW - TIME_RANGE,
     max: NOW
   },
@@ -87,13 +87,13 @@ store.dispatch(DataActions.setData({
   'uuid-5-hover': []
 }));
 
-let latestXAxis;
-const onTimeRangeChange = _.debounce(xAxis => {
-  if (xAxis === latestXAxis) {
+let latestXDomain;
+const onTimeRangeChange = _.debounce(xDomain => {
+  if (xDomain === latestXDomain) {
     return;
   } else {
-    latestXAxis = xAxis;
-    const { min, max } = xAxis;
+    latestXDomain = xDomain;
+    const { min, max } = xDomain;
     const data = fakeDataGenerators.makeFakeBucketedData(max, max - min, Y_RANGE, (max - min) / 400);
     const minValue = _.min(data, d => d.bounds.minValue).bounds.minValue;
     const maxValue = _.max(data, d => d.bounds.maxValue).bounds.maxValue;
@@ -126,7 +126,7 @@ const onHover = _.debounce(timestamp => {
 }, 200);
 
 store.subscribe(() => {
-  onTimeRangeChange(store.getState().xAxis);
+  onTimeRangeChange(store.getState().xDomain);
   onHover(store.getState().hover);
 });
 

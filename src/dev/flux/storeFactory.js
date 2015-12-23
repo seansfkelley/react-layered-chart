@@ -31,9 +31,9 @@ function reduceHover(state = null, action) {
   }
 }
 
-function reduceXAxis(state = { min: 0, max: 1000 }, action) {
+function reduceXDomain(state = { min: 0, max: 1000 }, action) {
   switch(action.type) {
-    case ActionType.SET_X_AXIS:
+    case ActionType.SET_X_DOMAIN:
       return action.payload;
 
     default:
@@ -87,7 +87,7 @@ export default function(initialState = undefined) {
   const rootReducer = combineReducers({
     selection: reduceSelection,
     hover: reduceHover,
-    xAxis: reduceXAxis,
+    xDomain: reduceXDomain,
     seriesIds: reduceSeriesIds,
     yAxisBySeriesId: reduceYAxis,
     metadataBySeriesId: reduceMetadata,

@@ -12,7 +12,7 @@ const HORIZONTAL_PADDING = 6;
 
 @PureRender
 @CanvasRender
-class XAxis extends React.Component {
+class XAxisLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     color: React.PropTypes.string
@@ -65,4 +65,4 @@ class XAxis extends React.Component {
   };
 }
 
-export default XAxis;
+export default XAxisLayer;

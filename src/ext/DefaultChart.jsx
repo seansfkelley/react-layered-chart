@@ -63,7 +63,7 @@ class DefaultChart extends React.Component {
   static selectFromStore = {
     selection: 'selection',
     hover: 'hover',
-    xAxis: 'xAxis',
+    xDomain: 'xDomain',
     seriesIds: 'seriesIds',
     yAxisBySeriesId: 'yAxisBySeriesId',
     metadataBySeriesId: 'metadataBySeriesId',
@@ -86,25 +86,25 @@ class DefaultChart extends React.Component {
       <div className='default-chart'>
         <Stack className='chart-body'>
           <MetadataDrivenDataLayer
-            xDomain={this.state.xAxis}
+            xDomain={this.state.xDomain}
             yDomainBySeriesId={mergedYDomainBySeriesId}
             metadataBySeriesId={this.state.metadataBySeriesId}
             dataBySeriesId={this.state.dataBySeriesId}
             seriesIds={this.state.seriesIds}
           />
           <BrushLayer
-            xDomain={this.state.xAxis}
+            xDomain={this.state.xDomain}
             selection={this.state.selection}
           />
           <InteractionCaptureLayer
-            xDomain={this.state.xAxis}
+            xDomain={this.state.xDomain}
             onHover={this.props.onHover}
             onPan={this.props.onPan}
             onZoom={this.props.onZoom}
             onBrush={this.props.onBrush}
           />
           <HoverLayer
-            xDomain={this.state.xAxis}
+            xDomain={this.state.xDomain}
             hover={this.state.hover}
           />
           <YAxisLayer
@@ -114,7 +114,7 @@ class DefaultChart extends React.Component {
         </Stack>
         <Stack className='time-axis'>
           <XAxisLayer
-            xDomain={this.state.xAxis}
+            xDomain={this.state.xDomain}
           />
         </Stack>
       </div>

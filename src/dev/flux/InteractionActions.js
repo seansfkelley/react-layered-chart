@@ -11,18 +11,18 @@ function hover(timestamp) {
 // focus must be on [0, 1]
 function zoom(factor, focus = 0.5) {
   return (dispatch, getState) => {
-    const currentXAxis = getState().xAxis;
-    const currentExtent = currentXAxis.max - currentXAxis.min;
+    const currentXDomain = getState().xDomain;
+    const currentExtent = currentXDomain.max - currentXDomain.min;
     const targetExtent = currentExtent * factor;
     const extentDelta = currentExtent - targetExtent;
 
     const payload = {
-      min: currentXAxis.min - extentDelta * focus,
-      max: currentXAxis.max + extentDelta * (1 - focus)
+      min: currentXDomain.min - extentDelta * focus,
+      max: currentXDomain.max + extentDelta * (1 - focus)
     };
 
     dispatch({
-      type: ActionType.SET_X_AXIS,
+      type: ActionType.SET_X_DOMAIN,
       payload
     });
   };
@@ -30,15 +30,15 @@ function zoom(factor, focus = 0.5) {
 
 function pan(delta) {
   return (dispatch, getState) => {
-    const currentXAxis = getState().xAxis;
+    const currentXDomain = getState().xDomain;
 
     const payload = {
-      min: currentXAxis.min + delta,
-      max: currentXAxis.max + delta
+      min: currentXDomain.min + delta,
+      max: currentXDomain.max + delta
     };
 
     dispatch({
-      type: ActionType.SET_X_AXIS,
+      type: ActionType.SET_X_DOMAIN,
       payload
     });
   };
