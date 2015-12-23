@@ -10,7 +10,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 class BrushLayer extends React.Component {
   static propTypes = {
-    selection: propTypes.range.isRequired,
+    selection: propTypes.range,
     xDomain: propTypes.range.isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string

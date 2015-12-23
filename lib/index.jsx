@@ -82,7 +82,7 @@ store.dispatch(DataActions.setData({
 }));
 
 let latestXAxis;
-const onTimeRangeChange = _.debounce((xAxis) => {
+const onTimeRangeChange = _.debounce(xAxis => {
   if (xAxis === latestXAxis) {
     return;
   } else {
@@ -105,8 +105,23 @@ const onTimeRangeChange = _.debounce((xAxis) => {
   }
 }, 1000);
 
+const onHover = _.debounce(timestamp => {
+  if (timestamp !== null) {
+    const data = store.getState().dataBySeriesId['uuid-5'];
+    const index = _.sortedIndex(data, { timestamp }, 'timestamp');
+    store.dispatch(DataActions.setData({
+      'uuid-5-hover': [ data[index] ]
+    }));
+  } else {
+    store.dispatch(DataActions.setData({
+      'uuid-5-hover': []
+    }));
+  }
+}, 1000);
+
 store.subscribe(() => {
   onTimeRangeChange(store.getState().xAxis);
+  onHover(store.getState().hover);
 });
 
 const chart = <DefaultChart store={store}/>
