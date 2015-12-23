@@ -1,19 +1,5 @@
 import _ from 'lodash';
 
-export function shallowMemoize(fn) {
-  let lastArgs;
-  let lastResult;
-  return function() {
-    if (lastArgs && lastArgs.length === arguments.length && _.all(lastArgs, (arg, i) => arg === arguments[i])) {
-      return lastResult;
-    } else {
-      lastArgs = arguments;
-      lastResult = fn.apply(this, arguments);
-      return lastResult;
-    }
-  };
-}
-
 const MAGIC_KEY_CAUSE_JS_CANT_KEY_ON_PAIRS = '~!~!~';
 
 export function mergeRangesOfSameType(seriesIds, rangeBySeriesId, metadataBySeriesId) {

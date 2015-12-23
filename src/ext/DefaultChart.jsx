@@ -1,6 +1,7 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
+import memoize from 'memoizee';
 
 import BrushLayer from '../core/layers/BrushLayer';
 import InteractionCaptureLayer from '../core/layers/InteractionCaptureLayer';
@@ -11,7 +12,7 @@ import Stack from '../core/Stack';
 
 import SelectFromStore from './mixins/SelectFromStore';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
-import { shallowMemoize, mergeRangesOfSameType } from './util';
+import { mergeRangesOfSameType } from './util';
 
 function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBySeriesId) {
   const rangeGroups = shouldMerge
@@ -67,6 +68,10 @@ function resolveInheritedMetadata(seriesIds, metadataBySeriesId) {
   return inheritedMetadataBySeriesId;
 }
 
+const memoizedGetMergedYDomains = memoize(getMergedYDomains, { max: 10 });
+const memoizedResolveInheritedYDomains = memoize(resolveInheritedYDomains, { max: 10 });
+const memoizedResolveInheritedMetadata = memoize(resolveInheritedMetadata, { max: 10 });
+
 @PureRender
 @SelectFromStore
 class DefaultChart extends React.Component {
@@ -94,12 +99,12 @@ class DefaultChart extends React.Component {
   };
 
   render() {
-    const resolvedMetadataBySeriesId = resolveInheritedMetadata(
+    const resolvedMetadataBySeriesId = memoizedResolveInheritedMetadata(
       this.state.seriesIds,
       this.state.metadataBySeriesId
     );
 
-    const resolvedYDomainBySeriesId = resolveInheritedYDomains(
+    const resolvedYDomainBySeriesId = memoizedResolveInheritedYDomains(
       this.state.seriesIds,
       resolvedMetadataBySeriesId,
       this.state.yAxisBySeriesId
@@ -109,7 +114,7 @@ class DefaultChart extends React.Component {
       mergedYDomainBySeriesId,
       orderedYDomains,
       orderedColors
-    } = this._memoizedGetMergedYDomains(
+    } = memoizedGetMergedYDomains(
       this.props.mergeAxesOfSameType,
       this.state.seriesIds,
       resolvedYDomainBySeriesId,
@@ -154,8 +159,6 @@ class DefaultChart extends React.Component {
       </div>
     );
   }
-
-  _memoizedGetMergedYDomains = shallowMemoize(getMergedYDomains);
 }
 
 export default DefaultChart;
