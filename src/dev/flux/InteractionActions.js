@@ -7,6 +7,9 @@ function hover(timestamp) {
   };
 }
 
+const EXTENT_MAX = 1000 * 60 * 60 * 24 * 365 * 50;
+const EXTENT_MIN = 1000 * 60;
+
 // factor should be around 1 for smooth zooming
 // focus must be on [0, 1]
 function zoom(factor, focus = 0.5) {
@@ -16,15 +19,18 @@ function zoom(factor, focus = 0.5) {
     const targetExtent = currentExtent * factor;
     const extentDelta = currentExtent - targetExtent;
 
-    const payload = {
+    const xDomain = {
       min: currentXDomain.min - extentDelta * focus,
       max: currentXDomain.max + extentDelta * (1 - focus)
     };
 
-    dispatch({
-      type: ActionType.SET_X_DOMAIN,
-      payload
-    });
+    const extent = xDomain.max - xDomain.min;
+    if (EXTENT_MAX > extent && extent > EXTENT_MIN) {
+      dispatch({
+        type: ActionType.SET_X_DOMAIN,
+        payload: xDomain
+      });
+    }
   };
 }
 
@@ -32,14 +38,14 @@ function pan(delta) {
   return (dispatch, getState) => {
     const currentXDomain = getState().xDomain;
 
-    const payload = {
+    const xDomain = {
       min: currentXDomain.min + delta,
       max: currentXDomain.max + delta
     };
 
     dispatch({
       type: ActionType.SET_X_DOMAIN,
-      payload
+      payload: xDomain
     });
   };
 }
