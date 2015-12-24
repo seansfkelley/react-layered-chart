@@ -2,9 +2,10 @@ import React from 'react';
 import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
 
-import BucketedLineLayer from '../../core/layers/BucketedLineLayer';
-import PointLayer from '../../core/layers/PointLayer';
 import SimpleLineLayer from '../../core/layers/SimpleLineLayer';
+import BucketedLineLayer from '../../core/layers/BucketedLineLayer';
+import BarLayer from '../../core/layers/BarLayer';
+import PointLayer from '../../core/layers/PointLayer';
 import TimeSpanLayer from '../../core/layers/TimeSpanLayer';
 
 import LayerType from '../LayerType';
@@ -13,6 +14,7 @@ import propTypes from '../../core/propTypes';
 const LAYER_BY_TYPE = {
   [LayerType.SIMPLE_LINE]: SimpleLineLayer,
   [LayerType.BUCKETED_LINE]: BucketedLineLayer,
+  [LayerType.BAR]: BarLayer,
   [LayerType.POINT]: PointLayer,
   [LayerType.TIME_SPAN]: TimeSpanLayer
 };

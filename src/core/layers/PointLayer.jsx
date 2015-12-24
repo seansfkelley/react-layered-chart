@@ -56,12 +56,12 @@ class PointLayer extends React.Component {
 
     const yScale = this.props.yScale()
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
-      .rangeRound([ height, 0 ]);
+      .rangeRound([ 0, height ]);
 
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
       const x = xScale(this.props.data[i].timestamp);
-      const y = yScale(this.props.data[i].value);
+      const y = height - yScale(this.props.data[i].value);
 
       context.moveTo(x, y);
       context.arc(x, y, this.props.radius, 0, Math.PI * 2);

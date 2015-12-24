@@ -70,7 +70,7 @@ class BucketedLineLayer extends React.Component {
 
     const yScale = this.props.yScale()
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
-      .range([ height, 0 ]);
+      .range([ 0, height ]);
 
     const getComputedValuesForIndex = _.memoize(i => {
       const datum = this.props.data[i];

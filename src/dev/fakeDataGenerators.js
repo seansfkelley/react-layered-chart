@@ -16,6 +16,15 @@ export function makeFakeEventData(endTime, xExtent, yExtent) {
   return data;
 }
 
+export function makeFakeBarData(endTime, xExtent, yExtent) {
+  const data = [];
+  for (let i = 0; i < 10; ++ i) {
+    const min = endTime - Math.random() * xExtent;
+    data.push({ timeSpan: { min, max: min + (1000 * 60 * 60 * (24 * Math.random())) }, value: Math.random() * yExtent });
+  }
+  return data;
+}
+
 export function makeFakeBucketedData(endTime, xExtent, yExtent, bucketWidth = 1000 * 60 * 60 * 24) {
   const data = [];
   let startTime = endTime - xExtent;
@@ -67,5 +76,6 @@ export function makeFakeBucketedData(endTime, xExtent, yExtent, bucketWidth = 10
 export default {
   makeFakeLineData,
   makeFakeEventData,
+  makeFakeBarData,
   makeFakeBucketedData
 };

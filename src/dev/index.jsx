@@ -40,7 +40,7 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-2', 'uuid-5-group'));
+store.dispatch(DataActions.addSeries('uuid-1', 'uuid-3', 'uuid-2', 'uuid-5-group'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
@@ -56,7 +56,7 @@ store.dispatch(DataActions.setMetadata({
     unitType: 'some-unit-type'
   },
   'uuid-3': {
-    layerType: LayerType.TIME_SPAN,
+    layerType: LayerType.BAR,
     color: 'rgba(0, 255, 0, 0.5)'
   },
   'uuid-4': {
@@ -82,7 +82,7 @@ const lineData1 = fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE);
 store.dispatch(DataActions.setData({
   'uuid-1': lineData1,
   'uuid-2': lineData1,
-  'uuid-3': fakeDataGenerators.makeFakeEventData(NOW, TIME_RANGE, Y_RANGE),
+  'uuid-3': fakeDataGenerators.makeFakeBarData(NOW, TIME_RANGE, Y_RANGE),
   'uuid-4': fakeDataGenerators.makeFakeBucketedData(NOW, TIME_RANGE, Y_RANGE),
   'uuid-5': fakeDataGenerators.makeFakeLineData(NOW, TIME_RANGE, Y_RANGE),
   'uuid-5-hover': []

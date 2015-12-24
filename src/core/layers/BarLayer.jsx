@@ -1,6 +1,5 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
-import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
@@ -13,17 +12,18 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @AnimateProps
-class SimpleLineLayer extends React.Component {
+class BarLayer extends React.Component {
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
+    data: React.PropTypes.arrayOf(React.PropTypes.shape({
+      timeSpan: propTypes.range.isRequired,
+      value: React.PropTypes.number.isRequired
+    })).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
-    yScale: React.PropTypes.func,
     color: React.PropTypes.string
   };
 
   static defaultProps = {
-    yScale: d3Scale.linear,
     color: 'rgba(0, 0, 0, 0.7)'
   };
 
@@ -43,34 +43,30 @@ class SimpleLineLayer extends React.Component {
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
-    // Should we draw something if there is one data point?
-    if (this.props.data.length < 2) {
-      return;
-    }
-
-    const { firstIndex, lastIndex } = getVisibleIndexBounds(this.props.data, this.props.xDomain);
-    if (firstIndex === lastIndex) {
-      return;
-    }
+    const firstIndex = 0;
+    const lastIndex = this.props.data.length;
 
     const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    const yScale = this.props.yScale()
+    const yScale = d3Scale.linear()
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .rangeRound([ 0, height ]);
 
     context.beginPath();
+    for (let i = firstIndex; i < lastIndex; ++i) {
+      const left = xScale(this.props.data[i].timeSpan.min);
+      const right = xScale(this.props.data[i].timeSpan.max);
+      const top = height - yScale(this.props.data[i].value);
+      const bottom = height - yScale(0);
 
-    context.moveTo(xScale(this.props.data[firstIndex].timestamp), height - yScale(this.props.data[firstIndex].value));
-    for (let i = firstIndex + 1; i < lastIndex; ++i) {
-      context.lineTo(xScale(this.props.data[i].timestamp), height - yScale(this.props.data[i].value));
+      context.rect(left, bottom, right - left, top - bottom);
     }
 
-    context.strokeStyle = this.props.color;
-    context.stroke();
+    context.fillStyle = this.props.color;
+    context.fill();
   }
 }
 
-export default SimpleLineLayer;
+export default BarLayer;
