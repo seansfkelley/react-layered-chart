@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export function getVisibleIndexBounds(timestampedData, timeRange) {
+export function getBoundsForInstantaeousData(timestampedData, timeRange) {
   const firstIndex = _.sortedIndex(timestampedData, { timestamp: timeRange.min }, 'timestamp');
   const lastIndex = _.sortedLastIndex(timestampedData, { timestamp: timeRange.max }, 'timestamp');
 

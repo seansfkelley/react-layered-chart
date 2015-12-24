@@ -7,7 +7,7 @@ import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getVisibleIndexBounds } from '../util';
+import { getBoundsForInstantaeousData } from '../findDataBounds';
 import propTypes from '../propTypes';
 
 @PureRender
@@ -48,7 +48,7 @@ class SimpleLineLayer extends React.Component {
       return;
     }
 
-    const { firstIndex, lastIndex } = getVisibleIndexBounds(this.props.data, this.props.xDomain);
+    const { firstIndex, lastIndex } = getBoundsForInstantaeousData(this.props.data, this.props.xDomain);
     if (firstIndex === lastIndex) {
       return;
     }
