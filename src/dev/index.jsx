@@ -40,7 +40,7 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-1', 'uuid-3', 'uuid-2', 'uuid-5-group'));
+store.dispatch(DataActions.addSeries('uuid-5-group', 'uuid-4'));
 
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {

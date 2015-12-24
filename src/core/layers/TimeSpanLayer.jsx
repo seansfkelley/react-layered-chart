@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import { getBoundsForTimeSpanData } from '../findDataBounds';
 
 import propTypes from '../propTypes';
 
@@ -34,7 +35,10 @@ class TimeSpanLayer extends React.Component {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, width, height);
 
-    const [ firstIndex, lastIndex ] = [ 0, this.props.data.length - 1 ];
+    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain);
+    if (firstIndex === lastIndex) {
+      return;
+    }
 
     const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])

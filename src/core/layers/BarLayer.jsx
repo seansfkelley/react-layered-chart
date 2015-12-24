@@ -7,7 +7,7 @@ import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForInstantaeousData } from '../findDataBounds';
+import { getBoundsForTimeSpanData } from '../findDataBounds';
 import propTypes from '../propTypes';
 
 @PureRender
@@ -44,8 +44,10 @@ class BarLayer extends React.Component {
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
-    const firstIndex = 0;
-    const lastIndex = this.props.data.length;
+    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain);
+    if (firstIndex === lastIndex) {
+      return;
+    }
 
     const xScale = d3Scale.linear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])

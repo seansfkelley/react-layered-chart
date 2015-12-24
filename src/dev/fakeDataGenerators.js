@@ -13,6 +13,7 @@ export function makeFakeEventData(endTime, xExtent, yExtent) {
     const min = endTime - Math.random() * xExtent;
     data.push({ timeSpan: { min, max: min + (1000 * 60 * 60 * (24 * Math.random())) }});
   }
+  data.sort((a, b) => a.timeSpan.min - b.timeSpan.min);
   return data;
 }
 
@@ -22,6 +23,7 @@ export function makeFakeBarData(endTime, xExtent, yExtent) {
     const min = endTime - Math.random() * xExtent;
     data.push({ timeSpan: { min, max: min + (1000 * 60 * 60 * (24 * Math.random())) }, value: Math.random() * yExtent });
   }
+  data.sort((a, b) => a.timeSpan.min - b.timeSpan.min);
   return data;
 }
 

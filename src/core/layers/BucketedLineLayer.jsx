@@ -7,6 +7,7 @@ import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import { getBoundsForTimeSpanData } from '../findDataBounds';
 import propTypes from '../propTypes';
 
 @PureRender
@@ -54,13 +55,10 @@ class BucketedLineLayer extends React.Component {
       return;
     }
 
-    // const { firstIndex, lastIndex } = getBoundsForInstantaeousData(this.props.data, this.props.xDomain);
-    // if (firstIndex === lastIndex) {
-    //   return;
-    // }
-
-    const firstIndex = 0;
-    const lastIndex = this.props.data.length;
+    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain, 'bounds.startTime', 'bounds.endTime');
+    if (firstIndex === lastIndex) {
+      return;
+    }
 
     // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
     const xScale = d3Scale.linear()
@@ -126,7 +124,7 @@ class BucketedLineLayer extends React.Component {
     context.beginPath();
     const firstComputedValues = getComputedValuesForIndex(firstIndex);
     context.moveTo(firstComputedValues.preferredBounds.x2, height - firstComputedValues.latestPoint.y)
-    for (let i = firstIndex + 1; i <= lastIndex; ++i) {
+    for (let i = firstIndex + 1; i < lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
       // TODO: Skip any that have touching rectangles?
       context.lineTo(computedValues.preferredBounds.x1, height - computedValues.earliestPoint.y);
