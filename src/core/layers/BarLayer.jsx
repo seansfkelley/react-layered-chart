@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
+import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
