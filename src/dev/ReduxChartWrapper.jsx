@@ -14,7 +14,6 @@ class ReduxChartWrapper extends React.Component {
   };
 
   static selectFromStore = {
-    seriesIds: 'seriesIds',
     xDomain: 'xDomain',
     yDomainBySeriesId: 'yDomainBySeriesId',
     metadataBySeriesId: 'metadataBySeriesId',

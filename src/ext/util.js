@@ -34,7 +34,8 @@ export function mergeRangesOfSameType(seriesIds, rangeBySeriesId, metadataBySeri
         min: _.min(_.pluck(unmergedData, 'range.min')),
         max: _.max(_.pluck(unmergedData, 'range.max'))
       },
-      color: _.pluck(unmergedData, 'color').reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)'),
+      // _.reduce, unlike Array.reduce, doesn't throw when given an empty array + no default value.
+      color: _.reduce(_.pluck(unmergedData, 'color'), (a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)'),
       seriesIds: _.flatten(_.pluck(unmergedData, 'seriesIds'))
     })
   });

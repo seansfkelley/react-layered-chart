@@ -14,24 +14,37 @@ import propTypes from '../core/propTypes';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 import { mergeRangesOfSameType } from './util';
 
+const DEFAULT_COLOR = 'rgba(0, 0, 0, 0.7)';
+
 function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBySeriesId) {
-  const rangeGroups = shouldMerge
-    ? mergeRangesOfSameType(seriesIds, yDomainBySeriesId, metadataBySeriesId)
-    : seriesIds.map(seriesId => ({
-        range: yDomainBySeriesId[seriesId],
-        color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
-        seriesIds: [ seriesId ]
-      }));
+  if (seriesIds.length === 0) {
+    return {
+      mergedYDomainBySeriesId: {},
+      orderedYDomains: [{
+        min: -1.25,
+        max: 1.25
+      }],
+      orderedColors: [ DEFAULT_COLOR ]
+    };
+  } else {
+    const rangeGroups = shouldMerge
+      ? mergeRangesOfSameType(seriesIds, yDomainBySeriesId, metadataBySeriesId)
+      : seriesIds.map(seriesId => ({
+          range: yDomainBySeriesId[seriesId],
+          color: _.get(metadataBySeriesId, [ seriesId, 'color' ]),
+          seriesIds: [ seriesId ]
+        }));
 
-  let mergedYDomainBySeriesId = {};
-  _.each(rangeGroups, ({ seriesIds, range }) =>
-    _.each(seriesIds, seriesId => mergedYDomainBySeriesId[seriesId] = range)
-  );
+    let mergedYDomainBySeriesId = {};
+    _.each(rangeGroups, ({ seriesIds, range }) =>
+      _.each(seriesIds, seriesId => mergedYDomainBySeriesId[seriesId] = range)
+    );
 
-  return {
-    mergedYDomainBySeriesId,
-    orderedYDomains: _.pluck(rangeGroups, 'range'),
-    orderedColors: _.pluck(rangeGroups, 'color')
+    return {
+      mergedYDomainBySeriesId,
+      orderedYDomains: _.pluck(rangeGroups, 'range'),
+      orderedColors: _.pluck(rangeGroups, 'color')
+    }
   }
 }
 

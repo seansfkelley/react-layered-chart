@@ -40,8 +40,6 @@ const store = storeFactory({
   }
 });
 
-store.dispatch(DataActions.addSeries('uuid-5-group', 'uuid-4'));
-
 store.dispatch(DataActions.setMetadata({
   'uuid-1': {
     layerType: LayerType.SIMPLE_LINE,
@@ -139,15 +137,15 @@ store.subscribe(() => {
 
 const chart = <div className='many-charts'>
   <ReduxChartWrapper store={store}>
-    <DefaultChart/>
+    <DefaultChart seriesIds={[ 'uuid-5-group' ]}/>
   </ReduxChartWrapper>
 
   <ReduxChartWrapper store={store}>
-    <SparklineChart/>
+    <SparklineChart seriesIds={[ 'uuid-1' ]}/>
   </ReduxChartWrapper>
 
   <ReduxChartWrapper store={store}>
-    <CombinedLogChart/>
+    <CombinedLogChart seriesIds={[ 'uuid-4' ]}/>
   </ReduxChartWrapper>
 </div>
 

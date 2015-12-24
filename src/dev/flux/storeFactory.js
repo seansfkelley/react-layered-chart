@@ -57,18 +57,6 @@ function reduceYDomain(state = {}, action) {
   }
 }
 
-function reduceSeriesIds(state = [], action) {
-  switch(action.type) {
-    case ActionType.ADD_SERIES:
-      return state.concat(action.payload);
-    case ActionType.REMOVE_SERIES:
-      return _.diff(state, action.payload);
-
-    default:
-      return state;
-  }
-}
-
 function reduceMetadata(state = {}, action) {
   switch(action.type) {
     case ActionType.SET_SERIES_METADATA:
@@ -94,7 +82,6 @@ export default function(initialState = undefined) {
     selection: reduceSelection,
     hover: reduceHover,
     xDomain: reduceXDomain,
-    seriesIds: reduceSeriesIds,
     yDomainBySeriesId: reduceYDomain,
     metadataBySeriesId: reduceMetadata,
     dataBySeriesId: reduceData

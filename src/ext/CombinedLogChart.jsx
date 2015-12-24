@@ -14,6 +14,8 @@ import propTypes from '../core/propTypes';
 
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 
+const DEFAULT_COLOR = 'rgba(0, 0, 0, 0.7)';
+
 function setMetadataYScale(seriesIds, metadataBySeriesId) {
   return _.chain(metadataBySeriesId)
     .pick(seriesIds)
@@ -22,23 +24,35 @@ function setMetadataYScale(seriesIds, metadataBySeriesId) {
 }
 
 function unifyYDomains(seriesIds, yDomainBySeriesId, metadataBySeriesId) {
-  const domains = seriesIds.map(seriesId => yDomainBySeriesId[seriesId]);
-  const unifiedYDomain = {
-    // Hack(-ish): log scales must be strictly positive or negative. For now, assume positive.
-    // https://github.com/d3/d3-scale#log-scales
-    min: Math.max(1, _.min(domains, 'min').min),
-    max: _.max(domains, 'max').max
-  };
-  const unifiedYDomainColor = seriesIds
-    .map(seriesId => metadataBySeriesId[seriesId].color)
-    .reduce((a, b) => a === b ? a : 'rgba(0, 0, 0, 0.7)');
-  const unifiedYDomainBySeriesId = {};
-  _.each(seriesIds, seriesId => unifiedYDomainBySeriesId[seriesId] = unifiedYDomain);
-  return {
-    unifiedYDomain,
-    unifiedYDomainColor,
-    unifiedYDomainBySeriesId
-  };
+  if (seriesIds.length === 0) {
+    return {
+      unifiedYDomain: {
+        min: 0.5,
+        max: 15
+      },
+      unifiedYDomainColor: DEFAULT_COLOR,
+      unifiedYDomainBySeriesId: {}
+    }
+  } else {
+    const domains = seriesIds.map(seriesId => yDomainBySeriesId[seriesId]);
+    const unifiedYDomain = {
+      // Hack(-ish): log scales must be strictly positive or negative. For now, assume positive.
+      // https://github.com/d3/d3-scale#log-scales
+      min: Math.max(1, _.min(domains, 'min').min),
+      max: _.max(domains, 'max').max
+    };
+    const unifiedYDomainColor = _.chain(seriesIds)
+      .map(seriesId => metadataBySeriesId[seriesId].color)
+      .reduce((a, b) => a === b ? a : DEFAULT_COLOR)
+      .value();
+    const unifiedYDomainBySeriesId = {};
+    _.each(seriesIds, seriesId => unifiedYDomainBySeriesId[seriesId] = unifiedYDomain);
+    return {
+      unifiedYDomain,
+      unifiedYDomainColor,
+      unifiedYDomainBySeriesId
+    };
+  }
 }
 
 const memoizedSetMetadataYScale = memoize(setMetadataYScale, { max: 10 });
