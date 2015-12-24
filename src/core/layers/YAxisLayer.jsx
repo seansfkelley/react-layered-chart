@@ -19,6 +19,7 @@ class YAxisLayer extends React.Component {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.
     yDomains: React.PropTypes.arrayOf(propTypes.range).isRequired,
+    scales: React.PropTypes.arrayOf(React.PropTypes.func),
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
     defaultColor: React.PropTypes.string
   };
@@ -54,7 +55,8 @@ class YAxisLayer extends React.Component {
 
     let xOffset = 0;
     _.each(this.state['animated-yDomains'], (yDomain, i) => {
-      const yScale = d3Scale.linear()
+      const scaleFn = (this.props.scales || [])[i] || d3Scale.linear;
+      const yScale = scaleFn()
         .domain([ yDomain.min, yDomain.max ])
         .rangeRound([ 0, height ]);
 

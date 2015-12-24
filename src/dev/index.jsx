@@ -4,6 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import DefaultChart from '../ext/DefaultChart';
+import SparklineChart from '../ext/SparklineChart';
+import CombinedLogChart from '../ext/CombinedLogChart';
 import LayerType from '../ext/LayerType';
 
 import ActionType from './flux/ActionType';
@@ -66,7 +68,7 @@ store.dispatch(DataActions.setMetadata({
   },
   'uuid-5-group': {
     layerType: LayerType.GROUP,
-    color: 'rgba(255, 0, 255, 0.5)',
+    color: 'rgba(255, 0, 0, 0.5)',
     unit: 'some-other-unit',
     unitType: 'some-other-unit-type',
     groupedSeries: [
@@ -136,13 +138,25 @@ store.subscribe(() => {
   onHover(store.getState().hover);
 });
 
-const chart = <DefaultChart
-  store={store}
-  onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
-  onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
-  onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
-  onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
-/>
+const chart = <div className='many-charts'>
+  <DefaultChart
+    store={store}
+    onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
+    onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
+    onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
+    onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
+  />
+  <SparklineChart
+    store={store}
+  />
+  <CombinedLogChart
+    store={store}
+    onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
+    onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
+    onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
+    onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
+  />
+</div>
 
 ReactDOM.render(chart, document.getElementById('test-container'));
 
