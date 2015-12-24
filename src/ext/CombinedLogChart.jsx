@@ -10,8 +10,8 @@ import HoverLayer from '../core/layers/HoverLayer';
 import YAxisLayer from '../core/layers/YAxisLayer';
 import XAxisLayer from '../core/layers/XAxisLayer';
 import Stack from '../core/Stack';
+import propTypes from '../core/propTypes';
 
-import SelectFromStore from './mixins/SelectFromStore';
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 
 function setMetadataYScale(seriesIds, metadataBySeriesId) {
@@ -45,30 +45,34 @@ const memoizedSetMetadataYScale = memoize(setMetadataYScale, { max: 10 });
 const memoizedUnifyYDomains = memoize(unifyYDomains, { max: 10 });
 
 @PureRender
-@SelectFromStore
 class CombinedLogChart extends React.Component {
   static propTypes = {
-    store: React.PropTypes.object.isRequired,
+    seriesIds: React.PropTypes.arrayOf(React.PropTypes.string),
+    xDomain: propTypes.range,
+    yDomainBySeriesId: React.PropTypes.objectOf(propTypes.range),
+    metadataBySeriesId: React.PropTypes.object,
+    dataBySeriesId: React.PropTypes.object,
+    selection: propTypes.range,
+    hover: React.PropTypes.number,
+
     onPan: React.PropTypes.func,
     onZoom: React.PropTypes.func,
     onHover: React.PropTypes.func,
     onBrush: React.PropTypes.func
   };
 
-  static selectFromStore = {
-    selection: 'selection',
-    hover: 'hover',
-    xDomain: 'xDomain',
-    seriesIds: 'seriesIds',
-    yDomainBySeriesId: 'yDomainBySeriesId',
-    metadataBySeriesId: 'metadataBySeriesId',
-    dataBySeriesId: 'dataBySeriesId'
+  static defaultProps = {
+    seriesIds: [],
+    xDomain: { min: 0, max: 0 },
+    yDomainBySeriesId: {},
+    metadataBySeriesId: {},
+    dataBySeriesId: {}
   };
 
   render() {
     const metadataBySeriesIdWithScale = memoizedSetMetadataYScale(
-      this.state.seriesIds,
-      this.state.metadataBySeriesId
+      this.props.seriesIds,
+      this.props.metadataBySeriesId
     );
 
     const {
@@ -76,35 +80,35 @@ class CombinedLogChart extends React.Component {
       unifiedYDomainColor,
       unifiedYDomainBySeriesId
     } = memoizedUnifyYDomains(
-      this.state.seriesIds,
-      this.state.yDomainBySeriesId,
-      this.state.metadataBySeriesId
+      this.props.seriesIds,
+      this.props.yDomainBySeriesId,
+      this.props.metadataBySeriesId
     );
 
     return (
       <div className='log-chart'>
         <Stack className='chart-body'>
           <MetadataDrivenDataLayer
-            xDomain={this.state.xDomain}
+            xDomain={this.props.xDomain}
             yDomainBySeriesId={unifiedYDomainBySeriesId}
             metadataBySeriesId={metadataBySeriesIdWithScale}
-            dataBySeriesId={this.state.dataBySeriesId}
-            seriesIds={this.state.seriesIds}
+            dataBySeriesId={this.props.dataBySeriesId}
+            seriesIds={this.props.seriesIds}
           />
           <BrushLayer
-            xDomain={this.state.xDomain}
-            selection={this.state.selection}
+            xDomain={this.props.xDomain}
+            selection={this.props.selection}
           />
           <InteractionCaptureLayer
-            xDomain={this.state.xDomain}
+            xDomain={this.props.xDomain}
             onHover={this.props.onHover}
             onPan={this.props.onPan}
             onZoom={this.props.onZoom}
             onBrush={this.props.onBrush}
           />
           <HoverLayer
-            xDomain={this.state.xDomain}
-            hover={this.state.hover}
+            xDomain={this.props.xDomain}
+            hover={this.props.hover}
           />
           <YAxisLayer
             yDomains={[ unifiedYDomain ]}
@@ -114,7 +118,7 @@ class CombinedLogChart extends React.Component {
         </Stack>
         <Stack className='time-axis'>
           <XAxisLayer
-            xDomain={this.state.xDomain}
+            xDomain={this.props.xDomain}
           />
         </Stack>
       </div>

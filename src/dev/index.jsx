@@ -2,6 +2,7 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
 
 import DefaultChart from '../ext/DefaultChart';
 import SparklineChart from '../ext/SparklineChart';
@@ -10,12 +11,10 @@ import LayerType from '../ext/LayerType';
 
 import ActionType from './flux/ActionType';
 import storeFactory from './flux/storeFactory';
-import InteractionActions from './flux/InteractionActions';
 import DataActions from './flux/DataActions';
 import AxesActions from './flux/AxesActions';
 
-import _ from 'lodash';
-
+import ReduxChartWrapper from './ReduxChartWrapper';
 import fakeDataGenerators from './fakeDataGenerators';
 
 const NOW = Date.now();
@@ -139,23 +138,17 @@ store.subscribe(() => {
 });
 
 const chart = <div className='many-charts'>
-  <DefaultChart
-    store={store}
-    onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
-    onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
-    onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
-    onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
-  />
-  <SparklineChart
-    store={store}
-  />
-  <CombinedLogChart
-    store={store}
-    onHover={(xPos) => store.dispatch(InteractionActions.hover(xPos))}
-    onPan={(deltaX) => store.dispatch(InteractionActions.pan(deltaX))}
-    onZoom={(factor, focus) => store.dispatch(InteractionActions.zoom(factor, focus))}
-    onBrush={(brush) => store.dispatch(InteractionActions.brush(brush))}
-  />
+  <ReduxChartWrapper store={store}>
+    <DefaultChart/>
+  </ReduxChartWrapper>
+
+  <ReduxChartWrapper store={store}>
+    <SparklineChart/>
+  </ReduxChartWrapper>
+
+  <ReduxChartWrapper store={store}>
+    <CombinedLogChart/>
+  </ReduxChartWrapper>
 </div>
 
 ReactDOM.render(chart, document.getElementById('test-container'));

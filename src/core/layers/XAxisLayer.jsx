@@ -51,7 +51,6 @@ class XAxisLayer extends React.Component {
     context.textBaseline = 'top';
     context.fillStyle = this.props.color;
     context.font = '12px sans-serif';
-    context.strokeStyle = this.props.color;
 
     for (let i = 0; i < ticks.length; ++i) {
       const xOffset = xScale(ticks[i]);
@@ -60,8 +59,10 @@ class XAxisLayer extends React.Component {
 
       context.moveTo(xOffset, 0);
       context.lineTo(xOffset, height)
-      context.stroke();
     }
+
+    context.strokeStyle = this.props.color;
+    context.stroke();
   };
 }
 
