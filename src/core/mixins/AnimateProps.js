@@ -10,13 +10,13 @@ function animateOnce(fromValue, toValue, durationMs, onFrame) {
   const interpolator = d3Interpolate.value(fromValue, toValue);
   const frameCount = Math.ceil(durationMs / 1000 * ANIMATION_FRAMERATE);
 
-  let frame = 0;
+  let frame = 1;
   const setIntervalId = setInterval(() => {
     onFrame(interpolator(d3Ease.cubicInOut(frame / frameCount)));
-    frame++;
     if (frame === frameCount) {
       clearInterval(setIntervalId);
     }
+    frame++;
   }, durationMs / frameCount);
 
   return () => { clearInterval(setIntervalId); };
