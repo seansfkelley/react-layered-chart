@@ -13,7 +13,8 @@
     "start": "./node_modules/http-server/bin/http-server -c-1",
     "test": "multi=\"mocha-osx-reporter=- spec=-\" ./node_modules/.bin/mocha --reporter mocha-multi",
     "build:lib": "./node_modules/.bin/babel src/ -d lib/",
-    "build:dist": "./node_modules/.bin/webpack"
+    "build:dist": "./node_modules/.bin/webpack",
+    "prepublish": "npm run build:lib && npm run build:dist"
   },
   "babel": {
     "presets": [
