@@ -7,7 +7,7 @@ import CanvasRender from '../mixins/CanvasRender';
 import AnimateProps from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForInstantaeousData } from '../findDataBounds';
+import { getBoundsForInstantaeousData } from '../util';
 import propTypes from '../propTypes';
 
 @PureRender

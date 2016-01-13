@@ -11,14 +11,15 @@ import rename from 'gulp-rename';
 import stylus from 'gulp-stylus';
 import concat from 'gulp-concat';
 
-function buildScripts(watch = false, dieOnError = false) {
-  let bundler = browserify('./src/dev/index.jsx', {
+function buildScript(src, dest, standalone, watch = false, dieOnError = false) {
+  let bundler = browserify(src, {
     extensions   : [ '.js', '.jsx' ],
     debug        : true,
     cache        : {},
     packageCache : {},
     fullPaths    : true,
-    transform    : [ 'babelify' ]
+    transform    : [ 'babelify' ],
+    standalone
   });
 
   if (watch) {
@@ -31,55 +32,64 @@ function buildScripts(watch = false, dieOnError = false) {
     if (!dieOnError) {
       bundle.on('error', notify.onError({
         title : 'Browserify Error',
-        sound : 'Sosumi'
+        sound : 'Sosumi',
+        wait  : false
       }));
     }
 
     return bundle
-      .pipe(sourceStream('index.js'))
+      .pipe(sourceStream(dest))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps : true}))
       .pipe(notify({
         title   : 'Finished compiling Javascript',
         message : '<%= file.relative %>',
+        sound   : 'Glass',
+        wait    : false
       }))
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./build'))
       .pipe(filter([ '*', '!*.map' ]))
       .pipe(livereload());
   }
 
   bundler.on('update', rebundle);
-  rebundle();
+  return rebundle();
 }
 
 function buildStyles() {
-  gulp.src('./styles/**/*.styl')
+  return gulp.src('./styles/**/*.styl')
     .pipe(sourcemaps.init({ loadMaps : true }))
     .pipe(stylus())
     .on('error', notify.onError({
       title : 'Stylus Error',
-      sound : 'Sosumi'
+      sound : 'Sosumi',
+      wait  : false
     }))
     .pipe(concat('all-styles.css'))
     .pipe(notify({
       title   : 'Finished compiling CSS',
       message : '<%= file.relative %>',
-      sound   : 'Glass'
+      sound   : 'Glass',
+      wait    : false
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('./build'))
     .pipe(filter([ '*', '!*.map' ]))
     .pipe(livereload());
 }
 
-gulp.task('scripts', () => buildScripts(false, true));
 gulp.task('styles', buildStyles);
-gulp.task('watch', function() {
+
+gulp.task('dev:watch', () => {
   livereload.listen();
-  buildScripts(true, false);
+  buildScript('./src/dev/index.jsx', 'dev-index.js', undefined, true, false);
   buildStyles();
-  gulp.watch('./styles/**/*.styl', [ 'styles' ]);
+  return gulp.watch('./styles/**/*.styl', [ 'styles' ]);
 });
-gulp.task('dist', [ 'scripts', 'styles' ]);
-gulp.task('default', [ 'watch' ]);
+
+gulp.task('scripts:dist', () => {
+  return buildScript('./src/core/index.js', 'index.js', 'react-layered-chart', false, true);
+});
+gulp.task('dist', [ 'scripts:dist', 'styles' ]);
+gulp.task('default', [ 'dev:watch' ]);

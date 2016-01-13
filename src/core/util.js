@@ -38,3 +38,8 @@ export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'tim
 
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }
+
+export default {
+  getBoundsForInstantaeousData,
+  getBoundsForTimeSpanData
+};

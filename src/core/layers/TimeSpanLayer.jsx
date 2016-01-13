@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import CanvasRender from '../mixins/CanvasRender';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForTimeSpanData } from '../findDataBounds';
+import { getBoundsForTimeSpanData } from '../util';
 
 import propTypes from '../propTypes';
 
