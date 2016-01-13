@@ -4,3 +4,4 @@
 - replace lodash with the bits of lodash that are actually used by src (gotcha: how to make sure that I don't inadvertently use lodash proper in those while allowing it in src-dev?)
 - the "mixins" are actually decorators, though exposing them as mixins may be useful: factor them out, then split them into mixins and decorators (and make wrapAndDelegateAfter take a mixin! -> mixin2decorator)
 - replace stylus with regular old css, cause it's pretty simple
+- readme
