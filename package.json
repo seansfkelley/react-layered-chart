@@ -44,9 +44,14 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-stylus": "^2.1.1",
     "http-server": "^0.8.5",
+    "memoizee": "^0.3.9",
     "mocha": "^2.3.4",
     "mocha-multi": "^0.7.2",
     "mocha-osx-reporter": "^0.1.2",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "redux": "^3.0.5",
+    "redux-thunk": "^1.0.2",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
     "vinyl-buffer": "^1.0.0",
@@ -59,17 +64,16 @@
     "d3-interpolate": "^0.3.0",
     "d3-scale": "^0.3.0",
     "lodash": "^3.10.1",
-    "memoizee": "^0.3.9",
-    "pure-render-decorator": "^0.2.0",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "redux": "^3.0.5",
-    "redux-thunk": "^1.0.2"
+    "pure-render-decorator": "^0.2.0"
+  },
+  "peerDependencies": {
+    "react": "^0.14.3"
   },
   "keywords": [
     "timeline",
     "time",
     "series",
+    "chart",
     "canvas",
     "react"
   ]
