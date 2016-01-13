@@ -132,7 +132,7 @@ class BucketedLineLayer extends React.Component {
     }
     context.strokeStyle = this.props.color;
     context.stroke();
-  }
+  };
 }
 
 export default BucketedLineLayer;

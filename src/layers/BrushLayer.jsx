@@ -56,7 +56,7 @@ class BrushLayer extends React.Component {
       context.fillStyle = this.props.fill;
       context.fill();
     }
-  }
+  };
 }
 
 export default BrushLayer;

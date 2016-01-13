@@ -52,7 +52,7 @@ class TimeSpanLayer extends React.Component {
       context.fillStyle = this.props.data[i].color || this.props.color;
       context.fill();
     }
-  }
+  };
 }
 
 export default TimeSpanLayer;

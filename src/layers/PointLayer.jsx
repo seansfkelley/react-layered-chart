@@ -69,7 +69,7 @@ class PointLayer extends React.Component {
 
     context.fillStyle = this.props.color;
     context.fill();
-  }
+  };
 }
 
 export default PointLayer;

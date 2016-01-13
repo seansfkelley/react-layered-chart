@@ -69,7 +69,7 @@ class BarLayer extends React.Component {
 
     context.fillStyle = this.props.color;
     context.fill();
-  }
+  };
 }
 
 export default BarLayer;
