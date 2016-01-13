@@ -1,5 +1,6 @@
 node_modules
-build
+lib
+dist
 .DS_Store
 *.sublime-workspace
 *.log

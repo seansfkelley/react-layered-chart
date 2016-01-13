@@ -11,7 +11,9 @@
   },
   "scripts": {
     "start": "./node_modules/http-server/bin/http-server -c-1",
-    "test": "multi=\"mocha-osx-reporter=- spec=-\" ./node_modules/.bin/mocha --reporter mocha-multi"
+    "test": "multi=\"mocha-osx-reporter=- spec=-\" ./node_modules/.bin/mocha --reporter mocha-multi",
+    "build:lib": "./node_modules/.bin/babel src/ -d lib/",
+    "build:dist": "./node_modules/.bin/webpack"
   },
   "babel": {
     "presets": [
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "babel": "^6.3.13",
+    "babel-cli": "^6.4.0",
     "babel-core": "^6.3.17",
     "babel-loader": "^6.2.1",
     "babel-plugin-transform-class-properties": "^6.3.13",
