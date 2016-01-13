@@ -1,8 +1,8 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 
-import Stack from '../core/Stack';
-import propTypes from '../core/propTypes';
+import Stack from '../../src/Stack';
+import propTypes from '../../src/propTypes';
 
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 

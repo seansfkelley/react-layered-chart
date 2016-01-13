@@ -3,13 +3,13 @@ import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
 import memoize from 'memoizee';
 
-import BrushLayer from '../core/layers/BrushLayer';
-import InteractionCaptureLayer from '../core/layers/InteractionCaptureLayer';
-import HoverLayer from '../core/layers/HoverLayer';
-import YAxisLayer from '../core/layers/YAxisLayer';
-import XAxisLayer from '../core/layers/XAxisLayer';
-import Stack from '../core/Stack';
-import propTypes from '../core/propTypes';
+import BrushLayer from '../../src/layers/BrushLayer';
+import InteractionCaptureLayer from '../../src/layers/InteractionCaptureLayer';
+import HoverLayer from '../../src/layers/HoverLayer';
+import YAxisLayer from '../../src/layers/YAxisLayer';
+import XAxisLayer from '../../src/layers/XAxisLayer';
+import Stack from '../../src/Stack';
+import propTypes from '../../src/propTypes';
 
 import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 import { mergeRangesOfSameType } from './util';

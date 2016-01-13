@@ -83,13 +83,13 @@ gulp.task('styles', buildStyles);
 
 gulp.task('dev:watch', () => {
   livereload.listen();
-  buildScript('./src/dev/index.jsx', 'dev-index.js', undefined, true, false);
+  buildScript('./src-dev/dev/index.jsx', 'dev-index.js', undefined, true, false);
   buildStyles();
   return gulp.watch('./styles/**/*.styl', [ 'styles' ]);
 });
 
 gulp.task('scripts:dist', () => {
-  return buildScript('./src/core/index.js', 'index.js', 'react-layered-chart', false, true);
+  return buildScript('./src/index.js', 'index.js', 'react-layered-chart', false, true);
 });
 gulp.task('dist', [ 'scripts:dist', 'styles' ]);
 gulp.task('default', [ 'dev:watch' ]);
