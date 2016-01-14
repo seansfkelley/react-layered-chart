@@ -1,5 +1,5 @@
-node_modules
 src-dev
 *.sublime-project
 *.sublime-workspace
+index.html
 todo
