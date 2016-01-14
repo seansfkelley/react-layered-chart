@@ -40,7 +40,7 @@ class MetadataDrivenDataLayer extends React.Component {
   _getLayerForSeriesId = (seriesId) => {
     const metadata = this.props.metadataBySeriesId[seriesId] || {};
 
-    const baseLayerProps = _.extend({
+    const baseLayerProps = _.assign({
       xDomain: this.props.xDomain,
       yDomain: this.props.yDomainBySeriesId[seriesId]
     }, metadata);

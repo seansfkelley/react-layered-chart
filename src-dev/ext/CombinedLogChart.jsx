@@ -17,10 +17,10 @@ import MetadataDrivenDataLayer from './layers/MetadataDrivenDataLayer';
 const DEFAULT_COLOR = 'rgba(0, 0, 0, 0.7)';
 
 function setMetadataYScale(seriesIds, metadataBySeriesId) {
-  return _.chain(metadataBySeriesId)
-    .pick(seriesIds)
-    .mapValues(metadata => _.defaults({ yScale: d3Scale.log }, metadata))
-    .value();
+  return _.mapValues(
+    _.pick(metadataBySeriesId, seriesIds),
+    metadata => _.defaults({ yScale: d3Scale.log }, metadata)
+  );
 }
 
 function unifyYDomains(seriesIds, yDomainBySeriesId, metadataBySeriesId) {
@@ -41,10 +41,11 @@ function unifyYDomains(seriesIds, yDomainBySeriesId, metadataBySeriesId) {
       min: Math.max(1, _.minBy(domains, 'min').min),
       max: _.maxBy(domains, 'max').max
     };
-    const unifiedYDomainColor = _.chain(seriesIds)
-      .map(seriesId => metadataBySeriesId[seriesId].color)
-      .reduce((a, b) => a === b ? a : DEFAULT_COLOR)
-      .value();
+
+    const unifiedYDomainColor = _.reduce(
+      _.map(seriesIds, seriesId => metadataBySeriesId[seriesId].color),
+      (a, b) => a === b ? a : DEFAULT_COLOR
+    );
     const unifiedYDomainBySeriesId = {};
     _.each(seriesIds, seriesId => unifiedYDomainBySeriesId[seriesId] = unifiedYDomain);
     return {

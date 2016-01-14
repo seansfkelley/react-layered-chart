@@ -39,7 +39,7 @@ class ReduxChartWrapper extends React.Component {
   };
 
   render() {
-    return React.cloneElement(React.Children.only(this.props.children), _.extend({
+    return React.cloneElement(React.Children.only(this.props.children), _.assign({
       onHover: this._onHover,
       onPan: this._onPan,
       onZoom: this._onZoom,
