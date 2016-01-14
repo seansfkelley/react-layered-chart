@@ -2,7 +2,7 @@ import _ from 'lodash';
 import d3Interpolate from 'd3-interpolate';
 import d3Ease from 'd3-ease';
 
-import wrapAndDelegateAfter from './wrapAndDelegateAfter';
+import mixinToDecorator from './mixinToDecorator';
 
 const ANIMATION_FRAMERATE = 30;
 
@@ -22,8 +22,8 @@ function animateOnce(fromValue, toValue, durationMs, onFrame) {
   return () => { clearInterval(setIntervalId); };
 }
 
-export default function AnimateProps(component) {
-  wrapAndDelegateAfter(component, 'componentWillMount', function() {
+export const mixin = {
+  componentWillMount: function() {
     if (!_.isPlainObject(this.animatedProps)) {
       throw new Error(this.constructor.name + ' must have an animatedProps field to use the AnimateProps decorator');
     }
@@ -34,9 +34,9 @@ export default function AnimateProps(component) {
         [`animated-${propName}`]: this.props[propName]
       });
     });
-  });
+  },
 
-  wrapAndDelegateAfter(component, 'componentWillReceiveProps', function(nextProps) {
+  componentWillReceiveProps: function(nextProps) {
     _.each(this.animatedProps, (durationMs, propName) => {
       if (this.props[propName] !== nextProps[propName]) {
         if (durationMs > 0) {
@@ -55,5 +55,11 @@ export default function AnimateProps(component) {
         }
       }
     });
-  });
-}
+  },
+
+  componentWillUnmount: function() {
+    _.each(this.__animatingPropCancelCallbacks, (fn) => fn());
+  }
+};
+
+export const decorator = mixinToDecorator(mixin);

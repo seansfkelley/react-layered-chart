@@ -2,4 +2,3 @@
 - test perf
 - storing series IDs in the store doesn't make a whole lot of sense; perhaps they should be layer IDs and then you can inject data into different layers; this would also include the brush layer and stuff
 - replace lodash with the bits of lodash that are actually used by src (gotcha: how to make sure that I don't inadvertently use lodash proper in those while allowing it in src-dev?)
-- the "mixins" are actually decorators, though exposing them as mixins may be useful: factor them out, then split them into mixins and decorators (and make wrapAndDelegateAfter take a mixin! -> mixin2decorator)

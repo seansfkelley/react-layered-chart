@@ -3,7 +3,7 @@ import PureRender from 'pure-render-decorator';
 import _ from 'lodash';
 
 import InteractionActions from './flux/InteractionActions';
-import SelectFromStore from './mixins/SelectFromStore';
+import { decorator as SelectFromStore } from './mixins/SelectFromStore';
 
 @PureRender
 @SelectFromStore

@@ -1,9 +1,9 @@
 import _ from 'lodash';
 
-import wrapAndDelegateAfter from './wrapAndDelegateAfter';
+import mixinToDecorator from './mixinToDecorator';
 
-export default function CanvasRender(component){
-  wrapAndDelegateAfter(component, 'componentDidMount', function() {
+export const mixin = {
+  componentDidMount: function (){
     if (!_.isFunction(this.canvasRender)) {
       throw new Error(this.constructor.name + ' must implement a canvasRender function to use the CanvasRender decorator');
     }
@@ -14,15 +14,17 @@ export default function CanvasRender(component){
     }.bind(this);
 
     this.__lastRafRequest = requestAnimationFrame(this.__boundCanvasRender);
-  });
+  },
 
-  wrapAndDelegateAfter(component, 'componentDidUpdate', function() {
+  componentDidUpdate: function() {
     if (!this.__lastRafRequest) {
       this.__lastRafRequest = requestAnimationFrame(this.__boundCanvasRender);
     }
-  });
+  },
 
-  wrapAndDelegateAfter(component, 'componentWillUnmount', function() {
+  componentWillUnmount: function() {
     cancelAnimationFrame(this.__lastRafRequest);
-  });
-}
+  }
+};
+
+export const decorator = mixinToDecorator(mixin);

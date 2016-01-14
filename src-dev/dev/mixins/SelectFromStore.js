@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import wrapAndDelegateAfter from '../../../src/mixins/wrapAndDelegateAfter';
+import mixinToDecorator from '../../../src/mixins/mixinToDecorator';
 
 function _makeSelectFromObject(selectorObject) {
   return function(store) {
@@ -8,8 +8,8 @@ function _makeSelectFromObject(selectorObject) {
   };
 }
 
-export default function SelectFromStore(component){
-  wrapAndDelegateAfter(component, 'componentWillMount', function() {
+export const mixin = {
+  componentWillMount: function() {
     let selectorFn;
     if (_.isPlainObject(this.constructor.selectFromStore)) {
       selectorFn = _makeSelectFromObject(this.constructor.selectFromStore);
@@ -25,9 +25,11 @@ export default function SelectFromStore(component){
       this.setState(boundSelectorFn(this.props.store.getState()))
     );
     this.setState(boundSelectorFn(this.props.store.getState()));
-  });
+  },
 
-  wrapAndDelegateAfter(component, 'componentWillUnmount', function() {
+  componentWillUnmount: function() {
     this.__reduxUnsubscribe();
-  });
-}
+  }
+};
+
+export const decorator = mixinToDecorator(mixin);

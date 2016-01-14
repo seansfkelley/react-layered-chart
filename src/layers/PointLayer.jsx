@@ -3,8 +3,8 @@ import PureRender from 'pure-render-decorator';
 import d3Scale from 'd3-scale';
 import _ from 'lodash';
 
-import CanvasRender from '../mixins/CanvasRender';
-import AnimateProps from '../mixins/AnimateProps';
+import { decorator as CanvasRender } from '../mixins/CanvasRender';
+import { decorator as AnimateProps } from '../mixins/AnimateProps';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForInstantaeousData } from '../util';
