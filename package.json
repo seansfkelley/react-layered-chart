@@ -10,10 +10,11 @@
     "url": "https://github.com/seansfkelley/react-layered-chart.git"
   },
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server --inline --open",
+    "dev:js": "./node_modules/.bin/webpack-dev-server --inline --open",
+    "dev:css": "./node_modules/.bin/stylus -o dist -w -m styles",
     "test": "multi=\"mocha-osx-reporter=- spec=-\" ./node_modules/.bin/mocha --reporter mocha-multi",
     "build:lib": "./node_modules/.bin/babel src/ -d lib/",
-    "build:dist": "./node_modules/.bin/webpack",
+    "build:dist": "./node_modules/.bin/webpack && ./node_modules/.bin/stylus styles/index.styl -o dist",
     "prepublish": "npm run build:lib && npm run build:dist"
   },
   "babel": {
@@ -45,6 +46,7 @@
     "redux-thunk": "^1.0.2",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
+    "stylus": "^0.53.0",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },

@@ -1,0 +1,36 @@
+body
+  margin 0
+
+#test-container
+  width 100%
+  height 100%
+
+#test-container .many-charts
+  width 100%
+  height 100%
+
+  display flex
+  flex-direction column
+
+  .default-chart, .sparkline-chart, .log-chart
+    flex 1
+
+.default-chart
+  display flex
+  flex-direction column
+
+  .stack.chart-body
+    flex 1
+
+  .stack.time-axis
+    height 20px
+
+.log-chart
+  display flex
+  flex-direction column
+
+  .stack.chart-body
+    flex 1
+
+  .stack.time-axis
+    height 20px

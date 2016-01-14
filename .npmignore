@@ -3,3 +3,4 @@ src-dev
 *.sublime-workspace
 index.html
 todo
+dist/dev-index.*
