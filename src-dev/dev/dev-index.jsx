@@ -94,8 +94,8 @@ const onTimeRangeChange = _.debounce(xDomain => {
     latestXDomain = xDomain;
     const { min, max } = xDomain;
     const data = fakeDataGenerators.makeFakeBucketedData(max, max - min, Y_RANGE, (max - min) / 400);
-    const minValue = _.min(data, d => d.bounds.minValue).bounds.minValue;
-    const maxValue = _.max(data, d => d.bounds.maxValue).bounds.maxValue;
+    const minValue = _.minBy(data, d => d.bounds.minValue).bounds.minValue;
+    const maxValue = _.maxBy(data, d => d.bounds.maxValue).bounds.maxValue;
 
     store.dispatch(DataActions.setData({
       'uuid-4': data
@@ -119,7 +119,7 @@ const onHover = _.debounce(timestamp => {
   lastTimestamp = timestamp;
   if (timestamp !== null) {
     const data = store.getState().dataBySeriesId['uuid-5'];
-    const index = _.sortedIndex(data, { timestamp }, 'timestamp');
+    const index = _.sortedIndexBy(data, { timestamp }, 'timestamp');
     store.dispatch(DataActions.setData({
       'uuid-5-hover': [ data[index] ]
     }));

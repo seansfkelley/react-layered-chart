@@ -38,8 +38,8 @@ function unifyYDomains(seriesIds, yDomainBySeriesId, metadataBySeriesId) {
     const unifiedYDomain = {
       // Hack(-ish): log scales must be strictly positive or negative. For now, assume positive.
       // https://github.com/d3/d3-scale#log-scales
-      min: Math.max(1, _.min(domains, 'min').min),
-      max: _.max(domains, 'max').max
+      min: Math.max(1, _.minBy(domains, 'min').min),
+      max: _.maxBy(domains, 'max').max
     };
     const unifiedYDomainColor = _.chain(seriesIds)
       .map(seriesId => metadataBySeriesId[seriesId].color)
