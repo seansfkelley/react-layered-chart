@@ -19,8 +19,8 @@ export function getBoundsForInstantaeousData(timestampedData, timeRange, timesta
   const lowerBound = _.set({}, timestampPath, timeRange.min);
   const upperBound = _.set({}, timestampPath, timeRange.max);
 
-  const firstIndex = _.sortedIndex(timestampedData, lowerBound, timestampPath);
-  const lastIndex = _.sortedLastIndex(timestampedData, upperBound, timestampPath);
+  const firstIndex = _.sortedIndexBy(timestampedData, lowerBound, timestampPath);
+  const lastIndex = _.sortedLastIndexBy(timestampedData, upperBound, timestampPath);
 
   return adjustBounds(firstIndex, lastIndex, timestampedData.length);
 }
@@ -33,8 +33,8 @@ export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'tim
 
   // Also note that this is a loose bound -- there could be spans that start later and end earlier such that
   // they don't actually fit inside the bounds, but 80-20 this is speedy and still correct, though wasteful.
-  const firstIndex = _.sortedIndex(timeSpanData, lowerBound, maxPath);
-  const lastIndex = _.sortedLastIndex(timeSpanData, upperBound, minPath);
+  const firstIndex = _.sortedIndexBy(timeSpanData, lowerBound, maxPath);
+  const lastIndex = _.sortedLastIndexBy(timeSpanData, upperBound, minPath);
 
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }

@@ -42,8 +42,8 @@ function getMergedYDomains(shouldMerge, seriesIds, yDomainBySeriesId, metadataBy
 
     return {
       mergedYDomainBySeriesId,
-      orderedYDomains: _.pluck(rangeGroups, 'range'),
-      orderedColors: _.pluck(rangeGroups, 'color')
+      orderedYDomains: _.map(rangeGroups, 'range'),
+      orderedColors: _.map(rangeGroups, 'color')
     }
   }
 }
