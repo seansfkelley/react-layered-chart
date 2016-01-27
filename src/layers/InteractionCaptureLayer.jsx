@@ -10,11 +10,20 @@ const LEFT_MOUSE_BUTTON = 0;
 @PureRender
 class InteractionCaptureLayer extends React.Component {
   static propTypes = {
+    shouldZoom: React.PropTypes.func,
+    shouldPan: React.PropTypes.func,
+    shouldBrush: React.PropTypes.func,
     onZoom: React.PropTypes.func,
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
     xDomain: propTypes.range.isRequired
+  };
+
+  static defaultProps = {
+    shouldZoom: (event) => event.shiftKey,
+    shouldPan: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
+    shouldBrush: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON
   };
 
   state = {
@@ -76,9 +85,9 @@ class InteractionCaptureLayer extends React.Component {
   }
 
   _onMouseDown = (event) => {
-    if (this.props.onPan && event.shiftKey && event.button === LEFT_MOUSE_BUTTON) {
+    if (this.props.onPan && this.props.shouldPan(event)) {
       this.setState({ isPanning: true, lastPanClientX: event.clientX });
-    } else if (this.props.onBrush && event.button === LEFT_MOUSE_BUTTON) {
+    } else if (this.props.onBrush && this.props.shouldBrush(event)) {
       this.setState({ isBrushing: true, startBrushClientX: event.clientX });
     }
     event.stopPropagation();
@@ -109,7 +118,7 @@ class InteractionCaptureLayer extends React.Component {
   };
 
   _onWheel = (event) => {
-    if (this.props.onZoom && event.shiftKey && event.deltaY) {
+    if (this.props.onZoom && event.deltaY && this.props.shouldZoom(event)) {
       const boundingClientRect = this._getBoundingClientRect();
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
       this.props.onZoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus);
