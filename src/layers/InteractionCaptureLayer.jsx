@@ -113,6 +113,7 @@ class InteractionCaptureLayer extends React.Component {
       const boundingClientRect = this._getBoundingClientRect();
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
       this.props.onZoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus);
+      event.preventDefault();
     }
     event.stopPropagation();
   };
