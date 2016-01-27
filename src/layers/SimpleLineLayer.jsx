@@ -42,6 +42,7 @@ class SimpleLineLayer extends React.Component {
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
     context.resetTransform();
+    context.scale(this.context.pixelRatio, this.context.pixelRatio);
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 

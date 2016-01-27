@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { decorator as CanvasRender } from '../mixins/CanvasRender';
 import { decorator as AnimateProps } from '../mixins/AnimateProps';
+import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';
@@ -13,6 +14,7 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @AnimateProps
+@PixelRatioContext
 class BarLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -41,6 +43,7 @@ class BarLayer extends React.Component {
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
     context.resetTransform();
+    context.scale(this.context.pixelRatio, this.context.pixelRatio);
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 

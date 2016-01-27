@@ -1,6 +1,7 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import classnames from 'classnames';
+
 import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 
 @PureRender

@@ -5,6 +5,8 @@ import _ from 'lodash';
 
 import { decorator as CanvasRender } from '../mixins/CanvasRender';
 import { decorator as AnimateProps } from '../mixins/AnimateProps';
+import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
+
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 
@@ -14,6 +16,7 @@ const TICK_LENGTH = 4;
 @PureRender
 @CanvasRender
 @AnimateProps
+@PixelRatioContext
 class YAxisLayer extends React.Component {
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
@@ -52,6 +55,7 @@ class YAxisLayer extends React.Component {
     const { width, height } = this.refs.canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
     context.resetTransform();
+    context.scale(this.context.pixelRatio, this.context.pixelRatio);
     context.clearRect(0, 0, width, height);
     context.translate(0.5, 0.5);
 
