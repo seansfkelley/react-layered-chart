@@ -1,4 +1,5 @@
 import ActionType from './ActionType';
+import { resolvePan, resolveZoom } from '../../../src/util';
 
 function hover(timestamp) {
   return {
@@ -14,16 +15,7 @@ const EXTENT_MIN = 1000 * 60;
 // focus must be on [0, 1]
 function zoom(factor, focus = 0.5) {
   return (dispatch, getState) => {
-    const currentXDomain = getState().xDomain;
-    const currentExtent = currentXDomain.max - currentXDomain.min;
-    const targetExtent = currentExtent * factor;
-    const extentDelta = currentExtent - targetExtent;
-
-    const xDomain = {
-      min: currentXDomain.min - extentDelta * focus,
-      max: currentXDomain.max + extentDelta * (1 - focus)
-    };
-
+    const xDomain = resolveZoom(getState().xDomain, factor, focus);
     const extent = xDomain.max - xDomain.min;
     if (EXTENT_MAX > extent && extent > EXTENT_MIN) {
       dispatch({
@@ -36,13 +28,7 @@ function zoom(factor, focus = 0.5) {
 
 function pan(delta) {
   return (dispatch, getState) => {
-    const currentXDomain = getState().xDomain;
-
-    const xDomain = {
-      min: currentXDomain.min + delta,
-      max: currentXDomain.max + delta
-    };
-
+    const xDomain = resolvePan(getState().xDomain, delta);
     dispatch({
       type: ActionType.SET_X_DOMAIN,
       payload: xDomain

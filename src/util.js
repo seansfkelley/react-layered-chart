@@ -39,7 +39,27 @@ export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'tim
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }
 
+export function resolvePan(domain, delta) {
+  return {
+    min: domain.min + delta,
+    max: domain.max + delta
+  };
+}
+
+export function resolveZoom(domain, factor, focus) {
+  const currentExtent = domain.max - domain.min;
+  const targetExtent = currentExtent * factor;
+  const extentDelta = currentExtent - targetExtent;
+
+  return {
+    min: domain.min - extentDelta * focus,
+    max: domain.max + extentDelta * (1 - focus)
+  };
+}
+
 export default {
   getBoundsForInstantaeousData,
-  getBoundsForTimeSpanData
+  getBoundsForTimeSpanData,
+  resolvePan,
+  resolveZoom
 };
