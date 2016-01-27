@@ -20,13 +20,19 @@ class YAxisLayer extends React.Component {
     // want to animate a bunch of extraneous metadata.
     yDomains: React.PropTypes.arrayOf(propTypes.range).isRequired,
     scales: React.PropTypes.arrayOf(React.PropTypes.func),
+    ticks: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.arrayOf(React.PropTypes.number)
+    ])),
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
-    defaultColor: React.PropTypes.string
+    defaultColor: React.PropTypes.string,
+    font: React.PropTypes.string
   };
 
   static defaultProps = {
     colors: [],
-    defaultColor: '#444'
+    defaultColor: '#444',
+    font: '12px sans-serif'
   };
 
   animatedProps = {
@@ -51,7 +57,7 @@ class YAxisLayer extends React.Component {
 
     context.textAlign = 'end';
     context.textBaseline = 'middle';
-    context.font = '12px sans-serif';
+    context.font = this.props.font;
 
     let xOffset = 0;
     _.each(this.state['animated-yDomains'], (yDomain, i) => {
@@ -60,7 +66,20 @@ class YAxisLayer extends React.Component {
         .domain([ yDomain.min, yDomain.max ])
         .rangeRound([ 0, height ]);
 
-      const ticks = yScale.ticks(5);
+      let ticks;
+      let computeTicks = _.get(this, [ 'props', 'ticks', i ]);
+      if (computeTicks) {
+        if (_.isFunction(computeTicks)) {
+          ticks = computeTicks(yDomain);
+        } else if (_.isArray(computeTicks)) {
+          ticks = computeTicks;
+        } else {
+          throw new Error('ticks must be a function or array');
+        }
+      } else {
+        ticks = yScale.ticks(5);
+      }
+      // TODO: Does this also need to be configurable?
       const format = yScale.tickFormat(5);
 
       const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));

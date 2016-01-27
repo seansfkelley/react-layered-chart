@@ -153,6 +153,5 @@ ReactDOM.render(chart, document.getElementById('test-container'));
 
 
 // For debugging!
-window._ = _;
 window.store = store;
 window.memoizeStats = require('memoizee/profile');
