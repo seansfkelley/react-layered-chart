@@ -13,7 +13,7 @@ export const mixin = {
   },
 
   getChildContext: function() {
-    return this.context.pixelRatio || this.props.pixelRatio || 1;
+    return { pixelRatio: this.props.pixelRatio || this.context.pixelRatio };
   }
 };
 
