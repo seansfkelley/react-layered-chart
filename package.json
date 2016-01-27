@@ -1,6 +1,6 @@
 {
   "name": "react-layered-chart",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A high-performance canvas-based time series visualization in React.",
   "main": "lib/index.js",
   "author": "Sean Kelley <seansfkelley@gmail.com>",
