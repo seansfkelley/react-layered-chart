@@ -10,7 +10,7 @@ module.exports = {
         publicPath: '/',
         filename: '[name].js',
         sourceMapFilename: '[file].map',
-        library: 'ReactLayeredChart',
+        library: 'LayeredChart',
         libraryTarget: 'umd'
     },
     externals: {
