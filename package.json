@@ -15,7 +15,7 @@
     "test": "multi=\"mocha-osx-reporter=- spec=-\" mocha --reporter mocha-multi",
     "build:lib": "babel src/ -d lib/",
     "build:dist": "webpack && stylus styles/index.styl -o dist",
-    "prepublish": "npm run build:lib && npm run build:dist"
+    "prepublish": "npm test -- --reporter landing && npm run build:lib && npm run build:dist"
   },
   "babel": {
     "presets": [
