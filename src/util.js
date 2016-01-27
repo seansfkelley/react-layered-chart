@@ -33,6 +33,8 @@ export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'tim
 
   // Also note that this is a loose bound -- there could be spans that start later and end earlier such that
   // they don't actually fit inside the bounds, but 80-20 this is speedy and still correct, though wasteful.
+  // TODO: This doesn't actually work! The data is not sorted by max, so this sortedLastIndex is invalid.
+  // This is cause we (I assume) allow overlapping spans, which allows the maxes to be out of order.
   const firstIndex = _.sortedIndexBy(timeSpanData, lowerBound, maxPath);
   const lastIndex = _.sortedLastIndexBy(timeSpanData, upperBound, minPath);
 

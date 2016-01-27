@@ -206,6 +206,242 @@ describe('util', () => {
     });
   });
 
+  describe('#getBoundsForTimeSpanData', () => {
+    it('should return a half-open interval for the slice of data in bounds, plus one extra on each side', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5.5 }, 'timeSpan.min', 'timeSpan.max').should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should default to using the \'timeSpan.min\' and \'timeSpan.max\' fields', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should return firstIndex === lastIndex === 0 when the data is empty', () => {
+      getBoundsForTimeSpanData([], { min: -Infinity, max: Infinity }).should.eql({
+        firstIndex: 0,
+        lastIndex: 0
+      });
+    });
+
+    it('should return firstIndex === lastIndex === 0 when the bounds are completely before the data', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } }
+      ], { min: -2, max: -1 }).should.eql({
+        firstIndex: 0,
+        lastIndex: 0
+      });
+    });
+
+    it('should return firstIndex === lastIndex === length of data when the bounds are completely after the data', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } }
+      ], { min: 2, max: 3 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 1
+      });
+    });
+
+    it('should accept shallow string accessors', () => {
+      getBoundsForTimeSpanData([
+        { min: 0, max: 1 },
+        { min: 2, max: 3 },
+        { min: 4, max: 5 },
+        { min: 6, max: 7 },
+        { min: 8, max: 9 }
+      ], { min: 3.5, max: 5.5 }, 'min', 'max').should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should accept arbitrarily deeply nested string accessors', () => {
+      getBoundsForTimeSpanData([
+        { outer: { inner: { min: 0, max: 1 } } },
+        { outer: { inner: { min: 2, max: 3 } } },
+        { outer: { inner: { min: 4, max: 5 } } },
+        { outer: { inner: { min: 6, max: 7 } } },
+        { outer: { inner: { min: 8, max: 9 } } }
+      ], { min: 3.5, max: 5.5 }, 'outer.inner.min', 'outer.inner.max').should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should return 0 for firstIndex when the min bound is strictly before the earliest timestamp', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } }
+      ], { min: -2, max: 1.5 }).should.eql({
+        firstIndex: 0,
+        lastIndex: 2
+      });
+    });
+
+    it('should return the length of the input for lastIndex when the max bound is strictly after the last datapoint', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } }
+      ], { min: 3.5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 3
+      });
+    });
+
+    it('should include values that span across the min bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 4.5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should include values that span across the max bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 4.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should include values whose min is equal to the min bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 4, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should include values whose max is equal to the max bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should include values whose max is equal to the min bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    it('should include values whose min is equal to the max bound', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 4 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 4
+      });
+    });
+
+    xit('should include a value that is strictly larger than the bounds', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 9 } },
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5.5 }).should.eql({
+        firstIndex: 0,
+        lastIndex: 5
+      });
+    });
+
+    it('should include multiple values that are all larger than the bounds', () => {
+      // This works, but I'm not sure why, given that the previous test doesn't.
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 9 } },
+        { timeSpan: { min: 1, max: 8 } },
+        { timeSpan: { min: 2, max: 7 } },
+        { timeSpan: { min: 3, max: 6 } },
+        { timeSpan: { min: 4, max: 5 } }
+      ], { min: 4.25, max: 4.75 }).should.eql({
+        firstIndex: 0,
+        lastIndex: 5
+      });
+    });
+
+    it('should include a value that is equal to the bounds', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 3.5, max: 4 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 5
+      });
+    });
+
+    it('should include all values at identical timestamps when they are within bounds', () => {
+      getBoundsForTimeSpanData([
+        { timeSpan: { min: 0, max: 1 } },
+        { timeSpan: { min: 2, max: 3 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 4, max: 5 } },
+        { timeSpan: { min: 6, max: 7 } },
+        { timeSpan: { min: 8, max: 9 } }
+      ], { min: 3.5, max: 5.5 }).should.eql({
+        firstIndex: 1,
+        lastIndex: 6
+      });
+    });
+  });
+
   describe('#resolvePan', () => {
     it('should apply the delta value to both min and max', () => {
       resolvePan({
