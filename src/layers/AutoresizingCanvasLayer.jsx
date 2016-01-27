@@ -1,8 +1,10 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import classnames from 'classnames';
+import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 
 @PureRender
+@PixelRatioContext
 class AutoresizingCanvasLayer extends React.Component {
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
@@ -15,9 +17,16 @@ class AutoresizingCanvasLayer extends React.Component {
   };
 
   render() {
+    const pixelRatio = this.context.pixelRatio || 1;
     return (
       <div className={classnames('layer resizing-wrapper', this.props.className)} ref='wrapper'>
-        <canvas className='canvas' ref='canvas' width={this.state.width} height={this.state.height}/>
+        <canvas
+          className='canvas'
+          ref='canvas'
+          width={this.state.width * pixelRatio}
+          height={this.state.height * pixelRatio}
+          style={{ width: this.state.width, height: this.state.height }}
+        />
       </div>
     );
   }

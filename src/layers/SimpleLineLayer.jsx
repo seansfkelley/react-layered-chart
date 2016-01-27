@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { decorator as CanvasRender } from '../mixins/CanvasRender';
 import { decorator as AnimateProps } from '../mixins/AnimateProps';
+import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForInstantaeousData } from '../util';
@@ -13,6 +14,7 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @AnimateProps
+@PixelRatioContext
 class SimpleLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,

@@ -11,6 +11,8 @@ import TimeSpanLayer from '../../../src/layers/TimeSpanLayer';
 import LayerType from '../LayerType';
 import propTypes from '../../../src/propTypes';
 
+import { decorator as PixelRatioContext } from '../../../src/mixins/PixelRatioContext';
+
 const LAYER_BY_TYPE = {
   [LayerType.SIMPLE_LINE]: SimpleLineLayer,
   [LayerType.BUCKETED_LINE]: BucketedLineLayer,
@@ -20,6 +22,7 @@ const LAYER_BY_TYPE = {
 };
 
 @PureRender
+@PixelRatioContext
 class MetadataDrivenDataLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,

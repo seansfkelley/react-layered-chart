@@ -91,7 +91,7 @@ class DefaultChart extends React.Component {
 
     return (
       <div className='default-chart'>
-        <Stack className='chart-body'>
+        <Stack className='chart-body' pixelRatio={2}>
           <MetadataDrivenDataLayer
             xDomain={this.props.xDomain}
             yDomainBySeriesId={mergedYDomainBySeriesId}
