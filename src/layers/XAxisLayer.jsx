@@ -15,11 +15,13 @@ const HORIZONTAL_PADDING = 6;
 class XAxisLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
-    color: React.PropTypes.string
+    color: React.PropTypes.string,
+    font: React.PropTypes.string
   };
 
   static defaultProps = {
-    color: '#444'
+    color: '#444',
+    font: '12px sans-serif'
   };
 
   render() {
@@ -50,7 +52,7 @@ class XAxisLayer extends React.Component {
     context.textAlign = 'left';
     context.textBaseline = 'top';
     context.fillStyle = this.props.color;
-    context.font = '12px sans-serif';
+    context.font = this.props.font;
 
     for (let i = 0; i < ticks.length; ++i) {
       const xOffset = xScale(ticks[i]);
