@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PureRender from 'pure-render-decorator';
 import d3Scale from 'd3-scale';
 
@@ -40,7 +39,7 @@ class InteractionCaptureLayer extends React.Component {
   }
 
   _getBoundingClientRect() {
-    return ReactDOM.findDOMNode(this.refs.layer).getBoundingClientRect();
+    return this.refs.layer.getBoundingClientRect();
   }
 
   _createPhysicalToLogicalXScale() {
