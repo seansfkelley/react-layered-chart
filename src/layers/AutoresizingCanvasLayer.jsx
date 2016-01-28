@@ -20,6 +20,7 @@ class AutoresizingCanvasLayer extends React.Component {
     context.resetTransform();
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
+    // TODO: I think this might have to be multiplied by pixelRatio to properly un-blur the canvas.
     context.translate(0.5, 0.5);
 
     return { width, height, context };
