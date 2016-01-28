@@ -384,7 +384,7 @@ describe('util', () => {
       });
     });
 
-    xit('should include a value that is strictly larger than the bounds', () => {
+    it('should include a value that is strictly larger than the bounds', () => {
       getBoundsForTimeSpanData([
         { timeSpan: { min: 0, max: 9 } },
         { timeSpan: { min: 0, max: 1 } },
@@ -399,7 +399,6 @@ describe('util', () => {
     });
 
     it('should include multiple values that are all larger than the bounds', () => {
-      // This works, but I'm not sure why, given that the previous test doesn't.
       getBoundsForTimeSpanData([
         { timeSpan: { min: 0, max: 9 } },
         { timeSpan: { min: 1, max: 8 } },

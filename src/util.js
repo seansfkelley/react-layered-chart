@@ -27,16 +27,18 @@ export function getBoundsForInstantaeousData(timestampedData, timeRange, timesta
 
 // Assumption: data is sorted by `minPath` ascending.
 export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'timeSpan.min', maxPath = 'timeSpan.max') {
-  // Note that these are purposely reversed. Think about it.
-  const lowerBound = _.set({}, maxPath, timeRange.min);
+  // Note that this is purposely reversed. Think about it.
   const upperBound = _.set({}, minPath, timeRange.max);
 
   // Also note that this is a loose bound -- there could be spans that start later and end earlier such that
-  // they don't actually fit inside the bounds, but 80-20 this is speedy and still correct, though wasteful.
-  // TODO: This doesn't actually work! The data is not sorted by max, so this sortedLastIndex is invalid.
-  // This is cause we (I assume) allow overlapping spans, which allows the maxes to be out of order.
-  const firstIndex = _.sortedIndexBy(timeSpanData, lowerBound, maxPath);
+  // they don't actually fit inside the bounds, but this still saves us work in the end.
   const lastIndex = _.sortedLastIndexBy(timeSpanData, upperBound, minPath);
+  let firstIndex;
+  for (firstIndex = 0; firstIndex < lastIndex; ++firstIndex) {
+    if (_.get(timeSpanData[firstIndex], maxPath) >= timeRange.min) {
+      break;
+    }
+  }
 
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }
