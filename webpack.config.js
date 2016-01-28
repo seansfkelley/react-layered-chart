@@ -1,12 +1,10 @@
-var path = require('path');
-
 module.exports = {
     entry: {
         index: './src/index.js',
         'dev-index': './src-dev/dev/dev-index.jsx'
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: './dist',
         publicPath: '/',
         filename: '[name].js',
         sourceMapFilename: '[file].map',
