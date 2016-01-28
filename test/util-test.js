@@ -14,7 +14,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 3, max: 5 }, 'timestamp').should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }, 'timestamp').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -27,14 +30,20 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 3, max: 5 }).should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
     });
 
     it('should return firstIndex === lastIndex === 0 when the data is empty', () => {
-      getBoundsForInstantaeousData([], { min: -Infinity, max: Infinity }).should.eql({
+      getBoundsForInstantaeousData([], {
+        min: -Infinity,
+        max: Infinity
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 0
       });
@@ -43,7 +52,10 @@ describe('util', () => {
     it('should return firstIndex === lastIndex === 0 when the bounds are completely before the data', () => {
       getBoundsForInstantaeousData([
         { timestamp: 0 }
-      ], { min: -2, max: -1 }).should.eql({
+      ], {
+        min: -2,
+        max: -1
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 0
       });
@@ -52,7 +64,10 @@ describe('util', () => {
     it('should return firstIndex === lastIndex === length of data when the bounds are completely after the data', () => {
       getBoundsForInstantaeousData([
         { timestamp: 0 }
-      ], { min: 1, max: 2 }).should.eql({
+      ], {
+        min: 1,
+        max: 2
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 1
       });
@@ -65,7 +80,10 @@ describe('util', () => {
         { theTime: 4 },
         { theTime: 6 },
         { theTime: 8 }
-      ], { min: 3, max: 5 }, 'theTime').should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }, 'theTime').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -78,7 +96,10 @@ describe('util', () => {
         { outer: { middle: { inner: 4 } } },
         { outer: { middle: { inner: 6 } } },
         { outer: { middle: { inner: 8 } } }
-      ], { min: 3, max: 5 }, 'outer.middle.inner').should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }, 'outer.middle.inner').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -89,7 +110,10 @@ describe('util', () => {
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 }
-      ], { min: -1, max: 1 }).should.eql({
+      ], {
+        min: -1,
+        max: 1
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 2
       });
@@ -100,7 +124,10 @@ describe('util', () => {
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 }
-      ], { min: 3, max: 5 }).should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 3
       });
@@ -113,7 +140,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 2, max: 5 }).should.eql({
+      ], {
+        min: 2,
+        max: 5
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 4
       });
@@ -126,7 +156,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 3, max: 4 }).should.eql({
+      ], {
+        min: 3,
+        max: 4
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -139,7 +172,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 4, max: 4 }).should.eql({
+      ], {
+        min: 4,
+        max: 4
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -154,7 +190,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 3, max: 5 }, 'timestamp').should.eql({
+      ], {
+        min: 3,
+        max: 5
+      }, 'timestamp').should.eql({
         firstIndex: 1,
         lastIndex: 6
       });
@@ -169,7 +208,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 2, max: 5 }).should.eql({
+      ], {
+        min: 2,
+        max: 5
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 6
       });
@@ -184,7 +226,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 3, max: 4 }).should.eql({
+      ], {
+        min: 3,
+        max: 4
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 6
       });
@@ -199,7 +244,10 @@ describe('util', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], { min: 4, max: 4 }).should.eql({
+      ], {
+        min: 4,
+        max: 4
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 6
       });
@@ -214,7 +262,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5.5 }, 'timeSpan.min', 'timeSpan.max').should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }, 'timeSpan.min', 'timeSpan.max').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -227,14 +278,20 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
     });
 
     it('should return firstIndex === lastIndex === 0 when the data is empty', () => {
-      getBoundsForTimeSpanData([], { min: -Infinity, max: Infinity }).should.eql({
+      getBoundsForTimeSpanData([], {
+        min: -Infinity,
+        max: Infinity
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 0
       });
@@ -243,7 +300,10 @@ describe('util', () => {
     it('should return firstIndex === lastIndex === 0 when the bounds are completely before the data', () => {
       getBoundsForTimeSpanData([
         { timeSpan: { min: 0, max: 1 } }
-      ], { min: -2, max: -1 }).should.eql({
+      ], {
+        min: -2,
+        max: -1
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 0
       });
@@ -252,7 +312,10 @@ describe('util', () => {
     it('should return firstIndex === lastIndex === length of data when the bounds are completely after the data', () => {
       getBoundsForTimeSpanData([
         { timeSpan: { min: 0, max: 1 } }
-      ], { min: 2, max: 3 }).should.eql({
+      ], {
+        min: 2,
+        max: 3
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 1
       });
@@ -265,7 +328,10 @@ describe('util', () => {
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], { min: 3.5, max: 5.5 }, 'min', 'max').should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }, 'min', 'max').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -278,7 +344,10 @@ describe('util', () => {
         { outer: { inner: { min: 4, max: 5 } } },
         { outer: { inner: { min: 6, max: 7 } } },
         { outer: { inner: { min: 8, max: 9 } } }
-      ], { min: 3.5, max: 5.5 }, 'outer.inner.min', 'outer.inner.max').should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }, 'outer.inner.min', 'outer.inner.max').should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -289,7 +358,10 @@ describe('util', () => {
         { timeSpan: { min: 0, max: 1 } },
         { timeSpan: { min: 2, max: 3 } },
         { timeSpan: { min: 4, max: 5 } }
-      ], { min: -2, max: 1.5 }).should.eql({
+      ], {
+        min: -2,
+        max: 1.5
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 2
       });
@@ -300,7 +372,10 @@ describe('util', () => {
         { timeSpan: { min: 0, max: 1 } },
         { timeSpan: { min: 2, max: 3 } },
         { timeSpan: { min: 4, max: 5 } }
-      ], { min: 3.5, max: 5.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 3
       });
@@ -313,7 +388,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 4.5, max: 5.5 }).should.eql({
+      ], {
+        min: 4.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -326,7 +404,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 4.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 4.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -339,7 +420,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 4, max: 5.5 }).should.eql({
+      ], {
+        min: 4,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -352,7 +436,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -365,7 +452,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 5, max: 5.5 }).should.eql({
+      ], {
+        min: 5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -378,7 +468,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 4 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 4
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 4
       });
@@ -392,7 +485,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 5
       });
@@ -405,7 +501,10 @@ describe('util', () => {
         { timeSpan: { min: 2, max: 7 } },
         { timeSpan: { min: 3, max: 6 } },
         { timeSpan: { min: 4, max: 5 } }
-      ], { min: 4.25, max: 4.75 }).should.eql({
+      ], {
+        min: 4.25,
+        max: 4.75
+      }).should.eql({
         firstIndex: 0,
         lastIndex: 5
       });
@@ -419,7 +518,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 5
       });
@@ -434,7 +536,10 @@ describe('util', () => {
         { timeSpan: { min: 4, max: 5 } },
         { timeSpan: { min: 6, max: 7 } },
         { timeSpan: { min: 8, max: 9 } }
-      ], { min: 3.5, max: 5.5 }).should.eql({
+      ], {
+        min: 3.5,
+        max: 5.5
+      }).should.eql({
         firstIndex: 1,
         lastIndex: 6
       });
