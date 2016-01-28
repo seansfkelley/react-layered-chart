@@ -47,12 +47,7 @@ class BucketedLineLayer extends React.Component {
   }
 
   canvasRender = () => {
-    const canvas = this.refs.canvasLayer.getCanvasElement();
-    const { width, height } = this.refs.canvasLayer.getDimensions();
-    const context = canvas.getContext('2d');
-    context.resetTransform();
-    context.scale(this.context.pixelRatio, this.context.pixelRatio);
-    context.clearRect(0, 0, width, height);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {

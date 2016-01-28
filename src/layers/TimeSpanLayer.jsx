@@ -33,12 +33,7 @@ class TimeSpanLayer extends React.Component {
   }
 
   canvasRender = () => {
-    const canvas = this.refs.canvasLayer.getCanvasElement();
-    const { width, height } = this.refs.canvasLayer.getDimensions();
-    const context = canvas.getContext('2d');
-    context.resetTransform();
-    context.scale(this.context.pixelRatio, this.context.pixelRatio);
-    context.clearRect(0, 0, width, height);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
 
     const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain);
     if (firstIndex === lastIndex) {

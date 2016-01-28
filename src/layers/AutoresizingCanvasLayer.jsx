@@ -12,6 +12,19 @@ class AutoresizingCanvasLayer extends React.Component {
     className: React.PropTypes.string
   };
 
+  static resetCanvas(canvasLayer, pixelRatio = 1) {
+    const canvas = canvasLayer.getCanvasElement();
+    const { width, height } = canvasLayer.getDimensions();
+    const context = canvas.getContext('2d');
+
+    context.resetTransform();
+    context.scale(pixelRatio, pixelRatio);
+    context.clearRect(0, 0, width, height);
+    context.translate(0.5, 0.5);
+
+    return { width, height, context };
+  }
+
   state = {
     width: 0,
     height: 0
