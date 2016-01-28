@@ -12,6 +12,7 @@ import propTypes from '../propTypes';
 
 const HORIZONTAL_PADDING = 6;
 const TICK_LENGTH = 4;
+const DEFAULT_COLOR = '#444';
 
 @PureRender
 @CanvasRender
@@ -28,13 +29,11 @@ class YAxisLayer extends React.Component {
       React.PropTypes.arrayOf(React.PropTypes.number)
     ])),
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
-    defaultColor: React.PropTypes.string,
     font: React.PropTypes.string
   };
 
   static defaultProps = {
     colors: [],
-    defaultColor: '#444',
     font: '12px sans-serif'
   };
 
@@ -83,7 +82,7 @@ class YAxisLayer extends React.Component {
       const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
 
       context.beginPath();
-      context.fillStyle = context.strokeStyle = (this.props.colors[i] || this.props.defaultColor);
+      context.fillStyle = context.strokeStyle = (this.props.colors[i] || DEFAULT_COLOR);
       for (let i = 0; i < ticks.length; ++i) {
         const yOffset = height - yScale(ticks[i]);
 
