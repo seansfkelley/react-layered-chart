@@ -15,7 +15,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-class SimpleLineLayer extends React.Component {
+export default class SimpleLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
     xDomain: propTypes.range.isRequired,
@@ -69,5 +69,3 @@ class SimpleLineLayer extends React.Component {
     context.stroke();
   };
 }
-
-export default SimpleLineLayer;

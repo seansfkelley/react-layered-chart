@@ -15,7 +15,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-class PointLayer extends React.Component {
+export default class PointLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
     xDomain: propTypes.range.isRequired,
@@ -68,5 +68,3 @@ class PointLayer extends React.Component {
     context.fill();
   };
 }
-
-export default PointLayer;

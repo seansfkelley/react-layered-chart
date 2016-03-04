@@ -15,7 +15,7 @@ const HORIZONTAL_PADDING = 6;
 @PureRender
 @CanvasRender
 @PixelRatioContext
-class XAxisLayer extends React.Component {
+export default class XAxisLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     color: React.PropTypes.string,
@@ -65,5 +65,3 @@ class XAxisLayer extends React.Component {
     context.stroke();
   };
 }
-
-export default XAxisLayer;

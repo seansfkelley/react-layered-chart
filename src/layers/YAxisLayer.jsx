@@ -18,7 +18,7 @@ const DEFAULT_COLOR = '#444';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-class YAxisLayer extends React.Component {
+export default class YAxisLayer extends React.Component {
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.
@@ -101,5 +101,3 @@ class YAxisLayer extends React.Component {
     });
   };
 }
-
-export default YAxisLayer;

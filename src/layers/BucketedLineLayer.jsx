@@ -15,7 +15,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-class BucketedLineLayer extends React.Component {
+export default class BucketedLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       bounds: React.PropTypes.shape({
@@ -133,5 +133,3 @@ class BucketedLineLayer extends React.Component {
     context.stroke();
   };
 }
-
-export default BucketedLineLayer;

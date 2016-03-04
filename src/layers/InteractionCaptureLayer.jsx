@@ -8,7 +8,7 @@ const MAC_TRACKPAD_ZOOM_FACTOR = 0.05;
 const LEFT_MOUSE_BUTTON = 0;
 
 @PureRender
-class InteractionCaptureLayer extends React.Component {
+export default class InteractionCaptureLayer extends React.Component {
   static propTypes = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,
@@ -127,5 +127,3 @@ class InteractionCaptureLayer extends React.Component {
     event.stopPropagation();
   };
 }
-
-export default InteractionCaptureLayer;
