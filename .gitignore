@@ -3,3 +3,4 @@ build-dev/
 .DS_Store
 *.sublime-workspace
 *.log
+lib/

@@ -6,6 +6,7 @@
       "path": ".",
       "folder_exclude_patterns": [
         "node_modules",
+        "lib",
         "build-dev"
       ],
       "file_exclude_patterns": [
