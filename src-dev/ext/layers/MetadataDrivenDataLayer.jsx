@@ -34,7 +34,7 @@ class MetadataDrivenDataLayer extends React.Component {
 
   render() {
     return (
-      <div className='layer metadata-driven-data-layer'>
+      <div className='lc-layer metadata-driven-data-layer'>
         {this.props.seriesIds.map(this._getLayerForSeriesId)}
       </div>
     );

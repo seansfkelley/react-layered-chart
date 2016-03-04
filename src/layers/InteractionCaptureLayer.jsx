@@ -36,7 +36,7 @@ export default class InteractionCaptureLayer extends React.Component {
   render() {
     return (
       <div
-        className='layer interaction-capture'
+        className='lc-layer interaction-capture'
         onMouseDown={this._onMouseDown}
         onMouseUp={this._onMouseUp}
         onMouseMove={this._onMouseMove}

@@ -13,7 +13,7 @@ class Stack extends React.Component {
 
   render() {
     return (
-      <div className={classnames('stack', this.props.className)}>
+      <div className={classnames('lc-stack', this.props.className)}>
         {this.props.children}
       </div>
     );
