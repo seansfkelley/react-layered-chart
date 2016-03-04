@@ -6,8 +6,7 @@
       "path": ".",
       "folder_exclude_patterns": [
         "node_modules",
-        "lib",
-        "dist"
+        "build-dev"
       ],
       "file_exclude_patterns": [
         "*.sublime-workspace"

@@ -1,7 +1,9 @@
-src-dev
 *.sublime-project
 *.sublime-workspace
 index.html
 todo
-dist/dev-index.*
-styles/dev-index.*
+src/
+src-dev/
+styles/
+test/
+hooks/

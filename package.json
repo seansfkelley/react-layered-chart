@@ -2,7 +2,7 @@
   "name": "react-layered-chart",
   "version": "0.3.2",
   "description": "A high-performance canvas-based time series visualization in React.",
-  "main": "lib/index.js",
+  "main": "index.js",
   "author": "Sean Kelley <seansfkelley@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -11,11 +11,10 @@
   },
   "scripts": {
     "dev:js": "webpack-dev-server --inline --open",
-    "dev:css": "stylus -o dist -w -m styles",
+    "dev:css": "stylus -o build-dev -w -m styles",
     "test": "multi=\"mocha-osx-reporter=- spec=-\" mocha --reporter mocha-multi",
-    "build:lib": "babel src/ -d lib/",
-    "build:dist": "webpack && stylus styles/index.styl -o dist",
-    "prepublish": "npm test -- --reporter landing && npm run build:lib && npm run build:dist"
+    "build": "babel src/",
+    "prepublish": "npm test -- --reporter landing && npm run build"
   },
   "babel": {
     "presets": [
