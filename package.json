@@ -13,7 +13,7 @@
     "dev:js": "webpack-dev-server --inline --open",
     "dev:css": "stylus -o build-dev -w -m styles",
     "test": "multi=\"mocha-osx-reporter=- spec=-\" mocha --reporter mocha-multi",
-    "build": "babel src/",
+    "build": "babel src/ && stylus -m -o . stylus/index.styl",
     "prepublish": "npm test -- --reporter landing && npm run build"
   },
   "babel": {
