@@ -1,7 +1,5 @@
-import React from 'react';
 import _ from 'lodash';
-
-import mixinToDecorator from './mixinToDecorator';
+import React from 'react';
 
 export const mixin = {
   contextTypes: {
