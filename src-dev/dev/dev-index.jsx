@@ -4,6 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
+import * as LayeredChart from '../../src';
+
 import DefaultChart from '../ext/DefaultChart';
 import SparklineChart from '../ext/SparklineChart';
 import CombinedLogChart from '../ext/CombinedLogChart';
@@ -155,3 +157,4 @@ ReactDOM.render(chart, document.getElementById('test-container'));
 // For debugging!
 window.store = store;
 window.memoizeStats = require('memoizee/profile');
+window.LayeredChart = LayeredChart;
