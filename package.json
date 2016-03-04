@@ -11,9 +11,9 @@
   },
   "scripts": {
     "dev:js": "webpack-dev-server --inline --open",
-    "dev:css": "stylus -o build-dev -w -m styles",
+    "dev:css": "stylus --watch --sourcemap --out build-dev/ styles/",
     "test": "multi=\"mocha-osx-reporter=- spec=-\" mocha --reporter mocha-multi",
-    "build": "babel src/ -d lib/ && stylus -o lib/ -m styles/index.styl",
+    "build": "babel --source-maps true src/ --out-dir lib/ && stylus --sourcemap --out lib/ styles/index.styl",
     "prepublish": "npm test -- --reporter landing && npm run build"
   },
   "babel": {

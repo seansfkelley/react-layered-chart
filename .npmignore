@@ -1,5 +1,6 @@
 *.sublime-project
 *.sublime-workspace
+.gitkeep
 index.html
 todo
 src/
@@ -7,3 +8,5 @@ src-dev/
 styles/
 test/
 hooks/
+build-dev/
+webpack.config.js
