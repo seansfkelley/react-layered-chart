@@ -96,8 +96,8 @@ const onTimeRangeChange = _.debounce(xDomain => {
     latestXDomain = xDomain;
     const { min, max } = xDomain;
     const data = fakeDataGenerators.makeFakeBucketedData(max, max - min, Y_RANGE, (max - min) / 400);
-    const minValue = _.minBy(data, d => d.bounds.minValue).bounds.minValue;
-    const maxValue = _.maxBy(data, d => d.bounds.maxValue).bounds.maxValue;
+    const minValue = _.minBy(data, d => d.minValue).minValue;
+    const maxValue = _.maxBy(data, d => d.maxValue).maxValue;
 
     store.dispatch(DataActions.setData({
       'uuid-4': data

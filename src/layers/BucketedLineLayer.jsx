@@ -18,14 +18,12 @@ import propTypes from '../propTypes';
 export default class BucketedLineLayer extends React.Component {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      bounds: React.PropTypes.shape({
-        startTime: React.PropTypes.number.isRequired,
-        endTime: React.PropTypes.number.isRequired,
-        minValue: React.PropTypes.number.isRequired,
-        maxValue: React.PropTypes.number.isRequired
-      }).isRequired,
-      earliestPoint: propTypes.dataPoint.isRequired,
-      latestPoint: propTypes.dataPoint.isRequired
+      startTime: React.PropTypes.number.isRequired,
+      endTime: React.PropTypes.number.isRequired,
+      minValue: React.PropTypes.number.isRequired,
+      maxValue: React.PropTypes.number.isRequired,
+      firstValue: React.PropTypes.number.isRequired,
+      lastValue: React.PropTypes.number.isRequired
     })).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
@@ -54,7 +52,7 @@ export default class BucketedLineLayer extends React.Component {
       return;
     }
 
-    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain, 'bounds.startTime', 'bounds.endTime');
+    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain, 'startTime', 'endTime');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -71,8 +69,8 @@ export default class BucketedLineLayer extends React.Component {
     const getComputedValuesForIndex = _.memoize(i => {
       const datum = this.props.data[i];
 
-      const earliestX = Math.ceil(xScale(datum.earliestPoint.timestamp));
-      const latestX = Math.floor(xScale(datum.latestPoint.timestamp));
+      const earliestX = Math.ceil(xScale(datum.startTime));
+      const latestX = Math.floor(xScale(datum.endTime));
 
       let preferredX1;
       let preferredX2;
@@ -86,28 +84,18 @@ export default class BucketedLineLayer extends React.Component {
         preferredX2 = latestX;
       }
 
-      const preferredY1 = Math.floor(yScale(datum.bounds.minValue));
-      const preferredY2 = Math.floor(yScale(datum.bounds.maxValue));
+      const preferredY1 = Math.floor(yScale(datum.minValue));
+      const preferredY2 = Math.floor(yScale(datum.maxValue));
 
       return {
-        earliestPoint: {
-          x: earliestX,
-          y: Math.floor(yScale(datum.earliestPoint.value))
-        },
-        latestPoint: {
-          x: latestX,
-          y: Math.floor(yScale(datum.latestPoint.value))
-        },
-        preferredBounds: {
-          x1: preferredX1,
-          x2: preferredX2,
-          y1: preferredY1,
-          y2: preferredY2
-        },
-        dimensions: {
-          width: preferredX2 - preferredX1,
-          height: preferredY2 - preferredY1
-        }
+        minX: preferredX1,
+        maxX: preferredX2,
+        minY: preferredY1,
+        maxY: preferredY2,
+        firstY: Math.floor(yScale(datum.firstValue)),
+        lastY: Math.floor(yScale(datum.lastValue)),
+        width: preferredX2 - preferredX1,
+        height: preferredY2 - preferredY1
       };
     });
 
@@ -115,12 +103,12 @@ export default class BucketedLineLayer extends React.Component {
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
-      if (computedValues.dimensions.width >= 1 && computedValues.dimensions.height >= 1) {
+      if (computedValues.width >= 1 && computedValues.height >= 1) {
         context.rect(
-          computedValues.preferredBounds.x1,
-          height - computedValues.preferredBounds.y2,
-          computedValues.dimensions.width,
-          computedValues.dimensions.height
+          computedValues.minX,
+          height - computedValues.maxY,
+          computedValues.width,
+          computedValues.height
         );
       }
     }
@@ -130,13 +118,13 @@ export default class BucketedLineLayer extends React.Component {
     // Lines
     context.beginPath();
     const firstComputedValues = getComputedValuesForIndex(firstIndex);
-    context.moveTo(firstComputedValues.preferredBounds.x2, height - firstComputedValues.latestPoint.y)
+    context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)
     for (let i = firstIndex + 1; i < lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
       // TODO: Skip any that have touching rectangles?
-      context.lineTo(computedValues.preferredBounds.x1, height - computedValues.earliestPoint.y);
-      if (computedValues.dimensions.width >= 1 && computedValues.dimensions.height >= 1) {
-        context.moveTo(computedValues.preferredBounds.x2, height - computedValues.latestPoint.y);
+      context.lineTo(computedValues.minX, height - computedValues.firstY);
+      if (computedValues.width >= 1 && computedValues.height >= 1) {
+        context.moveTo(computedValues.maxX, height - computedValues.lastY);
       }
     }
     context.strokeStyle = this.props.color;
