@@ -71,21 +71,23 @@ export default class BucketedLineLayer extends React.Component {
     const getComputedValuesForIndex = _.memoize(i => {
       const datum = this.props.data[i];
 
-      const earliestX = Math.floor(xScale(datum.earliestPoint.timestamp));
+      const earliestX = Math.ceil(xScale(datum.earliestPoint.timestamp));
       const latestX = Math.floor(xScale(datum.latestPoint.timestamp));
 
       let preferredX1;
       let preferredX2;
-      if (latestX - earliestX < 2) {
-        // Arbitrarily choose one, for now...
-        // TODO: Should do something smarter here; this jitters badly during zooming if all the bounds don't
-        // match up exactly, since some will hit this branch earlier than others.
+      if (latestX - earliestX < 1) {
+        // Enforce that we have at least a pixel's width: this way, if the bounds span more than one value,
+        // we are sure to render a 1px wide rectangle that covers it.
         preferredX1 = earliestX;
         preferredX2 = earliestX + 1;
       } else {
         preferredX1 = earliestX;
         preferredX2 = latestX;
       }
+
+      const preferredY1 = Math.floor(yScale(datum.bounds.minValue));
+      const preferredY2 = Math.floor(yScale(datum.bounds.maxValue));
 
       return {
         earliestPoint: {
@@ -99,8 +101,12 @@ export default class BucketedLineLayer extends React.Component {
         preferredBounds: {
           x1: preferredX1,
           x2: preferredX2,
-          y1: Math.floor(yScale(datum.bounds.minValue)),
-          y2: Math.floor(yScale(datum.bounds.maxValue))
+          y1: preferredY1,
+          y2: preferredY2
+        },
+        dimensions: {
+          width: preferredX2 - preferredX1,
+          height: preferredY2 - preferredY1
         }
       };
     });
@@ -109,12 +115,14 @@ export default class BucketedLineLayer extends React.Component {
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
       const computedValues = getComputedValuesForIndex(i);
-      context.rect(
-        computedValues.preferredBounds.x1,
-        height - computedValues.preferredBounds.y2,
-        computedValues.preferredBounds.x2 - computedValues.preferredBounds.x1,
-        computedValues.preferredBounds.y2 - computedValues.preferredBounds.y1
-      );
+      if (computedValues.dimensions.width >= 1 && computedValues.dimensions.height >= 1) {
+        context.rect(
+          computedValues.preferredBounds.x1,
+          height - computedValues.preferredBounds.y2,
+          computedValues.dimensions.width,
+          computedValues.dimensions.height
+        );
+      }
     }
     context.fillStyle = this.props.color;
     context.fill();
@@ -127,7 +135,9 @@ export default class BucketedLineLayer extends React.Component {
       const computedValues = getComputedValuesForIndex(i);
       // TODO: Skip any that have touching rectangles?
       context.lineTo(computedValues.preferredBounds.x1, height - computedValues.earliestPoint.y);
-      context.moveTo(computedValues.preferredBounds.x2, height - computedValues.latestPoint.y);
+      if (computedValues.dimensions.width >= 1 && computedValues.dimensions.height >= 1) {
+        context.moveTo(computedValues.preferredBounds.x2, height - computedValues.latestPoint.y);
+      }
     }
     context.strokeStyle = this.props.color;
     context.stroke();
