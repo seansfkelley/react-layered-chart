@@ -3,11 +3,11 @@
   "version": "0.4.0",
   "description": "A high-performance canvas-based time series visualization in React.",
   "main": "lib/index.js",
-  "author": "Sean Kelley <seansfkelley@gmail.com>",
-  "license": "MIT",
+  "author": "Palantir Technologies",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seansfkelley/react-layered-chart.git"
+    "url": "https://github.com/palantir/react-layered-chart.git"
   },
   "scripts": {
     "dev:js": "webpack-dev-server --inline --open",
