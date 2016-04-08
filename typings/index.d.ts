@@ -69,41 +69,36 @@ export namespace layers {
     className?: string;
   }
 
-  interface AutoresizingCanvasLayerProps extends React.Props<AutoresizingCanvasLayerClass>, WithClassName {
+  interface AutoresizingCanvasLayerProps extends WithClassName {
     onSizeChange: OnSizeChange;
   }
-  interface AutoresizingCanvasLayerClass extends React.ComponentClass<AutoresizingCanvasLayerProps> { }
-  export var AutoresizingCanvasLayer: AutoresizingCanvasLayerClass;
+  export var AutoresizingCanvasLayer: React.ComponentClass<AutoresizingCanvasLayerProps>;
 
-  interface BarLayerProps extends React.Props<BarLayerClass>, WithDomains, WithColor, WithData<{
+  interface BarLayerProps extends WithDomains, WithColor, WithData<{
     timeSpan: Range;
     value: number;
   }> { }
-  interface BarLayerClass extends React.ComponentClass<BarLayerProps> { }
-  export var BarLayer: BarLayerClass;
+  export var BarLayer: React.ComponentClass<BarLayerProps>;
 
-  interface BrushLayerProps extends React.Props<BrushLayerClass> {
+  interface BrushLayerProps {
     xDomain: Range;
     selection?: Range;
     stroke?: HexColor;
     fill?: HexColor;
   }
-  interface BrushLayerClass extends React.ComponentClass<BrushLayerProps> { }
-  export var BrushLayer: BrushLayerClass;
+  export var BrushLayer: React.ComponentClass<BrushLayerProps>;
 
-  export interface BucketedLineLayerProps extends React.Props<BucketedLineLayerClass>, WithDomains, WithYScale, WithColor, WithData<DataBucket> { }
-  interface BucketedLineLayerClass extends React.ComponentClass<BucketedLineLayerProps> { }
-  export var BucketedLineLayer: BucketedLineLayerClass;
+  export interface BucketedLineLayerProps extends WithDomains, WithYScale, WithColor, WithData<DataBucket> { }
+  export var BucketedLineLayer: React.ComponentClass<BucketedLineLayerProps>;
 
-  interface HoverLayerProps extends React.Props<HoverLayerClass> {
+  interface HoverLayerProps {
     hover?: number;
     xDomain: Range;
     stroke?: HexColor;
   }
-  interface HoverLayerClass extends React.ComponentClass<HoverLayerProps> { }
-  export var HoverLayer: HoverLayerClass;
+  export var HoverLayer: React.ComponentClass<HoverLayerProps>;
 
-  interface InteractionCaptureLayerProps extends React.Props<InteractionCaptureLayerClass> {
+  interface InteractionCaptureLayerProps {
     xDomain: Range;
     shouldZoom?: BooleanMouseEventHandler;
     shouldPan?: BooleanMouseEventHandler;
@@ -113,45 +108,39 @@ export namespace layers {
     onBrush?: (logicalUnitRange?: Range) => void;
     onHover?: (logicalPosition?: number) => void;
   }
-  interface InteractionCaptureLayerClass extends React.ComponentClass<InteractionCaptureLayerProps> { }
-  export var InteractionCaptureLayer: InteractionCaptureLayerClass;
+  export var InteractionCaptureLayer: React.ComponentClass<InteractionCaptureLayerProps>;
 
-  interface PointLayerProps extends React.Props<PointLayerClass>, WithDomains, WithYScale, WithColor, WithData<DataPoint> {
+  interface PointLayerProps extends WithDomains, WithYScale, WithColor, WithData<DataPoint> {
     radius?: number;
   }
-  interface PointLayerClass extends React.ComponentClass<PointLayerProps> { }
-  export var PointLayer: PointLayerClass;
+  export var PointLayer: React.ComponentClass<PointLayerProps>
 
-  interface SimpleLineLayerProps extends React.Props<SimpleLineLayerClass>, WithDomains, WithYScale, WithColor, WithData<DataPoint> { }
-  interface SimpleLineLayerClass extends React.ComponentClass<SimpleLineLayerProps> { }
-  export var SimpleLineLayer: SimpleLineLayerClass;
+  interface SimpleLineLayerProps extends WithDomains, WithYScale, WithColor, WithData<DataPoint> { }
+  export var SimpleLineLayer: React.ComponentClass<SimpleLineLayerProps>;
 
-  interface TimeSpanLayerProps extends React.Props<TimeSpanLayerClass>, WithColor, WithData<{
+  interface TimeSpanLayerProps extends WithColor, WithData<{
     timeSpan: Range;
     color?: HexColor;
   }> {
     xDomain: Range;
   }
-  interface TimeSpanLayerClass extends React.ComponentClass<TimeSpanLayerProps> { }
-  export var TimeSpanLayer: TimeSpanLayerClass;
+  export var TimeSpanLayer: React.ComponentClass<TimeSpanLayerProps>;
 
-  interface XAxisLayerProps extends React.Props<XAxisLayerClass> {
+  interface XAxisLayerProps {
     xDomain: Range;
     color?: HexColor;
     font?: string;
   }
-  interface XAxisLayerClass extends React.ComponentClass<XAxisLayerProps> { }
-  export var XAxisLayer: XAxisLayerClass;
+  export var XAxisLayer: React.ComponentClass<XAxisLayerProps>;
 
-  interface YAxisLayerProps extends React.Props<YAxisLayerClass> {
+  interface YAxisLayerProps {
     yDomains: Range[];
     scales?: ScaleFunction[];
     ticks?: ((yDomain: Range) => number | number)[];
     colors?: HexColor[];
     font?: string;
   }
-  interface YAxisLayerClass extends React.ComponentClass<YAxisLayerProps> { }
-  export var YAxisLayer: YAxisLayerClass;
+  export var YAxisLayer: React.ComponentClass<YAxisLayerProps>;
 
 }
 
@@ -167,11 +156,10 @@ export namespace util {
   export var resolveZoom: (timeRange: Range, factor: number, anchorBias: number) => Range;
 }
 
-interface StackProps extends React.Props<StackClass> {
+interface StackProps {
   className?: string;
   pixelRatio?: number;
   onSizeChange?: OnSizeChange;
 }
-interface StackClass extends React.ComponentClass<StackProps> { }
-export var Stack: StackClass;
+export var Stack: React.ComponentClass<StackProps>;
 
