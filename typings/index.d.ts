@@ -107,6 +107,7 @@ export namespace layers {
     onPan?: (logicalUnits: number) => void;
     onBrush?: (logicalUnitRange?: Range) => void;
     onHover?: (logicalPosition?: number) => void;
+    zoomSpeed?: number;
   }
   export var InteractionCaptureLayer: React.ComponentClass<InteractionCaptureLayerProps>;
 

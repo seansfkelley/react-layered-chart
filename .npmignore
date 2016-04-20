@@ -10,3 +10,4 @@ test/
 hooks/
 build-dev/
 webpack.config.js
+*.pdf

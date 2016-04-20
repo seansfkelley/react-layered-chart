@@ -4,7 +4,6 @@ import d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
 
-const MAC_TRACKPAD_ZOOM_FACTOR = 0.05;
 const LEFT_MOUSE_BUTTON = 0;
 
 @PureRender
@@ -17,13 +16,15 @@ export default class InteractionCaptureLayer extends React.Component {
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
-    xDomain: propTypes.range.isRequired
+    xDomain: propTypes.range.isRequired,
+    zoomSpeed: React.PropTypes.number
   };
 
   static defaultProps = {
     shouldZoom: (event) => event.shiftKey,
     shouldPan: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
-    shouldBrush: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON
+    shouldBrush: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
+    zoomSpeed: 0.05
   };
 
   state = {
@@ -121,7 +122,7 @@ export default class InteractionCaptureLayer extends React.Component {
     if (this.props.onZoom && event.deltaY && this.props.shouldZoom(event)) {
       const boundingClientRect = this._getBoundingClientRect();
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
-      this.props.onZoom(1 + (-event.deltaY * MAC_TRACKPAD_ZOOM_FACTOR), focus);
+      this.props.onZoom(Math.exp(-event.deltaY * this.props.zoomSpeed), focus);
       event.preventDefault();
     }
     event.stopPropagation();
