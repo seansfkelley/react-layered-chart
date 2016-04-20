@@ -6,7 +6,7 @@ Things are still in flux; check out the [incubating features and examples](https
 
 ### Running the Examples
 
-After installing, run `npm run dev:js` and `npm run dev:css`, then visit [localhost:8080](http://localhost:8080/). You can pan with shift-click-drag and zoom with shift-scroll.
+After installing, run `npm run dev:js` and `npm run dev:css`, then visit [localhost:8080](http://localhost:8080/). You can pan by dragging and zoom by scrolling.
 
 ### Future
 

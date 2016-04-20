@@ -21,9 +21,9 @@ export default class InteractionCaptureLayer extends React.Component {
   };
 
   static defaultProps = {
-    shouldZoom: (event) => event.shiftKey,
-    shouldPan: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
-    shouldBrush: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
+    shouldZoom: (event) => true,
+    shouldPan: (event) => event.button === LEFT_MOUSE_BUTTON,
+    shouldBrush: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
     zoomSpeed: 0.05
   };
 
