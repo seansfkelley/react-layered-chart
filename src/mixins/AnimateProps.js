@@ -43,11 +43,17 @@ export const mixin = {
           if (this.__animatingPropCancelCallbacks[propName]) {
             this.__animatingPropCancelCallbacks[propName]();
           }
-          this.__animatingPropCancelCallbacks[propName] = animateOnce(this.props[propName], nextProps[propName], durationMs, v => {
-            this.setState({
-              [`animated-${propName}`]: _.clone(v)
-            });
-          });
+          const startValue = this.state[`animated-${propName}`] || this.props[propName];
+          this.__animatingPropCancelCallbacks[propName] = animateOnce(
+            _.cloneDeep(startValue),
+            _.cloneDeep(nextProps[propName]),
+            durationMs,
+            v => {
+              this.setState({
+                [`animated-${propName}`]: _.cloneDeep(v)
+              });
+            }
+          );
         } else {
           this.setState({
             [`animated-${propName}`]: nextProps[propName]
