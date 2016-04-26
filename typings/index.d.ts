@@ -140,6 +140,7 @@ export namespace layers {
     ticks?: ((yDomain: Range) => number | number)[];
     colors?: HexColor[];
     font?: string;
+    backgroundColor?: string;
   }
   export var YAxisLayer: React.ComponentClass<YAxisLayerProps>;
 

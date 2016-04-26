@@ -29,12 +29,14 @@ export default class YAxisLayer extends React.Component {
       React.PropTypes.arrayOf(React.PropTypes.number)
     ])),
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
-    font: React.PropTypes.string
+    font: React.PropTypes.string,
+    backgroundColor: React.PropTypes.string
   };
 
   static defaultProps = {
     colors: [],
-    font: '12px sans-serif'
+    font: '12px sans-serif',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
   };
 
   animatedProps = {
@@ -80,6 +82,14 @@ export default class YAxisLayer extends React.Component {
       const format = yScale.tickFormat(5);
 
       const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
+      const maxAxisWidth = maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH;
+
+      // This could be done once at the beginning, but it would require a lot of saving-off stuff
+      // and doing it piecemeal like this ends up with the same result.
+      context.beginPath();
+      context.rect(xOffset, 0, xOffset + maxAxisWidth, height);
+      context.fillStyle = this.props.backgroundColor;
+      context.fill();
 
       context.beginPath();
       context.fillStyle = context.strokeStyle = (this.props.colors[i] || DEFAULT_COLOR);
@@ -97,7 +107,7 @@ export default class YAxisLayer extends React.Component {
 
       context.stroke();
 
-      xOffset += maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH;
+      xOffset += maxAxisWidth;
     });
   };
 }
