@@ -18,11 +18,13 @@ const HORIZONTAL_PADDING = 6;
 export default class XAxisLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
+    scale: React.PropTypes.func,
     color: React.PropTypes.string,
     font: React.PropTypes.string
   };
 
   static defaultProps = {
+    scale: d3Scale.time,
     color: '#444',
     font: '12px sans-serif'
   };
@@ -38,7 +40,7 @@ export default class XAxisLayer extends React.Component {
   canvasRender = () => {
     const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
 
-    const xScale = d3Scale.time()
+    const xScale = this.props.scale()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 

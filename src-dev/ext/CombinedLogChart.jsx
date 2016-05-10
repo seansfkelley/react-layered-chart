@@ -134,6 +134,7 @@ class CombinedLogChart extends React.Component {
         <Stack className='time-axis'>
           <XAxisLayer
             xDomain={this.props.xDomain}
+            scale={d3Scale.linear}
           />
         </Stack>
       </div>

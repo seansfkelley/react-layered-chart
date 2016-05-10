@@ -129,6 +129,7 @@ export namespace layers {
 
   interface XAxisLayerProps {
     xDomain: Range;
+    scale?: ScaleFunction;
     color?: HexColor;
     font?: string;
   }
