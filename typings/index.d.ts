@@ -161,7 +161,6 @@ export namespace util {
 interface StackProps {
   className?: string;
   pixelRatio?: number;
-  onSizeChange?: OnSizeChange;
 }
 export var Stack: React.ComponentClass<StackProps>;
 
