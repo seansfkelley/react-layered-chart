@@ -138,7 +138,7 @@ export namespace layers {
   interface YAxisLayerProps {
     yDomains: Range[];
     scales?: ScaleFunction[];
-    ticks?: ((yDomain: Range) => number | number)[];
+    ticks?: (((yDomain: Range) => number[]) | number[])[];
     colors?: HexColor[];
     font?: string;
     backgroundColor?: string;
