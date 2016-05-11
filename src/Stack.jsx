@@ -16,7 +16,10 @@ class Stack extends React.Component {
     return (
       <div className={classnames('lc-stack', this.props.className)} ref='element'>
         {React.Children.map(this.props.children, (child, i) =>
-          React.cloneElement(child, { className: classnames('lc-layer', child.props.className) }))}
+          child
+            ? React.cloneElement(child, { className: classnames('lc-layer', child.props.className) })
+            : null
+        )}
       </div>
     );
   }
