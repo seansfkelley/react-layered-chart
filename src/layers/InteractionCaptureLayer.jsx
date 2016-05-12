@@ -94,6 +94,7 @@ export default class InteractionCaptureLayer extends React.Component {
       this.setState({ isPanning: true, lastPanClientX: event.clientX });
     } else if (this.props.onBrush && this.props.shouldBrush(event)) {
       this.setState({ isBrushing: true, startBrushClientX: event.clientX });
+      this.props.onHover(null);
     }
     event.stopPropagation();
   };
@@ -106,7 +107,7 @@ export default class InteractionCaptureLayer extends React.Component {
 
   _onMouseMove = (event) => {
     this._dispatchPanAndBrushEvents(event);
-    if (this.props.onHover) {
+    if (this.props.onHover && !this.state.isPanning && !this.state.isBrushing) {
       const scale = this._createPhysicalToLogicalXScale();
       this.props.onHover(scale(event.clientX));
     }
