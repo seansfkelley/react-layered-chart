@@ -87,7 +87,7 @@ export default class YAxisLayer extends React.Component {
       // This could be done once at the beginning, but it would require a lot of saving-off stuff
       // and doing it piecemeal like this ends up with the same result.
       context.beginPath();
-      context.rect(xOffset, 0, xOffset + maxAxisWidth, height);
+      context.rect(xOffset, 0, maxAxisWidth, height);
       context.fillStyle = this.props.backgroundColor;
       context.fill();
 
