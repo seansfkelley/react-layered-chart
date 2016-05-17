@@ -61,22 +61,28 @@ export default class PointLayer extends React.Component {
 
     const radius = isFilled ? this.props.radius : (this.props.radius - this.props.innerRadius) / 2 + this.props.innerRadius;
 
+    context.lineWidth = this.props.radius - this.props.innerRadius;
+    context.strokeStyle = this.props.color;
+    context.fillStyle = this.props.color;
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
       const x = xScale(this.props.data[i].timestamp);
       const y = height - yScale(this.props.data[i].value);
 
-      context.moveTo(x, y);
-      context.arc(x, y, radius, 0, Math.PI * 2);
+      // `fill` can be batched, but `stroke` can't (it draws  extraneous lines even with `moveTo`).
+      // https://html.spec.whatwg.org/multipage/scripting.html#dom-context-2d-arc
+      if (!isFilled) {
+        context.beginPath();
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.stroke();
+      } else {
+        context.moveTo(x, y);
+        context.arc(x, y, radius, 0, Math.PI * 2);
+      }
     }
 
     if (isFilled) {
-      context.fillStyle = this.props.color;
       context.fill();
-    } else {
-      context.lineWidth = this.props.radius - this.props.innerRadius;
-      context.strokeStyle = this.props.color;
-      context.stroke();
     }
   };
 }
