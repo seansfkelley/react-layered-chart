@@ -113,6 +113,7 @@ export namespace layers {
 
   interface PointLayerProps extends WithDomains, WithYScale, WithColor, WithData<DataPoint> {
     radius?: number;
+    innerRadius?: number;
   }
   export var PointLayer: React.ComponentClass<PointLayerProps>
 

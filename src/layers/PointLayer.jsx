@@ -22,13 +22,15 @@ export default class PointLayer extends React.Component {
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string,
-    radius: React.PropTypes.number
+    radius: React.PropTypes.number,
+    innerRadius: React.PropTypes.number
   };
 
   static defaultProps = {
     yScale: d3Scale.linear,
     color: 'rgba(0, 0, 0, 0.7)',
-    radius: 3
+    radius: 3,
+    innerRadius: 0
   };
 
   animatedProps = {
@@ -55,16 +57,26 @@ export default class PointLayer extends React.Component {
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .rangeRound([ 0, height ]);
 
+    const isFilled = this.props.innerRadius === 0;
+
+    const radius = isFilled ? this.props.radius : (this.props.radius - this.props.innerRadius) / 2 + this.props.innerRadius;
+
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
       const x = xScale(this.props.data[i].timestamp);
       const y = height - yScale(this.props.data[i].value);
 
       context.moveTo(x, y);
-      context.arc(x, y, this.props.radius, 0, Math.PI * 2);
+      context.arc(x, y, radius, 0, Math.PI * 2);
     }
 
-    context.fillStyle = this.props.color;
-    context.fill();
+    if (isFilled) {
+      context.fillStyle = this.props.color;
+      context.fill();
+    } else {
+      context.lineWidth = this.props.radius - this.props.innerRadius;
+      context.strokeStyle = this.props.color;
+      context.stroke();
+    }
   };
 }
