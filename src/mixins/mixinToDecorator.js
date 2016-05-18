@@ -6,10 +6,11 @@ export default function(mixin) {
       const oldFn = component.prototype[fnName];
       component.prototype[fnName] = function() {
         const argArray = _.toArray(arguments);
-        newFn.apply(this, argArray);
+        const returnValue = newFn.apply(this, argArray);
         if (oldFn) {
           oldFn.apply(this, argArray);
         }
+        return returnValue;
       };
     });
   };
