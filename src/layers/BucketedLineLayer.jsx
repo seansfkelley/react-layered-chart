@@ -1,7 +1,6 @@
 import React from 'react';
 import PureRender from 'pure-render-decorator';
 import d3Scale from 'd3-scale';
-import _ from 'lodash';
 
 import { decorator as CanvasRender } from '../mixins/CanvasRender';
 import { decorator as AnimateProps } from '../mixins/AnimateProps';
@@ -66,9 +65,9 @@ export default class BucketedLineLayer extends React.Component {
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .range([ 0, height ]);
 
-    const getComputedValuesForIndex = _.memoize(i => {
-      const datum = this.props.data[i];
-
+    const computedValuesForVisibleData = this.props.data
+    .slice(firstIndex, lastIndex)
+    .map(datum => {
       const earliestX = Math.ceil(xScale(datum.startTime));
       const latestX = Math.floor(xScale(datum.endTime));
 
@@ -101,8 +100,8 @@ export default class BucketedLineLayer extends React.Component {
 
     // Bars
     context.beginPath();
-    for (let i = firstIndex; i < lastIndex; ++i) {
-      const computedValues = getComputedValuesForIndex(i);
+    for (let i = 0; i < computedValuesForVisibleData.length; ++i) {
+      const computedValues = computedValuesForVisibleData[i];
       if (computedValues.width >= 1 && computedValues.height >= 1) {
         context.rect(
           computedValues.minX,
@@ -117,10 +116,10 @@ export default class BucketedLineLayer extends React.Component {
 
     // Lines
     context.beginPath();
-    const firstComputedValues = getComputedValuesForIndex(firstIndex);
+    const firstComputedValues = computedValuesForVisibleData[0];
     context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)
-    for (let i = firstIndex + 1; i < lastIndex; ++i) {
-      const computedValues = getComputedValuesForIndex(i);
+    for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
+      const computedValues = computedValuesForVisibleData[i];
       // TODO: Skip any that have touching rectangles?
       context.lineTo(computedValues.minX, height - computedValues.firstY);
       if (computedValues.width >= 1 && computedValues.height >= 1) {
