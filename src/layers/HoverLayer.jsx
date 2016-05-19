@@ -34,7 +34,7 @@ export default class HoverLayer extends React.Component {
       return;
     }
 
-    const xScale = d3Scale.linear()
+    const xScale = d3Scale.scaleLinear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
     const xPos = xScale(this.props.hover);

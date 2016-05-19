@@ -25,7 +25,7 @@ export default class SimpleLineLayer extends React.Component {
   };
 
   static defaultProps = {
-    yScale: d3Scale.linear,
+    yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)'
   };
 
@@ -50,7 +50,7 @@ export default class SimpleLineLayer extends React.Component {
       return;
     }
 
-    const xScale = d3Scale.linear()
+    const xScale = d3Scale.scaleLinear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 

@@ -31,7 +31,7 @@ export default class BucketedLineLayer extends React.Component {
   };
 
   static defaultProps = {
-    yScale: d3Scale.linear,
+    yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)'
   };
 
@@ -57,7 +57,7 @@ export default class BucketedLineLayer extends React.Component {
     }
 
     // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
-    const xScale = d3Scale.linear()
+    const xScale = d3Scale.scaleLinear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .range([ 0, width ]);
 

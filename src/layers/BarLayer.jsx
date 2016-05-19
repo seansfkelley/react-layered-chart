@@ -46,11 +46,11 @@ export default class BarLayer extends React.Component {
       return;
     }
 
-    const xScale = d3Scale.linear()
+    const xScale = d3Scale.scaleLinear()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    const yScale = d3Scale.linear()
+    const yScale = d3Scale.scaleLinear()
       .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
       .rangeRound([ 0, height ]);
 

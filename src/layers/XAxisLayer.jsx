@@ -35,7 +35,7 @@ export default class XAxisLayer extends React.Component {
   };
 
   static defaultProps = {
-    scale: d3Scale.time,
+    scale: d3Scale.scaleTime,
     color: '#444',
     font: '12px sans-serif'
   };

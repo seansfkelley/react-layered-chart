@@ -7,12 +7,12 @@ import mixinToDecorator from './mixinToDecorator';
 const ANIMATION_FRAMERATE = 30;
 
 function animateOnce(fromValue, toValue, durationMs, onFrame) {
-  const interpolator = d3Interpolate.value(fromValue, toValue);
+  const interpolator = d3Interpolate.interpolate(fromValue, toValue);
   const frameCount = Math.ceil(durationMs / 1000 * ANIMATION_FRAMERATE);
 
   let frame = 1;
   const setIntervalId = setInterval(() => {
-    onFrame(interpolator(d3Ease.cubicInOut(frame / frameCount)));
+    onFrame(interpolator(d3Ease.easeCubicInOut(frame / frameCount)));
     if (frame === frameCount) {
       clearInterval(setIntervalId);
     }

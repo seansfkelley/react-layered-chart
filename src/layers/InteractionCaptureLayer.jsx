@@ -54,7 +54,7 @@ export default class InteractionCaptureLayer extends React.Component {
 
   _createPhysicalToLogicalXScale() {
     const boundingClientRect = this._getBoundingClientRect();
-    return d3Scale.linear()
+    return d3Scale.scaleLinear()
       .domain([ boundingClientRect.left, boundingClientRect.right ])
       .range([ this.props.xDomain.min, this.props.xDomain.max ]);
   }

@@ -19,7 +19,7 @@ const DEFAULT_COLOR = 'rgba(0, 0, 0, 0.7)';
 function setMetadataYScale(seriesIds, metadataBySeriesId) {
   return _.mapValues(
     _.pick(metadataBySeriesId, seriesIds),
-    metadata => _.defaults({ yScale: d3Scale.log }, metadata)
+    metadata => _.defaults({ yScale: d3Scale.scaleLog }, metadata)
   );
 }
 
@@ -127,14 +127,14 @@ class CombinedLogChart extends React.Component {
           />
           <YAxisLayer
             yDomains={[ unifiedYDomain ]}
-            scales={[ d3Scale.log ]}
+            scales={[ d3Scale.scaleLog ]}
             colors={[ unifiedYDomainColor ]}
           />
         </Stack>
         <Stack className='time-axis'>
           <XAxisLayer
             xDomain={this.props.xDomain}
-            scale={d3Scale.linear}
+            scale={d3Scale.scaleLinear}
           />
         </Stack>
       </div>
