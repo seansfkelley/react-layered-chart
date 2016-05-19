@@ -10,9 +10,11 @@ import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 
+// TODO: Do any of these need to be configurable?
 const HORIZONTAL_PADDING = 6;
 const TICK_LENGTH = 4;
 const DEFAULT_COLOR = '#444';
+const DEFAULT_TICK_COUNT = 5;
 
 @PureRender
 @CanvasRender
@@ -26,7 +28,12 @@ export default class YAxisLayer extends React.Component {
     scales: React.PropTypes.arrayOf(React.PropTypes.func),
     ticks: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
       React.PropTypes.func,
+      React.PropTypes.number,
       React.PropTypes.arrayOf(React.PropTypes.number)
+    ])),
+    tickFormats: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.string
     ])),
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
     font: React.PropTypes.string,
@@ -66,20 +73,22 @@ export default class YAxisLayer extends React.Component {
         .rangeRound([ 0, height ]);
 
       let ticks;
-      let computeTicks = _.get(this, [ 'props', 'ticks', i ]);
-      if (computeTicks) {
-        if (_.isFunction(computeTicks)) {
-          ticks = computeTicks(yDomain);
-        } else if (_.isArray(computeTicks)) {
-          ticks = computeTicks;
+      const inputTicks = _.get(this, [ 'props', 'ticks', i ]);
+      if (inputTicks) {
+        if (_.isFunction(inputTicks)) {
+          ticks = inputTicks(yDomain);
+        } else if (_.isArray(inputTicks)) {
+          ticks = inputTicks;
+        } else if (_.isNumber(inputTicks)) {
+          ticks = yScale.ticks(inputTicks);
         } else {
-          throw new Error('ticks must be a function or array');
+          throw new Error('ticks must be a function, array or number');
         }
       } else {
-        ticks = yScale.ticks(5);
+        ticks = yScale.ticks(DEFAULT_TICK_COUNT);
       }
-      // TODO: Does this also need to be configurable?
-      const format = yScale.tickFormat(5);
+      const inputFormat = _.get(this, [ 'props', 'tickFormats', i ]);
+      const format = yScale.tickFormat(_.isNumber(inputTicks) ? inputTicks : DEFAULT_TICK_COUNT, inputFormat);
 
       const maxTextWidth = Math.ceil(_.max(ticks.map(t => context.measureText(format(t)).width)));
       const maxAxisWidth = maxTextWidth + HORIZONTAL_PADDING * 2 + TICK_LENGTH;

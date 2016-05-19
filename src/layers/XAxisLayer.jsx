@@ -9,8 +9,10 @@ import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 
+// TODO: Do any of these need to be configurable?
 const VERTICAL_PADDING = 4;
 const HORIZONTAL_PADDING = 6;
+const DEFAULT_TICK_COUNT = 5;
 
 @PureRender
 @CanvasRender
@@ -19,6 +21,15 @@ export default class XAxisLayer extends React.Component {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     scale: React.PropTypes.func,
+    ticks: React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.number,
+      React.PropTypes.arrayOf(React.PropTypes.number)
+    ]),
+    tickFormat: React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.string
+    ]),
     color: React.PropTypes.string,
     font: React.PropTypes.string
   };
@@ -44,8 +55,25 @@ export default class XAxisLayer extends React.Component {
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    const ticks = xScale.ticks(5);
-    const format = xScale.tickFormat();
+    let ticks;
+    const inputTicks = this.props.ticks;
+    if (inputTicks) {
+      if (_.isFunction(inputTicks)) {
+        ticks = inputTicks(xDomain);
+      } else if (_.isArray(inputTicks)) {
+        ticks = inputTicks;
+      } else if (_.isNumber(inputTicks)) {
+        ticks = xScale.ticks(inputTicks);
+      } else {
+        throw new Error('ticks must be a function, array or number');
+      }
+    } else {
+      ticks = xScale.ticks(DEFAULT_TICK_COUNT);
+    }
+    const format = xScale.tickFormat(
+      _.isNumber(inputTicks) ? inputTicks : DEFAULT_TICK_COUNT,
+      this.props.tickFormat
+    );
 
     context.beginPath();
 
