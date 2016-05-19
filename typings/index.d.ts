@@ -128,9 +128,14 @@ export namespace layers {
   }
   export var TimeSpanLayer: React.ComponentClass<TimeSpanLayerProps>;
 
+  export type Ticks = ((axisDomain: Range) => number[]) | number[] | number;
+  export type TickFormat = ((value: number) => string) | string;
+
   interface XAxisLayerProps {
     xDomain: Range;
     scale?: ScaleFunction;
+    ticks?: Ticks;
+    tickFormat?: TickFormat;
     color?: HexColor;
     font?: string;
   }
@@ -139,8 +144,8 @@ export namespace layers {
   interface YAxisLayerProps {
     yDomains: Range[];
     scales?: ScaleFunction[];
-    ticks?: (((yDomain: Range) => number[]) | number[] | number)[];
-    tickFormats?: (((value: number) => string) | string)[];
+    ticks?: Ticks[];
+    tickFormats?: TickFormat[];
     colors?: HexColor[];
     font?: string;
     backgroundColor?: string;
