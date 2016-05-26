@@ -4,3 +4,4 @@ build-dev/
 *.sublime-workspace
 *.log
 lib/
+typings/

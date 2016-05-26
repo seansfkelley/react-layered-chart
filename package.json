@@ -49,6 +49,9 @@
     "should": "^8.0.2",
     "sinon": "^1.17.2",
     "stylus": "^0.53.0",
+    "ts-loader": "^0.8.2",
+    "tsd": "^0.6.5",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
