@@ -1,7 +1,8 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
+import * as React from 'react';
 
-export default function(mixin) {
-  return (component) => {
+export default function<P, S>(mixin: React.Mixin<P, S>): ClassDecorator {
+  return (component: React.ComponentClass<P>) => {
     _.each(mixin, (newFn, fnName) => {
       const oldFn = component.prototype[fnName];
       component.prototype[fnName] = function() {

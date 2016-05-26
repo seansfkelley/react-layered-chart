@@ -1,12 +1,13 @@
-import _ from 'lodash';
-import d3Interpolate from 'd3-interpolate';
-import d3Ease from 'd3-ease';
+import * as _ from 'lodash';
+import * as d3Interpolate from 'd3-interpolate';
+import * as d3Ease from 'd3-ease';
+import * as React from 'react';
 
 import mixinToDecorator from './mixinToDecorator';
 
 const ANIMATION_FRAMERATE = 30;
 
-function animateOnce(fromValue, toValue, durationMs, onFrame) {
+function animateOnce(fromValue: any, toValue: any, durationMs: number, onFrame: (t: number) => void) {
   const interpolator = d3Interpolate.interpolate(fromValue, toValue);
   const frameCount = Math.ceil(durationMs / 1000 * ANIMATION_FRAMERATE);
 
@@ -22,7 +23,7 @@ function animateOnce(fromValue, toValue, durationMs, onFrame) {
   return () => { clearInterval(setIntervalId); };
 }
 
-export const mixin = {
+export const mixin: React.Mixin<any, any> = {
   componentWillMount: function() {
     if (!_.isPlainObject(this.animatedProps)) {
       throw new Error(this.constructor.name + ' must have an animatedProps field to use the AnimateProps decorator');
