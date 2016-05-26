@@ -14,5 +14,5 @@ export default function<P, S>(mixin: React.Mixin<P, S>): ClassDecorator {
         return returnValue;
       };
     });
-  };
+  }
 }

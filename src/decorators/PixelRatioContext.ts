@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
-export const mixin: React.Mixin<any, any> & React.ChildContextProvider<any> = {
+const mixin: React.Mixin<any, any> & React.ChildContextProvider<any> = {
   contextTypes: {
     pixelRatio: React.PropTypes.number
   },
@@ -15,7 +15,7 @@ export const mixin: React.Mixin<any, any> & React.ChildContextProvider<any> = {
   }
 };
 
-export const decorator: ClassDecorator = (component: React.ComponentClass<any>) => {
+const decorator: ClassDecorator = (component: React.ComponentClass<any>) => {
   component.contextTypes = _.defaults({
     pixelRatio: React.PropTypes.number
   }, (<React.ComponentClass<any>> component.constructor).contextTypes);
@@ -30,3 +30,6 @@ export const decorator: ClassDecorator = (component: React.ComponentClass<any>) 
     return _.defaults({ pixelRatio: this.props.pixelRatio || this.context.pixelRatio }, oldContext);
   };
 };
+
+export default decorator;
+export { mixin as Mixin };

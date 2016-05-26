@@ -23,7 +23,7 @@ function animateOnce(fromValue: any, toValue: any, durationMs: number, onFrame: 
   return () => { clearInterval(setIntervalId); };
 }
 
-export const mixin: React.Mixin<any, any> = {
+const mixin: React.Mixin<any, any> = {
   componentWillMount: function() {
     if (!_.isPlainObject(this.animatedProps)) {
       throw new Error(this.constructor.name + ' must have an animatedProps field to use the AnimateProps decorator');
@@ -69,4 +69,7 @@ export const mixin: React.Mixin<any, any> = {
   }
 };
 
-export const decorator = mixinToDecorator(mixin);
+const decorator = mixinToDecorator(mixin);
+
+export default decorator;
+export { mixin as Mixin };

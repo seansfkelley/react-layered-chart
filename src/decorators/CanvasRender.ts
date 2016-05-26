@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import mixinToDecorator from './mixinToDecorator';
 
-export const mixin: React.Mixin<any, any> = {
+const mixin: React.Mixin<any, any> = {
   componentDidMount: function (){
     if (!_.isFunction(this.canvasRender)) {
       throw new Error(this.constructor.name + ' must implement a canvasRender function to use the CanvasRender decorator');
@@ -28,4 +28,7 @@ export const mixin: React.Mixin<any, any> = {
   }
 };
 
-export const decorator = mixinToDecorator(mixin);
+const decorator = mixinToDecorator(mixin);
+
+export default decorator;
+export { mixin as Mixin };
