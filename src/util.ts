@@ -1,6 +1,13 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 
-function adjustBounds(firstIndex, lastIndex, dataLength) {
+import { SeriesData, Range } from './interfaces';
+
+export interface IndexBounds {
+  firstIndex: number;
+  lastIndex: number;
+}
+
+function adjustBounds(firstIndex: number, lastIndex: number, dataLength: number): IndexBounds {
   if (firstIndex === dataLength || lastIndex === 0) {
     // No data is visible!
     return { firstIndex, lastIndex };
@@ -15,7 +22,7 @@ function adjustBounds(firstIndex, lastIndex, dataLength) {
 }
 
 // Assumption: data is sorted by `timestampPath` acending.
-export function getBoundsForInstantaeousData(timestampedData, timeRange, timestampPath = 'timestamp') {
+export function getBoundsForInstantaeousData(timestampedData: SeriesData, timeRange: Range, timestampPath: string = 'timestamp'): IndexBounds {
   const lowerBound = _.set({}, timestampPath, timeRange.min);
   const upperBound = _.set({}, timestampPath, timeRange.max);
 
@@ -26,7 +33,7 @@ export function getBoundsForInstantaeousData(timestampedData, timeRange, timesta
 }
 
 // Assumption: data is sorted by `minPath` ascending.
-export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'timeSpan.min', maxPath = 'timeSpan.max') {
+export function getBoundsForTimeSpanData(timeSpanData: SeriesData, timeRange: Range, minPath: string = 'timeSpan.min', maxPath: string = 'timeSpan.max'): IndexBounds {
   // Note that this is purposely reversed. Think about it.
   const upperBound = _.set({}, minPath, timeRange.max);
 
@@ -43,27 +50,21 @@ export function getBoundsForTimeSpanData(timeSpanData, timeRange, minPath = 'tim
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }
 
-export function resolvePan(timeRange, delta) {
+export function resolvePan(range: Range, delta: number): Range {
   return {
-    min: timeRange.min + delta,
-    max: timeRange.max + delta
+    min: range.min + delta,
+    max: range.max + delta
   };
 }
 
-export function resolveZoom(timeRange, factor, anchorBias = 0.5) {
-  const currentExtent = timeRange.max - timeRange.min;
+export function resolveZoom(range, factor: number, anchorBias: number = 0.5) {
+  const currentExtent = range.max - range.min;
   const targetExtent = currentExtent / factor;
   const extentDelta = targetExtent - currentExtent;
 
   return {
-    min: timeRange.min - extentDelta * anchorBias,
-    max: timeRange.max + extentDelta * (1 - anchorBias)
+    min: range.min - extentDelta * anchorBias,
+    max: range.max + extentDelta * (1 - anchorBias)
   };
 }
 
-export default {
-  getBoundsForInstantaeousData,
-  getBoundsForTimeSpanData,
-  resolvePan,
-  resolveZoom
-};
