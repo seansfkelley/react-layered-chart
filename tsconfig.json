@@ -13,11 +13,9 @@
     "pretty": true
   },
 
-  "exclude": [
-    "node_modules",
-    "test",
-    "lib",
-    "src-dev",
-    "webpack.config*.js"
+  "files": [
+    "src/index.ts",
+    "typings/tsd.d.ts",
+    "extra-typings.d.ts"
   ]
 }
