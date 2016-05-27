@@ -1,10 +1,10 @@
-import React from 'react';
-import PureRender from 'pure-render-decorator';
-import d3Scale from 'd3-scale';
+import * as React from 'react';
+import * as PureRender from 'pure-render-decorator';
+import * as d3Scale from 'd3-scale';
 
-import { decorator as CanvasRender } from '../mixins/CanvasRender';
-import { decorator as AnimateProps } from '../mixins/AnimateProps';
-import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
+import CanvasRender from '../decorators/CanvasRender';
+import AnimateProps from '../decorators/AnimateProps';
+import PixelRatioContext from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';

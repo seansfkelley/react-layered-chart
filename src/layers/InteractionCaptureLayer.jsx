@@ -1,6 +1,6 @@
-import React from 'react';
-import PureRender from 'pure-render-decorator';
-import d3Scale from 'd3-scale';
+import * as React from 'react';
+import * as PureRender from 'pure-render-decorator';
+import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
 

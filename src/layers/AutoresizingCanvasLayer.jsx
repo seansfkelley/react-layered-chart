@@ -1,8 +1,8 @@
-import React from 'react';
-import PureRender from 'pure-render-decorator';
-import classnames from 'classnames';
+import * as React from 'react';
+import * as PureRender from 'pure-render-decorator';
+import * as classnames from 'classnames';
 
-import { decorator as PixelRatioContext } from '../mixins/PixelRatioContext';
+import PixelRatioContext from '../decorators/PixelRatioContext';
 
 @PureRender
 @PixelRatioContext

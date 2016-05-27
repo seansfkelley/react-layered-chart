@@ -1,4 +1,3 @@
-// TODO: Is there a better way to do this?
 export { default as AutoresizingCanvasLayer } from './AutoresizingCanvasLayer';
 export { default as BarLayer } from './BarLayer';
 export { default as BrushLayer } from './BrushLayer';
