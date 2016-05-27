@@ -8,11 +8,20 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
+import { Range, Color } from '../interfaces';
+
+export interface Props {
+  xDomain: Range;
+  hover?: number;
+  stroke?: Color;
+}
 
 @PureRender
 @CanvasRender
 @PixelRatioContext
 export default class HoverLayer extends React.Component<Props, void> {
+  context: Context;
+
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.range.isRequired,

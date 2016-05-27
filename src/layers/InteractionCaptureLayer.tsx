@@ -3,11 +3,33 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
+import { Range } from '../interfaces';
 
 const LEFT_MOUSE_BUTTON = 0;
 
+export type BooleanMouseEventHandler = (event: React.MouseEvent) => boolean;
+
+export interface Props {
+  xDomain: Range;
+  shouldZoom?: BooleanMouseEventHandler;
+  shouldPan?: BooleanMouseEventHandler;
+  shouldBrush?: BooleanMouseEventHandler;
+  onZoom?: (factor: number, anchorBias: number) => void;
+  onPan?: (logicalUnits: number) => void;
+  onBrush?: (logicalUnitRange?: Range) => void;
+  onHover?: (logicalPosition?: number) => void;
+  zoomSpeed?: number;
+}
+
+export interface State {
+  isPanning: boolean;
+  isBrushing: boolean;
+  lastPanClientX?: number;
+  startBrushClientX?: number;
+}
+
 @PureRender
-export default class InteractionCaptureLayer extends React.Component<Props, void> {
+export default class InteractionCaptureLayer extends React.Component<Props, State> {
   static propTypes = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,
@@ -49,7 +71,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, void
   }
 
   _getBoundingClientRect() {
-    return this.refs.layer.getBoundingClientRect();
+    return (this.refs['layer'] as Element).getBoundingClientRect();
   }
 
   _createPhysicalToLogicalXScale() {
@@ -63,7 +85,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, void
     if (this.props.onPan && this.state.isPanning) {
       if (this.state.lastPanClientX !== event.clientX) {
         const scale = this._createPhysicalToLogicalXScale();
-        this.setState({ lastPanClientX: event.clientX });
+        this.setState({ lastPanClientX: event.clientX } as any);
         this.props.onPan(scale(this.state.lastPanClientX) - scale(event.clientX));
       } else {
         // Do nothing.
@@ -91,9 +113,9 @@ export default class InteractionCaptureLayer extends React.Component<Props, void
 
   _onMouseDown = (event) => {
     if (this.props.onPan && this.props.shouldPan(event)) {
-      this.setState({ isPanning: true, lastPanClientX: event.clientX });
+      this.setState({ isPanning: true, lastPanClientX: event.clientX } as any);
     } else if (this.props.onBrush && this.props.shouldBrush(event)) {
-      this.setState({ isBrushing: true, startBrushClientX: event.clientX });
+      this.setState({ isBrushing: true, startBrushClientX: event.clientX } as any);
       this.props.onHover(null);
     }
     event.stopPropagation();
