@@ -1,23 +1,20 @@
 module.exports = {
   entry: {
-    index: './src/index.js',
-    'dev-index': './src-dev/dev/dev-index.jsx'
+    index: './dev/index.tsx'
   },
   output: {
-    path: './build-dev',
+    path: './dev/build',
     publicPath: '/',
-    filename: '[name].js',
-    sourceMapFilename: '[file].map'
+    filename: '[name].js'
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /(node_modules)/,
-      loader: 'babel-loader'
-    }]
+    loaders: [
+      { test: /\.tsx?$/, loader: 'ts?configFileName=tsconfig-webpack.json' },
+      { test: /node_modules.*\.js$/, loader: 'source-map-loader' },
+    ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.ts', '.tsx', '.js']
   },
   devtool: 'source-map'
 };
