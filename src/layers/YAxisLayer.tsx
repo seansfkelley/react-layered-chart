@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import CanvasRender from '../decorators/CanvasRender';
 import AnimateProps from '../decorators/AnimateProps';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
@@ -59,7 +59,10 @@ export default class YAxisLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     context.textAlign = 'end';
     context.textBaseline = 'middle';

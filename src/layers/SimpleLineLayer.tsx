@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import CanvasRender from '../decorators/CanvasRender';
 import AnimateProps from '../decorators/AnimateProps';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForInstantaeousData } from '../util';
@@ -38,7 +38,10 @@ export default class SimpleLineLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {

@@ -4,17 +4,41 @@ import * as d3Scale from 'd3-scale';
 
 import CanvasRender from '../decorators/CanvasRender';
 import AnimateProps from '../decorators/AnimateProps';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';
 import propTypes from '../propTypes';
+import { Range, Color, ScaleFunction } from '../interfaces';
+
+export interface DataBucket {
+  startTime: number;
+  endTime: number;
+  minValue: number;
+  maxValue: number;
+  firstValue: number;
+  lastValue: number;
+}
+
+export interface Props {
+  data: DataBucket[];
+  xDomain: Range;
+  yDomain: Range;
+  yScale?: ScaleFunction;
+  color?: Color;
+}
+
+export interface State {
+  animated_yDomain: Range;
+}
 
 @PureRender
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class BucketedLineLayer extends React.Component<Props, void> {
+export default class BucketedLineLayer extends React.Component<Props, State> {
+  context: Context;
+
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       startTime: React.PropTypes.number.isRequired,
@@ -44,7 +68,10 @@ export default class BucketedLineLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {

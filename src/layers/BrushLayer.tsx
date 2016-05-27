@@ -3,15 +3,25 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import CanvasRender from '../decorators/CanvasRender';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
+import { Range, Color } from '../interfaces';
+
+export interface Props {
+  xDomain: Range;
+  selection?: Range;
+  stroke?: Color;
+  fill?: Color;
+}
 
 @PureRender
 @CanvasRender
 @PixelRatioContext
 export default class BrushLayer extends React.Component<Props, void> {
+  context: Context;
+
   static propTypes = {
     selection: propTypes.range,
     xDomain: propTypes.range.isRequired,
@@ -29,7 +39,10 @@ export default class BrushLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     if (!this.props.selection) {
       return;

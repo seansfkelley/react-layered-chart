@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import CanvasRender from '../decorators/CanvasRender';
 import AnimateProps from '../decorators/AnimateProps';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForInstantaeousData } from '../util';
@@ -42,7 +42,10 @@ export default class PointLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     const { firstIndex, lastIndex } = getBoundsForInstantaeousData(this.props.data, this.props.xDomain);
     if (firstIndex === lastIndex) {
