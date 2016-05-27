@@ -2,11 +2,25 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as classnames from 'classnames';
 
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
+
+export interface Props {
+  onSizeChange: () => void;
+  className?: string;
+}
+
+export interface State {
+  width: number;
+  height: number;
+}
 
 @PureRender
 @PixelRatioContext
-export default class AutoresizingCanvasLayer extends React.Component<Props, void> {
+export default class AutoresizingCanvasLayer extends React.Component<Props, State> {
+  context: Context;
+
+  private __setSizeInterval: number;
+
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
     className: React.PropTypes.string
@@ -47,7 +61,7 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, void
   }
 
   getCanvasElement() {
-    return this.refs.canvas;
+    return this.refs['canvas'] as HTMLCanvasElement;
   }
 
   getDimensions() {
@@ -71,9 +85,10 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, void
   }
 
   setSizeFromWrapper() {
+    const wrapper = this.refs['wrapper'] as HTMLElement;
     this.setState({
-      width: this.refs.wrapper.offsetWidth,
-      height: this.refs.wrapper.offsetHeight
+      width: wrapper.offsetWidth,
+      height: wrapper.offsetHeight
     });
   }
 }

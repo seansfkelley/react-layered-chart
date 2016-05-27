@@ -1,6 +1,10 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
+export interface Context {
+  pixelRatio: number;
+}
+
 const mixin: React.Mixin<any, any> & React.ChildContextProvider<any> = {
   contextTypes: {
     pixelRatio: React.PropTypes.number
