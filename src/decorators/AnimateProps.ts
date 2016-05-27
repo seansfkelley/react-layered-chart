@@ -32,7 +32,7 @@ const mixin: React.Mixin<any, any> = {
     this.__animatingPropCancelCallbacks = {};
     _.each(this.animatedProps, (durationMs, propName) => {
       this.setState({
-        [`animated-${propName}`]: this.props[propName]
+        [`animated_${propName}`]: this.props[propName]
       });
     });
   },
@@ -51,13 +51,13 @@ const mixin: React.Mixin<any, any> = {
             durationMs,
             v => {
               this.setState({
-                [`animated-${propName}`]: _.cloneDeep(v)
+                [`animated_${propName}`]: _.cloneDeep(v)
               });
             }
           );
         } else {
           this.setState({
-            [`animated-${propName}`]: nextProps[propName]
+            [`animated_${propName}`]: nextProps[propName]
           });
         }
       }

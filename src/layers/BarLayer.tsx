@@ -5,17 +5,31 @@ import * as _ from 'lodash';
 
 import CanvasRender from '../decorators/CanvasRender';
 import AnimateProps from '../decorators/AnimateProps';
-import PixelRatioContext from '../decorators/PixelRatioContext';
+import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';
 import propTypes from '../propTypes';
+import { Color, Range, TimeSpanDatum } from '../interfaces';
+
+export interface Props {
+  data: TimeSpanDatum[];
+  xDomain: Range;
+  yDomain: Range;
+  color: Color;
+}
+
+export interface State {
+  animated_yDomain: Range;
+}
 
 @PureRender
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class BarLayer extends React.Component<Props, void> {
+export default class BarLayer extends React.Component<Props, State> {
+  context: Context;
+
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       timeSpan: propTypes.range.isRequired,
@@ -39,7 +53,10 @@ export default class BarLayer extends React.Component<Props, void> {
   }
 
   canvasRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(this.refs.canvasLayer, this.context.pixelRatio);
+    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
+      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
+      this.context.pixelRatio
+    );
 
     const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain);
     if (firstIndex === lastIndex) {
@@ -51,7 +68,7 @@ export default class BarLayer extends React.Component<Props, void> {
       .rangeRound([ 0, width ]);
 
     const yScale = d3Scale.scaleLinear()
-      .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
+      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
       .rangeRound([ 0, height ]);
 
     context.beginPath();

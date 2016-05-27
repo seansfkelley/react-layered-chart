@@ -1,5 +1,5 @@
 export { default as AutoresizingCanvasLayer } from './AutoresizingCanvasLayer';
-// export { default as BarLayer } from './BarLayer';
+export { default as BarLayer } from './BarLayer';
 // export { default as BrushLayer } from './BrushLayer';
 // export { default as BucketedLineLayer } from './BucketedLineLayer';
 // export { default as HoverLayer } from './HoverLayer';

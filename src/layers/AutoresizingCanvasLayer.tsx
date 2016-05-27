@@ -26,12 +26,12 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, Stat
     className: React.PropTypes.string
   };
 
-  static resetCanvas(canvasLayer, pixelRatio = 1) {
+  static resetCanvas(canvasLayer: AutoresizingCanvasLayer, pixelRatio: number = 1) {
     const canvas = canvasLayer.getCanvasElement();
     const { width, height } = canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
 
-    context.resetTransform();
+    context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
     // TODO: I think this might have to be multiplied by pixelRatio to properly un-blur the canvas.

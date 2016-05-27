@@ -55,7 +55,7 @@ export default class SimpleLineLayer extends React.Component<Props, void> {
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state['animated-yDomain'].min, this.state['animated-yDomain'].max ])
+      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
       .rangeRound([ 0, height ]);
 
     context.beginPath();
