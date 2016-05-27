@@ -14,7 +14,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class BucketedLineLayer extends React.Component {
+export default class BucketedLineLayer extends React.Component<Props, void> {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       startTime: React.PropTypes.number.isRequired,

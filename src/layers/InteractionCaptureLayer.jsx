@@ -7,7 +7,7 @@ import propTypes from '../propTypes';
 const LEFT_MOUSE_BUTTON = 0;
 
 @PureRender
-export default class InteractionCaptureLayer extends React.Component {
+export default class InteractionCaptureLayer extends React.Component<Props, void> {
   static propTypes = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,

@@ -14,7 +14,7 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @PixelRatioContext
-export default class TimeSpanLayer extends React.Component {
+export default class TimeSpanLayer extends React.Component<Props, void> {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       timeSpan: propTypes.range.isRequired,

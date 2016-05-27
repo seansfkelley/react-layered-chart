@@ -12,7 +12,7 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @PixelRatioContext
-export default class HoverLayer extends React.Component {
+export default class HoverLayer extends React.Component<Props, void> {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.range.isRequired,

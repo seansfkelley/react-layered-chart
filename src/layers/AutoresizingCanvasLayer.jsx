@@ -6,7 +6,7 @@ import PixelRatioContext from '../decorators/PixelRatioContext';
 
 @PureRender
 @PixelRatioContext
-export default class AutoresizingCanvasLayer extends React.Component {
+export default class AutoresizingCanvasLayer extends React.Component<Props, void> {
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
     className: React.PropTypes.string

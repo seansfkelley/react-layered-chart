@@ -20,7 +20,7 @@ const DEFAULT_TICK_COUNT = 5;
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class YAxisLayer extends React.Component {
+export default class YAxisLayer extends React.Component<Props, void> {
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.

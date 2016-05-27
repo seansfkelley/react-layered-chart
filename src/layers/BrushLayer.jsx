@@ -11,7 +11,7 @@ import propTypes from '../propTypes';
 @PureRender
 @CanvasRender
 @PixelRatioContext
-export default class BrushLayer extends React.Component {
+export default class BrushLayer extends React.Component<Props, void> {
   static propTypes = {
     selection: propTypes.range,
     xDomain: propTypes.range.isRequired,

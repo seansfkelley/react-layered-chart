@@ -17,7 +17,7 @@ const DEFAULT_TICK_COUNT = 5;
 @PureRender
 @CanvasRender
 @PixelRatioContext
-export default class XAxisLayer extends React.Component {
+export default class XAxisLayer extends React.Component<Props, void> {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     scale: React.PropTypes.func,

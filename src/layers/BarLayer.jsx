@@ -15,7 +15,7 @@ import propTypes from '../propTypes';
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class BarLayer extends React.Component {
+export default class BarLayer extends React.Component<Props, void> {
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       timeSpan: propTypes.range.isRequired,
