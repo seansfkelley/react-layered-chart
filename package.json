@@ -13,7 +13,6 @@
   "scripts": {
     "dev:js": "webpack-dev-server --inline --open",
     "dev:css": "stylus --watch --sourcemap --out build-dev/ styles/",
-    "test": "multi=\"mocha-osx-reporter=- spec=-\" mocha --reporter mocha-multi",
     "build": "babel --source-maps true src/ --out-dir lib/ && stylus --sourcemap --out lib/ styles/index.styl",
     "prepublish": "npm test -- --reporter landing && npm run build"
   },
