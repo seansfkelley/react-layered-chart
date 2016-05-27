@@ -5,3 +5,4 @@ dev/build/
 *.log
 lib/
 typings/
+react-layered-chart.css*

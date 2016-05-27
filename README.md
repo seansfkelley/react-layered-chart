@@ -14,6 +14,8 @@ npm install --save react-layered-chart
 
 Docs coming soon!
 
+Don't forget to include the styles from `react-layered-chart/react-layered-chart.css`.
+
 ## Developing
 
 ```

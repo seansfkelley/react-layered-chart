@@ -4,6 +4,7 @@
   "description": "A high-performance canvas-based time series visualization in React.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
+  "styles": "react-layered-chart.css",
   "author": "Palantir Technologies",
   "license": "Apache-2.0",
   "repository": {
@@ -12,7 +13,8 @@
   },
   "scripts": {
     "dev:hot-reload": "webpack-dev-server --config webpack.config.hot.js --inline --content-base dev/build/ --host 0.0.0.0 --port 8085 --hot true",
-    "test": "exit 0"
+    "test": "exit 0",
+    "prepublish": "tsc && lessc --source-map styles/index.less react-layered-chart.css"
   },
   "devDependencies": {
     "css-loader": "^0.23.1",

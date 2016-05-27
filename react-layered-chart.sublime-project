@@ -1,7 +1,7 @@
 {
-	"folders":
-	[
-		{
+  "folders":
+  [
+    {
       "follow_symlinks": true,
       "path": ".",
       "folder_exclude_patterns": [
@@ -10,8 +10,9 @@
         "dev/build"
       ],
       "file_exclude_patterns": [
-        "*.sublime-workspace"
+        "*.sublime-workspace",
+        "react-layered-chart.css*"
       ]
-		}
-	]
+    }
+  ]
 }
