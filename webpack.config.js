@@ -32,7 +32,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './dev/index-template.html',
       filename: 'index.html',
-      chunks: ['app', 'vendor']
+      chunks: ['index', 'vendor']
     }),
     new WebpackNotifierPlugin({
       title: 'react-layered-chart'
