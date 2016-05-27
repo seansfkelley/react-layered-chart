@@ -9,6 +9,9 @@ import {
   SimpleLineLayer
 } from '../src';
 
+import './dev-styles.less';
+import '../styles/index.less';
+
 const PARSED_TEST_DATA = TEST_DATA.map(({ timestamp, value }) => ({
   timestamp: moment(timestamp).valueOf(),
   value

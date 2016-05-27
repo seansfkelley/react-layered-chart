@@ -19,6 +19,8 @@ module.exports = {
     loaders: [
       { test: /\.tsx?$/, loader: 'ts?configFileName=tsconfig-webpack.json' },
       { test: /node_modules.*\.js$/, loader: 'source-map-loader' },
+      { test: /\.css$/, loader: 'style!css' },
+      { test: /\.less/, loader: 'style!css?sourceMap!less?sourceMap' }
     ]
   },
   resolve: {
