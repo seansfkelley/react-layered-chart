@@ -9,6 +9,7 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
+import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 // TODO: Do any of these need to be configurable?
 const HORIZONTAL_PADDING = 6;
@@ -16,11 +17,27 @@ const TICK_LENGTH = 4;
 const DEFAULT_COLOR = '#444';
 const DEFAULT_TICK_COUNT = 5;
 
+export interface Props {
+  yDomains: Range[];
+  scales?: ScaleFunction[];
+  ticks?: Ticks[];
+  tickFormats?: TickFormat[];
+  colors?: Color[];
+  font?: string;
+  backgroundColor?: Color;
+}
+
+export interface State {
+  animated_yDomains: Range[];
+}
+
 @PureRender
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class YAxisLayer extends React.Component<Props, void> {
+export default class YAxisLayer extends React.Component<Props, State> {
+  context: Context;
+
   static propTypes = {
     // This awkward index-matching is because animation only supports animating top-level keys and we don't
     // want to animate a bunch of extraneous metadata.
@@ -75,12 +92,12 @@ export default class YAxisLayer extends React.Component<Props, void> {
         .domain([ yDomain.min, yDomain.max ])
         .rangeRound([ 0, height ]);
 
-      let ticks;
+      let ticks: number[];
       const inputTicks = _.get(this, [ 'props', 'ticks', i ]);
       if (inputTicks) {
         if (_.isFunction(inputTicks)) {
           ticks = inputTicks(yDomain);
-        } else if (_.isArray(inputTicks)) {
+        } else if (_.isArray<number>(inputTicks)) {
           ticks = inputTicks;
         } else if (_.isNumber(inputTicks)) {
           ticks = yScale.ticks(inputTicks);

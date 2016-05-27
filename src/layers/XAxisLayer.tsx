@@ -8,16 +8,28 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
+import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 // TODO: Do any of these need to be configurable?
 const VERTICAL_PADDING = 4;
 const HORIZONTAL_PADDING = 6;
 const DEFAULT_TICK_COUNT = 5;
 
+export interface Props {
+  xDomain: Range;
+  scale?: ScaleFunction;
+  ticks?: Ticks;
+  tickFormat?: TickFormat;
+  color?: Color;
+  font?: string;
+}
+
 @PureRender
 @CanvasRender
 @PixelRatioContext
 export default class XAxisLayer extends React.Component<Props, void> {
+  context: Context;
+
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     scale: React.PropTypes.func,
@@ -58,11 +70,11 @@ export default class XAxisLayer extends React.Component<Props, void> {
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    let ticks;
+    let ticks: number[];
     const inputTicks = this.props.ticks;
     if (inputTicks) {
       if (_.isFunction(inputTicks)) {
-        ticks = inputTicks(xDomain);
+        ticks = inputTicks(this.props.xDomain);
       } else if (_.isArray(inputTicks)) {
         ticks = inputTicks;
       } else if (_.isNumber(inputTicks)) {

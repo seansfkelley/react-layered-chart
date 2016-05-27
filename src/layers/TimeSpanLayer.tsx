@@ -8,13 +8,24 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';
-
 import propTypes from '../propTypes';
+import { Range, Color } from '../interfaces';
+
+export interface Props {
+  data: {
+    timeSpan: Range;
+    color?: Color;
+  }[];
+  xDomain: Range;
+  color?: Color;
+}
 
 @PureRender
 @CanvasRender
 @PixelRatioContext
 export default class TimeSpanLayer extends React.Component<Props, void> {
+  context: Context;
+
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
       timeSpan: propTypes.range.isRequired,
