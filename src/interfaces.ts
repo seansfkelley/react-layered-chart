@@ -11,3 +11,8 @@ export interface TimeSpanDatum {
   timeSpan: Range;
   value: number;
 }
+
+export interface TimestampDatum {
+  timestamp: number;
+  value: number;
+}

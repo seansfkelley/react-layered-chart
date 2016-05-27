@@ -10,12 +10,29 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForInstantaeousData } from '../util';
 import propTypes from '../propTypes';
+import { Range, TimestampDatum, ScaleFunction, Color } from '../interfaces';
+
+export interface Props {
+  data: TimestampDatum[];
+  xDomain: Range;
+  yDomain: Range;
+  yScale?: ScaleFunction;
+  color?: Color;
+  radius?: number;
+  innerRadius?: number;
+}
+
+export interface State {
+  animated_yDomain: Range;
+}
 
 @PureRender
 @CanvasRender
 @AnimateProps
 @PixelRatioContext
-export default class PointLayer extends React.Component<Props, void> {
+export default class PointLayer extends React.Component<Props, State> {
+  context: Context;
+
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
     xDomain: propTypes.range.isRequired,
