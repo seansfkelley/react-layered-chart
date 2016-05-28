@@ -13,7 +13,7 @@ interface Props {
 }
 
 @PureRender
-class ResizeSentinelLayer extends React.Component<Props, {}> {
+class ConnectedResizeSentinelLayer extends React.Component<Props, {}> {
   private __setSizeInterval: number;
   private __lastWidth: number;
 
@@ -53,4 +53,4 @@ function mapDispatchToProps(dispatch: Dispatch): { actions: BoundActions } {
   };
 }
 
-export default connect(null, mapDispatchToProps)(ResizeSentinelLayer) as any as React.ComponentClass<void>;
+export default connect(null, mapDispatchToProps)(ConnectedResizeSentinelLayer) as any as React.ComponentClass<void>;

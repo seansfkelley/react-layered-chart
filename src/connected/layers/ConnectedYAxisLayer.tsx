@@ -19,7 +19,7 @@ export interface ConnectedProps {
 }
 
 @PureRender
-export class YAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
+export class ConnectedYAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
     // FIXME: How to get colors and scales for layers easily?
     // scales={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].yScale)}
@@ -40,4 +40,4 @@ function mapStateToProps(state: ChartState): ConnectedProps {
   };
 }
 
-export default connect(mapStateToProps)(YAxisLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(ConnectedYAxisLayer) as React.ComponentClass<OwnProps>;

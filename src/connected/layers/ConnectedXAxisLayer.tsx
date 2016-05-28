@@ -16,7 +16,7 @@ export interface ConnectedProps {
 }
 
 @PureRender
-export class XAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
+export class ConnectedXAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
     return (
       <UnconnectedXAxisLayer
@@ -34,4 +34,4 @@ function mapStateToProps(state: ChartState): ConnectedProps {
   };
 }
 
-export default connect(mapStateToProps)(XAxisLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(ConnectedXAxisLayer) as React.ComponentClass<OwnProps>;

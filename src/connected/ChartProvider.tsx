@@ -10,7 +10,7 @@ import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
 import { setXDomain, setYDomain, setHover, setSelection } from './flux/uiActions';
 import { setMetadata, setSeriesIds, setDataLoader } from './flux/dataActions';
-import ResizeSentinelLayer from './layers/ResizeSentinelLayer';
+import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
 
 export interface Props {
   seriesIds: SeriesId[];
@@ -162,7 +162,9 @@ export default class ChartProvider extends React.Component<Props, {}> {
       <Provider store={this._store}>
         <div className={classNames('lc-chart-provider', this.props.className)}>
           {this.props.includeResizeSentinel
-            ? <Stack className='autoinjected-resize-sentinel-stack'><ResizeSentinelLayer/></Stack>
+            ? <Stack className='autoinjected-resize-sentinel-stack'>
+                <ConnectedResizeSentinelLayer/>
+              </Stack>
             : null}
           {this.props.children}
         </div>

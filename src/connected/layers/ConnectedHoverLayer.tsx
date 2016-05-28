@@ -16,7 +16,7 @@ export interface ConnectedProps {
 }
 
 @PureRender
-class HoverLayer extends React.Component<OwnProps & ConnectedProps, {}> {
+class ConnectedHoverLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
     return (
       <UnconnectedHoverLayer
@@ -35,4 +35,4 @@ function mapStateToProps(state: ChartState): ConnectedProps {
   };
 }
 
-export default connect(mapStateToProps)(HoverLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(ConnectedHoverLayer) as React.ComponentClass<OwnProps>;

@@ -38,7 +38,7 @@ export interface DispatchProps {
 }
 
 @PureRender
-export class InteractionLayer extends React.Component<OwnProps & ConnectedProps & DispatchProps, {}> {
+export class ConnectedInteractionLayer extends React.Component<OwnProps & ConnectedProps & DispatchProps, {}> {
   render() {
     return (
       <div>
@@ -95,4 +95,4 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InteractionLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectedInteractionLayer) as React.ComponentClass<OwnProps>;
