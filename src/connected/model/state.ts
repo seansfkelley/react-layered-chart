@@ -1,19 +1,11 @@
-import { Range, ScaleFunction, HexColor } from 'react-layered-chart';
+import { Range, ScaleFunction, Color } from '../../interfaces';
 
-import LayerType from './LayerType';
 import { DEFAULT_X_DOMAIN } from './constants';
-import { SeriesId, TBySeriesId, DataLoader, SeriesData } from './typedefs';
-import computedChannelsLoader from '../flux/computedChannelsLoader';
+import { SeriesId, TBySeriesId, DataLoader, SeriesData } from './interfaces';
 
 export interface DefaultChartState {
   xDomain?: Range;
   yDomains?: TBySeriesId<Range>;
-}
-
-export interface SeriesMetadata {
-  layerType: LayerType;
-  color?: HexColor;
-  yScale?: ScaleFunction;
 }
 
 export interface UiState {
@@ -27,13 +19,19 @@ export interface ChartState {
   physicalChartWidth: number;
   seriesIds: SeriesId[];
   dataBySeriesId: TBySeriesId<SeriesData>;
-  metadataBySeriesId: TBySeriesId<SeriesMetadata>;
+  metadataBySeriesId: TBySeriesId<any>;
   isLoadingBySeriesId: TBySeriesId<boolean>;
   errorBySeriesId: TBySeriesId<any>;
   loadVersion: string;
   dataLoader: DataLoader;
   uiState: UiState;
   uiStateConsumerOverrides: UiState;
+}
+
+// Can't seem to get Typescript to like this function: either it doesn't return
+// the right type, or the return statements are unreachable code.
+const invalidLoader: any = () => {
+  throw new Error('No data loader specified.');
 }
 
 export const DEFAULT_CHART_STATE: ChartState = {
@@ -44,7 +42,7 @@ export const DEFAULT_CHART_STATE: ChartState = {
   isLoadingBySeriesId: {},
   errorBySeriesId: {},
   loadVersion: null,
-  dataLoader: computedChannelsLoader,
+  dataLoader: invalidLoader,
   uiState: {
     xDomain: DEFAULT_X_DOMAIN,
     yDomainBySeriesId: {},

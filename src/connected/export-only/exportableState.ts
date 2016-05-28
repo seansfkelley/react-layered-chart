@@ -2,4 +2,4 @@ export interface LayerCakeChartState {
   __layerCakeChartState: boolean;
 }
 
-export { SeriesMetadata, DefaultChartState } from '../model/state';
+export { DefaultChartState } from '../model/state';

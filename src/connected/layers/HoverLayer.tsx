@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
-import { layers, Range } from 'react-layered-chart';
-const { HoverLayer: LayeredChartHoverLayer } = layers;
+import { default as UnconnectedHoverLayer } from '../../layers/HoverLayer';
+import { Range } from '../../interfaces';
 
 import { ChartState } from '../model/state';
 import { selectHover, selectXDomain } from '../model/selectors';
@@ -20,7 +20,7 @@ export interface ConnectedProps {
 class HoverLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
     return (
-      <LayeredChartHoverLayer
+      <UnconnectedHoverLayer
         hover={this.props.hover}
         xDomain={this.props.xDomain}
         stroke={this.props.color}

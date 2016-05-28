@@ -4,7 +4,6 @@
     "module": "commonjs",
     "sourceMap": true,
     "jsx": "react",
-    "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
     "experimentalDecorators": true,

@@ -1,4 +1,4 @@
-import { Range } from 'react-layered-chart';
+import { Range } from '../../interfaces';
 
 export const DEFAULT_X_DOMAIN: Range = {
   min: 0,
