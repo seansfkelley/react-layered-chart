@@ -1,46 +1,48 @@
 import * as _ from 'lodash';
-import { Range, DataPoint, DataBucket } from 'react-layered-chart';
 
+import { Range, TimestampDatum, TimeBucketDatum } from '../../interfaces';
 import ActionType, { Action } from '../model/ActionType';
-import LayerType from '../model/LayerType';
-import { SeriesMetadata, ChartState} from '../model/state';
-import { SeriesId, TBySeriesId, DataLoader, SeriesData } from '../model/typedefs';
-import ThunkInterface = ReduxThunk.ThunkInterface;
+import { ChartState} from '../model/state';
+import { SeriesId, TBySeriesId, DataLoader, SeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
 import { selectXDomain } from '../model/selectors';
 import { extendRange } from '../rangeUtils';
 
-function _computeYDomain(seriesId: SeriesId, data: SeriesData, layerType: LayerType, currentYDomain: Range): Range {
-  if (data.length === 0) {
-    return currentYDomain;
-  }
+// function _computeYDomain(seriesId: SeriesId, data: SeriesData, layerType: LayerType, currentYDomain: Range): Range {
+//   if (data.length === 0) {
+//     return currentYDomain;
+//   }
+//
+//   let min;
+//   let max;
+//   switch (layerType) {
+//     case LayerType.LINE:
+//       const bucketData = <TimeBucketDatum[]> data;
+//       min = _.minBy(bucketData, 'minValue').minValue;
+//       max = _.maxBy(bucketData, 'maxValue').maxValue;
+//       break;
+//
+//     case LayerType.POINT:
+//       const pointData = <TimestampDatum[]> data;
+//       min = _.minBy(pointData, 'value').value;
+//       max = _.maxBy(pointData, 'value').value;
+//       break;
+//
+//     default:
+//       console.error(`Cannot set Y domain for series ${seriesId} because it didn't specify a known LayerType: ${layerType}.`);
+//       return;
+//   }
+//
+//   if (min === max) {
+//     min--;
+//     max++;
+//   }
+//
+//   return extendRange({ min, max }, 0.1);
+// }
 
-  let min;
-  let max;
-  switch (layerType) {
-    case LayerType.LINE:
-      const bucketData = <DataBucket[]> data;
-      min = _.minBy(bucketData, 'minValue').minValue;
-      max = _.maxBy(bucketData, 'maxValue').maxValue;
-      break;
-
-    case LayerType.POINT:
-      const pointData = <DataPoint[]> data;
-      min = _.minBy(pointData, 'value').value;
-      max = _.maxBy(pointData, 'value').value;
-      break;
-
-    default:
-      console.error(`Cannot set Y domain for series ${seriesId} because it didn't specify a known LayerType: ${layerType}.`);
-      return;
-  }
-
-  if (min === max) {
-    min--;
-    max++;
-  }
-
-  return extendRange({ min, max }, 0.1);
+function _computeYDomain(seriesId: SeriesId, data: SeriesData, metadata: any, currentYDomain: Range): Range {
+  throw new Error('Gotta implement this!');
 }
 
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
@@ -59,7 +61,7 @@ function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void):
   };
 }
 
-function _performDataLoad(): ThunkInterface {
+function _performDataLoad() {
   const thunk: any = (dispatch, getState: () => ChartState) => {
     const preLoadChartState = getState();
     const dataLoader = preLoadChartState.dataLoader;
@@ -158,7 +160,7 @@ export function setSeriesIds(payload: SeriesId[]) {
   };
 }
 
-export function setMetadata(payload: TBySeriesId<SeriesMetadata>): Action<TBySeriesId<SeriesMetadata>> {
+export function setMetadata(payload: TBySeriesId<any>): Action<TBySeriesId<any>> {
   return {
     type: ActionType.SET_METADATA,
     payload

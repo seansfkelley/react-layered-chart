@@ -1,7 +1,6 @@
-import { Range } from 'react-layered-chart';
-
+import { Range } from '../../interfaces';
 import { Action, ActionType } from '../model/ActionType';
-import { TBySeriesId } from '../model/typedefs';
+import { TBySeriesId } from '../interfaces';
 import { requestDataLoad } from './dataActions';
 
 export function setXDomain(payload: Range, isOverride: boolean = false) {

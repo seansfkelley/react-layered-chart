@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import * as d3Scale from 'd3-scale';
-import { Range } from 'react-layered-chart';
+import { Range } from '../interfaces';
 
-import { TBySeriesId, SeriesId } from './model/typedefs';
+import { TBySeriesId, SeriesId } from './interfaces';
 
 export function enforceRangeBounds(range: Range, bounds: Range): Range {
   const extent = range.max - range.min;

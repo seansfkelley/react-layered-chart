@@ -1,5 +1,5 @@
-import { Range } from '../../interfaces';
-import { LayerCakeChartState } from '../export-only/exportableState';
+import { Range } from '../interfaces';
+import { LayerCakeChartState } from './export-only/exportableState';
 
 export type SeriesId = string;
 export type ChartId = string;

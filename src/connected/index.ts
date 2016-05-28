@@ -1,3 +1,4 @@
+export * from './interfaces';
 export * from './layers';
 // export { default as LayerCake, Props as LayerCakeProps } from './components/LayerCake';
 // export * from './export-only/exportableActions';

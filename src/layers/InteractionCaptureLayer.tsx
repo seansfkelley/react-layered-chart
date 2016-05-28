@@ -3,11 +3,9 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
-import { Range } from '../interfaces';
+import { Range, BooleanMouseEventHandler } from '../interfaces';
 
 const LEFT_MOUSE_BUTTON = 0;
-
-export type BooleanMouseEventHandler = (event: React.MouseEvent) => boolean;
 
 export interface Props {
   xDomain: Range;

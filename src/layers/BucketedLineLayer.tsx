@@ -9,19 +9,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getBoundsForTimeSpanData } from '../util';
 import propTypes from '../propTypes';
-import { Range, Color, ScaleFunction } from '../interfaces';
-
-export interface DataBucket {
-  startTime: number;
-  endTime: number;
-  minValue: number;
-  maxValue: number;
-  firstValue: number;
-  lastValue: number;
-}
+import { Range, Color, ScaleFunction, TimeBucketDatum } from '../interfaces';
 
 export interface Props {
-  data: DataBucket[];
+  data: TimeBucketDatum[];
   xDomain: Range;
   yDomain: Range;
   yScale?: ScaleFunction;

@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Range, BooleanMouseEventHandler, layers, util } from 'react-layered-chart';
-const { InteractionCaptureLayer, HoverLayer, BrushLayer } = layers;
-const { resolvePan, resolveZoom } = util;
 
+import { Range, BooleanMouseEventHandler } from '../../interfaces';
+import { InteractionCaptureLayer, HoverLayer, BrushLayer } from '../../layers';
+import { resolvePan, resolveZoom } from '../../util';
 import * as uiActions from '../flux/uiActions';
 import { ChartState } from '../model/state';
 import { selectXDomain, selectHover, selectSelection } from '../model/selectors';

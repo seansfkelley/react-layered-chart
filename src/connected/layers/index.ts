@@ -1,6 +1,6 @@
-export { default as ConnectedHoverLayer, OwnProps as ConnectedHoverLayerProps } from './layers/HoverLayer';
-// export { default as XAxisLayer, OwnProps as XAxisLayerProps } from './components/XAxisLayer';
-// export { default as StackedSeriesLayer, OwnProps as StackedSeriesLayerProps } from './components/StackedSeriesLayer';
-// export { default as YAxisLayer, OwnProps as YAxisLayerProps } from './components/YAxisLayer';
-// export { default as InteractionLayer, OwnProps as InteractionLayerProps } from './components/InteractionLayer';
-// export { default as ResizeSentinelLayer } from './components/ResizeSentinelLayer';
+export { default as ConnectedHoverLayer, OwnProps as ConnectedHoverLayerProps } from './HoverLayer';
+export { default as ConnectedInteractionLayer, OwnProps as ConnectedInteractionLayerProps } from './InteractionLayer';
+// export { default as XAxisLayer, OwnProps as XAxisLayerProps } from './XAxisLayer';
+// export { default as StackedSeriesLayer, OwnProps as StackedSeriesLayerProps } from './StackedSeriesLayer';
+// export { default as YAxisLayer, OwnProps as YAxisLayerProps } from './YAxisLayer';
+// export { default as ResizeSentinelLayer } from './ResizeSentinelLayer';
