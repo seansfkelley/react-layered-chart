@@ -1,8 +1,6 @@
-// This is not actually an unused import: tsc needs this name in scope to compile a definition for some reason.
 import { ActionType } from '../model/ActionType';
-import { Range } from 'react-layered-chart';
-
-import { TBySeriesId } from '../model/typedefs';
+import { Range } from '../../interfaces';
+import { TBySeriesId } from '../interfaces';
 import {
   setXDomain as internalSetXDomain,
   setYDomain as internalSetYDomain,

@@ -1,17 +1,16 @@
-// Range is not actually an unused import: tsc needs this name in scope to compile a definition for some reason.
-import { Range, DataPoint, DataBucket } from 'react-layered-chart';
-
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
+
 import {
   selectXDomain as internalSelectXDomain,
   selectYDomains as internalSelectYDomains,
   selectHover as internalSelectHover,
   selectSelection as internalSelectSelection
 } from '../model/selectors';
+import { Range } from '../../interfaces';
 import { ChartState } from '../model/state';
 import { LayerCakeChartState } from './exportableState';
-import { SeriesId, TBySeriesId } from '../model/typedefs';
+import { SeriesId, TBySeriesId } from '../interfaces';
 
 function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: LayerCakeChartState) => T {
   return (state: LayerCakeChartState) => selector(state as any as ChartState);
@@ -40,7 +39,7 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
     internalSelectData,
     internalSelectMetadata,
     internalSelectHover,
-    (dataBySeriesId: TBySeriesId<any>, metadataBySeriesId: TBySeriesId<SeriesMetadata>, hover?: number) => {
+    (dataBySeriesId: TBySeriesId<any>, metadataBySeriesId: TBySeriesId<any>, hover?: number) => {
       if (_.isUndefined(hover) || _.isNull(hover)) {
         return _.mapValues(dataBySeriesId, _.constant(null));
       } else {
