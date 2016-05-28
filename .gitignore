@@ -1,6 +1,9 @@
 node_modules/
-build-dev/
+dev/build/
 .DS_Store
 *.sublime-workspace
 *.log
 lib/
+typings/
+react-layered-chart.css*
+test/build/

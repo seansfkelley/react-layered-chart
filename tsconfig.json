@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "jsx": "react",
+    "rootDir": "src",
+    "outDir": "lib",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "pretty": true
+  },
+
+  "files": [
+    "src/index.ts",
+    "typings/tsd.d.ts",
+    "extra-typings.d.ts"
+  ]
+}
