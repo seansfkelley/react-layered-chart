@@ -3,7 +3,7 @@ import {
   getBoundsForTimeSpanData,
   resolvePan,
   resolveZoom
-} from '../src/util';
+} from '../src/core/util';
 
 describe('util', () => {
   describe('#getBoundsForInstantaeousData', () => {
