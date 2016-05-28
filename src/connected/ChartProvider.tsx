@@ -3,19 +3,20 @@ import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
-import { Stack, Range } from 'react-layered-chart';
 
-import storeFactory from '../flux/storeFactory';
-import { ChartId, SeriesId, TBySeriesId, DataLoader } from '../model/typedefs';
-import { SeriesMetadata, DefaultChartState, ChartState } from '../model/state';
-import { setXDomain, setYDomain, setHover, setSelection } from '../flux/uiActions';
-import { setMetadata, setSeriesIds, setDataLoader } from '../flux/dataActions';
-import ResizeSentinelLayer from './ResizeSentinelLayer';
+import Stack from '../Stack';
+import { Range } from '../interfaces';
+import storeFactory from './flux/storeFactory';
+import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
+import { DefaultChartState, ChartState } from './model/state';
+import { setXDomain, setYDomain, setHover, setSelection } from './flux/uiActions';
+import { setMetadata, setSeriesIds, setDataLoader } from './flux/dataActions';
+import ResizeSentinelLayer from './layers/ResizeSentinelLayer';
 
 export interface Props {
   chartId?: ChartId;
   seriesIds: SeriesId[];
-  seriesMetadata: TBySeriesId<SeriesMetadata>;
+  seriesMetadata: TBySeriesId<any>;
 
   defaultState?: DefaultChartState;
   loadData?: DataLoader;
@@ -36,7 +37,7 @@ export interface Props {
 }
 
 @PureRender
-export default class LayerCake extends React.Component<Props, {}> {
+export default class ChartProvider extends React.Component<Props, {}> {
   private _store: Store;
   private _lastState: ChartState;
   private _unsubscribeCallback: Function;
@@ -135,7 +136,7 @@ export default class LayerCake extends React.Component<Props, {}> {
   render() {
     return (
       <Provider store={this._store}>
-        <div className={classNames('lc-layer-cake', this.props.className)}>
+        <div className={classNames('lc-chart-provider', this.props.className)}>
           {this.props.includeResizeSentinel
             ? <Stack className='autoinjected-resize-sentinel-stack'><ResizeSentinelLayer/></Stack>
             : null}

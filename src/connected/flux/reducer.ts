@@ -2,9 +2,8 @@ import * as _ from 'lodash';
 import update = require('immutability-helper');
 
 import { ActionType, Action } from '../model/ActionType';
-import { ChartState, DEFAULT_CHART_STATE } from '../model/state';
-import computedChannelsLoader from '../flux/computedChannelsLoader';
-import { TBySeriesId } from '../model/typedefs';
+import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
+import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
 
 // Exported for testing.
@@ -81,7 +80,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
     case ActionType.SET_DATA_LOADER:
       return update(state, {
-        dataLoader: { $set: action.payload || computedChannelsLoader }
+        dataLoader: { $set: action.payload || invalidLoader }
       });
 
     case ActionType.SET_CHART_PHYSICAL_WIDTH:

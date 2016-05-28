@@ -30,7 +30,7 @@ export interface ChartState {
 
 // Can't seem to get Typescript to like this function: either it doesn't return
 // the right type, or the return statements are unreachable code.
-const invalidLoader: any = () => {
+export const invalidLoader: any = () => {
   throw new Error('No data loader specified.');
 }
 

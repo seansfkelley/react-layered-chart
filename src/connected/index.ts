@@ -6,4 +6,4 @@ export * from './export-only/exportableState';
 export * from './interfaces';
 export * from './rangeUtils';
 export * from './model/constants';
-// export { default as LayerCake, Props as LayerCakeProps } from './components/LayerCake';
+export { default as ChartProvider, Props as ChartProviderProps } from './ChartProvider';

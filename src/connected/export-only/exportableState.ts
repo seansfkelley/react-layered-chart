@@ -1,5 +1,5 @@
-export interface LayerCakeChartState {
-  __layerCakeChartState: boolean;
+export interface ChartProviderState {
+  __chartProviderState: boolean;
 }
 
 export { DefaultChartState } from '../model/state';

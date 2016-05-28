@@ -6,7 +6,7 @@ import createDebounced from 'redux-debounced';
 
 import { ActionType } from '../model/ActionType';
 import reducer from './reducer';
-import { ChartId } from '../model/typedefs';
+import { ChartId } from '../interfaces';
 
 // chartId is only used for memoization.
 function _createStore(chartId?: ChartId) {

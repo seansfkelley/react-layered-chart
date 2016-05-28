@@ -9,11 +9,11 @@ import {
 } from '../model/selectors';
 import { Range } from '../../interfaces';
 import { ChartState } from '../model/state';
-import { LayerCakeChartState } from './exportableState';
+import { ChartProviderState } from './exportableState';
 import { SeriesId, TBySeriesId } from '../interfaces';
 
-function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: LayerCakeChartState) => T {
-  return (state: LayerCakeChartState) => selector(state as any as ChartState);
+function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: ChartProviderState) => T {
+  return (state: ChartProviderState) => selector(state as any as ChartState);
 }
 
 const internalSelectData = (state: ChartState) => state.dataBySeriesId;
