@@ -8,6 +8,7 @@ import { setYDomain } from './uiActions';
 import { selectXDomain } from '../model/selectors';
 import { extendRange } from '../rangeUtils';
 
+// FIXME: How should this function be exposed?
 // function _computeYDomain(seriesId: SeriesId, data: SeriesData, layerType: LayerType, currentYDomain: Range): Range {
 //   if (data.length === 0) {
 //     return currentYDomain;

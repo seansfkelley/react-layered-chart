@@ -21,7 +21,7 @@ export interface ConnectedProps {
 @PureRender
 export class YAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
-    // TODO: How to get colors and scales for layers easily?
+    // FIXME: How to get colors and scales for layers easily?
     // scales={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].yScale)}
     // colors={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].color)}
     return (
