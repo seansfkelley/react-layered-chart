@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as should from 'should';
 
 import { Range } from '../src/core/interfaces';
 import { enforceRangeBounds, enforceRangeExtent, extendRange, roundRange, mergeRanges, rangeContains } from '../src/connected/rangeUtils';
@@ -129,73 +130,24 @@ describe('roundRange', () => {
 });
 
 describe('mergeRanges', () => {
-  const UNIQUE_GROUP_SCHEME = _.identity;
-  const SAME_GROUP_SCHEME = () => 'same group for everyone!';
-
-  it('should return an object with the same keys', () => {
-    mergeRanges({
-      a: { min: 0, max: 1 },
-      b: { min: 1, max: 2 },
-      c: { min: 2, max: 3 }
-    }, UNIQUE_GROUP_SCHEME).should.have.keys([ 'a', 'b', 'c' ]);
+  it('should return null when a zero-length array is given', () => {
+    should(mergeRanges([])).be.null();
   });
 
-  it('should use the domain as-is for a domain in a group by itself', () => {
-    mergeRanges({
-      a: { min: 0, max: 1 }
-    }, UNIQUE_GROUP_SCHEME).should.deepEqual({
-      a: { min: 0, max: 1 }
-    });
+  it('should return a range with min-of-mins and max-of-maxes', () => {
+    mergeRanges([
+      range(0, 2),
+      range(1, 3)
+    ]).should.deepEqual(range(0, 3));
   });
 
-  it('should not return a domain reference-equals to the input domain even if it\'s unchanged', () => {
-    const input = { min: 0, max: 1 };
-    const output = mergeRanges({
-      a: input
-    }, UNIQUE_GROUP_SCHEME)['a'];
-    output.should.deepEqual(input);
-    output.should.not.be.exactly(input);
+  it('should not mutate the input ranges', () => {
+    const r1 = range(0, 2);
+    const r2 = range(1, 3);
+    mergeRanges([ r1, r2 ]);
+    r1.should.deepEqual(range(0, 2));
+    r2.should.deepEqual(range(1, 3));
   });
-
-  it('should assign a reference-equals object to all domains that get merged', () => {
-    const { a, b } = mergeRanges({
-      a: { min: 0, max: 1 },
-      b: { min: 0, max: 1 }
-    }, SAME_GROUP_SCHEME);
-    a.should.be.exactly(b);
-  });
-
-  it('should pick the exact min/max for all domains that end up grouped', () => {
-    mergeRanges({
-      a: { min: 0, max: 2 },
-      b: { min: 1, max: 3}
-    }, SAME_GROUP_SCHEME).should.deepEqual({
-      a: { min: 0, max: 3 },
-      b: { min: 0, max: 3 }
-    })
-  });
-
-  it('should merge all the domains when no grouping function is provided', () => {
-    mergeRanges({
-      a: { min: 0, max: 2 },
-      b: { min: 1, max: 3}
-    }).should.deepEqual({
-      a: { min: 0, max: 3 },
-      b: { min: 0, max: 3 }
-    });
-  });
-
-  it('should not mutate the input domains', () => {
-    const input: TBySeriesId<Range> = {
-      a: { min: 0, max: 2 },
-      b: { min: 1, max: 3}
-    };
-    mergeRanges(input, SAME_GROUP_SCHEME);
-    input.should.deepEqual({
-      a: { min: 0, max: 2 },
-      b: { min: 1, max: 3}
-    });
-  })
 });
 
 describe('rangeContains', () => {

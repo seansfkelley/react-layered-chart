@@ -70,29 +70,15 @@ export function niceRange(range: Range): Range {
   }
 }
 
-export function mergeRanges(ranges: TBySeriesId<Range>, groupingFn?: (seriesId: SeriesId) => string): TBySeriesId<Range> {
-  // Make sure that all the series you care about are here!
-  const allSeriesIds = _.keys(ranges);
-  const groupedSeriesIds: { [key: string]: SeriesId[] }  = groupingFn
-    ? _.groupBy(allSeriesIds, groupingFn)
-    : { __dummyAllGroup: allSeriesIds };
-  const rangeGroupsToMerge = _.map(groupedSeriesIds, seriesIds => {
-    const relevantDomains = _.values(_.pick(ranges, seriesIds));
+export function mergeRanges(ranges: Range[]): Range {
+  if (ranges.length === 0) {
+    return null;
+  } else {
     return {
-      seriesIds,
-      range: {
-        min: _.min(_.map(relevantDomains, 'min') as number[]),
-        max: _.max(_.map(relevantDomains, 'max') as number[])
-      }
+      min: _.min(_.map<Range, number>(ranges, 'min')),
+      max: _.max(_.map<Range, number>(ranges, 'max'))
     };
-  });
-
-  const mergedRanges: TBySeriesId<Range> = {};
-  rangeGroupsToMerge.forEach(({ seriesIds, range }) => {
-    seriesIds.forEach(seriesId => mergedRanges[seriesId] = range);
-  });
-
-  return mergedRanges;
+  }
 }
 
 export function rangeContains(maybeLargerRange: Range, maybeSmallerRange: Range) {
