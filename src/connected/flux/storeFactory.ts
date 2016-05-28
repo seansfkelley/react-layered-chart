@@ -8,6 +8,13 @@ import { ActionType } from '../model/ActionType';
 import reducer from './reducer';
 import { ChartId } from '../interfaces';
 
+// process shim in case consumers don't provide a value.
+const process = {
+  env: {
+    NODE_ENV: null
+  }
+};
+
 // chartId is only used for memoization.
 function _createStore(chartId?: ChartId) {
   let middlewares: Redux.Middleware[] = [
