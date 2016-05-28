@@ -3,44 +3,10 @@ import * as _ from 'lodash';
 import { Range, TimestampDatum, TimeBucketDatum, SeriesData } from '../../core';
 import ActionType, { Action } from '../model/ActionType';
 import { ChartState} from '../model/state';
-import { SeriesId, TBySeriesId, DataLoader } from '../interfaces';
+import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
-import { selectXDomain } from '../model/selectors';
+import { selectXDomain, selectYDomains } from '../model/selectors';
 import { extendRange } from '../rangeUtils';
-
-// FIXME: How should this function be exposed?
-// function _computeYDomain(seriesId: SeriesId, data: SeriesData, layerType: LayerType, currentYDomain: Range): Range {
-//   if (data.length === 0) {
-//     return currentYDomain;
-//   }
-//
-//   let min;
-//   let max;
-//   switch (layerType) {
-//     case LayerType.LINE:
-//       const bucketData = <TimeBucketDatum[]> data;
-//       min = _.minBy(bucketData, 'minValue').minValue;
-//       max = _.maxBy(bucketData, 'maxValue').maxValue;
-//       break;
-//
-//     case LayerType.POINT:
-//       const pointData = <TimestampDatum[]> data;
-//       min = _.minBy(pointData, 'value').value;
-//       max = _.maxBy(pointData, 'value').value;
-//       break;
-//
-//     default:
-//       console.error(`Cannot set Y domain for series ${seriesId} because it didn't specify a known LayerType: ${layerType}.`);
-//       return;
-//   }
-//
-//   if (min === max) {
-//     min--;
-//     max++;
-//   }
-//
-//   return extendRange({ min, max }, 0.1);
-// }
 
 function _computeYDomain(seriesId: SeriesId, data: SeriesData, metadata: any, currentYDomain: Range): Range {
   throw new Error('Gotta implement this!');
@@ -71,6 +37,7 @@ function _performDataLoad() {
       preLoadChartState.seriesIds,
       preLoadChartState.metadataBySeriesId,
       selectXDomain(preLoadChartState),
+      selectYDomains(preLoadChartState),
       preLoadChartState.physicalChartWidth,
       preLoadChartState.dataBySeriesId
     );
@@ -93,24 +60,17 @@ function _performDataLoad() {
       });
     });
 
-    _.each(loadPromiseBySeriesId, (dataPromise: Promise<SeriesData>, seriesId: SeriesId) =>
+    _.each(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
       dataPromise
-      .then(data => {
+      .then(loadedData => {
         const postLoadChartState = getState();
         if (preLoadChartState.loadVersion === postLoadChartState.loadVersion && _.includes(postLoadChartState.seriesIds, seriesId)) {
           batchedDataReturned({
-            [seriesId]: data
+            [seriesId]: loadedData.data
           });
 
           batchedSetYDomains({
-            [seriesId]: _computeYDomain(
-              seriesId,
-              data,
-              preLoadChartState.metadataBySeriesId[seriesId],
-              // Note that we DON'T use the selector here. We want the fallback value to always be the true internal
-              // value, which is incidentally also the value that's computed by this call to _computeYDomain.
-              postLoadChartState.uiState.yDomainBySeriesId[seriesId]
-            )
+            [seriesId]: loadedData.yDomain
           });
         }
       })
