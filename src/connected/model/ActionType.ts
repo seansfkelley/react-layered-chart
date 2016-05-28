@@ -1,0 +1,24 @@
+export interface Action<P> {
+  type: ActionType;
+  payload: P;
+}
+
+export enum ActionType {
+  DATA_REQUESTED = 1,
+  DATA_RETURNED,
+  DATA_ERRORED,
+  SET_DATA_LOADER,
+  SET_SERIES_IDS,
+  SET_METADATA,
+  SET_X_DOMAIN,
+  SET_OVERRIDE_X_DOMAIN,
+  SET_Y_DOMAINS,
+  SET_OVERRIDE_Y_DOMAINS,
+  SET_HOVER,
+  SET_OVERRIDE_HOVER,
+  SET_SELECTION,
+  SET_OVERRIDE_SELECTION,
+  SET_CHART_PHYSICAL_WIDTH
+}
+
+export default ActionType;
