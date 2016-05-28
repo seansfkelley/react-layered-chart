@@ -14,3 +14,21 @@
     z-index: 1;
   }
 }
+
+.lc-chart-provider {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+
+  .lc-stack {
+    flex: 1;
+    // TODO: Autoprefixer.
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  // Make this pretty specific so you don't accidentally make it giant.
+  > .lc-stack.autoinjected-resize-sentinel-stack {
+    height: 0;
+  }
+}
