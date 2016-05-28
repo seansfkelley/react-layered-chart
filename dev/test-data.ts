@@ -597,17 +597,20 @@ const UNPARSED_DATA = [{
   value: 17.4
 }];
 
-const PARSED_DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
+export const DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
   timestamp: moment(timestamp).valueOf(),
   value
 }));
 
-export default PARSED_DATA;
+const TIMESTAMPS = _.map<{}, number>(DATA, 'timestamp');
+const VALUES = _.map<{}, number>(DATA, 'value');
 
-const TIMESTAMPS = _.map<{}, number>(PARSED_DATA, 'timestamp');
-const VALUES = _.map<{}, number>(PARSED_DATA, 'value');
+export const X_DOMAIN = {
+  min: _.min(TIMESTAMPS),
+  max: _.max(TIMESTAMPS)
+};
 
-const Y_DOMAIN = {
+export const Y_DOMAIN = {
   min: _.min(VALUES),
   max: _.max(VALUES)
 };
@@ -622,7 +625,7 @@ export const dataLoader: DataLoader = (seriesIds: SeriesId[],
     seriesId,
     new Promise<LoadedSeriesData>((resolve, reject) => {
       resolve({
-        data: PARSED_DATA,
+        data: DATA,
         yDomain: Y_DOMAIN
       });
     })
