@@ -1,11 +1,5 @@
-export { default as ConnectedHoverLayer, OwnProps as ConnectedHoverLayerProps } from './layers/HoverLayer';
-// export { default as XAxisLayer, OwnProps as XAxisLayerProps } from './components/XAxisLayer';
+export * from './layers';
 // export { default as LayerCake, Props as LayerCakeProps } from './components/LayerCake';
-// export { default as StackedSeriesLayer, OwnProps as StackedSeriesLayerProps } from './components/StackedSeriesLayer';
-// export { default as YAxisLayer, OwnProps as YAxisLayerProps } from './components/YAxisLayer';
-// export { default as InteractionLayer, OwnProps as InteractionLayerProps } from './components/InteractionLayer';
-// export { default as ResizeSentinelLayer } from './components/ResizeSentinelLayer';
-// export { default as LayerType } from './model/LayerType';
 // export * from './export-only/exportableActions';
 // export * from './export-only/exportableSelectors';
 // export * from './export-only/exportableState';
