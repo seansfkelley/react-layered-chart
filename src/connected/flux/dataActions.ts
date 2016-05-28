@@ -93,7 +93,7 @@ function _performDataLoad() {
       });
     });
 
-    _.each(loadPromiseBySeriesId, (dataPromise, seriesId) =>
+    _.each(loadPromiseBySeriesId, (dataPromise: Promise<SeriesData>, seriesId: SeriesId) =>
       dataPromise
       .then(data => {
         const postLoadChartState = getState();

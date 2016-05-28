@@ -11,7 +11,7 @@ import { DEFAULT_Y_DOMAIN } from '../model/constants';
 // Exported for testing.
 export function objectWithKeys<T>(keys: string[], value: T): { [key: string]: T } {
   const object: { [key: string]: T } = {};
-  _.each(keys, k => { object[k] = value });
+  keys.forEach(k => { object[k] = value });
   return object;
 }
 
@@ -23,7 +23,7 @@ export function replaceValuesWithConstant<T>(anyBySeriesId: TBySeriesId<any>, va
 // Exported for testing.
 export function objectWithKeysFromObject<T>(anyBySeriesId: TBySeriesId<any>, keys: string[], defaultValue: T): TBySeriesId<T> {
   const object: { [key: string]: T } = {};
-  _.each(keys, k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue });
+  keys.forEach(k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue });
   return object;
 }
 

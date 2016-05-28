@@ -138,7 +138,7 @@ describe('reducer', () => {
   }
 
   function serial(state: ChartState, ...actions: Action<any>[]): ChartState {
-    _.each(actions, action => state = reducer(state, action));
+    actions.forEach(action => state = reducer(state, action));
     return state;
   }
 

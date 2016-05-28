@@ -88,8 +88,8 @@ export function mergeRanges(ranges: TBySeriesId<Range>, groupingFn?: (seriesId: 
   });
 
   const mergedRanges: TBySeriesId<Range> = {};
-  _.each(rangeGroupsToMerge, ({ seriesIds, range }) => {
-    _.each(seriesIds, seriesId => mergedRanges[seriesId] = range)
+  rangeGroupsToMerge.forEach(({ seriesIds, range }) => {
+    seriesIds.forEach(seriesId => mergedRanges[seriesId] = range);
   });
 
   return mergedRanges;

@@ -86,7 +86,7 @@ export default class YAxisLayer extends React.Component<Props, State> {
     context.font = this.props.font;
 
     let xOffset = 0;
-    _.each(this.state.animated_yDomains, (yDomain, i) => {
+    this.state.animated_yDomains.forEach((yDomain, i) => {
       const scaleFn = (this.props.scales || [])[i] || d3Scale.scaleLinear;
       const yScale = scaleFn()
         .domain([ yDomain.min, yDomain.max ])

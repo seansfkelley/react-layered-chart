@@ -55,7 +55,7 @@ describe('enforceRangeBounds', () => {
     }
   ];
 
-  _.each(TEST_CASES, test => {
+  TEST_CASES.forEach(test => {
     it(test.description, () => {
       enforceRangeBounds(test.range, BOUNDS).should.deepEqual(test.output);
     });
@@ -88,7 +88,7 @@ describe('enforceRangeExtent', () => {
     }
   ];
 
-  _.each(TEST_CASES, test => {
+  TEST_CASES.forEach(test => {
     it(test.description, () => {
       enforceRangeExtent(test.range, MIN_EXTENT, MAX_EXTENT).should.deepEqual(test.output);
     });
