@@ -1,8 +1,8 @@
 # react-layered-chart
 
-A high-performance canvas-based time series visualization in Typescript + React. react-layered-chart provides a `Stack` component and a bunch of `Layer` components that render various types of data onto individual `<canvas>`es.
+A high-performance canvas-based time series visualization in Typescript + React.
 
-Things are still in flux; check out the [dev test page](https://github.com/seansfkelley/react-layered-chart/tree/master/dev/index.tsx) for more.
+TODO: Example picture.
 
 ## Installation
 
@@ -10,13 +10,21 @@ Things are still in flux; check out the [dev test page](https://github.com/seans
 npm install --save react-layered-chart
 ```
 
-## Usage
+Be sure to include the styles from `react-layered-chart/react-layered-chart.css`. This is also specified on the `style` key in `package.json` for any toolchains that support it.
 
-Docs coming soon!
+### `process.env.NODE_ENV`
 
-Don't forget to include the styles from `react-layered-chart/react-layered-chart.css`.
+In development mode, react-layered-chart logs internal state changes rather verbosely for debugging purposes. Specify the value `"production"` for `process.env.NODE_ENV` in your build to turn this off.
 
-## Developing
+## Basic Usage
+
+See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+
+## Advanced Usage
+
+See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+
+## <a name="developing"></a>Developing
 
 ```
 npm install
