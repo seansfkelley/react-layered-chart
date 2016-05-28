@@ -1,5 +1,10 @@
+import * as _ from 'lodash';
+import * as moment from 'moment';
+
+import { DataLoader, LoadedSeriesData, TBySeriesId, Range, SeriesData, SeriesId } from '../src';
+
 // from https://datamarket.com/data/set/232f/chemical-concentration-readings#!ds=232f&display=line
-export default [{
+const UNPARSED_DATA = [{
   timestamp: "1975-01-01T00:00:00",
   value: 17.0
 }, {
@@ -591,3 +596,35 @@ export default [{
   timestamp: "1975-01-17T08:00:00",
   value: 17.4
 }];
+
+const PARSED_DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
+  timestamp: moment(timestamp).valueOf(),
+  value
+}));
+
+export default PARSED_DATA;
+
+const TIMESTAMPS = _.map<{}, number>(PARSED_DATA, 'timestamp');
+const VALUES = _.map<{}, number>(PARSED_DATA, 'value');
+
+const Y_DOMAIN = {
+  min: _.min(VALUES),
+  max: _.max(VALUES)
+};
+
+export const dataLoader: DataLoader = (seriesIds: SeriesId[],
+                                       metadataBySeriesId: TBySeriesId<any>,
+                                       xDomain: Range,
+                                       currentYDomains: TBySeriesId<Range>,
+                                       chartPixelWidth: number,
+                                       currentData: TBySeriesId<SeriesData>) => {
+  return _.fromPairs(seriesIds.map(seriesId => ([
+    seriesId,
+    new Promise<LoadedSeriesData>((resolve, reject) => {
+      resolve({
+        data: PARSED_DATA,
+        yDomain: Y_DOMAIN
+      });
+    })
+  ])));
+};

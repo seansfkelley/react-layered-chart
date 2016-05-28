@@ -14,10 +14,10 @@ import ResizeSentinelLayer from './layers/ResizeSentinelLayer';
 
 export interface Props {
   seriesIds: SeriesId[];
-  seriesMetadata: TBySeriesId<any>;
   loadData: DataLoader;
 
   chartId?: ChartId;
+  seriesMetadata?: TBySeriesId<any>;
   defaultState?: DefaultChartState;
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
@@ -39,10 +39,10 @@ export interface Props {
 export default class ChartProvider extends React.Component<Props, {}> {
   static propTypes = {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    seriesMetadata: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
     loadData: React.PropTypes.func.isRequired,
 
     chartId: React.PropTypes.string,
+    seriesMetadata: React.PropTypes.objectOf(React.PropTypes.object),
     defaultState: React.PropTypes.shape({
       xDomain: propTypes.range,
       yDomains: React.PropTypes.objectOf(propTypes.range)

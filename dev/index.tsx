@@ -1,35 +1,41 @@
 import * as _ from 'lodash';
-import * as moment from 'moment';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import TEST_DATA from './test-data';
+import TEST_DATA, { dataLoader } from './test-data';
 import {
+  ChartProvider,
   Stack,
-  SimpleLineLayer
+  SimpleLineLayer,
+  ConnectedInteractionLayer
 } from '../src';
+import StackedSeriesLayer from './StackedSeriesLayer';
 
 import './dev-styles.less';
 import '../styles/index.less';
 
-const PARSED_TEST_DATA = TEST_DATA.map(({ timestamp, value }) => ({
-  timestamp: moment(timestamp).valueOf(),
-  value
-}));
-
-const TIMESTAMPS = _.map<{}, number>(PARSED_TEST_DATA, 'timestamp');
-const VALUES = _.map<{}, number>(PARSED_TEST_DATA, 'value');
+const TIMESTAMPS = _.map<{}, number>(TEST_DATA, 'timestamp');
+const DEFAULT_X_DOMAIN = {
+  min: _.min(TIMESTAMPS),
+  max: _.max(TIMESTAMPS)
+};
 
 const APP_ELEMENT = document.getElementById('app');
 
 const TEST_COMPONENT = (
-  <Stack>
-    <SimpleLineLayer
-      data={PARSED_TEST_DATA}
-      xDomain={{ min: _.min(TIMESTAMPS), max: _.max(TIMESTAMPS) }}
-      yDomain={{ min: _.min(VALUES), max: _.max(VALUES) }}
-    />
-  </Stack>
+  <ChartProvider
+    seriesIds={[ 'foo' ]}
+    loadData={dataLoader}
+    defaultState={{
+      xDomain: DEFAULT_X_DOMAIN
+    }}
+  >
+    <Stack>
+      <StackedSeriesLayer seriesIds={[ 'foo' ]}/>
+      <ConnectedInteractionLayer enablePan={true} enableZoom={true} enableHover={true}/>
+    </Stack>
+  </ChartProvider>
 );
 
 ReactDOM.render(TEST_COMPONENT, APP_ELEMENT);
