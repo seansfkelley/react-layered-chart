@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
-import { Range, Stack } from '../core';
+import { Range, Stack, propTypes } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
@@ -13,12 +13,12 @@ import { setMetadata, setSeriesIds, setDataLoader } from './flux/dataActions';
 import ResizeSentinelLayer from './layers/ResizeSentinelLayer';
 
 export interface Props {
-  chartId?: ChartId;
   seriesIds: SeriesId[];
   seriesMetadata: TBySeriesId<any>;
+  loadData: DataLoader;
 
+  chartId?: ChartId;
   defaultState?: DefaultChartState;
-  loadData?: DataLoader;
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
   includeResizeSentinel?: boolean;
@@ -37,6 +37,31 @@ export interface Props {
 
 @PureRender
 export default class ChartProvider extends React.Component<Props, {}> {
+  static propTypes = {
+    seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    seriesMetadata: React.PropTypes.objectOf(React.PropTypes.object).isRequired,
+    loadData: React.PropTypes.func.isRequired,
+
+    chartId: React.PropTypes.string,
+    defaultState: React.PropTypes.shape({
+      xDomain: propTypes.range,
+      yDomains: React.PropTypes.objectOf(propTypes.range)
+    }),
+    onLoadStateChange: React.PropTypes.func,
+    onError: React.PropTypes.func,
+    includeResizeSentinel: React.PropTypes.bool,
+    className: React.PropTypes.string,
+
+    xDomain: propTypes.range,
+    onXDomainChange: React.PropTypes.func,
+    yDomains: React.PropTypes.objectOf(propTypes.range),
+    onYDomainsChange: React.PropTypes.func,
+    selection: propTypes.range,
+    onSelectionChange: React.PropTypes.func,
+    hover: React.PropTypes.number,
+    onHoverChange: React.PropTypes.func,
+  };
+
   private _store: Store;
   private _lastState: ChartState;
   private _unsubscribeCallback: Function;
