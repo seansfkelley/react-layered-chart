@@ -1,0 +1,3 @@
+- example image
+- include loader-constructor for any use cases that want interactive charts with small, static data
+- figure out what to do about Y axis
