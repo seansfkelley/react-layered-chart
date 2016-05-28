@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import update = require('immutability-helper');
 
+update.extend('$assign', (spec, object) => _.assign({}, object, spec));
+
 import { ActionType, Action } from '../model/ActionType';
 import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
 import { TBySeriesId } from '../interfaces';
@@ -52,30 +54,29 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
     case ActionType.SET_METADATA:
       return update(state, {
-        // TODO: This should be shallow-merged.
-        metadataBySeriesId: { $merge: action.payload }
+        metadataBySeriesId: { $assign: action.payload }
       });
 
     case ActionType.DATA_REQUESTED:
       // TODO: Should we merge load state and load version?
       // TODO: This assumes that when you request a load, you request it for everything. This may not be true.
       return update(state, {
-        isLoadingBySeriesId: { $merge: createConstantMapForAllSeries(true) },
+        isLoadingBySeriesId: { $set: createConstantMapForAllSeries(true) },
         loadVersion: { $set: action.payload }
       });
 
     case ActionType.DATA_RETURNED:
       return update(state, {
-        dataBySeriesId: { $merge: action.payload },
-        isLoadingBySeriesId: { $merge: replaceValuesWithConstant(action.payload, false) },
-        errorBySeriesId: { $merge: replaceValuesWithConstant(action.payload, null) }
+        dataBySeriesId: { $assign: action.payload },
+        isLoadingBySeriesId: { $assign: replaceValuesWithConstant(action.payload, false) },
+        errorBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) }
       });
 
     case ActionType.DATA_ERRORED:
       // TODO: Should we clear the current data too?
       return update(state, {
-        isLoadingBySeriesId: { $merge: replaceValuesWithConstant(action.payload, false) },
-        errorBySeriesId: { $merge: action.payload }
+        isLoadingBySeriesId: { $assign: replaceValuesWithConstant(action.payload, false) },
+        errorBySeriesId: { $assign: action.payload }
       });
 
     case ActionType.SET_DATA_LOADER:
@@ -113,8 +114,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_Y_DOMAINS:
       return update(state, {
         uiState: {
-          // TODO: This should be shallow-merged.
-          yDomainBySeriesId: { $merge: action.payload }
+          yDomainBySeriesId: { $assign: action.payload }
         }
       });
 
