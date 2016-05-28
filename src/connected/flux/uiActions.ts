@@ -1,4 +1,4 @@
-import { Range } from '../../interfaces';
+import { Range } from '../../core';
 import { Action, ActionType } from '../model/ActionType';
 import { TBySeriesId } from '../interfaces';
 import { requestDataLoad } from './dataActions';

@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 
-import { Range, TimestampDatum, TimeBucketDatum } from '../../interfaces';
+import { Range, TimestampDatum, TimeBucketDatum, SeriesData } from '../../core';
 import ActionType, { Action } from '../model/ActionType';
 import { ChartState} from '../model/state';
-import { SeriesId, TBySeriesId, DataLoader, SeriesData } from '../interfaces';
+import { SeriesId, TBySeriesId, DataLoader } from '../interfaces';
 import { setYDomain } from './uiActions';
 import { selectXDomain } from '../model/selectors';
 import { extendRange } from '../rangeUtils';

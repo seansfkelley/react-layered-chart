@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { Range } from '../../interfaces';
+import { Range } from '../../core';
 import { TBySeriesId } from '../interfaces';
 import { ChartState, UiState } from './state';
 

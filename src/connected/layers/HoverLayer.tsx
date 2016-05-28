@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
-import { default as UnconnectedHoverLayer } from '../../layers/HoverLayer';
-import { Range } from '../../interfaces';
 
+import { Range, HoverLayer as UnconnectedHoverLayer } from '../../core';
 import { ChartState } from '../model/state';
 import { selectHover, selectXDomain } from '../model/selectors';
 

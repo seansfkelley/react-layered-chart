@@ -1,7 +1,7 @@
-import { Range, ScaleFunction, Color } from '../../interfaces';
+import { Range, ScaleFunction, Color, SeriesData } from '../../core';
 
 import { DEFAULT_X_DOMAIN } from './constants';
-import { SeriesId, TBySeriesId, DataLoader, SeriesData } from '../interfaces';
+import { SeriesId, TBySeriesId, DataLoader } from '../interfaces';
 
 export interface DefaultChartState {
   xDomain?: Range;

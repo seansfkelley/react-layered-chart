@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { default as UnconnectedYAxisLayer } from '../../layers/YAxisLayer';
-import { Range, Color } from '../../interfaces';
+import { Range, Color, YAxisLayer as UnconnectedYAxisLayer } from '../../core';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
 import { SeriesId, TBySeriesId } from '../interfaces';
 import { ChartState } from '../model/state';

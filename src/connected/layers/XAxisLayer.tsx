@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { default as UnconnectedXAxisLayer } from '../../layers/XAxisLayer';
-import { Range, Color } from '../../interfaces';
+import { Range, Color, XAxisLayer as UnconnectedXAxisLayer} from '../../core';
 import { ChartState } from '../model/state';
 import { selectXDomain } from '../model/selectors';
 

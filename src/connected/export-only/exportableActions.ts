@@ -1,5 +1,5 @@
+import { Range } from '../../core';
 import { ActionType } from '../model/ActionType';
-import { Range } from '../../interfaces';
 import { TBySeriesId } from '../interfaces';
 import {
   setXDomain as internalSetXDomain,

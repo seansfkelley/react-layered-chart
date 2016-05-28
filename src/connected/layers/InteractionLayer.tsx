@@ -3,9 +3,15 @@ import * as PureRender from 'pure-render-decorator';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { Range, BooleanMouseEventHandler } from '../../interfaces';
-import { InteractionCaptureLayer, HoverLayer, BrushLayer } from '../../layers';
-import { resolvePan, resolveZoom } from '../../util';
+import {
+  Range,
+  BooleanMouseEventHandler,
+  resolvePan,
+  resolveZoom,
+  InteractionCaptureLayer,
+  HoverLayer,
+  BrushLayer
+} from '../../core';
 import * as uiActions from '../flux/uiActions';
 import { ChartState } from '../model/state';
 import { selectXDomain, selectHover, selectSelection } from '../model/selectors';

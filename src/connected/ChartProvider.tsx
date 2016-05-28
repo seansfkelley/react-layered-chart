@@ -4,8 +4,7 @@ import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
-import Stack from '../Stack';
-import { Range } from '../interfaces';
+import { Range, Stack } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';

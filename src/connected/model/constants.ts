@@ -1,4 +1,4 @@
-import { Range } from '../../interfaces';
+import { Range } from '../../core';
 
 export const DEFAULT_X_DOMAIN: Range = {
   min: 0,

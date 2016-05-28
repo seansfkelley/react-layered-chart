@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 
+import { Range } from '../../core';
 import {
   selectXDomain as internalSelectXDomain,
   selectYDomains as internalSelectYDomains,
   selectHover as internalSelectHover,
   selectSelection as internalSelectSelection
 } from '../model/selectors';
-import { Range } from '../../interfaces';
 import { ChartState } from '../model/state';
 import { ChartProviderState } from './exportableState';
 import { SeriesId, TBySeriesId } from '../interfaces';

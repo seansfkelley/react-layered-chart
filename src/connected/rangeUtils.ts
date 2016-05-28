@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as d3Scale from 'd3-scale';
-import { Range } from '../interfaces';
 
+import { Range } from '../core';
 import { TBySeriesId, SeriesId } from './interfaces';
 
 export function enforceRangeBounds(range: Range, bounds: Range): Range {
