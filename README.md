@@ -20,6 +20,7 @@ Don't forget to include the styles from `react-layered-chart/react-layered-chart
 
 ```
 npm install
+./hooks/install.sh
 npm run dev:hot-reload
 ```
 
