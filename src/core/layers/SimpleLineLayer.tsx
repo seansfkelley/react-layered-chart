@@ -32,7 +32,7 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.dataPoint).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.timestampDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,

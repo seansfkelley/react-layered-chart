@@ -31,10 +31,7 @@ export default class BarLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timeSpan: propTypes.range.isRequired,
-      value: React.PropTypes.number.isRequired
-    })).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.timeSpanDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     color: React.PropTypes.string

@@ -31,14 +31,7 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      startTime: React.PropTypes.number.isRequired,
-      endTime: React.PropTypes.number.isRequired,
-      minValue: React.PropTypes.number.isRequired,
-      maxValue: React.PropTypes.number.isRequired,
-      firstValue: React.PropTypes.number.isRequired,
-      lastValue: React.PropTypes.number.isRequired
-    })).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.timeBucketDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
