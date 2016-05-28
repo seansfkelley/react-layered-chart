@@ -105,7 +105,7 @@ function _performDataLoad() {
             [seriesId]: _computeYDomain(
               seriesId,
               data,
-              preLoadChartState.metadataBySeriesId[seriesId].layerType,
+              preLoadChartState.metadataBySeriesId[seriesId],
               // Note that we DON'T use the selector here. We want the fallback value to always be the true internal
               // value, which is incidentally also the value that's computed by this call to _computeYDomain.
               postLoadChartState.uiState.yDomainBySeriesId[seriesId]

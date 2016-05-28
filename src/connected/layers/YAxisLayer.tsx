@@ -1,33 +1,33 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
-import { Range, layers } from 'react-layered-chart';
-const { YAxisLayer: LayeredChartYAxisLayer } = layers;
 
+import { default as UnconnectedYAxisLayer } from '../../layers/YAxisLayer';
+import { Range, Color } from '../../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
-import { SeriesId, TBySeriesId } from '../model/typedefs';
-import { SeriesMetadata, ChartState } from '../model/state';
+import { SeriesId, TBySeriesId } from '../interfaces';
+import { ChartState } from '../model/state';
 import { selectYDomains } from '../model/selectors';
 
 export interface OwnProps {
   seriesIds: SeriesId[];
   font?: string;
-  backgroundColor?: string;
+  backgroundColor?: Color;
 }
 
 export interface ConnectedProps {
-  metadataBySeriesId: TBySeriesId<SeriesMetadata>;
   yDomainBySeriesId: TBySeriesId<Range>;
 }
 
 @PureRender
 export class YAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
+    // TODO: How to get colors and scales for layers easily?
+    // scales={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].yScale)}
+    // colors={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].color)}
     return (
-      <LayeredChartYAxisLayer
+      <UnconnectedYAxisLayer
         yDomains={this.props.seriesIds.map(seriesId => this.props.yDomainBySeriesId[seriesId] || DEFAULT_Y_DOMAIN)}
-        scales={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].yScale)}
-        colors={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].color)}
         font={this.props.font}
         backgroundColor={this.props.backgroundColor}
       />
@@ -37,7 +37,6 @@ export class YAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
 
 function mapStateToProps(state: ChartState): ConnectedProps {
   return {
-    metadataBySeriesId: state.metadataBySeriesId,
     yDomainBySeriesId: selectYDomains(state)
   };
 }

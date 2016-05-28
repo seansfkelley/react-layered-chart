@@ -53,6 +53,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
     case ActionType.SET_METADATA:
       return update(state, {
+        // TODO: This should be shallow-merged.
         metadataBySeriesId: { $merge: action.payload }
       });
 
@@ -113,6 +114,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_Y_DOMAINS:
       return update(state, {
         uiState: {
+          // TODO: This should be shallow-merged.
           yDomainBySeriesId: { $merge: action.payload }
         }
       });

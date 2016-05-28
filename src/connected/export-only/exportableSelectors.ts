@@ -9,7 +9,7 @@ import {
   selectHover as internalSelectHover,
   selectSelection as internalSelectSelection
 } from '../model/selectors';
-import { ChartState, SeriesMetadata } from '../model/state';
+import { ChartState } from '../model/state';
 import { LayerCakeChartState } from './exportableState';
 import { SeriesId, TBySeriesId } from '../model/typedefs';
 
@@ -33,7 +33,7 @@ export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => sta
 
 // We inherit the name of "iterator" from Lodash. I would prefer this to be called a "selector", but obviously that
 // may be confusing in this context.
-export type NumericalValueIterator = (seriesId: SeriesId, metadata: SeriesMetadata, datum: any) => number;
+export type NumericalValueIterator = (seriesId: SeriesId, metadata: any, datum: any) => number;
 
 export function createSelectDataForHover(xValueSelector: NumericalValueIterator) {
   return _wrapForTypeCast(createSelector(
@@ -49,7 +49,7 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
         // other data.
         const haxWrappedHover = { __haxWrappedHover: hover };
 
-        function xIterator(seriesId: SeriesId, metadata: SeriesMetadata, datum: any) {
+        function xIterator(seriesId: SeriesId, metadata: any, datum: any) {
           return datum.hasOwnProperty('__haxWrappedHover')
             ? datum.__haxWrappedHover
             : xValueSelector(seriesId, metadata, datum);
