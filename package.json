@@ -13,7 +13,8 @@
   },
   "scripts": {
     "dev:hot-reload": "webpack-dev-server --config webpack.config.hot.js --inline --content-base dev/build/ --host 0.0.0.0 --port 8085 --hot true",
-    "test": "exit 0",
+    "pretest": "tsc -p tsconfig-test.json && cp test/mocha.opts test/build/",
+    "test": "mocha --opts test/build/mocha.opts test/build/test/**/*.js",
     "postinstall": "tsd install",
     "prepublish": "tsc && lessc --source-map styles/index.less react-layered-chart.css"
   },
