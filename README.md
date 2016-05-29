@@ -80,7 +80,12 @@ In this example, the X and Y domains are controlled by internal state and need n
 
 ## Adding Custom Behavior
 
-react-layered-chart is implemented with [react-redux](https://github.com/reactjs/react-redux) under the hood. If you want to render a custom view that can hook into the loaded data and fire the basic UI actions, you can use [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) plus the [selectors](https://github.com/reactjs/reselect) and action creators provided by react-layered-chart. Your component doesn't even have to be charting-related -- for example, if you want to add a textual legend that updates on hover, you could do this by add a component within a `ChartProvider`.
+react-layered-chart provides two methods of customizing behavior:
+
+- Hooking into the internal [Redux](https://github.com/reactjs/redux) store using react-redux's [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) plus the [selectors](https://github.com/reactjs/reselect) and action creators provided by react-layered-chart.
+- Providing props to the `ChartProvider` in the manner of [controlled inputs](https://facebook.github.io/react/docs/forms.html#controlled-components).
+
+Your custom component doesn't even have to be a type of chart -- for example, if you want to add a textual legend that updates on hover, you could do this by adding a component within a `ChartProvider`.
 
 ### Custom View Example
 
@@ -146,6 +151,59 @@ Then you can put a `SnapToXDomainButton` component in a `Stack` and you'll have 
 
 ### Custom Interaction Example
 
+This example implements some state management that prevents the user from panning or zooming beyond the current day.
+
+```tsx
+import {
+  Range,
+  // This utility method implements logic to clamp ranges.
+  enforceRangeBounds
+} from 'react-layered-chart';
+
+const CHART_BOUNDS = {
+  min: moment('1950-01-01').valueOf(),
+  max: moment().add(1, 'day').endOf('day').valueOf()
+};
+
+interface Props { ... }
+
+// For simplicity in this example, the controlled domain is kept on component
+// state, but you should use whatever means is appropriate for your environment.
+interface State {
+  xDomain: Range;
+}
+
+class MyControlledChart extends React.Component<Props, State> {
+  // Declare some sane default.
+  state: State = {
+    xDomain: {
+      min: moment('2000-01-01').valueOf(),
+      max: moment().valueOf()
+    }
+  };
+
+  render() {
+    return (
+      <ChartProvider
+        seriesIds={[ 'my-series-id' ]}
+        // Control the prop!
+        xDomain={this.state.xDomain}
+        // Capture any requested changes, such as from a ConnectedInteractionLayer.
+        onXDomainChange={this._onXDomainChange.bind(this)}
+      >
+        // Put whatever stuff you want in here!
+      </ChartProvider>
+    );
+  }
+
+  private _onXDomainChange(xDomain: Range) {
+    // Use the provided utility to munge the X domain to something acceptable.
+    this.setState({
+      xDomain: enforceRangeBounds(xDomain, CHART_BOUNDS)
+    });
+  };
+}
+```
 
 ## <a name="caveats"></a>Caveats/Limitations
 
