@@ -6,7 +6,8 @@ import {
   selectXDomain as internalSelectXDomain,
   selectYDomains as internalSelectYDomains,
   selectHover as internalSelectHover,
-  selectSelection as internalSelectSelection
+  selectSelection as internalSelectSelection,
+  selectData as internalSelectData
 } from '../model/selectors';
 import { ChartState } from '../model/state';
 import { ChartProviderState } from './exportableState';
@@ -16,7 +17,6 @@ function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: ChartP
   return (state: ChartProviderState) => selector(state as any as ChartState);
 }
 
-const internalSelectData = (state: ChartState) => state.dataBySeriesId;
 const internalSelectMetadata = (state: ChartState) => state.metadataBySeriesId;
 
 export const selectXDomain = _wrapForTypeCast(internalSelectXDomain);

@@ -38,3 +38,5 @@ export const selectSelection = createSelector(
   createUiStateSelector<Range>(selectUiStateOverride, 'selection'),
   (internal: Range, override: Range) => override || internal
 );
+
+export const selectData = (state: ChartState) => state.dataBySeriesId;

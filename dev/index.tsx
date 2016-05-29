@@ -8,6 +8,7 @@ import {
   ChartProvider,
   Stack,
   SimpleLineLayer,
+  ConnectedSimpleLineLayer,
   ConnectedInteractionLayer
 } from '../src';
 import StackedSeriesLayer from './StackedSeriesLayer';
@@ -37,7 +38,7 @@ const ADVANCED_COMPONENT = (
     className='example-chart'
   >
     <Stack>
-      <StackedSeriesLayer seriesIds={[ 'foo' ]}/>
+      <ConnectedSimpleLineLayer seriesId='foo'/>
       <ConnectedInteractionLayer enablePan={true} enableZoom={true} enableHover={true}/>
     </Stack>
   </ChartProvider>
