@@ -41,14 +41,14 @@ export default class PointLayer extends React.Component<Props, State> {
     color: React.PropTypes.string,
     radius: React.PropTypes.number,
     innerRadius: React.PropTypes.number
-  };
+  } as React.ValidationMap<any>;
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)',
     radius: 3,
     innerRadius: 0
-  };
+  } as any;
 
   animatedProps = {
     yDomain: 1000
