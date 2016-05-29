@@ -18,11 +18,13 @@ In development mode, react-layered-chart logs internal state changes rather verb
 
 ## Making Basic, Static Charts
 
-See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+> See also the [section on developing](#developing) to set up a page you can play around with yoruself.
 
 The core functionality of react-layered-chart is a set of "layer" components inside a `Stack` component. The simplest possible chart looks something like this:
 
 ```jsx
+const MY_DATA = [ ... ];
+
 <Stack>
   <PointLayer
     data={MY_DATA}
@@ -32,7 +34,7 @@ The core functionality of react-layered-chart is a set of "layer" components ins
 </Stack>
 ```
 
-Where the `data` props is an array of objects appropriate for the particular layer (see the [implementations of the included layers](https://github.com/palantir/react-layered-chart/tree/connected-components/src/core/layers) for details).
+Where the `data` prop is an array of objects appropriate for the particular layer (see the [implementations of the included layers](https://github.com/palantir/react-layered-chart/tree/connected-components/src/core/layers) for details).
 
 The `xDomain` and `yDomain` props, which are common to many layers, describe which subset of the data should be rendered. Many layers also include a `yScale` for customizing the scale on the Y domain (e.g. for displaying logarithmic plots).
 
@@ -47,11 +49,40 @@ Including multiple layers will cause them to be stacked in the Z direction, so y
 
 Charts made in this manner are static. See the [interactive section](#interactive) for how to make interactive charts.
 
-## <a name="#interactive"></a>Interaction Charts
+## <a name="#interactive"></a>Interactive Charts
 
-See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+> See also the [section on developing](#developing) to set up a page you can play around with yoruself.
 
-## API Reference
+react-layered-chart also includes a bunch of somewhat opinionated, stateful components that help you make interactive charts that can load up new data as necessary. These components require that each of the series you're rendering can be uniquely identified with a string, referred to as the "series ID".
+
+The `ChartProvider` component is a wrapper around a [react-redux `Provider`](https://github.com/reactjs/react-redux) that also exposes a [controlled-input-like](https://facebook.github.io/react/docs/forms.html#controlled-components) interface. A simple chart that includes user interaction might look like this:
+
+```jsx
+// This stateless function receives a bunch of parameters to load data. It's called
+// any time the X domain changes or the data otherwise becomes potentially stale.
+function myDataLoader(...) {
+   return ...;
+}
+
+<ChartProvider
+  seriesIds={[ 'my-series-id' ]}
+  dataLoader={myDataLoader}
+  defaultState={{ xDomain: { min: 0, max: 100 } }}
+>
+  <Stack>
+    <ConnectedSimpleLineLayer seriesId='my-series-id'/>
+    <ConnectedInteractionLayer enablePan={true} enableZoom={true}/>
+  </Stack>
+</ChartProvider>
+```
+
+In this example, the X and Y domains are controlled by internal state and need not be explicitly passed. The `ConnectedInteractionLayer` captures mouse events and dispatches actions internally to make the chart respond to user input.
+
+## Customizing Appearance
+
+## Customizing Behavior
+
+## <a name="api"></a>API Reference
 
 ## <a name="developing"></a>Developing
 
