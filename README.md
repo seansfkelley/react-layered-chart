@@ -38,7 +38,7 @@ Where the `data` prop is an array of objects appropriate for the particular laye
 
 The `xDomain` and `yDomain` props, which are common to many layers, describe which subset of the data should be rendered. Many layers also include a `yScale` for customizing the scale on the Y domain (e.g. for displaying logarithmic plots).
 
-Including multiple layers will cause them to be stacked in the Z direction, so you can overlay multiple charts. For instance, if you want a line chart that also emphasizes each point, you could do something like the following:
+Including multiple layers will cause them to be stacked in the Z direction, so you can overlay multiple charts. For instance, if you want a line chart that also emphasizes each data point with a dot, you could do something like the following:
 
 ```jsx
 <Stack>
@@ -53,7 +53,7 @@ Charts made in this manner are static. See the [interactive section](#interactiv
 
 > See the [section on developing](#developing) to set up a page you can play around with yoruself. Check the [caveats](#caveats) and [common issues](#issues) if you run into problems.
 
-react-layered-chart also includes a bunch of somewhat opinionated, stateful components that help you make interactive charts that can load up new data as necessary. These components require that each of the series you're rendering can be uniquely identified with a string, referred to as the "series ID".
+react-layered-chart also includes a bunch of somewhat opinionated, stateful components that help you make interactive charts and load new data as necessary. These components require that each of the series you're rendering can be uniquely identified with a string, referred to as the "series ID".
 
 The `ChartProvider` component is a wrapper around a [react-redux `Provider`](https://github.com/reactjs/react-redux) that also exposes a [controlled-input-like](https://facebook.github.io/react/docs/forms.html#controlled-components) interface. A simple chart that includes user interaction might look like this:
 
