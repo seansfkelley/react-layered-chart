@@ -4,3 +4,4 @@ export { default as ConnectedSimpleLineLayer, OwnProps as ConnectedSimpleLineLay
 export { default as ConnectedResizeSentinelLayer } from './ConnectedResizeSentinelLayer';
 export { default as ConnectedXAxisLayer, OwnProps as ConnectedXAxisLayerProps } from './ConnectedXAxisLayer';
 export { default as ConnectedYAxisLayer, OwnProps as ConnectedYAxisLayerProps } from './ConnectedYAxisLayer';
+export { SeriesIdProp } from './wrapLayerWithConnect';
