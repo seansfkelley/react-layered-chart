@@ -2,3 +2,7 @@
 - include loader-constructor for any use cases that want interactive charts with small, static data
 - figure out what to do about Y axis
 - clarification of intent w/r/t selectors and opaque chart state type
+- wrap (all?) basic layers with connected versions
+  - perhaps export them as `LineLayer.Connected`? the names now are awful
+  - should InteractionLayer not include the selection and hover views?
+- rename HoverLayer as HoverLineLayer to clarify?
