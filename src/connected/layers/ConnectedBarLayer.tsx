@@ -6,10 +6,10 @@ import {
 } from '../../core';
 import { SeriesId } from '../interfaces';
 
-import wrapLayerWithConnect, { SeriesIdProp } from './wrapLayerWithConnect';
+import wrapDataLayerWithConnect, { SeriesIdProp } from './wrapDataLayerWithConnect';
 
 export interface OwnProps {
   color?: Color;
 }
 
-export default wrapLayerWithConnect<OwnProps, BarLayerProps>(BarLayer);
+export default wrapDataLayerWithConnect<OwnProps, BarLayerProps>(BarLayer);

@@ -6,11 +6,11 @@ import {
 } from '../../core';
 import { SeriesId } from '../interfaces';
 
-import wrapLayerWithConnect, { SeriesIdProp } from './wrapLayerWithConnect';
+import wrapDataLayerWithConnect, { SeriesIdProp } from './wrapDataLayerWithConnect';
 
 export interface OwnProps {
   yScale?: ScaleFunction;
   color?: Color;
 }
 
-export default wrapLayerWithConnect<OwnProps, SimpleLineLayerProps>(SimpleLineLayer);
+export default wrapDataLayerWithConnect<OwnProps, SimpleLineLayerProps>(SimpleLineLayer);
