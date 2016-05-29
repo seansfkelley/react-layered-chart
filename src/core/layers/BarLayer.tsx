@@ -16,7 +16,7 @@ export interface Props {
   data: TimeSpanDatum[];
   xDomain: Range;
   yDomain: Range;
-  color: Color;
+  color?: Color;
 }
 
 export interface State {

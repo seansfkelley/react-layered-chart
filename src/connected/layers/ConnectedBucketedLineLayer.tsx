@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import {
   Range,
-  TimestampDatum,
+  Color,
   ScaleFunction,
-  SimpleLineLayer as UnconnectedSimpleLineLayer
+  TimeBucketDatum,
+  BucketedLineLayer as UnconnectedBucketedLineLayer
 } from '../../core';
 import { SeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
@@ -15,19 +16,19 @@ import { selectData, selectXDomain, selectYDomains } from '../model/selectors';
 export interface OwnProps {
   seriesId: SeriesId;
   yScale?: ScaleFunction;
-  color?: string;
+  color?: Color;
 }
 
 export interface ConnectedProps {
-  data: TimestampDatum[];
+  data: TimeBucketDatum[];
   xDomain: Range;
   yDomain: Range;
 }
 
 @PureRender
-class ConnectedSimpleLineLayer extends React.Component<OwnProps & ConnectedProps, {}> {
+class ConnectedBucketedLineLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
-    return <UnconnectedSimpleLineLayer {...this.props}/>;
+    return <UnconnectedBucketedLineLayer {...this.props}/>
   }
 }
 
@@ -39,4 +40,4 @@ function mapStateToProps(state: ChartState, ownProps: OwnProps): ConnectedProps 
   };
 }
 
-export default connect(mapStateToProps)(ConnectedSimpleLineLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(ConnectedBucketedLineLayer) as React.ComponentClass<OwnProps>;
