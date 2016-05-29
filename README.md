@@ -217,6 +217,12 @@ If you adjust the margins/padding or change the layout to be horizontally-aligne
 
 react-layered-chart is implemented under the hood with [Redux](https://github.com/reactjs/redux) and [react-redux](https://github.com/reactjs/react-redux)'s `Provider`. If you are using react-redux elsewhere, watch out for nested `Provider`s: you cannot access the outer provider from a child of a `ChartProvider` component!
 
+### <a name="chartid"></a>Tracking transient state across (un)mount cycles
+
+Each `ChartProvider` component is highly stateful: both in the data that's automatically loaded for you and in the state of the UI as the user interacts. If you want to preserve the transient state across renders but the nature of your application causes React to unmount it frequently, you can provide the optional `chartId` to `ChartProvider`. `chartId` is an arbitrary, *globally-unique* string for this particular chart that will allow react-layered-chart to restore state from the the last time a chart with this ID was mounted.
+
+A common example of undesirable state loss is in a tabbed application: charts in one tab will be unmounted and removed from the DOM as you switch, but to provide good UX, you'll want to make sure they're still loaded and panned over to the same place when the user tabs back.
+
 ## <a name="issues"></a>Common Issues
 
 Please [file an issue on Github](https://github.com/palantir/react-layered-chart/issues) for any issues that aren't covered here.
@@ -224,6 +230,10 @@ Please [file an issue on Github](https://github.com/palantir/react-layered-chart
 ### The chart is slowly but unstoppably increasing in height.
 
 This likely happens because you've forgotten to include react-layered-chart's stylesheet, which sets some default sizes to prevent this issue. See the [caveat about physical chart size](#physicalchartsize) for an explanation of why this happens.
+
+### When `ChartProvider` unmounts, I lose all my loaded state.
+
+Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mount it can retrieve its old state. See the [caveat on (un)mounting](#chartid) for more details.
 
 ## <a name="api"></a>API Reference
 
