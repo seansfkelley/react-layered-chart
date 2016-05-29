@@ -1,3 +1,4 @@
 - example image
 - include loader-constructor for any use cases that want interactive charts with small, static data
 - figure out what to do about Y axis
+- clarification of intent w/r/t selectors and opaque chart state type
