@@ -22,7 +22,7 @@ In development mode, react-layered-chart logs internal state changes rather verb
 
 The core functionality of react-layered-chart is a set of "layer" components inside a `Stack` component. The simplest possible chart looks something like this:
 
-```jsx
+```tsx
 const MY_DATA = [ ... ];
 
 <Stack>
@@ -40,7 +40,7 @@ The `xDomain` and `yDomain` props, which are common to many layers, describe whi
 
 Including multiple layers will cause them to be stacked in the Z direction, so you can overlay multiple charts. For instance, if you want a line chart that also emphasizes each data point with a dot, you could do something like the following:
 
-```jsx
+```tsx
 <Stack>
   <PointLayer data={DATA} .../>
   <SimpleLineLayer data={DATA} .../>
@@ -57,7 +57,7 @@ react-layered-chart also includes a bunch of somewhat opinionated, stateful comp
 
 The `ChartProvider` component is a wrapper around a [react-redux `Provider`](https://github.com/reactjs/react-redux) that also exposes a [controlled-input-like](https://facebook.github.io/react/docs/forms.html#controlled-components) interface. A simple chart that includes user interaction might look like this:
 
-```jsx
+```tsx
 // This stateless function receives a bunch of parameters to load data. It's called
 // any time the X domain changes or the data otherwise becomes potentially stale.
 function myDataLoader(...) {
@@ -78,9 +78,74 @@ function myDataLoader(...) {
 
 In this example, the X and Y domains are controlled by internal state and need not be explicitly passed. The `ConnectedInteractionLayer` captures mouse events and dispatches actions internally to make the chart respond to user input.
 
-## Customizing Appearance
+## Adding Custom Behavior
 
-## Customizing Behavior
+react-layered-chart is implemented with [react-redux](https://github.com/reactjs/react-redux) under the hood. If you want to render a custom view that can hook into the loaded data and fire the basic UI actions, you can use [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) plus the [selectors](https://github.com/reactjs/reselect) and action creators provided by react-layered-chart. Your component doesn't even have to be charting-related -- for example, if you want to add a textual legend that updates on hover, you could do this by add a component within a `ChartProvider`.
+
+### Custom View Example
+
+This example implements a full-width button that both displays the current X domain and will reset the X domain to a specific value when clicked.
+
+```tsx
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {
+  Range,
+  // This type is opaque and should only be interacted with using builtin selectors and action creators.
+  ChartProviderState,
+  // This is one such selector.
+  selectXDomain,
+  // This is one such action creator.
+  setXDomain
+} from 'react-layered-chart';
+
+// Props we expect to receive from our our parent component.
+interface OwnProps {
+  resetXDomain: Range;
+}
+
+// Props auto-injected from the internally managed state.
+interface ConnectedProps {
+  currentXDomain: Range;
+}
+
+// Actions we want to be able to fire.
+interface DispatchProps {
+  setXDomain: typeof setXDomain;
+}
+
+class SnapToXDomainButton extends React.Component<OwnProps & ConnectedProps & DispatchProps, void> {
+  render() {
+    // Implement a simple text-based <div> that reacts to clicks.
+    return (
+      <div className='lc-layer snap-to-x-domain-button' onClick={() => this.props.setXDomain(this.props.resetXDomain)}>
+        {this.props.currentXDomain.min} to {this.props.currentXDomain.max}
+      </div>
+    );
+  }
+}
+
+// See react-redux docs for more.
+function mapStateToProps(state: ChartProviderState): ConnectedProps {
+  return {
+    currentXDomain: selectXDomain(state)
+  };
+}
+
+// See react-redux docs for more.
+function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+  return bindActionCreators({ setXDomain }, dispatch);
+}
+
+// In Typescript, this cast is sometimes necessary.
+// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8787
+export default connect(mapStateToProps, mapDispatchToProps)(SnapToXDomainButton) as React.ComponentClass<OwnProps>;
+```
+
+Then you can put a `SnapToXDomainButton` component in a `Stack` and you'll have a functional button that also displays the current domain!
+
+### Custom Interaction Example
+
 
 ## <a name="caveats"></a>Caveats/Limitations
 
