@@ -35,11 +35,11 @@ export default class BarLayer extends React.Component<Props, State> {
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     color: React.PropTypes.string
-  };
+  } as React.ValidationMap<any>;
 
   static defaultProps = {
     color: 'rgba(0, 0, 0, 0.7)'
-  };
+  } as any;
 
   animatedProps = {
     yDomain: 1000

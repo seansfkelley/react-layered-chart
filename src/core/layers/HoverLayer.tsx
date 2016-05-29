@@ -26,11 +26,11 @@ export default class HoverLayer extends React.Component<Props, void> {
     hover: React.PropTypes.number,
     xDomain: propTypes.range.isRequired,
     stroke: React.PropTypes.string
-  };
+  } as React.ValidationMap<any>;
 
   static defaultProps = {
     stroke: 'rgba(0, 0, 0, 1)'
-  };
+  } as any;
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;

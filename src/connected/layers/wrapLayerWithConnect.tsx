@@ -17,7 +17,7 @@ export interface ConnectedProps {
   yDomain: Range;
 }
 
-export default function<OwnProps, OriginalProps extends OwnProps>(OriginalComponent: React.ComponentClass<OriginalProps>): React.ComponentClass<OwnProps & SeriesIdProp> {
+export default function<OwnProps, OriginalProps extends OwnProps & ConnectedProps>(OriginalComponent: React.ComponentClass<OriginalProps>): React.ComponentClass<OwnProps & SeriesIdProp> {
 
   @PureRender
   class ConnectedLayerWrapper extends React.Component<OwnProps & ConnectedProps & SeriesIdProp, void> {

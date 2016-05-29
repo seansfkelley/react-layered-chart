@@ -36,12 +36,12 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
-  };
+  } as React.ValidationMap<any>;
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)'
-  };
+  } as any;
 
   animatedProps = {
     yDomain: 1000
