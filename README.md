@@ -18,7 +18,7 @@ In development mode, react-layered-chart logs internal state changes rather verb
 
 ## Making Basic, Static Charts
 
-> See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+> See the [section on developing](#developing) to set up a page you can play around with yoruself. Check the [caveats](#caveats) and [common issues](#issues) if you run into problems.
 
 The core functionality of react-layered-chart is a set of "layer" components inside a `Stack` component. The simplest possible chart looks something like this:
 
@@ -51,7 +51,7 @@ Charts made in this manner are static. See the [interactive section](#interactiv
 
 ## <a name="#interactive"></a>Interactive Charts
 
-> See also the [section on developing](#developing) to set up a page you can play around with yoruself.
+> See the [section on developing](#developing) to set up a page you can play around with yoruself. Check the [caveats](#caveats) and [common issues](#issues) if you run into problems.
 
 react-layered-chart also includes a bunch of somewhat opinionated, stateful components that help you make interactive charts that can load up new data as necessary. These components require that each of the series you're rendering can be uniquely identified with a string, referred to as the "series ID".
 
@@ -81,6 +81,26 @@ In this example, the X and Y domains are controlled by internal state and need n
 ## Customizing Appearance
 
 ## Customizing Behavior
+
+## <a name="caveats"></a>Caveats/Limitations
+
+### <a name="physicalchartsize"></a>Physical chart size
+
+raect-layered-chart needs to know how large it is on the page in order to scale and request data at an appropriate resolution. By default, it injects a hidden `ConnectedResizeSentinelLayer` to poll for the width of the container.
+
+If you adjust the margins/padding or change the layout to be horizontally-aligned, you may need to set `ChartProvider`'s `includeResizeSentinel` to `false` and supply your own `ConnectedResizeSentinelLayer` in a place where it can determine the correct width. You only need one.
+
+### Usage with react-redux
+
+react-layered-chart is implemented under the hood with [Redux](https://github.com/reactjs/redux) and [react-redux](https://github.com/reactjs/react-redux)'s `Provider`. If you are using react-redux elsewhere, watch out for nested `Provider`s: you cannot access the outer provider from a child of a `ChartProvider` component!
+
+## <a name="issues"></a>Common Issues
+
+Please [file an issue on Github](https://github.com/palantir/react-layered-chart/issues) for any issues that aren't covered here.
+
+### The chart is slowly but unstoppably increasing in height.
+
+This likely happens because you've forgotten to include react-layered-chart's stylesheet, which sets some default sizes to prevent this issue. See the [caveat about physical chart size](#physicalchartsize) for an explanation of why this happens.
 
 ## <a name="api"></a>API Reference
 
