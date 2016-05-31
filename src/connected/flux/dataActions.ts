@@ -8,10 +8,6 @@ import { setYDomain } from './uiActions';
 import { selectXDomain, selectYDomains } from '../model/selectors';
 import { extendRange } from '../rangeUtils';
 
-function _computeYDomain(seriesId: SeriesId, data: SeriesData, metadata: any, currentYDomain: Range): Range {
-  throw new Error('Gotta implement this!');
-}
-
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
   let keyedBatchAccumulator: TBySeriesId<T> = {};
 
@@ -35,7 +31,6 @@ function _performDataLoad() {
 
     const loadPromiseBySeriesId = dataLoader(
       preLoadChartState.seriesIds,
-      preLoadChartState.metadataBySeriesId,
       selectXDomain(preLoadChartState),
       selectYDomains(preLoadChartState),
       preLoadChartState.physicalChartWidth,
@@ -118,13 +113,6 @@ export function setSeriesIds(payload: SeriesId[]) {
 
       dispatch(requestDataLoad());
     }
-  };
-}
-
-export function setMetadata(payload: TBySeriesId<any>): Action<TBySeriesId<any>> {
-  return {
-    type: ActionType.SET_METADATA,
-    payload
   };
 }
 

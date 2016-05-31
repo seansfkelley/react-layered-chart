@@ -19,7 +19,6 @@ export interface ChartState {
   physicalChartWidth: number;
   seriesIds: SeriesId[];
   dataBySeriesId: TBySeriesId<SeriesData>;
-  metadataBySeriesId: TBySeriesId<any>;
   isLoadingBySeriesId: TBySeriesId<boolean>;
   errorBySeriesId: TBySeriesId<any>;
   loadVersion: string;
@@ -38,7 +37,6 @@ export const DEFAULT_CHART_STATE: ChartState = {
   physicalChartWidth: 200,
   seriesIds: [],
   dataBySeriesId: {},
-  metadataBySeriesId: {},
   isLoadingBySeriesId: {},
   errorBySeriesId: {},
   loadVersion: null,

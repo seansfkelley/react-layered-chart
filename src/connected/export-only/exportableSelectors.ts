@@ -17,14 +17,11 @@ function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: ChartP
   return (state: ChartProviderState) => selector(state as any as ChartState);
 }
 
-const internalSelectMetadata = (state: ChartState) => state.metadataBySeriesId;
-
 export const selectXDomain = _wrapForTypeCast(internalSelectXDomain);
 export const selectYDomains = _wrapForTypeCast(internalSelectYDomains);
 export const selectHover = _wrapForTypeCast(internalSelectHover);
 export const selectSelection = _wrapForTypeCast(internalSelectSelection);
 export const selectData = _wrapForTypeCast(internalSelectData);
-export const selectMetadata = _wrapForTypeCast(internalSelectMetadata);
 
 export const selectIsLoading = _wrapForTypeCast((state: ChartState) => state.isLoadingBySeriesId);
 export const selectError = _wrapForTypeCast((state: ChartState) => state.errorBySeriesId);
@@ -32,14 +29,13 @@ export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => sta
 
 // We inherit the name of "iterator" from Lodash. I would prefer this to be called a "selector", but obviously that
 // may be confusing in this context.
-export type NumericalValueIterator = (seriesId: SeriesId, metadata: any, datum: any) => number;
+export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 
 export function createSelectDataForHover(xValueSelector: NumericalValueIterator) {
   return _wrapForTypeCast(createSelector(
     internalSelectData,
-    internalSelectMetadata,
     internalSelectHover,
-    (dataBySeriesId: TBySeriesId<any>, metadataBySeriesId: TBySeriesId<any>, hover?: number) => {
+    (dataBySeriesId: TBySeriesId<any>, hover?: number) => {
       if (_.isUndefined(hover) || _.isNull(hover)) {
         return _.mapValues(dataBySeriesId, _.constant(null));
       } else {
@@ -48,17 +44,17 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
         // other data.
         const haxWrappedHover = { __haxWrappedHover: hover };
 
-        function xIterator(seriesId: SeriesId, metadata: any, datum: any) {
+        const xIterator = (seriesId: SeriesId, datum: any) => {
           return datum.hasOwnProperty('__haxWrappedHover')
             ? datum.__haxWrappedHover
-            : xValueSelector(seriesId, metadata, datum);
+            : xValueSelector(seriesId, datum);
         }
 
         return _.mapValues(dataBySeriesId, (data: any[], seriesId: SeriesId) => {
           // -1 because sortedIndexBy returns the first index that would be /after/ the input value, but we're trying to
           // get whichever value comes before. Note that this may return undefined, but that's specifically allowed:
           // there may not be an appropriate hover value for this series.
-          return data[ _.sortedIndexBy(data, haxWrappedHover, xIterator.bind(null, seriesId, metadataBySeriesId[ seriesId ])) - 1 ];
+          return data[ _.sortedIndexBy(data, haxWrappedHover, xIterator.bind(null, seriesId)) - 1 ];
         });
       }
     }

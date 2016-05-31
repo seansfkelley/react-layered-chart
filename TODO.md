@@ -1,6 +1,5 @@
 - example image
 - figure out what to do about Y axis
 - clarification of intent w/r/t selectors and opaque chart state type
-- wrap (all?) basic layers with connected versions
-  - perhaps export them as `LineLayer.Connected`? the names now are awful
+- maybe export connected layers as `LineLayer.Connected`? the names now are awful
 - convert readme examples into actual functioning examples

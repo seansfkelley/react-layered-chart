@@ -43,7 +43,6 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       return update(state, {
         seriesIds: { $set: seriesIds },
         dataBySeriesId: { $set: objectWithKeysFromObject(state.dataBySeriesId, seriesIds, []) },
-        metadataBySeriesId: { $set: objectWithKeysFromObject(state.metadataBySeriesId, seriesIds, {}) },
         isLoadingBySeriesId: { $set: objectWithKeysFromObject(state.isLoadingBySeriesId, seriesIds, false) },
         errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) },
         uiState: {
@@ -51,11 +50,6 @@ export default function(state: ChartState, action: Action<any>): ChartState {
         }
       });
     }
-
-    case ActionType.SET_METADATA:
-      return update(state, {
-        metadataBySeriesId: { $assign: action.payload }
-      });
 
     case ActionType.DATA_REQUESTED:
       // TODO: Should we merge load state and load version?

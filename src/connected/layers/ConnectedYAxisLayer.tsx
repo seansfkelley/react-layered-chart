@@ -8,6 +8,7 @@ import { SeriesId, TBySeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectYDomains } from '../model/selectors';
 
+// FIXME: How to get colors and scales for layers easily?
 export interface OwnProps {
   seriesIds: SeriesId[];
   font?: string;
@@ -21,9 +22,6 @@ export interface ConnectedProps {
 @PureRender
 export class ConnectedYAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
   render() {
-    // FIXME: How to get colors and scales for layers easily?
-    // scales={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].yScale)}
-    // colors={this.props.seriesIds.map(seriesId => this.props.metadataBySeriesId[seriesId].color)}
     return (
       <UnconnectedYAxisLayer
         yDomains={this.props.seriesIds.map(seriesId => this.props.yDomainBySeriesId[seriesId] || DEFAULT_Y_DOMAIN)}

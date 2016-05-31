@@ -10,7 +10,6 @@ export interface LoadedSeriesData {
   yDomain: Range;
 }
 export type DataLoader = (seriesIds: SeriesId[],
-                          metadataBySeriesId: TBySeriesId<any>,
                           xDomain: Range,
                           currentYDomains: TBySeriesId<Range>,
                           chartPixelWidth: number,

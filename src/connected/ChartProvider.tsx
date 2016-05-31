@@ -9,7 +9,7 @@ import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
 import { setXDomain, setYDomain, setHover, setSelection } from './flux/uiActions';
-import { setMetadata, setSeriesIds, setDataLoader } from './flux/dataActions';
+import { setSeriesIds, setDataLoader } from './flux/dataActions';
 import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
 
 export interface Props {
@@ -17,7 +17,6 @@ export interface Props {
   loadData: DataLoader;
 
   chartId?: ChartId;
-  seriesMetadata?: TBySeriesId<any>;
   defaultState?: DefaultChartState;
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
@@ -42,11 +41,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
     loadData: React.PropTypes.func.isRequired,
 
     chartId: React.PropTypes.string,
-    seriesMetadata: React.PropTypes.objectOf(React.PropTypes.object),
-    defaultState: React.PropTypes.shape({
-      xDomain: propTypes.range,
-      yDomains: React.PropTypes.objectOf(propTypes.range)
-    }),
     onLoadStateChange: React.PropTypes.func,
     onError: React.PropTypes.func,
     includeResizeSentinel: React.PropTypes.bool,
@@ -96,7 +90,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
     this._unsubscribeCallback = this._store.subscribe(this._maybeFireAllCallbacks.bind(this));
 
     this._store.dispatch(setSeriesIds(props.seriesIds));
-    this._store.dispatch(setMetadata(props.seriesMetadata));
     this._store.dispatch(setDataLoader(props.loadData));
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.
     if (props.xDomain) {
@@ -143,7 +136,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
   private _onPropsChange(nextProps: Props) {
     this._maybeDispatchChangedProp(this.props.seriesIds,      nextProps.seriesIds,      setSeriesIds);
-    this._maybeDispatchChangedProp(this.props.seriesMetadata, nextProps.seriesMetadata, setMetadata);
     this._maybeDispatchChangedProp(this.props.loadData,       nextProps.loadData,       setDataLoader);
     this._maybeDispatchChangedProp(this.props.xDomain,        nextProps.xDomain,        setXDomain);
     this._maybeDispatchChangedProp(this.props.yDomains,       nextProps.yDomains,       setYDomain);

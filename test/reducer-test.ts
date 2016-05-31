@@ -130,7 +130,6 @@ describe('reducer', () => {
   function pickKeyedState(state: ChartState) {
     return {
       dataBySeriesId: state.dataBySeriesId,
-      metadataBySeriesId: state.metadataBySeriesId,
       isLoadingBySeriesId: state.isLoadingBySeriesId,
       errorBySeriesId: state.errorBySeriesId,
       yDomainBySeriesId: state.uiState.yDomainBySeriesId
@@ -148,7 +147,6 @@ describe('reducer', () => {
     state.seriesIds.should.deepEqual(ALL_SERIES);
     pickKeyedState(state).should.deepEqual({
       dataBySeriesId: objectWithKeys(ALL_SERIES, []),
-      metadataBySeriesId: objectWithKeys(ALL_SERIES, {}),
       isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
       errorBySeriesId: objectWithKeys(ALL_SERIES, null),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
@@ -165,7 +163,6 @@ describe('reducer', () => {
     state.seriesIds.should.deepEqual(ONLY_SERIES_A);
     pickKeyedState(state).should.deepEqual({
       dataBySeriesId: objectWithKeys(ONLY_SERIES_A, []),
-      metadataBySeriesId: objectWithKeys(ONLY_SERIES_A, {}),
       isLoadingBySeriesId: objectWithKeys(ONLY_SERIES_A, false),
       errorBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
       yDomainBySeriesId: objectWithKeys(ONLY_SERIES_A, DEFAULT_Y_DOMAIN)
@@ -203,7 +200,6 @@ describe('reducer', () => {
       },
       isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
       errorBySeriesId: objectWithKeys(ALL_SERIES, null),
-      metadataBySeriesId: objectWithKeys(ALL_SERIES, {}),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
@@ -227,7 +223,6 @@ describe('reducer', () => {
         [SERIES_B]: true
       },
       errorBySeriesId: objectWithKeys(ALL_SERIES, null),
-      metadataBySeriesId: objectWithKeys(ALL_SERIES, {}),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
@@ -251,7 +246,6 @@ describe('reducer', () => {
       },
       isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
       errorBySeriesId: objectWithKeys(ALL_SERIES, ERROR),
-      metadataBySeriesId: objectWithKeys(ALL_SERIES, {}),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
@@ -283,7 +277,6 @@ describe('reducer', () => {
         [SERIES_A]: ERROR,
         [SERIES_B]: null
       },
-      metadataBySeriesId: objectWithKeys(ALL_SERIES, {}),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
