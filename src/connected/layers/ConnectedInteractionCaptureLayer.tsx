@@ -8,13 +8,11 @@ import {
   BooleanMouseEventHandler,
   resolvePan,
   resolveZoom,
-  InteractionCaptureLayer,
-  HoverLineLayer,
-  BrushLayer
+  InteractionCaptureLayer
 } from '../../core';
 import * as uiActions from '../flux/uiActions';
 import { ChartState } from '../model/state';
-import { selectXDomain, selectHover, selectSelection } from '../model/selectors';
+import { selectXDomain } from '../model/selectors';
 
 export interface OwnProps {
   enablePan?: boolean;
@@ -29,8 +27,6 @@ export interface OwnProps {
 
 export interface ConnectedProps {
   xDomain: Range;
-  hover?: number;
-  selection?: Range;
 }
 
 export interface DispatchProps {
@@ -38,28 +34,20 @@ export interface DispatchProps {
 }
 
 @PureRender
-export class ConnectedInteractionLayer extends React.Component<OwnProps & ConnectedProps & DispatchProps, {}> {
+export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps & ConnectedProps & DispatchProps, {}> {
   render() {
     return (
-      <div>
-        <InteractionCaptureLayer
-          xDomain={this.props.xDomain}
-          onZoom={this.props.enableZoom && this._zoom}
-          onPan={this.props.enablePan && this._pan}
-          onHover={this.props.enableHover && this._hover}
-          onBrush={this.props.enableBrush && this._brush}
-          shouldZoom={this.props.shouldZoom}
-          shouldPan={this.props.shouldPan}
-          shouldBrush={this.props.shouldBrush}
-          zoomSpeed={this.props.zoomSpeed}
-        />
-        {this.props.enableHover
-          ? <HoverLineLayer hover={this.props.hover} xDomain={this.props.xDomain}/>
-          : null}
-        {this.props.enableBrush
-          ? <BrushLayer selection={this.props.selection} xDomain={this.props.xDomain}/>
-          : null}
-      </div>
+      <InteractionCaptureLayer
+        xDomain={this.props.xDomain}
+        onZoom={this.props.enableZoom && this._zoom}
+        onPan={this.props.enablePan && this._pan}
+        onHover={this.props.enableHover && this._hover}
+        onBrush={this.props.enableBrush && this._brush}
+        shouldZoom={this.props.shouldZoom}
+        shouldPan={this.props.shouldPan}
+        shouldBrush={this.props.shouldBrush}
+        zoomSpeed={this.props.zoomSpeed}
+      />
     );
   }
 
@@ -83,9 +71,7 @@ export class ConnectedInteractionLayer extends React.Component<OwnProps & Connec
 
 function mapStateToProps(state: ChartState): ConnectedProps {
   return {
-    xDomain: selectXDomain(state),
-    hover: selectHover(state),
-    selection: selectSelection(state)
+    xDomain: selectXDomain(state)
   };
 }
 
@@ -95,4 +81,4 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectedInteractionLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectedInteractionCaptureLayer) as React.ComponentClass<OwnProps>;

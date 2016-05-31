@@ -4,5 +4,4 @@
 - clarification of intent w/r/t selectors and opaque chart state type
 - wrap (all?) basic layers with connected versions
   - perhaps export them as `LineLayer.Connected`? the names now are awful
-  - should InteractionLayer not include the selection and hover views?
 - convert readme examples into actual functioning examples
