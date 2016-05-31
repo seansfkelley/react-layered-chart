@@ -19,9 +19,9 @@ export {
 } from './BucketedLineLayer';
 
 export {
-  default as HoverLayer,
-  Props as HoverLayerProps
-} from './HoverLayer';
+  default as HoverLineLayer,
+  Props as HoverLineLayerProps
+} from './HoverLineLayer';
 
 export {
   default as InteractionCaptureLayer,

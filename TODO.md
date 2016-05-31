@@ -5,5 +5,4 @@
 - wrap (all?) basic layers with connected versions
   - perhaps export them as `LineLayer.Connected`? the names now are awful
   - should InteractionLayer not include the selection and hover views?
-- rename HoverLayer as HoverLineLayer to clarify?
 - convert readme examples into actual functioning examples

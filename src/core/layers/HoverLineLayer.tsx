@@ -19,7 +19,7 @@ export interface Props {
 @PureRender
 @CanvasRender
 @PixelRatioContext
-export default class HoverLayer extends React.Component<Props, void> {
+export default class HoverLineLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {

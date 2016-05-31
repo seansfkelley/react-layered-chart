@@ -9,7 +9,7 @@ import {
   resolvePan,
   resolveZoom,
   InteractionCaptureLayer,
-  HoverLayer,
+  HoverLineLayer,
   BrushLayer
 } from '../../core';
 import * as uiActions from '../flux/uiActions';
@@ -54,7 +54,7 @@ export class ConnectedInteractionLayer extends React.Component<OwnProps & Connec
           zoomSpeed={this.props.zoomSpeed}
         />
         {this.props.enableHover
-          ? <HoverLayer hover={this.props.hover} xDomain={this.props.xDomain}/>
+          ? <HoverLineLayer hover={this.props.hover} xDomain={this.props.xDomain}/>
           : null}
         {this.props.enableBrush
           ? <BrushLayer selection={this.props.selection} xDomain={this.props.xDomain}/>
