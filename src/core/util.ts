@@ -57,7 +57,7 @@ export function resolvePan(range: Range, delta: number): Range {
   };
 }
 
-export function resolveZoom(range, factor: number, anchorBias: number = 0.5) {
+export function resolveZoom(range: Range, factor: number, anchorBias: number = 0.5) {
   const currentExtent = range.max - range.min;
   const targetExtent = currentExtent / factor;
   const extentDelta = targetExtent - currentExtent;
