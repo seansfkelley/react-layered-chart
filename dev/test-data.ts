@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { DataLoader, LoadedSeriesData, TBySeriesId, Range, SeriesData, SeriesId } from '../src';
+import { Range } from '../src';
 
 // from https://datamarket.com/data/set/232f/chemical-concentration-readings#!ds=232f&display=line
 const UNPARSED_DATA = [{
@@ -605,29 +605,12 @@ export const DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
 const TIMESTAMPS = _.map<{}, number>(DATA, 'timestamp');
 const VALUES = _.map<{}, number>(DATA, 'value');
 
-export const X_DOMAIN = {
+export const X_DOMAIN: Range = {
   min: _.min(TIMESTAMPS),
   max: _.max(TIMESTAMPS)
 };
 
-export const Y_DOMAIN = {
+export const Y_DOMAIN: Range = {
   min: _.min(VALUES),
   max: _.max(VALUES)
-};
-
-export const dataLoader: DataLoader = (seriesIds: SeriesId[],
-                                       metadataBySeriesId: TBySeriesId<any>,
-                                       xDomain: Range,
-                                       currentYDomains: TBySeriesId<Range>,
-                                       chartPixelWidth: number,
-                                       currentData: TBySeriesId<SeriesData>) => {
-  return _.fromPairs(seriesIds.map(seriesId => ([
-    seriesId,
-    new Promise<LoadedSeriesData>((resolve, reject) => {
-      resolve({
-        data: DATA,
-        yDomain: Y_DOMAIN
-      });
-    })
-  ])));
 };

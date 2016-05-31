@@ -3,19 +3,28 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { DATA, X_DOMAIN, Y_DOMAIN, dataLoader } from './test-data';
+import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
 import {
   ChartProvider,
   Stack,
   SimpleLineLayer,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
-  ConnectedHoverLineLayer
+  ConnectedHoverLineLayer,
+  createStaticDataLoader
 } from '../src';
 import StackedSeriesLayer from './StackedSeriesLayer';
 
 import './dev-styles.less';
 import '../styles/index.less';
+
+const TEST_SERIES_ID = 'foo';
+
+const DATA_LOADER = createStaticDataLoader({
+  [TEST_SERIES_ID]: DATA
+}, {
+  [TEST_SERIES_ID]: Y_DOMAIN
+});
 
 const APP_ELEMENT = document.getElementById('app');
 
@@ -31,15 +40,15 @@ const BASIC_COMPONENT = (
 
 const ADVANCED_COMPONENT = (
   <ChartProvider
-    seriesIds={[ 'foo' ]}
-    loadData={dataLoader}
+    seriesIds={[ TEST_SERIES_ID ]}
+    loadData={DATA_LOADER}
     defaultState={{
       xDomain: X_DOMAIN
     }}
     className='example-chart'
   >
     <Stack>
-      <ConnectedSimpleLineLayer seriesId='foo'/>
+      <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
       <ConnectedHoverLineLayer/>
     </Stack>
