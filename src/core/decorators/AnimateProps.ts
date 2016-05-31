@@ -44,7 +44,7 @@ const mixin: React.Mixin<any, any> = {
           if (this.__animatingPropCancelCallbacks[propName]) {
             this.__animatingPropCancelCallbacks[propName]();
           }
-          const startValue = this.state[`animated-${propName}`] || this.props[propName];
+          const startValue = this.state[`animated_${propName}`] || this.props[propName];
           this.__animatingPropCancelCallbacks[propName] = animateOnce(
             _.cloneDeep(startValue),
             _.cloneDeep(nextProps[propName]),
