@@ -237,7 +237,7 @@ Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mo
 
 ## <a name="api"></a>API Reference
 
-In progress.
+See [API Reference](API.md).
 
 ## <a name="developing"></a>Developing
 

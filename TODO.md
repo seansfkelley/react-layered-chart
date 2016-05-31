@@ -1,5 +1,7 @@
 - example image
 - figure out what to do about Y axis
+- writeup API section of README
 - clarification of intent w/r/t selectors and opaque chart state type
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
 - convert readme examples into actual functioning examples
+- remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
