@@ -12,7 +12,7 @@ export function setXDomain(payload: Range) {
   return internalSetXDomain(payload);
 }
 
-export function setYDomain(payload: TBySeriesId<Range>) {
+export function setYDomains(payload: TBySeriesId<Range>) {
   return internalSetYDomain(payload);
 }
 

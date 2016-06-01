@@ -16,12 +16,12 @@ export interface Props {
   seriesIds: SeriesId[];
   loadData: DataLoader;
 
+  className?: string;
   chartId?: ChartId;
   defaultState?: DefaultChartState;
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
   includeResizeSentinel?: boolean;
-  className?: string;
 
   // Controlled props go here.
   xDomain?: Range;
@@ -40,11 +40,11 @@ export default class ChartProvider extends React.Component<Props, {}> {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     loadData: React.PropTypes.func.isRequired,
 
+    className: React.PropTypes.string,
     chartId: React.PropTypes.string,
     onLoadStateChange: React.PropTypes.func,
     onError: React.PropTypes.func,
     includeResizeSentinel: React.PropTypes.bool,
-    className: React.PropTypes.string,
 
     xDomain: propTypes.range,
     onXDomainChange: React.PropTypes.func,
