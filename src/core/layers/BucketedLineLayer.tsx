@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
-import CanvasRender from '../decorators/CanvasRender';
+import NonReactRender from '../decorators/NonReactRender';
 import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
@@ -24,7 +24,7 @@ export interface State {
 }
 
 @PureRender
-@CanvasRender
+@NonReactRender
 @AnimateProps
 @PixelRatioContext
 export default class BucketedLineLayer extends React.Component<Props, State> {
@@ -48,10 +48,10 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
   };
 
   render() {
-    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.canvasRender}/>;
+    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
   }
 
-  canvasRender = () => {
+  nonReactRender = () => {
     const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
       this.refs['canvasLayer'] as AutoresizingCanvasLayer,
       this.context.pixelRatio

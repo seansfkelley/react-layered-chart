@@ -3,7 +3,7 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
-import CanvasRender from '../decorators/CanvasRender';
+import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
@@ -25,7 +25,7 @@ export interface Props {
 }
 
 @PureRender
-@CanvasRender
+@NonReactRender
 @PixelRatioContext
 export default class XAxisLayer extends React.Component<Props, void> {
   context: Context;
@@ -56,11 +56,11 @@ export default class XAxisLayer extends React.Component<Props, void> {
     return <AutoresizingCanvasLayer
       className='x-axis'
       ref='canvasLayer'
-      onSizeChange={this.canvasRender}
+      onSizeChange={this.nonReactRender}
     />;
   }
 
-  canvasRender = () => {
+  nonReactRender = () => {
     const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
       this.refs['canvasLayer'] as AutoresizingCanvasLayer,
       this.context.pixelRatio

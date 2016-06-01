@@ -1,7 +1,7 @@
 export {
-  default as CanvasRender,
-  Mixin as CanvasRenderMixin
-} from './CanvasRender';
+  default as NonReactRender,
+  Mixin as NonReactRenderMixin
+} from './NonReactRender';
 
 export {
   default as AnimateProps,

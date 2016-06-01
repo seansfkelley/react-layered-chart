@@ -2,7 +2,6 @@
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
 - convert readme examples into actual functioning examples
 - remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
-- rename CanvasRender to something like NonReactRender
 - getBounds*Data
   - should be in their own file
   - should not refer to time

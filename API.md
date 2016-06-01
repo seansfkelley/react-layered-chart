@@ -116,7 +116,7 @@ This component renders one or more Y domains, lined up next to each other on the
 
 ### `AutoresizingCanvasLayer`
 
-A component that wraps and exposes a `<canvas>` that (via polling) matches the size of its containing `Stack`. This class does no rendering of its own, but provides a well-behaved blank canvas for a parent component to draw on. All built-in data-rendering layers are based on this component, along with the `CanvasRender` decorator.
+A component that wraps and exposes a `<canvas>` that (via polling) matches the size of its containing `Stack`. This class does no rendering of its own, but provides a well-behaved blank canvas for a parent component to draw on. All built-in data-rendering layers are based on this component in combination with the `NonReactRender` decorator.
 
 #### Props
 
@@ -273,22 +273,22 @@ class ExampleComponent extends React.Component<Props, ...> {
 
 <hr/>
 
-#### `CanvasRender`
+#### `NonReactRender`
 
-A class decorator that defers the bulk of rendering work until the next [animation frame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame). Useful primarily for expensive rendering that cannot be represented in the virtual DOM, such as when rendering to a `<canvas>`. You must define a method named `canvasRender` that does the actual work of rendering.
+A class decorator that defers the bulk of rendering work until the next [animation frame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame). Useful primarily for expensive rendering that cannot be represented in the virtual DOM, such as when rendering to a `<canvas>`. You must define a method named `nonReactRender` that does the actual work of rendering.
 
-You can access a mixin version at `CanvasRenderMixin`.
+You can access a mixin version at `NonReactRenderMixin`.
 
 ```tsx
-import { CanvasRender } from 'react-layered-chart';
+import { NonReactRender } from 'react-layered-chart';
 
-@CanvasRender
+@NonReactRender
 class ExampleComponent extends React.Component<...> {
   render() {
     return <canvas ref='canvas'/>;
   }
 
-  canvasRender() {
+  nonReactRender() {
     const canvas = this.refs.canvas;
     // Do the actual rendering work.
   }
