@@ -13,7 +13,8 @@ import { Range, Color } from '../interfaces';
 
 export interface Props {
   data: {
-    timeSpan: Range;
+    minXValue: number;
+    maxXValue: number;
     color?: Color;
   }[];
   xDomain: Range;
@@ -23,12 +24,13 @@ export interface Props {
 @PureRender
 @NonReactRender
 @PixelRatioContext
-export default class TimeSpanLayer extends React.Component<Props, void> {
+export default class SpanLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
     data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      timeSpan: propTypes.range.isRequired,
+      minXValue: React.PropTypes.number.isRequired,
+      maxXValue: React.PropTypes.number.isRequired,
       color: React.PropTypes.string
     })).isRequired,
     xDomain: propTypes.range.isRequired,
@@ -49,7 +51,7 @@ export default class TimeSpanLayer extends React.Component<Props, void> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'timeSpan.min', 'timeSpan.max');
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'minXValue', 'maxXValue');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -59,8 +61,8 @@ export default class TimeSpanLayer extends React.Component<Props, void> {
       .rangeRound([ 0, width ]);
 
     for (let i = firstIndex; i <= lastIndex; ++i) {
-      const left = xScale(this.props.data[i].timeSpan.min);
-      const right = xScale(this.props.data[i].timeSpan.max);
+      const left = xScale(this.props.data[i].minXValue);
+      const right = xScale(this.props.data[i].maxXValue);
       context.beginPath();
       context.rect(left, 0, right - left, height);
       context.fillStyle = this.props.data[i].color || this.props.color;

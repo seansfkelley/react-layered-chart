@@ -39,9 +39,9 @@ export {
 } from './SimpleLineLayer';
 
 export {
-  default as TimeSpanLayer,
-  Props as TimeSpanLayerProps
-} from './TimeSpanLayer';
+  default as SpanLayer,
+  Props as SpanLayerProps
+} from './SpanLayer';
 
 export {
   default as XAxisLayer,

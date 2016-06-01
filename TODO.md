@@ -4,7 +4,6 @@
 - remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
 - getBounds*Data
   - should accept non-string values for paths (getters)
-- remove time references from all layers and types
 - docs
   - dataUtils
   - rangeUtils
