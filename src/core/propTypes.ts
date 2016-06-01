@@ -6,8 +6,9 @@ export const range = React.PropTypes.shape({
 });
 
 export const spanDatum = React.PropTypes.shape({
-  span: range.isRequired,
-  value: React.PropTypes.number.isRequired
+  xMinValue: React.PropTypes.number.isRequired,
+  xMaxValue: React.PropTypes.number.isRequired,
+  yValue: React.PropTypes.number.isRequired
 });
 
 export const pointDatum = React.PropTypes.shape({

@@ -14,8 +14,9 @@ export interface Range {
 }
 
 export interface SpanDatum {
-  span: Range;
-  value: number;
+  xMinValue: number;
+  xMaxValue: number;
+  yValue: number;
 }
 
 export interface PointDatum {

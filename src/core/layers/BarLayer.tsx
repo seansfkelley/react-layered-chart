@@ -55,7 +55,7 @@ export default class BarLayer extends React.Component<Props, State> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'span.min', 'span.max');
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'xMinValue', 'xMaxValue');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -70,9 +70,9 @@ export default class BarLayer extends React.Component<Props, State> {
 
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
-      const left = xScale(this.props.data[i].span.min);
-      const right = xScale(this.props.data[i].span.max);
-      const top = height - yScale(this.props.data[i].value);
+      const left = xScale(this.props.data[i].xMinValue);
+      const right = xScale(this.props.data[i].xMaxValue);
+      const top = height - yScale(this.props.data[i].yValue);
       const bottom = height - yScale(0);
 
       context.rect(left, bottom, right - left, top - bottom);
