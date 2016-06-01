@@ -16,18 +16,18 @@ export const pointDatum = React.PropTypes.shape({
   yValue: React.PropTypes.number.isRequired
 });
 
-export const timeBucketDatum = React.PropTypes.shape({
-  startTime: React.PropTypes.number.isRequired,
-  endTime: React.PropTypes.number.isRequired,
-  minValue: React.PropTypes.number.isRequired,
-  maxValue: React.PropTypes.number.isRequired,
-  firstValue: React.PropTypes.number.isRequired,
-  lastValue: React.PropTypes.number.isRequired
+export const bucketDatum = React.PropTypes.shape({
+  minXValue: React.PropTypes.number.isRequired,
+  maxXValue: React.PropTypes.number.isRequired,
+  minYValue: React.PropTypes.number.isRequired,
+  maxYValue: React.PropTypes.number.isRequired,
+  firstYValue: React.PropTypes.number.isRequired,
+  lastYValue: React.PropTypes.number.isRequired
 });
 
 export default {
   range,
   spanDatum,
   pointDatum,
-  timeBucketDatum
+  bucketDatum
 };

@@ -9,10 +9,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Range, Color, ScaleFunction, TimeBucketDatum } from '../interfaces';
+import { Range, Color, ScaleFunction, BucketDatum } from '../interfaces';
 
 export interface Props {
-  data: TimeBucketDatum[];
+  data: BucketDatum[];
   xDomain: Range;
   yDomain: Range;
   yScale?: ScaleFunction;
@@ -31,7 +31,7 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.timeBucketDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.bucketDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
@@ -62,7 +62,7 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
       return;
     }
 
-    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'startTime', 'endTime');
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'minXValue', 'maxXValue');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -79,8 +79,8 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
     const computedValuesForVisibleData = this.props.data
     .slice(firstIndex, lastIndex)
     .map(datum => {
-      const earliestX = Math.ceil(xScale(datum.startTime));
-      const latestX = Math.floor(xScale(datum.endTime));
+      const earliestX = Math.ceil(xScale(datum.minXValue));
+      const latestX = Math.floor(xScale(datum.maxXValue));
 
       let preferredX1;
       let preferredX2;
@@ -94,16 +94,16 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
         preferredX2 = latestX;
       }
 
-      const preferredY1 = Math.floor(yScale(datum.minValue));
-      const preferredY2 = Math.floor(yScale(datum.maxValue));
+      const preferredY1 = Math.floor(yScale(datum.minYValue));
+      const preferredY2 = Math.floor(yScale(datum.maxYValue));
 
       return {
         minX: preferredX1,
         maxX: preferredX2,
         minY: preferredY1,
         maxY: preferredY2,
-        firstY: Math.floor(yScale(datum.firstValue)),
-        lastY: Math.floor(yScale(datum.lastValue)),
+        firstY: Math.floor(yScale(datum.firstYValue)),
+        lastY: Math.floor(yScale(datum.lastYValue)),
         width: preferredX2 - preferredX1,
         height: preferredY2 - preferredY1
       };

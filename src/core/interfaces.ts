@@ -24,11 +24,11 @@ export interface PointDatum {
   yValue: number;
 }
 
-export interface TimeBucketDatum {
-  startTime: number;
-  endTime: number;
-  minValue: number;
-  maxValue: number;
-  firstValue: number;
-  lastValue: number;
+export interface BucketDatum {
+  minXValue: number;
+  maxXValue: number;
+  minYValue: number;
+  maxYValue: number;
+  firstYValue: number;
+  lastYValue: number;
 }
