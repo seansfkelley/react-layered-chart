@@ -53,7 +53,7 @@ These components render different types of visualizations for data. They all fol
 
 - the data they are to render; usually, an array named `data`
 - `xDomain`, which describes what horizontal domain they're currently covering so they can render the appropriate subset of data
-- usually `yDomain`, which describes what vertical domain they're currently covering so they can render the data in the appropriate position
+- usually `yDomain`, which describes what vertical domain they're currently covering so they can render the data in the appropriate visual location
 
 And some combination of `color`, `fill`, `stroke`, `font`, `yScale` or other display-related props.
 
@@ -387,7 +387,9 @@ resolveZoom({ min: 0, max: 100 }, 2, 0);
 
 #### `createSelectDataForHover(xValueIterator)`
 
-Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point immediately preceding the current hover location according to this scheme.
+Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point for each series immediately preceding the current hover location according to this scheme.
+
+<hr/>
 
 ### Constants
 

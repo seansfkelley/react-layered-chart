@@ -14,3 +14,8 @@
   - should not provide default values for the paths
   - should accept non-string values for paths (getters)
 - remove time references from all layers and types
+- docs
+  - dataUtils
+  - rangeUtils
+  - more links to other parts of the API, README, or example pages
+- dev/ -> example/, include README

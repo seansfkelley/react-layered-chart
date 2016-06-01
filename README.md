@@ -10,7 +10,7 @@ TODO: Example picture.
 npm install --save react-layered-chart
 ```
 
-Be sure to include the styles from `react-layered-chart/react-layered-chart.css`. This is also specified on the `style` key in `package.json` for any toolchains that support it.
+Be sure to include the styles from `react-layered-chart/react-layered-chart.css`. This file is also specified on the `style` key in `package.json` for any toolchains that support it.
 
 ### `process.env.NODE_ENV`
 
@@ -76,14 +76,14 @@ function myDataLoader(...) {
 </ChartProvider>
 ```
 
-In this example, the X and Y domains are controlled by internal state and need not be explicitly passed. The `ConnectedInteractionLayer` captures mouse events and dispatches actions internally to make the chart respond to user input.
+In this example, the X and Y domains are controlled by internal state and need not be explicitly passed. The `ConnectedInteractionCaptureLayer` captures mouse events and dispatches actions internally to make the chart respond to user input.
 
 ## Adding Custom Behavior
 
 react-layered-chart provides two methods of customizing behavior:
 
 - Hooking into the internal [Redux](https://github.com/reactjs/redux) store using react-redux's [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) plus the [selectors](https://github.com/reactjs/reselect) and action creators provided by react-layered-chart.
-- Providing props to the `ChartProvider` in the manner of [controlled inputs](https://facebook.github.io/react/docs/forms.html#controlled-components).
+- Providing props to the `ChartProvider` in the manner of [controlled components](https://facebook.github.io/react/docs/forms.html#controlled-components).
 
 Your custom component doesn't even have to be a type of chart -- for example, if you want to add a textual legend that updates on hover, you could do this by adding a component within a `ChartProvider`.
 
@@ -209,13 +209,13 @@ class MyControlledChart extends React.Component<Props, State> {
 
 ### <a name="physicalchartsize"></a>Physical chart size
 
-raect-layered-chart needs to know how large it is on the page in order to scale and request data at an appropriate resolution. By default, it injects a hidden `ConnectedResizeSentinelLayer` to poll for the width of the container.
+`ChartProvider` needs to know how large it is on the page in order to scale and request data at an appropriate resolution. By default, it injects a hidden `ConnectedResizeSentinelLayer` to poll for the width of the container.
 
 If you adjust the margins/padding or change the layout to be horizontally-aligned, you may need to set `ChartProvider`'s `includeResizeSentinel` to `false` and supply your own `ConnectedResizeSentinelLayer` in a place where it can determine the correct width. You only need one.
 
 ### Usage with react-redux
 
-react-layered-chart is implemented under the hood with [Redux](https://github.com/reactjs/redux) and [react-redux](https://github.com/reactjs/react-redux)'s `Provider`. If you are using react-redux elsewhere, watch out for nested `Provider`s: you cannot access the outer provider from a child of a `ChartProvider` component!
+`ChartProvider` is implemented under the hood with [Redux](https://github.com/reactjs/redux) and [react-redux](https://github.com/reactjs/react-redux)'s `Provider`. If you are using react-redux elsewhere, watch out for nested `Provider`s: you cannot access the outer provider from a child of a `ChartProvider` component!
 
 ### <a name="chartid"></a>Tracking transient state across (un)mount cycles
 
