@@ -8,7 +8,7 @@ import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForTimeSpanData } from '../renderUtils';
+import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Color, Range, TimeSpanDatum } from '../interfaces';
 
@@ -55,7 +55,7 @@ export default class BarLayer extends React.Component<Props, State> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain);
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'timeSpan.min', 'timeSpan.max');
     if (firstIndex === lastIndex) {
       return;
     }

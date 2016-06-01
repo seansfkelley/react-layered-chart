@@ -336,9 +336,9 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 ### Functions
 
-#### `getBoundsForInstantaneousData(data, range, timestampPath)`
+#### `getBoundsForInstantaneousData(data, range, xValuePath)`
 
-Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single "timestamp" value, the dot-separated path to which is given by `timestampPath`. `data` should be sorted by `timestampPath`, ascending.
+Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
 
 **Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the range as well so halfway-visible data will still be rendered.
 
@@ -357,9 +357,9 @@ getBoundsForInstantaneousData(data, { min: 0, max: 1000 }, 'metadata.timestamp')
 
 <hr/>
 
-#### `getBoundsForTimeSpanData(data, range, minPath, maxPath)`
+#### `getIndexBoundsForSpanData(data, range, minXValuePath, maxXValuePath)`
 
-Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a "start time" and an "end time", the dot-separated path to which is given by `minPath` and `maxPath` respectively. `data` should be sorted by `minPath`, ascending.
+Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have start and end X values, the dot-separated path to which is given by `minXValuePath` and `maxXValuePath` respectively. `data` should be sorted by `minXValuePath`, ascending.
 
 **Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the range as well so halfway-visible data will still be rendered.
 
@@ -372,7 +372,7 @@ const data = [
   ...
 ]
 
-getBoundsForTimeSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRange.to');
+getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRange.to');
 // -> { firstIndex: 0, lastIndex: ... }
 ```
 

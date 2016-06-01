@@ -8,7 +8,7 @@ import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForInstantaeousData } from '../renderUtils';
+import { getIndexBoundsForPointData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Range, TimestampDatum, ScaleFunction, Color } from '../interfaces';
 
@@ -64,7 +64,7 @@ export default class PointLayer extends React.Component<Props, State> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getBoundsForInstantaeousData(this.props.data, this.props.xDomain);
+    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'timestamp');
     if (firstIndex === lastIndex) {
       return;
     }

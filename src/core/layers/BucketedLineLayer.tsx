@@ -7,7 +7,7 @@ import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForTimeSpanData } from '../renderUtils';
+import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Range, Color, ScaleFunction, TimeBucketDatum } from '../interfaces';
 
@@ -62,7 +62,7 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
       return;
     }
 
-    const { firstIndex, lastIndex } = getBoundsForTimeSpanData(this.props.data, this.props.xDomain, 'startTime', 'endTime');
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'startTime', 'endTime');
     if (firstIndex === lastIndex) {
       return;
     }
