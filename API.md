@@ -249,7 +249,7 @@ export default connect(null, mapDispatchToProps)(ExampleComponent);
 
 A class decorator to animate prop values by repeatedly setting values on state for each frame. Specify the props to animate using an instance variable named `animatedProps`, which is a map from prop names to millisecond durations for their animations. Animated values will be set on component state any time the component updates using the pattern `` `animated_${propName}` ``. Interpolation is delegated to [d3-interpolate](https://github.com/d3/d3-interpolate).
 
-You can access a mixin version at `AnimatedProps.Mixin`.
+You can access a mixin version at `AnimatedPropsMixin`.
 
 ```tsx
 import { AnimateProps } from 'react-layered-chart';
@@ -276,7 +276,7 @@ class ExampleComponent extends React.Component<Props, ...> {
 
 A class decorator that defers the bulk of rendering work until the next [animation frame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame). Useful primarily for expensive rendering that cannot be represented in the virtual DOM, such as when rendering to a `<canvas>`. You must define a method named `canvasRender` that does the actual work of rendering.
 
-You can access a mixin version at `CanvasRender.Mixin`.
+You can access a mixin version at `CanvasRenderMixin`.
 
 ```tsx
 import { CanvasRender } from 'react-layered-chart';
@@ -300,15 +300,15 @@ class ExampleComponent extends React.Component<...> {
 
 A class decorator to allow a class to receive a context value called `pixelRatio` that specifies the pixel density for this chart. See [`Stack`](#stack) for more on this value. This context value only exists when the class is inside a `Stack`.
 
-You can access a mixin version at `PixelRatioContext.Mixin`.
+You can access a mixin version at `PixelRatioContextMixin`.
 
 ```tsx
-import { PixelRatioContext, Context } from 'react-layered-chart';
+import { PixelRatioContext, PixelRatioContextType } from 'react-layered-chart';
 
 @PixelRatioContext
 class ExampleComponent extends React.Component<...> {
   // For Typescript usage, you have to specify the type of the context field like so.
-  context: Context;
+  context: PixelRatioContextType;
 
   render() {
     console.log(this.context.pixelRatio);

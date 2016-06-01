@@ -12,7 +12,9 @@ import {
   SimpleLineLayer,
   selectData,
   selectXDomain,
-  selectYDomains
+  selectYDomains,
+  PixelRatioContext,
+  PixelRatioContextType
 } from '../src';
 
 interface OwnProps {
@@ -26,7 +28,10 @@ export interface ConnectedProps {
 }
 
 @PureRender
+@PixelRatioContext
 class StackedSeriesLayer extends React.Component<OwnProps & ConnectedProps, {}> {
+  context: PixelRatioContextType;
+
   render() {
     return (
       <Stack>

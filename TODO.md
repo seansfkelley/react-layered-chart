@@ -3,7 +3,6 @@
 - convert readme examples into actual functioning examples
 - remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
 - PixelRatioContext should be read-only; only Stack should be able to pass it down
-- rename the Context type on PixelRatioContext so when it's imported at the top level it has a useful name
 - rename CanvasRender to something like NonReactRender
 - getBounds*Data
   - should be in their own file

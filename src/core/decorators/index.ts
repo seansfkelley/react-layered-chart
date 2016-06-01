@@ -1,11 +1,15 @@
-import * as CanvasRender from './CanvasRender';
-import * as AnimateProps from './AnimateProps';
-import * as PixelRatioContext from './PixelRatioContext';
-import * as mixinToDecorator from './mixinToDecorator';
+export {
+  default as CanvasRender,
+  Mixin as CanvasRenderMixin
+} from './CanvasRender';
 
 export {
-  CanvasRender,
-  AnimateProps,
-  PixelRatioContext,
-  mixinToDecorator
-};
+  default as AnimateProps,
+  Mixin as AnimatePropsMixin
+} from './AnimateProps';
+
+export {
+  default as PixelRatioContext,
+  Mixin as PixelRatioContextMixin,
+  Context as PixelRatioContextType
+} from './PixelRatioContext';
