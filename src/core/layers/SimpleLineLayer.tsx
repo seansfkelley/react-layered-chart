@@ -8,7 +8,7 @@ import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForInstantaeousData } from '../util';
+import { getBoundsForInstantaeousData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Range, TimestampDatum, ScaleFunction, Color } from '../interfaces';
 

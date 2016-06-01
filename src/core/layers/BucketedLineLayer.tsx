@@ -7,7 +7,7 @@ import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
-import { getBoundsForTimeSpanData } from '../util';
+import { getBoundsForTimeSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Range, Color, ScaleFunction, TimeBucketDatum } from '../interfaces';
 
