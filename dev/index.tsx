@@ -11,7 +11,8 @@ import {
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   ConnectedHoverLineLayer,
-  createStaticDataLoader
+  createStaticDataLoader,
+  ConnectedXAxisLayer
 } from '../src';
 import StackedSeriesLayer from './StackedSeriesLayer';
 
@@ -51,6 +52,9 @@ const ADVANCED_COMPONENT = (
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
       <ConnectedHoverLineLayer/>
+    </Stack>
+    <Stack className='x-axis-stack'>
+      <ConnectedXAxisLayer font='12px MyriadPro-Regular'/>
     </Stack>
   </ChartProvider>
 );
