@@ -10,10 +10,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Range, TimestampDatum, ScaleFunction, Color } from '../interfaces';
+import { Range, PointDatum, ScaleFunction, Color } from '../interfaces';
 
 export interface Props {
-  data: TimestampDatum[];
+  data: PointDatum[];
   xDomain: Range;
   yDomain: Range;
   yScale?: ScaleFunction;
@@ -32,7 +32,7 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.timestampDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.pointDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
@@ -63,7 +63,7 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
       return;
     }
 
-    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'timestamp');
+    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'xValue');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -78,9 +78,9 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
 
     context.beginPath();
 
-    context.moveTo(xScale(this.props.data[firstIndex].timestamp), height - yScale(this.props.data[firstIndex].value));
+    context.moveTo(xScale(this.props.data[firstIndex].xValue), height - yScale(this.props.data[firstIndex].yValue));
     for (let i = firstIndex + 1; i < lastIndex; ++i) {
-      context.lineTo(xScale(this.props.data[i].timestamp), height - yScale(this.props.data[i].value));
+      context.lineTo(xScale(this.props.data[i].xValue), height - yScale(this.props.data[i].yValue));
     }
 
     context.strokeStyle = this.props.color;

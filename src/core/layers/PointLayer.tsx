@@ -10,10 +10,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Range, TimestampDatum, ScaleFunction, Color } from '../interfaces';
+import { Range, PointDatum, ScaleFunction, Color } from '../interfaces';
 
 export interface Props {
-  data: TimestampDatum[];
+  data: PointDatum[];
   xDomain: Range;
   yDomain: Range;
   yScale?: ScaleFunction;
@@ -34,7 +34,7 @@ export default class PointLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.timestampDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.pointDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     yScale: React.PropTypes.func,
@@ -64,7 +64,7 @@ export default class PointLayer extends React.Component<Props, State> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'timestamp');
+    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'xValue');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -86,8 +86,8 @@ export default class PointLayer extends React.Component<Props, State> {
     context.fillStyle = this.props.color;
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
-      const x = xScale(this.props.data[i].timestamp);
-      const y = height - yScale(this.props.data[i].value);
+      const x = xScale(this.props.data[i].xValue);
+      const y = height - yScale(this.props.data[i].yValue);
 
       // `fill` can be batched, but `stroke` can't (it draws  extraneous lines even with `moveTo`).
       // https://html.spec.whatwg.org/multipage/scripting.html#dom-context-2d-arc

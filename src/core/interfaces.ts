@@ -18,9 +18,9 @@ export interface SpanDatum {
   value: number;
 }
 
-export interface TimestampDatum {
-  timestamp: number;
-  value: number;
+export interface PointDatum {
+  xValue: number;
+  yValue: number;
 }
 
 export interface TimeBucketDatum {

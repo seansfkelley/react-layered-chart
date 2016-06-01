@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Range, TimestampDatum, TimeBucketDatum, SeriesData } from '../../core';
+import { Range, SeriesData } from '../../core';
 import ActionType, { Action } from '../model/ActionType';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';

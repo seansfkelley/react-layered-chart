@@ -598,12 +598,12 @@ const UNPARSED_DATA = [{
 }];
 
 export const DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
-  timestamp: moment(timestamp).valueOf(),
-  value
+  xValue: moment(timestamp).valueOf(),
+  yValue: value
 }));
 
-const TIMESTAMPS = _.map<{}, number>(DATA, 'timestamp');
-const VALUES = _.map<{}, number>(DATA, 'value');
+const TIMESTAMPS = _.map<{}, number>(DATA, 'xValue');
+const VALUES = _.map<{}, number>(DATA, 'yValue');
 
 export const X_DOMAIN: Range = {
   min: _.min(TIMESTAMPS),
