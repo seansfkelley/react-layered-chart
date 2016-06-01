@@ -45,6 +45,8 @@ These props come in read-write pairs and implement the ["controlled component" p
 
 ## Layers
 
+To see some layers in action, check out the example page.
+
 ### Data Layers
 
 These components render different types of visualizations for data. They all follow the same basic pattern of accepting props for: 
@@ -90,6 +92,24 @@ This component renders the X domain. By default, it interprets the numerical val
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
 
 There is a `ConnectedXAxisLayer` that accepts the same props, except `xDomain`.
+
+<hr/>
+
+### `YAxisLayer`
+
+This component renders one or more Y domains, lined up next to each other on the left side of the rendering area. Most props are arrays that are matched by index to the corresponding item in `yDomains`. These arrays can have `null`/`undefined` entries, which will fall back on the default value for that prop.
+
+#### Props
+
+- `yDomains`: an array of all the Y domains to render.
+- `scales?`: an array of [d3-scale](https://github.com/d3/d3-scale) constructor functions. Only continuous scales are supported. Defaults to `scaleLinear`.
+- `ticks?`: an array of arrays, functions or numbers describing where to place annotated tick marks. If an item is an array, it specifies any values that should have ticks. As a function, it takes the domain and returns such an array. As a number, it is passed to `scale#ticks` for d3 to take a guess at what ticks are appropriate.
+- `tickFormat?`: an array of strings or functions appropriate for passing as the second argument to d3's scales' [`tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat).
+- `colors?`: an array of hex strings specifying the colors to use for each axis when drawing.
+- `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
+- `backgroundColor?`: a hex string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
+
+`YAxisLayer` does not yet have a "connected" variant.
 
 <hr/>
 
@@ -363,7 +383,11 @@ resolveZoom({ min: 0, max: 100 }, 2, 0);
 // -> { min: 0, max: 50 }
 ```
 
+<hr/>
+
 #### `createSelectDataForHover(xValueIterator)`
+
+Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point immediately preceding the current hover location according to this scheme.
 
 ### Constants
 

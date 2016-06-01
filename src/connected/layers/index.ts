@@ -11,7 +11,7 @@ export {
 } from './ConnectedHoverLineLayer';
 
 export {
-  default as ConnectedInteractionCaptureLayer, 
+  default as ConnectedInteractionCaptureLayer,
   OwnProps as ConnectedInteractionCaptureLayerProps
 } from './ConnectedInteractionCaptureLayer';
 
@@ -23,10 +23,5 @@ export {
   default as ConnectedXAxisLayer,
   OwnProps as ConnectedXAxisLayerProps
 } from './ConnectedXAxisLayer';
-
-export {
-  default as ConnectedYAxisLayer,
-  OwnProps as ConnectedYAxisLayerProps
-} from './ConnectedYAxisLayer';
 
 export { SeriesIdProp } from './wrapDataLayerWithConnect';
