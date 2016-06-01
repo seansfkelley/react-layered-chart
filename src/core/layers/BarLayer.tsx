@@ -10,10 +10,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Color, Range, TimeSpanDatum } from '../interfaces';
+import { Color, Range, SpanDatum } from '../interfaces';
 
 export interface Props {
-  data: TimeSpanDatum[];
+  data: SpanDatum[];
   xDomain: Range;
   yDomain: Range;
   color?: Color;
@@ -31,7 +31,7 @@ export default class BarLayer extends React.Component<Props, State> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.timeSpanDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.spanDatum).isRequired,
     xDomain: propTypes.range.isRequired,
     yDomain: propTypes.range.isRequired,
     color: React.PropTypes.string
@@ -55,7 +55,7 @@ export default class BarLayer extends React.Component<Props, State> {
       this.context.pixelRatio
     );
 
-    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'timeSpan.min', 'timeSpan.max');
+    const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'span.min', 'span.max');
     if (firstIndex === lastIndex) {
       return;
     }
@@ -70,8 +70,8 @@ export default class BarLayer extends React.Component<Props, State> {
 
     context.beginPath();
     for (let i = firstIndex; i < lastIndex; ++i) {
-      const left = xScale(this.props.data[i].timeSpan.min);
-      const right = xScale(this.props.data[i].timeSpan.max);
+      const left = xScale(this.props.data[i].span.min);
+      const right = xScale(this.props.data[i].span.max);
       const top = height - yScale(this.props.data[i].value);
       const bottom = height - yScale(0);
 

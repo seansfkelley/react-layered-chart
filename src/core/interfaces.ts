@@ -13,8 +13,8 @@ export interface Range {
   max: number;
 }
 
-export interface TimeSpanDatum {
-  timeSpan: Range;
+export interface SpanDatum {
+  span: Range;
   value: number;
 }
 

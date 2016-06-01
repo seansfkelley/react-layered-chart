@@ -5,8 +5,8 @@ export const range = React.PropTypes.shape({
   max: React.PropTypes.number.isRequired
 });
 
-export const timeSpanDatum = React.PropTypes.shape({
-  timeSpan: range.isRequired,
+export const spanDatum = React.PropTypes.shape({
+  span: range.isRequired,
   value: React.PropTypes.number.isRequired
 });
 
@@ -26,7 +26,7 @@ export const timeBucketDatum = React.PropTypes.shape({
 
 export default {
   range,
-  timeSpanDatum,
+  spanDatum,
   timestampDatum,
   timeBucketDatum
 };
