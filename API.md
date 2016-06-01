@@ -66,7 +66,7 @@ The layers in this category are:
 - `HoverLineLayer`
 - `PointLayer`
 - `SimpleLineLayer`
-- `SpanLayer`
+- `TimeSpanLayer`
 
 Additionally, most of these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
 
@@ -374,6 +374,74 @@ const data = [
 
 getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRange.to');
 // -> { firstIndex: 0, lastIndex: ... }
+```
+
+<hr/>
+
+#### `enforceRangeBounds(range, bounds)`
+
+Adjust `range` to fit within `bounds` if possible, without changing the length of `range`. If `range` is longer than `bounds`, the extent is maintained and `range` is adjusted to have the same center as `bounds`.
+
+```tsx
+enforceRangeBounds({ min: -10, max: 10 }, { min: 0, max: 100 });
+// -> { min: 0, max: 20 }
+
+enforceRangeBounds({ min: 0, max: 120 }, { min: 0, max: 100 });
+// -> { min: -10, max: 110 }
+```
+
+<hr/>
+
+#### `enforceRangeExtent(range, minExtent, maxExtent)`
+
+```tsx
+enforceRangeExtent
+// -> 
+```
+
+<hr/>
+
+#### `extendRange(range, factor)`
+
+```tsx
+extendRange
+// -> 
+```
+
+<hr/>
+
+#### `roundRange(range)`
+
+```tsx
+roundRange
+// -> 
+```
+
+<hr/>
+
+#### `niceRange(range)`
+
+```tsx
+niceRange
+// -> 
+```
+
+<hr/>
+
+#### `mergeRanges(ranges)`
+
+```tsx
+mergeRanges
+// -> 
+```
+
+<hr/>
+
+#### `rangeContains(maybeLargerRange, maybeSmallerRange)`
+
+```tsx
+rangeContains
+// -> 
 ```
 
 <hr/>
