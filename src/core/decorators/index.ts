@@ -13,3 +13,8 @@ export {
   Mixin as PixelRatioContextMixin,
   Context as PixelRatioContextType
 } from './PixelRatioContext';
+
+export {
+  default as PixelRatioContextProvider,
+  Mixin as PixelRatioContextProviderMixin
+} from './PixelRatioContextProvider';

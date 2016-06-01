@@ -2,7 +2,6 @@
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
 - convert readme examples into actual functioning examples
 - remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
-- PixelRatioContext should be read-only; only Stack should be able to pass it down
 - rename CanvasRender to something like NonReactRender
 - getBounds*Data
   - should be in their own file

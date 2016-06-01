@@ -24,6 +24,7 @@ For specifics on the exact types of these components/functions/values, please ch
 - `seriesIds`: a list of all the series that are present in this chart. IDs are arbitrary and must be unique within a single `ChartProvider`. Series IDs not present here will be silently ignored.
 - `loadData`: a stateless function to load the appropriate data for all series. Called whenever `ChartProvider` needs new data. This is where you should do caching or other loading optimizations.
 - `className?`: space-separated DOM class names to be merged with the default class names.
+- `pixelRatio?`: the desired pixel density of this chart. See [`window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). Performance may suffer with higher values. This value is not transparently applied and must be explicitly respected by any contained `Layer`s (the built-in ones all do). If specified here, you do not need to specify this value on any contained `Stack`s.
 - `chartId?`: an arbitrary, globally-unique ID for the state of this chart that maintains a reference across mount/unmount cycles.
 - `defaultState?`: UI state to seed the internal store with. This value is only respected once, at initialization time.
 - `onLoadStateChange?`: called with the load states of all series whenever any one of them changes.
@@ -298,7 +299,7 @@ class ExampleComponent extends React.Component<...> {
 
 #### `PixelRatioContext`
 
-A class decorator to allow a class to receive a context value called `pixelRatio` that specifies the pixel density for this chart. See [`Stack`](#stack) for more on this value. This context value only exists when the class is inside a `Stack`.
+A class decorator to allow a class to receive a context value called `pixelRatio` that specifies the pixel density for this chart. See [`Stack`](#stack) for more on this value. This context value only exists when the class is inside a `Stack` or `ChartProvider`.
 
 You can access a mixin version at `PixelRatioContextMixin`.
 
@@ -314,6 +315,23 @@ class ExampleComponent extends React.Component<...> {
     console.log(this.context.pixelRatio);
   }
 }
+```
+
+#### `PixelRatioContextProvider`
+
+A class decorator to allow a class to provide a context value called `pixelRatio` that specified the pixel density for this chart. See [`Stack`](#stack) for more on this value. Because `Stack` and `ChartProvider` already have this behavior, you do not generally need to use this decorator. The initial value to provide on the context is read out of a prop named `pixelRatio`. If you nest multiple classes with this decorator, children will receive the value from their most immediate ancestor that specifies a `pixelRatio` prop.
+
+You can access a mixin version at `PixelRatioContextProviderMixin`.
+
+```tsx
+import { PixelRatioContextProvider } from 'react-layered-chart';
+
+interface Props {
+  pixelRatio?: number;
+}
+
+@PixelRatioContextProvider
+class ExampleParentComponent extends React.Component<Props, ...> { ... }
 ```
 
 ### Functions

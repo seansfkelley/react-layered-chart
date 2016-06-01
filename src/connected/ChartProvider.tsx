@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
-import { Range, Stack, propTypes } from '../core';
+import { Range, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
@@ -17,6 +17,7 @@ export interface Props {
   loadData: DataLoader;
 
   className?: string;
+  pixelRatio?: number;
   chartId?: ChartId;
   defaultState?: DefaultChartState;
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
@@ -35,12 +36,14 @@ export interface Props {
 }
 
 @PureRender
+@PixelRatioContextProvider
 export default class ChartProvider extends React.Component<Props, {}> {
   static propTypes = {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     loadData: React.PropTypes.func.isRequired,
 
     className: React.PropTypes.string,
+    pixelRatio: React.PropTypes.number,
     chartId: React.PropTypes.string,
     onLoadStateChange: React.PropTypes.func,
     onError: React.PropTypes.func,
