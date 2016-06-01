@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import {
   Range,
   BooleanMouseEventHandler,
-  resolvePan,
-  resolveZoom,
+  panRange,
+  zoomRange,
   InteractionCaptureLayer
 } from '../../core';
 import * as uiActions from '../flux/uiActions';
@@ -53,11 +53,11 @@ export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps &
 
 
   private _zoom = (factor: number, anchorBias: number) => {
-    this.props.actions.setXDomain(resolveZoom(this.props.xDomain, factor, anchorBias));
+    this.props.actions.setXDomain(zoomRange(this.props.xDomain, factor, anchorBias));
   };
 
   private _pan = (logicalUnits: number) => {
-    this.props.actions.setXDomain(resolvePan(this.props.xDomain, logicalUnits));
+    this.props.actions.setXDomain(panRange(this.props.xDomain, logicalUnits));
   };
 
   private _brush = (logicalUnitRange?: Range) => {

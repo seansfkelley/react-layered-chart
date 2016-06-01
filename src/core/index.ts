@@ -1,4 +1,5 @@
 export * from './util';
+export * from './rangeUtils';
 export * from './decorators';
 export * from './layers';
 export * from './interfaces';

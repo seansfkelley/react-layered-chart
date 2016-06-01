@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import * as d3Scale from 'd3-scale';
 
 import { Range } from '../core';
-import { TBySeriesId, SeriesId } from './interfaces';
 
 export function enforceRangeBounds(range: Range, bounds: Range): Range {
   const extent = range.max - range.min;
@@ -83,4 +82,22 @@ export function mergeRanges(ranges: Range[]): Range {
 
 export function rangeContains(maybeLargerRange: Range, maybeSmallerRange: Range) {
   return maybeLargerRange.min <= maybeSmallerRange.min && maybeLargerRange.max >= maybeSmallerRange.max;
+}
+
+export function panRange(range: Range, delta: number): Range {
+  return {
+    min: range.min + delta,
+    max: range.max + delta
+  };
+}
+
+export function zoomRange(range: Range, factor: number, anchorBias: number = 0.5) {
+  const currentExtent = range.max - range.min;
+  const targetExtent = currentExtent / factor;
+  const extentDelta = targetExtent - currentExtent;
+
+  return {
+    min: range.min - extentDelta * anchorBias,
+    max: range.max + extentDelta * (1 - anchorBias)
+  };
 }

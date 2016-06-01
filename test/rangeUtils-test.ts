@@ -2,7 +2,16 @@ import * as _ from 'lodash';
 import * as should from 'should';
 
 import { Range } from '../src/core/interfaces';
-import { enforceRangeBounds, enforceRangeExtent, extendRange, roundRange, mergeRanges, rangeContains } from '../src/connected/rangeUtils';
+import {
+  enforceRangeBounds,
+  enforceRangeExtent,
+  extendRange,
+  roundRange,
+  mergeRanges,
+  rangeContains,
+  panRange,
+  zoomRange
+} from '../src/core/rangeUtils';
 import { TBySeriesId } from '../src/connected/interfaces';
 
 function range(min, max) {
@@ -164,5 +173,70 @@ describe('rangeContains', () => {
 
   it('should return false if the first range is strictly smaller than the second range', () => {
     rangeContains(SMALL_RANGE, BIG_RANGE).should.be.false();
+  });
+});
+
+
+describe('panRange', () => {
+  it('should apply the delta value to both min and max', () => {
+    resolvePan({
+      min: 0,
+      max: 10
+    }, 5).should.eql({
+      min: 5,
+      max: 15
+    });
+   });
+});
+
+describe('zoomRange', () => {
+  it('should zoom out when given a value less than 1', () => {
+    resolveZoom({
+      min: -1,
+      max: 1
+    }, 1/4, 0.5).should.eql({
+      min: -4,
+      max: 4
+    });
+  });
+
+  it('should zoom in when given a value greater than 1', () => {
+    resolveZoom({
+      min: -1,
+      max: 1
+    }, 4, 0.5).should.eql({
+      min: -1/4,
+      max: 1/4
+    });
+  });
+
+  it('should default to zooming equally on both bounds', () => {
+    resolveZoom({
+      min: -1,
+      max: 1
+    }, 1/4).should.eql({
+      min: -4,
+      max: 4
+    });
+  });
+
+  it('should bias a zoom-in towards one end when given an anchor not equal to 1/2', () => {
+    resolveZoom({
+      min: -1,
+      max: 1
+    }, 4, 1).should.eql({
+      min: 1/2,
+      max: 1
+    });
+  });
+
+  it('should bias a zoom-out towards one end when given an anchor not equal to 1/2', () => {
+    resolveZoom({
+      min: -1,
+      max: 1
+    }, 1/4, 1).should.eql({
+      min: -7,
+      max: 1
+    });
   });
 });

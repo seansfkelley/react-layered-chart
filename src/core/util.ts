@@ -49,22 +49,3 @@ export function getBoundsForTimeSpanData(timeSpanData: SeriesData, timeRange: Ra
 
   return adjustBounds(firstIndex, lastIndex, timeSpanData.length);
 }
-
-export function resolvePan(range: Range, delta: number): Range {
-  return {
-    min: range.min + delta,
-    max: range.max + delta
-  };
-}
-
-export function resolveZoom(range: Range, factor: number, anchorBias: number = 0.5) {
-  const currentExtent = range.max - range.min;
-  const targetExtent = currentExtent / factor;
-  const extentDelta = targetExtent - currentExtent;
-
-  return {
-    min: range.min - extentDelta * anchorBias,
-    max: range.max + extentDelta * (1 - anchorBias)
-  };
-}
-

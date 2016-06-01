@@ -49,7 +49,7 @@ To see some layers in action, check out the example page.
 
 ### Data Layers
 
-These components render different types of visualizations for data. They all follow the same basic pattern of accepting props for: 
+These components render different types of visualizations for data. They all follow the same basic pattern of accepting props for:
 
 - the data they are to render; usually, an array named `data`
 - `xDomain`, which describes what horizontal domain they're currently covering so they can render the appropriate subset of data
@@ -76,7 +76,7 @@ Additionally, most of these layers have "connected" variants that replace the `x
 - `ConnectedPointLayer`
 - `ConnectedSimpleLineLayer`
 
-<hr/> 
+<hr/>
 
 ### `XAxisLayer`
 
@@ -143,7 +143,7 @@ This layer displays nothing, but captures all mouse events and translates them i
 - `shouldZoom?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming.
 - `shouldPan?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture.
 - `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture.
-- `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `resolveZoom` for an explanation of the parameters.
+- `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `zoomRange` for an explanation of the parameters.
 - `onPan?(logicalUnits)`: fired when the user moves their mouse during a legal pan gesture.
 - `onBrush?(logicalUnitRange?)`: fired when the user moves their mouse during a legal brush gesture. Called with `null` if the selection is cleared.
 - `onHover?(logicalPosition)`: fired when the user hovers over the chart.
@@ -154,7 +154,7 @@ This layer displays nothing, but captures all mouse events and translates them i
 This variant of the layer replaces the callbacks with simple `true`/`false` settings to enable different types of gestures. The interpreted results are automatically fired as actions on containing `ChartProvider`.
 
 - `enablePan?`: whether or not to fire events for pan gestures. Default `false`.
-- `enableZoom?`: whether or not to fire events for zoom gestures. Default `false`. 
+- `enableZoom?`: whether or not to fire events for zoom gestures. Default `false`.
 - `enableHover?`: whether or not to fire events for hover gestures. Default `false`.
 - `enableBrush?`: whether or not to fire events for brush gestures. Default `false`.
 - `shouldZoom?`: same as above.
@@ -360,26 +360,26 @@ getBoundsForTimeSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRan
 
 <hr/>
 
-#### `resolvePan(range, delta)`
+#### `panRange(range, delta)`
 
 Shift both endpoints of the range over by the specified amount.
 
 ```tsx
-resolvePan({ min: 0, max: 100 }, 10);
+panRange({ min: 0, max: 100 }, 10);
 // -> { min: 10, max: 110 }
 ```
 
 <hr/>
 
-#### `resolveZoom(range, factor, anchorBias?)`
+#### `zoomRange(range, factor, anchorBias?)`
 
 Zoom the given range in/out by the specified factor. `factor > 1` zooms in, `factor < 1` zooms out. If provided, `anchorBias` should be a value on `[0, 1]` that specifies where the focus of the zoom is, where 0 means to hold the minimum value constant (therefore moving only the maximum value to perform the requested zoom) and 1 vice-versa.
 
 ```tsx
-resolveZoom({ min: 0, max: 100 }, 2);
+zoomRange({ min: 0, max: 100 }, 2);
 // -> { min: 25, max: 75 }
 
-resolveZoom({ min: 0, max: 100 }, 2, 0);
+zoomRange({ min: 0, max: 100 }, 2, 0);
 // -> { min: 0, max: 50 }
 ```
 

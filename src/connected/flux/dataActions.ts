@@ -6,7 +6,6 @@ import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
 import { selectXDomain, selectYDomains } from '../model/selectors';
-import { extendRange } from '../rangeUtils';
 
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
   let keyedBatchAccumulator: TBySeriesId<T> = {};
