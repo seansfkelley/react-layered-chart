@@ -5,9 +5,12 @@
 - PixelRatioContext should be read-only; only Stack should be able to pass it down
 - rename the Context type on PixelRatioContext so when it's imported at the top level it has a useful name
 - rename CanvasRender to something like NonReactRender
-- resolvePan and resolveZoom should be moved to range utils
+- resolvePan and resolveZoom
+  - should be moved to range utils
+  - should be renamed something like panRange and zoomRange
 - getBounds*Data
   - should be in their own file
   - should not refer to time
   - should not provide default values for the paths
   - should accept non-string values for paths (getters)
+- remove time references from all layers and types
