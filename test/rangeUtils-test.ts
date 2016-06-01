@@ -179,7 +179,7 @@ describe('rangeContains', () => {
 
 describe('panRange', () => {
   it('should apply the delta value to both min and max', () => {
-    resolvePan({
+    panRange({
       min: 0,
       max: 10
     }, 5).should.eql({
@@ -191,7 +191,7 @@ describe('panRange', () => {
 
 describe('zoomRange', () => {
   it('should zoom out when given a value less than 1', () => {
-    resolveZoom({
+    zoomRange({
       min: -1,
       max: 1
     }, 1/4, 0.5).should.eql({
@@ -201,7 +201,7 @@ describe('zoomRange', () => {
   });
 
   it('should zoom in when given a value greater than 1', () => {
-    resolveZoom({
+    zoomRange({
       min: -1,
       max: 1
     }, 4, 0.5).should.eql({
@@ -211,7 +211,7 @@ describe('zoomRange', () => {
   });
 
   it('should default to zooming equally on both bounds', () => {
-    resolveZoom({
+    zoomRange({
       min: -1,
       max: 1
     }, 1/4).should.eql({
@@ -221,7 +221,7 @@ describe('zoomRange', () => {
   });
 
   it('should bias a zoom-in towards one end when given an anchor not equal to 1/2', () => {
-    resolveZoom({
+    zoomRange({
       min: -1,
       max: 1
     }, 4, 1).should.eql({
@@ -231,7 +231,7 @@ describe('zoomRange', () => {
   });
 
   it('should bias a zoom-out towards one end when given an anchor not equal to 1/2', () => {
-    resolveZoom({
+    zoomRange({
       min: -1,
       max: 1
     }, 1/4, 1).should.eql({
