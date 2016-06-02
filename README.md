@@ -2,7 +2,7 @@
 
 A high-performance canvas-based time series visualization in Typescript + React.
 
-TODO: Example picture.
+![Example Image](./example.png)
 
 ## Installation
 
