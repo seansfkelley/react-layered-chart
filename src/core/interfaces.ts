@@ -13,14 +13,14 @@ export interface Range {
   max: number;
 }
 
-export interface SpanDatum {
-  xMinValue: number;
-  xMaxValue: number;
+export interface PointDatum {
+  xValue: number;
   yValue: number;
 }
 
-export interface PointDatum {
-  xValue: number;
+export interface SpanDatum {
+  minXValue: number;
+  maxXValue: number;
   yValue: number;
 }
 

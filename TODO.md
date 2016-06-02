@@ -9,4 +9,3 @@
   - rangeUtils
   - more links to other parts of the API, README, or example pages
 - dev/ -> example/, include README
-- consistentify minXValue, xMinValue, etc. on layer types

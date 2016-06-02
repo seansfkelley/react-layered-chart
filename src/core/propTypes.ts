@@ -5,14 +5,14 @@ export const range = React.PropTypes.shape({
   max: React.PropTypes.number.isRequired
 });
 
-export const spanDatum = React.PropTypes.shape({
-  xMinValue: React.PropTypes.number.isRequired,
-  xMaxValue: React.PropTypes.number.isRequired,
+export const pointDatum = React.PropTypes.shape({
+  xValue: React.PropTypes.number.isRequired,
   yValue: React.PropTypes.number.isRequired
 });
 
-export const pointDatum = React.PropTypes.shape({
-  xValue: React.PropTypes.number.isRequired,
+export const spanDatum = React.PropTypes.shape({
+  minXValue: React.PropTypes.number.isRequired,
+  maxXValue: React.PropTypes.number.isRequired,
   yValue: React.PropTypes.number.isRequired
 });
 
@@ -27,7 +27,7 @@ export const bucketDatum = React.PropTypes.shape({
 
 export default {
   range,
-  spanDatum,
   pointDatum,
+  spanDatum,
   bucketDatum
 };
