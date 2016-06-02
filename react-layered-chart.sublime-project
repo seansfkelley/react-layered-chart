@@ -7,7 +7,7 @@
       "folder_exclude_patterns": [
         "node_modules",
         "lib",
-        "dev/build",
+        "examples/build",
         "test/build"
       ],
       "file_exclude_patterns": [

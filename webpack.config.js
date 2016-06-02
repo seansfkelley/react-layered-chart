@@ -7,11 +7,11 @@ const VENDOR_LIBS = _.keys(require('./package.json').dependencies);
 
 module.exports = {
   entry: {
-    index: './dev/index.tsx',
+    index: './examples/index.tsx',
     vendor: VENDOR_LIBS
   },
   output: {
-    path: './dev/build',
+    path: './examples/build',
     publicPath: '/',
     filename: '[name].js'
   },
@@ -32,7 +32,7 @@ module.exports = {
       name: 'vendor'
     }),
     new HtmlWebpackPlugin({
-      template: './dev/index-template.html',
+      template: './examples/index-template.html',
       filename: 'index.html',
       chunks: ['index', 'vendor']
     }),

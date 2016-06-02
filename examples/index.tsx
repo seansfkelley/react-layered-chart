@@ -15,7 +15,7 @@ import {
   ConnectedXAxisLayer
 } from '../src';
 
-import './dev-styles.less';
+import './example-styles.less';
 import '../styles/index.less';
 
 const TEST_SERIES_ID = 'foo';

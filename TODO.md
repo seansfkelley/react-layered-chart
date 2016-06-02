@@ -8,4 +8,3 @@
   - dataUtils
   - rangeUtils
   - more links to other parts of the API, README, or example pages
-- dev/ -> example/, include README
