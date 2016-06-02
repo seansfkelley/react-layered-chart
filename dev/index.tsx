@@ -14,7 +14,6 @@ import {
   createStaticDataLoader,
   ConnectedXAxisLayer
 } from '../src';
-import StackedSeriesLayer from './StackedSeriesLayer';
 
 import './dev-styles.less';
 import '../styles/index.less';
