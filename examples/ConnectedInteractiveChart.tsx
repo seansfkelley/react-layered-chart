@@ -24,14 +24,15 @@ import {
   setXDomain,
 } from '../src';
 
+// All series need to have an ID.
 const TEST_SERIES_ID = 'foo';
 
+// Set up a test data loader that will just return this static data.
 const DATA_LOADER = createStaticDataLoader({
   [TEST_SERIES_ID]: DATA
 }, {
   [TEST_SERIES_ID]: Y_DOMAIN
 });
-
 
 // Props we expect to receive from our our parent component.
 interface OwnProps {
@@ -75,7 +76,9 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8787
 const ConnectedSnapToXDomainButton = connect(mapStateToProps, mapDispatchToProps)(SnapToXDomainButton) as React.ComponentClass<OwnProps>;
 
+// Wrap the button into a chart for demo purposes.
 const CHART = (
+  // See BasicInteractiveChart.tsx for comments on things that are not commented here.
   <ChartProvider
     seriesIds={[ TEST_SERIES_ID ]}
     loadData={DATA_LOADER}
@@ -88,6 +91,7 @@ const CHART = (
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
     </Stack>
+    {/* Give the layer its own Stack so it appears visually separate from the main views. */}
     <Stack className='snap-to-x-domain-button-stack'>
       <ConnectedSnapToXDomainButton resetXDomain={X_DOMAIN}/>
     </Stack>

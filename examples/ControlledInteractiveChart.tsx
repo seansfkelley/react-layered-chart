@@ -13,18 +13,22 @@ import {
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   createStaticDataLoader,
+  // This utility function will do all the logic we need to implement this behavior.
   enforceRangeBounds
 } from '../src';
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7;
 
+// The bounds within which the view should always be contained.
 const CHART_BOUNDS = {
   min: X_DOMAIN.min - ONE_WEEK_MS,
   max: X_DOMAIN.max + ONE_WEEK_MS
 };
 
+// All series need to have an ID.
 const TEST_SERIES_ID = 'foo';
 
+// Set up a test data loader that will just return this static data.
 const DATA_LOADER = createStaticDataLoader({
   [TEST_SERIES_ID]: DATA
 }, {
@@ -45,13 +49,14 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
 
   render() {
     return (
+      // See BasicInteractiveChart.tsx for comments on things that are not commented here.
       <ChartProvider
         seriesIds={[ TEST_SERIES_ID ]}
         loadData={DATA_LOADER}
         className='example-chart'
         // Control the prop!
         xDomain={this.state.xDomain}
-        // Capture any requested changes, such as from a ConnectedInteractionLayer.
+        // Capture any requested changes, such as from ConnectedInteractionCaptureLayer.
         onXDomainChange={this._onXDomainChange.bind(this)}
       >
         <Stack>

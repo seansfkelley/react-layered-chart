@@ -16,8 +16,10 @@ import {
   ConnectedXAxisLayer
 } from '../src';
 
+// All series need to have an ID.
 const TEST_SERIES_ID = 'foo';
 
+// Set up a test data loader that will just return this static data.
 const DATA_LOADER = createStaticDataLoader({
   [TEST_SERIES_ID]: DATA
 }, {
@@ -26,18 +28,26 @@ const DATA_LOADER = createStaticDataLoader({
 
 const CHART = (
   <ChartProvider
+    // List all the series IDs that exist in this chart.
     seriesIds={[ TEST_SERIES_ID ]}
     loadData={DATA_LOADER}
+    // This state is only read once on initialization. Provide a meaningful value
+    // so we don't start the chart in the middle of nowhere.
     defaultState={{
       xDomain: X_DOMAIN
     }}
     className='example-chart'
   >
+    {/* This stack has all the main views. */}
     <Stack>
+      {/* Render the test data as a simple line chart. */}
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
+      {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
+      {/* Show the hover line as the mouse moves around. */}
       <ConnectedHoverLineLayer/>
     </Stack>
+    {/* This stack puts the X axis in its own section. */}
     <Stack className='x-axis-stack'>
       <ConnectedXAxisLayer font='12px MyriadPro-Regular'/>
     </Stack>

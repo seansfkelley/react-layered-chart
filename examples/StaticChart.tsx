@@ -5,6 +5,7 @@ interactive.
 
 import * as React from 'react';
 
+// Import our static data.
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
 import {
   Stack,
@@ -12,7 +13,9 @@ import {
 } from '../src';
 
 const CHART = (
+  // Everything has to be in a Stack.
   <Stack className='example-chart'>
+    {/* Render a static layer with our static data and view parameters. */}
     <SimpleLineLayer
       data={DATA}
       xDomain={X_DOMAIN}
