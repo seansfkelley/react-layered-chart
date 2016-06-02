@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
 import {
