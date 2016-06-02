@@ -1,9 +1,4 @@
 - example image
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
-- remove <a>s from readme and just use anchors (see e.g. Bluebird docs: https://raw.githubusercontent.com/petkaantonov/bluebird/v2.9.8/API.md)
 - getBounds*Data
   - should accept non-string values for paths (getters)
-- docs
-  - dataUtils
-  - rangeUtils
-  - more links to other parts of the API, README, or example pages

@@ -336,6 +336,10 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 ### Functions
 
+#### `createStaticDataLoader(data, yDomains)`
+
+Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
+
 #### `getBoundsForInstantaneousData(data, range, xValuePath)`
 
 Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
@@ -394,54 +398,75 @@ enforceRangeBounds({ min: 0, max: 120 }, { min: 0, max: 100 });
 
 #### `enforceRangeExtent(range, minExtent, maxExtent)`
 
+Adjust `range` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new range will be centered on the same point as the input range.
+
 ```tsx
-enforceRangeExtent
-// -> 
+enforceRangeExtent({ min: 0, max: 100 }, 20, 80);
+// -> { min: 10, max: 90 }
+
+enforceRangeExtent({ min: 0, max: 100 }, 120, 200);
+// -> { min: -10, max: 110 }
 ```
 
 <hr/>
 
 #### `extendRange(range, factor)`
 
+Extends `range` on each end by `length of range * factor`.
+
 ```tsx
-extendRange
-// -> 
+extendRange({ min: 0, max: 100 }, 0.1);
+// -> { min: -10, max: 110 }
 ```
 
 <hr/>
 
 #### `roundRange(range)`
 
+Rounds each endpoint of `range` to the nearest integer.
+
 ```tsx
-roundRange
-// -> 
+roundRange({ min: 0.4, max: 1.7 });
+// -> { min: 0, max: 2 }
 ```
 
 <hr/>
 
 #### `niceRange(range)`
 
+Uses [d3-scale's `nice`](https://github.com/d3/d3-scale#continuous_nice) to round the endpoints of `range` to nicer values.
+
 ```tsx
-niceRange
-// -> 
+niceRange({ min: 34, max: 1454 });
+// -> { min: 0, max: 1600 }
 ```
 
 <hr/>
 
 #### `mergeRanges(ranges)`
 
+Returns a range that covers all the provided ranges. Returns `null` if no ranges are given.
+
 ```tsx
-mergeRanges
-// -> 
+mergeRanges([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);
+// -> { min: -10, max: 50 }
+
+mergeRanges([]);
+// -> null
 ```
 
 <hr/>
 
 #### `rangeContains(maybeLargerRange, maybeSmallerRange)`
 
+Returns `true` if `maybeLargerRange` contains `maybeSmallerRange`, `false` otherwise.
+
 ```tsx
-rangeContains
-// -> 
+rangeContains({ min: 0, max: 100 }, { min: 0, max: 50 })
+// -> true
+
+rangeContains({ min: 0, max: 100 }, { min: -50, max: 10 })
+// -> false
 ```
 
 <hr/>
