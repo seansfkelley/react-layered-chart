@@ -89,7 +89,7 @@ This component renders the X domain. By default, it interprets the numerical val
 - `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleTime`.
 - `ticks?`: an array, function or number describing where to place annotated tick marks. As an array, it specifies any values that should have ticks. As a function, it takes the domain and returns such an array. As a number, it is passed to `scale#ticks` for d3 to take a guess at what ticks are appropriate.
 - `tickFormat?`: a string or function appropriate for passing as the second argument to d3's scales' [`tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat).
-- `color?`: a hex string specifying the color to use for drawing.
+- `color?`: a string specifying the color to use for drawing.
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
 
 There is a `ConnectedXAxisLayer` that accepts the same props, except `xDomain`.
@@ -106,9 +106,9 @@ This component renders one or more Y domains, lined up next to each other on the
 - `scales?`: an array of [d3-scale](https://github.com/d3/d3-scale) constructor functions. Only continuous scales are supported. Defaults to `scaleLinear`.
 - `ticks?`: an array of arrays, functions or numbers describing where to place annotated tick marks. If an item is an array, it specifies any values that should have ticks. As a function, it takes the domain and returns such an array. As a number, it is passed to `scale#ticks` for d3 to take a guess at what ticks are appropriate.
 - `tickFormat?`: an array of strings or functions appropriate for passing as the second argument to d3's scales' [`tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat).
-- `colors?`: an array of hex strings specifying the colors to use for each axis when drawing.
+- `colors?`: an array of strings specifying the colors to use for each axis when drawing.
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
-- `backgroundColor?`: a hex string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
+- `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
 
 `YAxisLayer` does not yet have a "connected" variant.
 
