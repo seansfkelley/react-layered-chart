@@ -1,3 +1,8 @@
+/*
+This chart implements the basic interactions using built-in layers and state
+management. It's pannable, zoomable and hoverable.
+*/
+
 import * as React from 'react';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';

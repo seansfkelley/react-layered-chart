@@ -1,3 +1,9 @@
+/*
+This example implements a chart with both a custom view and some custom behavior.
+A button is added underneat the chart that displays the current X domain, and
+if you click it, it will reset the domain to where it started.
+*/
+
 import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

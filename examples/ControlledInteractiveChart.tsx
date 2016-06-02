@@ -1,3 +1,8 @@
+/*
+This example implements a chart with custom behavior. It doesn't let you pan
+a week beyond the data, on either end.
+*/
+
 import * as React from 'react';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';

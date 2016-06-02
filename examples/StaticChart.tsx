@@ -1,3 +1,8 @@
+/*
+This chart implements one of the simplest possible static charts. It is not
+interactive.
+*/
+
 import * as React from 'react';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
