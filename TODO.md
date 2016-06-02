@@ -1,3 +1,2 @@
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
-- getBounds*Data
-  - should accept non-string values for paths (getters)
+- proptypes for more things
