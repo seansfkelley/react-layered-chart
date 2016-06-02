@@ -340,7 +340,7 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
 
-#### `getBoundsForInstantaneousData(data, range, xValuePath)`
+#### `getIndexBoundsForPointData(data, range, xValuePath)`
 
 Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
 
@@ -355,7 +355,7 @@ const data = [
   ...
 ]
 
-getBoundsForInstantaneousData(data, { min: 0, max: 1000 }, 'metadata.timestamp');
+getIndexBoundsForPointData(data, { min: 0, max: 1000 }, 'metadata.timestamp');
 // -> { firstIndex: 0, lastIndex: ... }
 ```
 
