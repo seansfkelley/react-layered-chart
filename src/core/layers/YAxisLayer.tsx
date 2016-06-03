@@ -22,6 +22,7 @@ export interface YAxisSpec {
   ticks?: Ticks;
   tickFormat?: TickFormat;
   color?: Color;
+  axisId?: string;
 }
 
 interface YAxisProps extends YAxisSpec {
@@ -192,9 +193,14 @@ export default class YAxisLayer extends React.Component<Props, void> {
   render() {
     return (
       <div className='y-axis-container'>
-        {this.props.axes.map(axis =>
-          <AnimatedYAxis {...axis} font={this.props.font} backgroundColor={this.props.backgroundColor}/>)
-        }
+        {this.props.axes.map((axis, i) => (
+          <AnimatedYAxis
+            {...axis}
+            font={this.props.font}
+            backgroundColor={this.props.backgroundColor}
+            key={axis.axisId || i}
+          />
+        ))}
       </div>
     );
   }
