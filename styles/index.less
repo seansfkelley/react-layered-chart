@@ -18,6 +18,30 @@
   .y-axis-container {
     display: flex;
     flex-wrap: nowrap;
+
+    .single-y-axis {
+      height: 100%;
+      border-right: 1px solid;
+
+      .tick {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
+        height: 0;
+
+        .label {
+          margin: 0 4px 0 6px;
+        }
+
+        .mark {
+          width: 4px;
+          border-bottom: 1px solid;
+        }
+      }
+    }
   }
 }
 
