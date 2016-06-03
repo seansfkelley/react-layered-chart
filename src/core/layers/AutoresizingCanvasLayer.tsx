@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
-import * as classnames from 'classnames';
+import * as classNames from 'classnames';
 
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
@@ -48,7 +48,7 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, Stat
   render() {
     const pixelRatio = this.context.pixelRatio || 1;
     return (
-      <div className={classnames('resizing-wrapper', this.props.className)} ref='wrapper'>
+      <div className={classNames('resizing-wrapper', this.props.className)} ref='wrapper'>
         <canvas
           className='canvas'
           ref='canvas'
