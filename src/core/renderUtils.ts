@@ -50,11 +50,14 @@ export function getIndexBoundsForSpanData(data: SeriesData, xValueBounds: Range,
   return adjustBounds(firstIndex, lastIndex, data.length);
 }
 
-export function computeTicks(scale: any, domain: Range, ticks?: Ticks, tickFormat?: TickFormat) {
+const DEFAULT_TICK_AMOUNT = 5;
+
+export function computeTicks(scale: any, ticks?: Ticks, tickFormat?: TickFormat) {
   let outputTicks: number[];
   if (ticks) {
     if (_.isFunction(ticks)) {
-      outputTicks = ticks(domain);
+      const [ min, max ] = scale.domain();
+      outputTicks = ticks({ min, max });
     } else if (_.isArray<number>(ticks)) {
       outputTicks = ticks;
     } else if (_.isNumber(ticks)) {
@@ -63,10 +66,16 @@ export function computeTicks(scale: any, domain: Range, ticks?: Ticks, tickForma
       throw new Error('ticks must be a function, array or number');
     }
   } else {
-    outputTicks = scale.ticks(5);
+    outputTicks = scale.ticks(DEFAULT_TICK_AMOUNT);
   }
-  const tickCount = _.isNumber(ticks) ? ticks : 5;
-  const format = scale.tickFormat(tickCount, tickFormat);
+
+  let format;
+  if (_.isFunction(tickFormat)) {
+    format = tickFormat;
+  } else {
+    const tickCount = _.isNumber(ticks) ? ticks : DEFAULT_TICK_AMOUNT;
+    format = scale.tickFormat(tickCount, tickFormat);
+  }
 
   return { ticks: outputTicks, format };
 }

@@ -337,6 +337,26 @@ const dataLoader = createStaticDataLoader({
 
 <hr/>
 
+#### `createSelectDataForHover(xValueIterator)`
+
+Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point for each series immediately preceding the current hover location according to this scheme.
+
+```tsx
+import { createSelectDataForHover } from 'react-layered-chart';
+
+function xValueIterator(seriesId, datum) {
+  // Optionally inspect some external data source using `seriesId` to see how to interpret `datum`.
+  return datum.someXValue;
+}
+
+const selectDataForHover = createSelectDataForHover(xValueIterator);
+
+selectDataForHover(chartProviderState);
+// -> { 'my-series-id': someDatum }
+```
+
+<hr/>
+
 #### `wrapWithAnimatedYDomain(ComponentClass)`
 
 Wrap the given `Component` in a new class that automatically animates the `yDomain` prop whenever it changes. Only works with `yDomain`. Animations are implemented with [react-motion](https://github.com/chenglou/react-motion).
@@ -398,6 +418,40 @@ const data = [
 
 getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRange.to');
 // -> { firstIndex: 0, lastIndex: ... }
+```
+
+<hr/>
+
+#### `computeTicks(scale, ticks?, tickFormat?)`
+
+Compute the appropriate tick values and tick formatter for the given [d3-scale](https://github.com/d3/d3-scale) instance and configuration parameters. Returns `{ ticks, format }`.
+
+`ticks` may take the following types:
+
+- `number` or absent: it will be passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks) to pick approximately that many ticks. 
+- `function`: it will be given the domain of the provided scale as `{ min, max }` and should return an array of numbers.
+- `array`: assumed to be an array of numbers and will be used as-is.
+
+`tickFormat` may take the following types:
+
+- `string` or absent: it will be passed to [d3-scale's `tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat) to generate a formatter.
+- `function`: assumed to be a function from number to string and will be passed back as-is.
+
+```tsx
+import * as d3Scale from 'd3-scale';
+
+const scale = d3Scale.scaleLinear()
+  .domain([ 0, 100 ])
+  .range([ 20, 40 ]);
+
+computeTicks(scale);
+// -> { ticks: [ 0, 20, 40, 60, 80, 100 ], format: Function }
+
+computeTicks(scale, [ 1, 10, 100 ]);
+// -> { ticks: [ 1, 10, 100 ], format: Function }
+
+computeTicks(scale, 2, '.5');
+// -> { ticks: [ 0, 50, 100 ], format: Function }
 ```
 
 <hr/>
@@ -512,26 +566,6 @@ zoomRange({ min: 0, max: 100 }, 2);
 
 zoomRange({ min: 0, max: 100 }, 2, 0);
 // -> { min: 0, max: 50 }
-```
-
-<hr/>
-
-#### `createSelectDataForHover(xValueIterator)`
-
-Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point for each series immediately preceding the current hover location according to this scheme.
-
-```tsx
-import { createSelectDataForHover } from 'react-layered-chart';
-
-function xValueIterator(seriesId, datum) {
-  // Optionally inspect some external data source using `seriesId` to see how to interpret `datum`.
-  return datum.someXValue;
-}
-
-const selectDataForHover = createSelectDataForHover(xValueIterator);
-
-selectDataForHover(chartProviderState);
-// -> { 'my-series-id': someDatum }
 ```
 
 <hr/>

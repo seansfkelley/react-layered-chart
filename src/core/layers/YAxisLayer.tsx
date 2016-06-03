@@ -43,7 +43,7 @@ class YAxis extends React.Component<YAxisProps, YAxisState> {
       .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .rangeRound([ 0, 100 ]);
 
-    const { ticks, format } = computeTicks(yScale, this.props.yDomain, this.props.ticks, this.props.tickFormat);
+    const { ticks, format } = computeTicks(yScale, this.props.ticks, this.props.tickFormat);
 
     let tickMarks = [];
     for (let i = 0; i < ticks.length; ++i) {

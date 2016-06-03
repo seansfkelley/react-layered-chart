@@ -64,7 +64,7 @@ export default class XAxisLayer extends React.Component<Props, void> {
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    const { ticks, format } = computeTicks(xScale, this.props.xDomain, this.props.ticks, this.props.tickFormat);
+    const { ticks, format } = computeTicks(xScale, this.props.ticks, this.props.tickFormat);
 
     context.beginPath();
 
