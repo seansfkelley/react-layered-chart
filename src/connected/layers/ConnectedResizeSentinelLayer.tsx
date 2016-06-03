@@ -19,7 +19,7 @@ class ConnectedResizeSentinelLayer extends React.Component<Props, {}> {
 
   render() {
     return (
-      <div className='lc-layer resize-sentinel' ref='element'/>
+      <div className='resize-sentinel' ref='element'/>
     );
   }
 

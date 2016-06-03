@@ -48,7 +48,7 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, Stat
   render() {
     const pixelRatio = this.context.pixelRatio || 1;
     return (
-      <div className={classnames('lc-layer resizing-wrapper', this.props.className)} ref='wrapper'>
+      <div className={classnames('resizing-wrapper', this.props.className)} ref='wrapper'>
         <canvas
           className='canvas'
           ref='canvas'

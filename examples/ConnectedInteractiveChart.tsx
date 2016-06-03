@@ -53,7 +53,7 @@ class SnapToXDomainButton extends React.Component<OwnProps & ConnectedProps & Di
   render() {
     // Implement a simple text-based <div> that reacts to clicks.
     return (
-      <div className='lc-layer snap-to-x-domain-button' onClick={() => this.props.setXDomain(this.props.resetXDomain)}>
+      <div className='snap-to-x-domain-button' onClick={() => this.props.setXDomain(this.props.resetXDomain)}>
         Current: {this.props.currentXDomain.min} to {this.props.currentXDomain.max}. Click me to reset!
       </div>
     );
