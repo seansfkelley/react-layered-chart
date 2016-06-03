@@ -8,6 +8,7 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
+import { computeTicks } from '../renderUtils';
 import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 // TODO: Do any of these need to be configurable?
@@ -43,28 +44,12 @@ class YAxis extends React.Component<YAxisProps, YAxisState> {
       .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .rangeRound([ 0, 100 ]);
 
-    let ticks: number[];
-    const inputTicks = this.props.ticks;
-    if (inputTicks) {
-      if (_.isFunction(inputTicks)) {
-        ticks = inputTicks(this.props.yDomain);
-      } else if (_.isArray<number>(inputTicks)) {
-        ticks = inputTicks;
-      } else if (_.isNumber(inputTicks)) {
-        ticks = yScale.ticks(inputTicks);
-      } else {
-        throw new Error('ticks must be a function, array or number');
-      }
-    } else {
-      ticks = yScale.ticks(DEFAULT_TICK_COUNT);
-    }
-    const tickCount = _.isNumber(inputTicks) ? inputTicks : DEFAULT_TICK_COUNT;
-    const format = yScale.tickFormat(tickCount, this.props.tickFormat);
+    const { ticks, format } = computeTicks(yScale, this.props.yDomain, this.props.ticks, this.props.tickFormat);
 
     let tickMarks = [];
     for (let i = 0; i < ticks.length; ++i) {
       tickMarks.push(
-        <div className='tick' style={{ top: `${100 - yScale(ticks[i])}%` }}>
+        <div className='tick' style={{ top: `${100 - yScale(ticks[i])}%` }} key={i}>
           <span className='label'>{format(ticks[i])}</span>
           <span className='mark' style={{ borderBottomColor: this.props.color }}/>
         </div>

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { SeriesData, Range } from './interfaces';
+import { SeriesData, Range, Ticks, TickFormat } from './interfaces';
 
 export interface IndexBounds {
   firstIndex: number;
@@ -48,4 +48,25 @@ export function getIndexBoundsForSpanData(data: SeriesData, xValueBounds: Range,
   }
 
   return adjustBounds(firstIndex, lastIndex, data.length);
+}
+
+export function computeTicks(scale: any, domain: Range, ticks?: Ticks, tickFormat?: TickFormat) {
+  let outputTicks: number[];
+  if (ticks) {
+    if (_.isFunction(ticks)) {
+      outputTicks = ticks(domain);
+    } else if (_.isArray<number>(ticks)) {
+      outputTicks = ticks;
+    } else if (_.isNumber(ticks)) {
+      outputTicks = scale.ticks(ticks);
+    } else {
+      throw new Error('ticks must be a function, array or number');
+    }
+  } else {
+    outputTicks = scale.ticks(5);
+  }
+  const tickCount = _.isNumber(ticks) ? ticks : 5;
+  const format = scale.tickFormat(tickCount, tickFormat);
+
+  return { ticks: outputTicks, format };
 }

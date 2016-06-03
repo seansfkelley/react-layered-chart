@@ -8,6 +8,7 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
+import { computeTicks } from '../renderUtils';
 import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 // TODO: Do any of these need to be configurable?
@@ -70,25 +71,7 @@ export default class XAxisLayer extends React.Component<Props, void> {
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    let ticks: number[];
-    const inputTicks = this.props.ticks;
-    if (inputTicks) {
-      if (_.isFunction(inputTicks)) {
-        ticks = inputTicks(this.props.xDomain);
-      } else if (_.isArray(inputTicks)) {
-        ticks = inputTicks;
-      } else if (_.isNumber(inputTicks)) {
-        ticks = xScale.ticks(inputTicks);
-      } else {
-        throw new Error('ticks must be a function, array or number');
-      }
-    } else {
-      ticks = xScale.ticks(DEFAULT_TICK_COUNT);
-    }
-    const format = xScale.tickFormat(
-      _.isNumber(inputTicks) ? inputTicks : DEFAULT_TICK_COUNT,
-      this.props.tickFormat
-    );
+    const { ticks, format } = computeTicks(xScale, this.props.xDomain, this.props.ticks, this.props.tickFormat);
 
     context.beginPath();
 
