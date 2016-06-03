@@ -36,13 +36,13 @@ For specifics on the exact types of these components/functions/values, please ch
 These props come in read-write pairs and implement the ["controlled component" pattern](https://facebook.github.io/react/docs/forms.html#controlled-components). The "value" props unconditionally trump any automatically-computed values. The "on change" props are called any time the automatically-computed values change to give the parent a chance to incorporate those changes. You can provide any combination of these parameters; providing a "value" prop doesn't imply you need an "on change" prop, nor vice versa.
 
 - `xDomain?`
-- `onXDomainChange?`
+- `onXDomainChange?()`
 - `yDomains?`
-- `onYDomainsChange?`
+- `onYDomainsChange?()`
 - `selection?`
-- `onSelectionChange?`
+- `onSelectionChange?()`
 - `hover?`
-- `onHoverChange?`
+- `onHoverChange?()`
 
 ## Layers
 
@@ -162,9 +162,9 @@ This variant of the layer replaces the callbacks with simple `true`/`false` sett
 - `enableZoom?`: whether or not to fire events for zoom gestures. Default `false`.
 - `enableHover?`: whether or not to fire events for hover gestures. Default `false`.
 - `enableBrush?`: whether or not to fire events for brush gestures. Default `false`.
-- `shouldZoom?`: same as above.
-- `shouldPan?`: same as above.
-- `shouldBrush?`: same as above.
+- `shouldZoom?()`: same as above.
+- `shouldPan?()`: same as above.
+- `shouldBrush?()`: same as above.
 - `zoomSpeed?`: same as above.
 
 <hr/>
@@ -294,6 +294,8 @@ class ExampleComponent extends React.Component<...> {
 }
 ```
 
+<hr/>
+
 #### `PixelRatioContextProvider`
 
 A class decorator to allow a class to provide a context value called `pixelRatio` that specified the pixel density for this chart. See [`Stack`](#stack) for more on this value. Because `Stack` and `ChartProvider` already have this behavior, you do not generally need to use this decorator. The initial value to provide on the context is read out of a prop named `pixelRatio`. If you nest multiple classes with this decorator, children will receive the value from their most immediate ancestor that specifies a `pixelRatio` prop.
@@ -316,6 +318,22 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 #### `createStaticDataLoader(data, yDomains)`
 
 Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
+
+```tsx
+import { createStaticDataLoader } from 'react-layered-chart';
+
+const data = [ ... ];
+const seriesId = '...';
+const yDomain = figureOutYDomainFromData(data);
+
+const dataLoader = createStaticDataLoader({
+  [seriesId]: data,
+}, {
+  [seriesId]: yDomain
+});
+
+<ChartProvider loadData={dataLoader} .../>
+```
 
 <hr/>
 
@@ -501,6 +519,20 @@ zoomRange({ min: 0, max: 100 }, 2, 0);
 #### `createSelectDataForHover(xValueIterator)`
 
 Create a [selector](https://github.com/reactjs/reselect) that will select the currently-hovered data point according to the scheme specified by `xValueIterator`. `xValueIterator` is a function that takes `(seriesId, datum)` and returns whatever numerical value should be used to order this particular datum in the X dimension. The created selector, when invoked with a `ChartProviderState`, then returns the data point for each series immediately preceding the current hover location according to this scheme.
+
+```tsx
+import { createSelectDataForHover } from 'react-layered-chart';
+
+function xValueIterator(seriesId, datum) {
+  // Optionally inspect some external data source using `seriesId` to see how to interpret `datum`.
+  return datum.someXValue;
+}
+
+const selectDataForHover = createSelectDataForHover(xValueIterator);
+
+selectDataForHover(chartProviderState);
+// -> { 'my-series-id': someDatum }
+```
 
 <hr/>
 
