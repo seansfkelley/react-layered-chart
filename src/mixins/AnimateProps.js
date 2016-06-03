@@ -22,6 +22,14 @@ function animateOnce(fromValue, toValue, durationMs, onFrame) {
   return () => { clearInterval(setIntervalId); };
 }
 
+function _getStartValue(currentValue, startValue) {
+  if (_.isArray(currentValue) && _.isArray(startValue)) {
+    return currentValue.slice(0, startValue.length);
+  } else {
+    return currentValue || startValue;
+  }
+}
+
 export const mixin = {
   componentWillMount: function() {
     if (!_.isPlainObject(this.animatedProps)) {
@@ -43,7 +51,7 @@ export const mixin = {
           if (this.__animatingPropCancelCallbacks[propName]) {
             this.__animatingPropCancelCallbacks[propName]();
           }
-          const startValue = this.state[`animated-${propName}`] || this.props[propName];
+          const startValue = _getStartValue(this.state[`animated-${propName}`], this.props[propName]);
           this.__animatingPropCancelCallbacks[propName] = animateOnce(
             _.cloneDeep(startValue),
             _.cloneDeep(nextProps[propName]),
