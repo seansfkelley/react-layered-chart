@@ -4,11 +4,11 @@ import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
 import NonReactRender from '../decorators/NonReactRender';
-import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
+import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
 import { Color, Range, SpanDatum } from '../interfaces';
 
@@ -19,15 +19,10 @@ export interface Props {
   color?: Color;
 }
 
-export interface State {
-  animated_yDomain: Range;
-}
-
 @PureRender
 @NonReactRender
-@AnimateProps
 @PixelRatioContext
-export default class BarLayer extends React.Component<Props, State> {
+class BarLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
@@ -40,10 +35,6 @@ export default class BarLayer extends React.Component<Props, State> {
   static defaultProps = {
     color: 'rgba(0, 0, 0, 0.7)'
   } as any;
-
-  animatedProps = {
-    yDomain: 1000
-  };
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
@@ -65,7 +56,7 @@ export default class BarLayer extends React.Component<Props, State> {
       .rangeRound([ 0, width ]);
 
     const yScale = d3Scale.scaleLinear()
-      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
+      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .rangeRound([ 0, height ]);
 
     context.beginPath();
@@ -82,3 +73,5 @@ export default class BarLayer extends React.Component<Props, State> {
     context.fill();
   };
 }
+
+export default wrapWithAnimatedYDomain(BarLayer);

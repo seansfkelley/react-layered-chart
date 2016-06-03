@@ -4,11 +4,11 @@ import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
 import NonReactRender from '../decorators/NonReactRender';
-import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
+import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
 import { Range, PointDatum, ScaleFunction, Color } from '../interfaces';
 
@@ -22,15 +22,10 @@ export interface Props {
   innerRadius?: number;
 }
 
-export interface State {
-  animated_yDomain: Range;
-}
-
 @PureRender
 @NonReactRender
-@AnimateProps
 @PixelRatioContext
-export default class PointLayer extends React.Component<Props, State> {
+class PointLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
@@ -49,10 +44,6 @@ export default class PointLayer extends React.Component<Props, State> {
     radius: 3,
     innerRadius: 0
   } as any;
-
-  animatedProps = {
-    yDomain: 1000
-  };
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
@@ -74,7 +65,7 @@ export default class PointLayer extends React.Component<Props, State> {
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
+      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .rangeRound([ 0, height ]);
 
     const isFilled = this.props.innerRadius === 0;
@@ -106,3 +97,5 @@ export default class PointLayer extends React.Component<Props, State> {
     }
   };
 }
+
+export default wrapWithAnimatedYDomain(PointLayer);

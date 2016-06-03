@@ -15,7 +15,7 @@
       "commit": "7ad4e09016898d9c4837e250121fef2aedbecaaa"
     },
     "react/react.d.ts": {
-      "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
+      "commit": "473232e5dbd179e9ee682fab12f796720f37b118"
     },
     "react/react-dom.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
@@ -55,6 +55,9 @@
     },
     "es6-promise/es6-promise.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
+    },
+    "react-motion/react-motion.d.ts": {
+      "commit": "473232e5dbd179e9ee682fab12f796720f37b118"
     }
   }
 }

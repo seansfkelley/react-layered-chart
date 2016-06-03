@@ -1,8 +1,6 @@
 - maybe export connected layers as `LineLayer.Connected`? the names now are awful
 - proptypes for more things
-- animateprops should wrap the component instead of requiring the use of state
-- should animateprops use requestanimationframe?
-- consider react-motion instead of animateprops
+- replace docs for animateprops with react-motion
 - fix issue where changing the number of arrays passed to Y axis layer causes leftover domains
   - if you initially render with 2 domains, then later drop it to 1, you get two problems:
     1. you don't know which of the original two the new one should match, if any

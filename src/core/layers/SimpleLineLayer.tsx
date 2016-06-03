@@ -4,11 +4,11 @@ import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
 import NonReactRender from '../decorators/NonReactRender';
-import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
+import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
 import { Range, PointDatum, ScaleFunction, Color } from '../interfaces';
 
@@ -20,15 +20,10 @@ export interface Props {
   color?: Color;
 }
 
-export interface State {
-  animated_yDomain: Range;
-}
-
 @PureRender
 @NonReactRender
-@AnimateProps
 @PixelRatioContext
-export default class SimpleLineLayer extends React.Component<Props, State> {
+class SimpleLineLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
@@ -43,10 +38,6 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)'
   } as any;
-
-  animatedProps = {
-    yDomain: 1000
-  };
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
@@ -73,7 +64,7 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
       .rangeRound([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
+      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .rangeRound([ 0, height ]);
 
     context.beginPath();
@@ -87,3 +78,5 @@ export default class SimpleLineLayer extends React.Component<Props, State> {
     context.stroke();
   };
 }
+
+export default wrapWithAnimatedYDomain(SimpleLineLayer);

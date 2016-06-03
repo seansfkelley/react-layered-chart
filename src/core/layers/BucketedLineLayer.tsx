@@ -3,11 +3,11 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
-import AnimateProps from '../decorators/AnimateProps';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
+import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
 import { Range, Color, ScaleFunction, BucketDatum } from '../interfaces';
 
@@ -19,15 +19,10 @@ export interface Props {
   color?: Color;
 }
 
-export interface State {
-  animated_yDomain: Range;
-}
-
 @PureRender
 @NonReactRender
-@AnimateProps
 @PixelRatioContext
-export default class BucketedLineLayer extends React.Component<Props, State> {
+class BucketedLineLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
@@ -73,7 +68,7 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
       .range([ 0, width ]);
 
     const yScale = this.props.yScale()
-      .domain([ this.state.animated_yDomain.min, this.state.animated_yDomain.max ])
+      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .range([ 0, height ]);
 
     const computedValuesForVisibleData = this.props.data
@@ -141,3 +136,5 @@ export default class BucketedLineLayer extends React.Component<Props, State> {
     context.stroke();
   };
 }
+
+export default wrapWithAnimatedYDomain(BucketedLineLayer);

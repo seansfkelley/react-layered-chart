@@ -1,5 +1,6 @@
 export * from './renderUtils';
 export * from './rangeUtils';
+export * from './componentUtils';
 export * from './decorators';
 export * from './layers';
 export * from './interfaces';
