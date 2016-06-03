@@ -4,13 +4,3 @@ declare module 'd3-scale' {
   var scale: any;
   export = scale;
 }
-
-declare module 'd3-ease' {
-  var ease: any;
-  export = ease;
-}
-
-declare module 'd3-interpolate' {
-  var interpolate: any;
-  export = interpolate;
-}
