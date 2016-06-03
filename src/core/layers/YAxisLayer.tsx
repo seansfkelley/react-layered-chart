@@ -7,6 +7,7 @@ import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import propTypes from '../propTypes';
+import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 // TODO: Do any of these need to be configurable?
@@ -152,6 +153,8 @@ class YAxis extends React.Component<YAxisProps, YAxisState> {
   };
 }
 
+const AnimatedYAxis = wrapWithAnimatedYDomain(YAxis);
+
 export interface Props {
   axes: YAxisSpec[];
   font?: string;
@@ -190,7 +193,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
     return (
       <div className='y-axis-container'>
         {this.props.axes.map(axis =>
-          <YAxis {...axis} font={this.props.font} backgroundColor={this.props.backgroundColor}/>)
+          <AnimatedYAxis {...axis} font={this.props.font} backgroundColor={this.props.backgroundColor}/>)
         }
       </div>
     );
