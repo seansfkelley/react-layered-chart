@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.1",
-    "d3-ease": "^0.7.0",
     "d3-scale": "^0.7.0",
     "immutability-helper": "^2.0.0",
     "lodash": "^4.0.0",

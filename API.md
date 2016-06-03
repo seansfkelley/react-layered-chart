@@ -317,6 +317,31 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
 
+<hr/>
+
+#### `wrapWithAnimatedYDomain(ComponentClass)`
+
+Wrap the given `Component` in a new class that automatically animates the `yDomain` prop whenever it changes. Only works with `yDomain`. Animations are implemented with [react-motion](https://github.com/chenglou/react-motion).
+
+```tsx
+import { wrapWithAnimatedYDomain } from 'react-layered-chart';
+
+interface Props {
+  yDomain: Range;
+}
+
+class ExampleComponent extends React.Component<Props, ...> {
+  render() {
+    console.log(this.props.yDomain);
+  }
+}
+
+export default wrapWithAnimatedYDomain(ExampleComponent);
+
+```
+
+<hr/>
+
 #### `getIndexBoundsForPointData(data, range, xValuePath)`
 
 Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
