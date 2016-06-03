@@ -4,7 +4,7 @@ import { Motion, spring } from 'react-motion';
 
 import { Range } from './interfaces';
 
-export function springifyRange(range: Range) {
+function springifyRange(range: Range) {
   return {
     min: spring(range.min),
     max: spring(range.max)
