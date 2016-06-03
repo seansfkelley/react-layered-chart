@@ -93,6 +93,8 @@ react-layered-chart provides two methods of customizing behavior:
 
 Your custom component doesn't even have to be a type of chart -- for example, if you want to add a textual legend that updates on hover, you could do this by adding a component within a `ChartProvider`.
 
+If you'd like to add animation to your custom view, I recommend [react-motion](https://github.com/chenglou/react-motion). It composes well and handles interrupted animations elegantly.
+
 ## Caveats/Limitations
 
 ### Physical chart size

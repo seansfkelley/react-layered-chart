@@ -98,15 +98,19 @@ There is a `ConnectedXAxisLayer` that accepts the same props, except `xDomain`.
 
 ### `YAxisLayer`
 
-This component renders one or more Y domains, lined up next to each other on the left side of the rendering area. Most props are arrays that are matched by index to the corresponding item in `yDomains`. These arrays can have `null`/`undefined` entries, which will fall back on the default value for that prop.
+This component renders one or more Y domains, lined up next to each other on the left side of the rendering area.
+
+**Note**: if you add, remove, rearrange or splice items in the `axes` prop, the animation logic will be unable to figure out that the items have shifted in position or otherwise changed in "identity". This will cause animations to jitter or otherwise look bad as it animates between values that weren't intended to be animated between. Provide locally-unique `axisId` values for each item in `axes` if this happens.
 
 #### Props
 
-- `yDomains`: an array of all the Y domains to render.
-- `scales?`: an array of [d3-scale](https://github.com/d3/d3-scale) constructor functions. Only continuous scales are supported. Defaults to `scaleLinear`.
-- `ticks?`: an array of arrays, functions or numbers describing where to place annotated tick marks. If an item is an array, it specifies any values that should have ticks. As a function, it takes the domain and returns such an array. As a number, it is passed to `scale#ticks` for d3 to take a guess at what ticks are appropriate.
-- `tickFormat?`: an array of strings or functions appropriate for passing as the second argument to d3's scales' [`tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat).
-- `colors?`: an array of strings specifying the colors to use for each axis when drawing.
+- `axes`: an array of all the Y axes to render. Each object has the following fields:
+	- `yDomain`: the Range to render for this axis.
+	- `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleLinear`.
+	- `ticks?`: an array, function or number describing where to place annotated tick marks. As an array, it specifies any values that should have ticks. As a function, it takes the domain and returns such an array. As a number, it is passed to `scale#ticks` for d3 to take a guess at what ticks are appropriate.
+	- `tickFormat?`: a string or function appropriate for passing as the second argument to d3's scales' [`tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat).
+	- `color?`: a string specifying the color to use for drawing.
+	- `axisId?`: a unique ID to identify this axis. Used to prevent jittery animations when adding/removing/rearranging axes.
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
 - `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
 
@@ -245,33 +249,6 @@ export default connect(null, mapDispatchToProps)(ExampleComponent);
 ## Utilities
 
 ### Decorators
-
-#### `AnimateProps`
-
-A class decorator to animate prop values by repeatedly setting values on state for each frame. Specify the props to animate using an instance variable named `animatedProps`, which is a map from prop names to millisecond durations for their animations. Animated values will be set on component state any time the component updates using the pattern `` `animated_${propName}` ``. Interpolation is delegated to [d3-interpolate](https://github.com/d3/d3-interpolate).
-
-You can access a mixin version at `AnimatedPropsMixin`.
-
-```tsx
-import { AnimateProps } from 'react-layered-chart';
-
-interface Props {
-  interpolatableValue: string;
-}
-
-@AnimateProps
-class ExampleComponent extends React.Component<Props, ...> {
-  animatedProps = {
-    interpolatableValue: 250
-  };
-
-  render() {
-    console.log(this.state.animated_interpolatableValue);
-  }
-}
-```
-
-<hr/>
 
 #### `NonReactRender`
 
