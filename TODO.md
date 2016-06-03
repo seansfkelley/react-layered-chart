@@ -1,2 +1,0 @@
-- maybe export connected layers as `LineLayer.Connected`? the names now are awful
-- proptypes for more things

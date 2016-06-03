@@ -11,10 +11,10 @@ import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
 import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
+const DEFAULT_TICK_COUNT = 5;
 // TODO: Do any of these need to be configurable?
 const VERTICAL_PADDING = 4;
 const HORIZONTAL_PADDING = 6;
-const DEFAULT_TICK_COUNT = 5;
 
 export interface Props {
   xDomain: Range;

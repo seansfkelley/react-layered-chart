@@ -11,7 +11,6 @@ import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { computeTicks } from '../renderUtils';
 import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
-// TODO: Do any of these need to be configurable?
 const DEFAULT_TICK_COUNT = 5;
 
 export interface YAxisSpec {
