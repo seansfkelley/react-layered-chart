@@ -85,15 +85,8 @@ export default class YAxisLayer extends React.Component<Props, void> {
     axes: React.PropTypes.arrayOf(React.PropTypes.shape({
       yDomain: propTypes.range.isRequired,
       scale: React.PropTypes.func,
-      ticks: React.PropTypes.oneOfType([
-        React.PropTypes.func,
-        React.PropTypes.number,
-        React.PropTypes.arrayOf(React.PropTypes.number)
-      ]),
-      tickFormat: React.PropTypes.oneOfType([
-        React.PropTypes.func,
-        React.PropTypes.string
-      ]),
+      ticks: propTypes.ticks,
+      tickFormat: propTypes.tickFormat,
       color: React.PropTypes.string
     })).isRequired,
     font: React.PropTypes.string,

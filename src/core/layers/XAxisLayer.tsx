@@ -34,15 +34,8 @@ export default class XAxisLayer extends React.Component<Props, void> {
   static propTypes = {
     xDomain: propTypes.range.isRequired,
     scale: React.PropTypes.func,
-    ticks: React.PropTypes.oneOfType([
-      React.PropTypes.func,
-      React.PropTypes.number,
-      React.PropTypes.arrayOf(React.PropTypes.number)
-    ]),
-    tickFormat: React.PropTypes.oneOfType([
-      React.PropTypes.func,
-      React.PropTypes.string
-    ]),
+    ticks: propTypes.ticks,
+    tickFormat: propTypes.tickFormat,
     color: React.PropTypes.string,
     font: React.PropTypes.string
   };

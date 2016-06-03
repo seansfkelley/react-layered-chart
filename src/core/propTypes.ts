@@ -25,9 +25,22 @@ export const bucketDatum = React.PropTypes.shape({
   lastYValue: React.PropTypes.number.isRequired
 });
 
+export const ticks = React.PropTypes.oneOfType([
+  React.PropTypes.func,
+  React.PropTypes.number,
+  React.PropTypes.arrayOf(React.PropTypes.number)
+]);
+
+export const tickFormat = React.PropTypes.oneOfType([
+  React.PropTypes.func,
+  React.PropTypes.string
+]);
+
 export default {
   range,
   pointDatum,
   spanDatum,
-  bucketDatum
+  bucketDatum,
+  ticks,
+  tickFormat
 };
