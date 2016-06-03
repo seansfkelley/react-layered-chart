@@ -11,7 +11,6 @@ import {
   Stack,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
-  ConnectedHoverLineLayer,
   createStaticDataLoader,
   ConnectedXAxisLayer
 } from '../src';
@@ -38,18 +37,11 @@ const CHART = (
     }}
     className='example-chart'
   >
-    {/* This stack has all the main views. */}
     <Stack>
       {/* Render the test data as a simple line chart. */}
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
-      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
-      {/* Show the hover line as the mouse moves around. */}
-      <ConnectedHoverLineLayer/>
-    </Stack>
-    {/* This stack puts the X axis in its own section. */}
-    <Stack className='x-axis-stack'>
-      <ConnectedXAxisLayer font='12px MyriadPro-Regular'/>
+      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
     </Stack>
   </ChartProvider>
 );

@@ -16,7 +16,7 @@ const TEST_COMPONENT = (
   <div className='container'>
     <div className='explanation'>This is a basic, static chart. It is not interactive.</div>
     {STATIC_CHART}
-    <div className='explanation'>This is a more complex chart. Drag to pan and scroll to zoom.</div>
+    <div className='explanation'>This is a basic interactive chart. Drag to pan and scroll to zoom.</div>
     {BASIC_INTERACTIVE_CHART}
     <div className='explanation'>This chart is pannable, but with limits.</div>
     {CONTROLLED_INTERACTIVE_CHART}
