@@ -9,7 +9,7 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Range, Color } from '../interfaces';
+import { Interval, Color } from '../interfaces';
 
 export interface Props {
   data: {
@@ -17,7 +17,7 @@ export interface Props {
     maxXValue: number;
     color?: Color;
   }[];
-  xDomain: Range;
+  xDomain: Interval;
   color?: Color;
 }
 
@@ -33,7 +33,7 @@ export default class SpanLayer extends React.Component<Props, void> {
       maxXValue: React.PropTypes.number.isRequired,
       color: React.PropTypes.string
     })).isRequired,
-    xDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string
   };
 

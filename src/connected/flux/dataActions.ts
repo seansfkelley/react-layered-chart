@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Range, SeriesData } from '../../core';
+import { Interval, SeriesData } from '../../core';
 import ActionType, { Action } from '../model/ActionType';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
@@ -43,7 +43,7 @@ function _performDataLoad() {
       });
     });
 
-    const batchedSetYDomains = _makeKeyedDataBatcher<Range>((payload: TBySeriesId<Range>) => {
+    const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
       dispatch(setYDomain(payload));
     });
 

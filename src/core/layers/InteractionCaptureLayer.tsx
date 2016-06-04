@@ -3,18 +3,18 @@ import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
-import { Range, BooleanMouseEventHandler } from '../interfaces';
+import { Interval, BooleanMouseEventHandler } from '../interfaces';
 
 const LEFT_MOUSE_BUTTON = 0;
 
 export interface Props {
-  xDomain: Range;
+  xDomain: Interval;
   shouldZoom?: BooleanMouseEventHandler;
   shouldPan?: BooleanMouseEventHandler;
   shouldBrush?: BooleanMouseEventHandler;
   onZoom?: (factor: number, anchorBias: number) => void;
   onPan?: (logicalUnits: number) => void;
-  onBrush?: (logicalUnitRange?: Range) => void;
+  onBrush?: (logicalUnitInterval?: Interval) => void;
   onHover?: (logicalPosition?: number) => void;
   zoomSpeed?: number;
 }
@@ -36,7 +36,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
-    xDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
     zoomSpeed: React.PropTypes.number
   };
 

@@ -1,18 +1,18 @@
-import { Range, ScaleFunction, Color, SeriesData } from '../../core';
+import { Interval, ScaleFunction, Color, SeriesData } from '../../core';
 
 import { DEFAULT_X_DOMAIN } from './constants';
 import { SeriesId, TBySeriesId, DataLoader } from '../interfaces';
 
 export interface DefaultChartState {
-  xDomain?: Range;
-  yDomains?: TBySeriesId<Range>;
+  xDomain?: Interval;
+  yDomains?: TBySeriesId<Interval>;
 }
 
 export interface UiState {
-  xDomain?: Range;
-  yDomainBySeriesId?: TBySeriesId<Range>;
+  xDomain?: Interval;
+  yDomainBySeriesId?: TBySeriesId<Interval>;
   hover?: number;
-  selection?: Range;
+  selection?: Interval;
 }
 
 export interface ChartState {

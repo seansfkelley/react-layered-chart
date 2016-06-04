@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { Range } from '../../core';
+import { Interval } from '../../core';
 import { TBySeriesId } from '../interfaces';
 import { ChartState, UiState } from './state';
 
@@ -16,15 +16,15 @@ function createUiStateSelector<T>(selectUiState: (state: ChartState) => UiState,
 }
 
 export const selectXDomain = createSelector(
-  createUiStateSelector<Range>(selectUiStateInternal, 'xDomain'),
-  createUiStateSelector<Range>(selectUiStateOverride, 'xDomain'),
-  (internal: Range, override: Range) => override || internal
+  createUiStateSelector<Interval>(selectUiStateInternal, 'xDomain'),
+  createUiStateSelector<Interval>(selectUiStateOverride, 'xDomain'),
+  (internal: Interval, override: Interval) => override || internal
 );
 
 export const selectYDomains = createSelector(
-  createUiStateSelector<TBySeriesId<Range>>(selectUiStateInternal, 'yDomainBySeriesId'),
-  createUiStateSelector<TBySeriesId<Range>>(selectUiStateOverride, 'yDomainBySeriesId'),
-  (internal: TBySeriesId<Range>, override: TBySeriesId<Range>) => <TBySeriesId<Range>> _.extend({}, internal, override)
+  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
+  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
+  (internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) => <TBySeriesId<Interval>> _.extend({}, internal, override)
 );
 
 export const selectHover = createSelector(
@@ -34,9 +34,9 @@ export const selectHover = createSelector(
 );
 
 export const selectSelection = createSelector(
-  createUiStateSelector<Range>(selectUiStateInternal, 'selection'),
-  createUiStateSelector<Range>(selectUiStateOverride, 'selection'),
-  (internal: Range, override: Range) => override || internal
+  createUiStateSelector<Interval>(selectUiStateInternal, 'selection'),
+  createUiStateSelector<Interval>(selectUiStateOverride, 'selection'),
+  (internal: Interval, override: Interval) => override || internal
 );
 
 export const selectData = (state: ChartState) => state.dataBySeriesId;

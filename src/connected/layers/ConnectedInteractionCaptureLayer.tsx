@@ -4,10 +4,10 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import {
-  Range,
+  Interval,
   BooleanMouseEventHandler,
-  panRange,
-  zoomRange,
+  panInterval,
+  zoomInterval,
   InteractionCaptureLayer
 } from '../../core';
 import * as uiActions from '../flux/uiActions';
@@ -26,7 +26,7 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  xDomain: Range;
+  xDomain: Interval;
 }
 
 export interface DispatchProps {
@@ -53,15 +53,15 @@ export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps &
 
 
   private _zoom = (factor: number, anchorBias: number) => {
-    this.props.actions.setXDomain(zoomRange(this.props.xDomain, factor, anchorBias));
+    this.props.actions.setXDomain(zoomInterval(this.props.xDomain, factor, anchorBias));
   };
 
   private _pan = (logicalUnits: number) => {
-    this.props.actions.setXDomain(panRange(this.props.xDomain, logicalUnits));
+    this.props.actions.setXDomain(panInterval(this.props.xDomain, logicalUnits));
   };
 
-  private _brush = (logicalUnitRange?: Range) => {
-    this.props.actions.setSelection(logicalUnitRange);
+  private _brush = (logicalUnitInterval?: Interval) => {
+    this.props.actions.setSelection(logicalUnitInterval);
   };
 
   private _hover = (logicalPosition?: number) => {

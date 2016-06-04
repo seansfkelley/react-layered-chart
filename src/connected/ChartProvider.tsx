@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 
-import { Range, Stack, propTypes, PixelRatioContextProvider } from '../core';
+import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
@@ -25,12 +25,12 @@ export interface Props {
   includeResizeSentinel?: boolean;
 
   // Controlled props go here.
-  xDomain?: Range;
-  onXDomainChange?: (xDomain: Range) => void;
-  yDomains?: TBySeriesId<Range>;
-  onYDomainsChange?: (yDomains: TBySeriesId<Range>) => void;
-  selection?: Range;
-  onSelectionChange?: (selection: Range) => void;
+  xDomain?: Interval;
+  onXDomainChange?: (xDomain: Interval) => void;
+  yDomains?: TBySeriesId<Interval>;
+  onYDomainsChange?: (yDomains: TBySeriesId<Interval>) => void;
+  selection?: Interval;
+  onSelectionChange?: (selection: Interval) => void;
   hover?: number;
   onHoverChange?: (hover: number) => void;
 }
@@ -49,11 +49,11 @@ export default class ChartProvider extends React.Component<Props, {}> {
     onError: React.PropTypes.func,
     includeResizeSentinel: React.PropTypes.bool,
 
-    xDomain: propTypes.range,
+    xDomain: propTypes.interval,
     onXDomainChange: React.PropTypes.func,
-    yDomains: React.PropTypes.objectOf(propTypes.range),
+    yDomains: React.PropTypes.objectOf(propTypes.interval),
     onYDomainsChange: React.PropTypes.func,
-    selection: propTypes.range,
+    selection: propTypes.interval,
     onSelectionChange: React.PropTypes.func,
     hover: React.PropTypes.number,
     onHoverChange: React.PropTypes.func,

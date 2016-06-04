@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const range = React.PropTypes.shape({
+export const interval = React.PropTypes.shape({
   min: React.PropTypes.number.isRequired,
   max: React.PropTypes.number.isRequired
 });
@@ -37,7 +37,7 @@ export const tickFormat = React.PropTypes.oneOfType([
 ]);
 
 export default {
-  range,
+  interval,
   pointDatum,
   spanDatum,
   bucketDatum,

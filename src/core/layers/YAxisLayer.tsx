@@ -9,12 +9,12 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { computeTicks } from '../renderUtils';
-import { Range, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
+import { Interval, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
 
 const DEFAULT_TICK_COUNT = 5;
 
 export interface YAxisSpec {
-  yDomain: Range;
+  yDomain: Interval;
   scale?: ScaleFunction;
   ticks?: Ticks;
   tickFormat?: TickFormat;
@@ -82,7 +82,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
 
   static propTypes = {
     axes: React.PropTypes.arrayOf(React.PropTypes.shape({
-      yDomain: propTypes.range.isRequired,
+      yDomain: propTypes.interval.isRequired,
       scale: React.PropTypes.func,
       ticks: propTypes.ticks,
       tickFormat: propTypes.tickFormat,

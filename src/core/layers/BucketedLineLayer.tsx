@@ -9,12 +9,12 @@ import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Range, Color, ScaleFunction, BucketDatum } from '../interfaces';
+import { Interval, Color, ScaleFunction, BucketDatum } from '../interfaces';
 
 export interface Props {
   data: BucketDatum[];
-  xDomain: Range;
-  yDomain: Range;
+  xDomain: Interval;
+  yDomain: Interval;
   yScale?: ScaleFunction;
   color?: Color;
 }
@@ -27,8 +27,8 @@ class BucketedLineLayer extends React.Component<Props, void> {
 
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.bucketDatum).isRequired,
-    xDomain: propTypes.range.isRequired,
-    yDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
+    yDomain: propTypes.interval.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
   } as React.ValidationMap<any>;

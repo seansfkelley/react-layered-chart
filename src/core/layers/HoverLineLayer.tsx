@@ -8,10 +8,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
-import { Range, Color } from '../interfaces';
+import { Interval, Color } from '../interfaces';
 
 export interface Props {
-  xDomain: Range;
+  xDomain: Interval;
   hover?: number;
   stroke?: Color;
 }
@@ -24,7 +24,7 @@ export default class HoverLineLayer extends React.Component<Props, void> {
 
   static propTypes = {
     hover: React.PropTypes.number,
-    xDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
     stroke: React.PropTypes.string
   } as React.ValidationMap<any>;
 

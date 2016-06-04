@@ -10,12 +10,12 @@ import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Range, PointDatum, ScaleFunction, Color } from '../interfaces';
+import { Interval, PointDatum, ScaleFunction, Color } from '../interfaces';
 
 export interface Props {
   data: PointDatum[];
-  xDomain: Range;
-  yDomain: Range;
+  xDomain: Interval;
+  yDomain: Interval;
   yScale?: ScaleFunction;
   color?: Color;
   radius?: number;
@@ -30,8 +30,8 @@ class PointLayer extends React.Component<Props, void> {
 
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.pointDatum).isRequired,
-    xDomain: propTypes.range.isRequired,
-    yDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
+    yDomain: propTypes.interval.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string,
     radius: React.PropTypes.number,

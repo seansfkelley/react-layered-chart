@@ -7,11 +7,11 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
-import { Range, Color } from '../interfaces';
+import { Interval, Color } from '../interfaces';
 
 export interface Props {
-  xDomain: Range;
-  selection?: Range;
+  xDomain: Interval;
+  selection?: Interval;
   stroke?: Color;
   fill?: Color;
 }
@@ -23,8 +23,8 @@ export default class BrushLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
-    selection: propTypes.range,
-    xDomain: propTypes.range.isRequired,
+    selection: propTypes.interval,
+    xDomain: propTypes.interval.isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string
   };

@@ -105,7 +105,7 @@ This component renders one or more Y domains, lined up next to each other on the
 #### Props
 
 - `axes`: an array of all the Y axes to render. Each object has the following fields:
-    - `yDomain`: the Range to render for this axis.
+    - `yDomain`: the Interval to render for this axis.
     - `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleLinear`.
     - `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
     - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
@@ -148,9 +148,9 @@ This layer displays nothing, but captures all mouse events and translates them i
 - `shouldZoom?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming.
 - `shouldPan?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture.
 - `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture.
-- `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `zoomRange` for an explanation of the parameters.
+- `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `zoomInterval` for an explanation of the parameters.
 - `onPan?(logicalUnits)`: fired when the user moves their mouse during a legal pan gesture.
-- `onBrush?(logicalUnitRange?)`: fired when the user moves their mouse during a legal brush gesture. Called with `null` if the selection is cleared.
+- `onBrush?(logicalUnitInterval?)`: fired when the user moves their mouse during a legal brush gesture. Called with `null` if the selection is cleared.
 - `onHover?(logicalPosition)`: fired when the user hovers over the chart.
 - `zoomSpeed?`: a constant factor to adjust the sensitivity of the zooming gesture for different scroll velocities.
 
@@ -365,7 +365,7 @@ Wrap the given `Component` in a new class that automatically animates the `yDoma
 import { wrapWithAnimatedYDomain } from 'react-layered-chart';
 
 interface Props {
-  yDomain: Range;
+  yDomain: Interval;
 }
 
 class ExampleComponent extends React.Component<Props, ...> {
@@ -380,11 +380,11 @@ export default wrapWithAnimatedYDomain(ExampleComponent);
 
 <hr/>
 
-#### `getIndexBoundsForPointData(data, range, xValuePath)`
+#### `getIndexBoundsForPointData(data, interval, xValuePath)`
 
-Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
+Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
 
-**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the range as well so halfway-visible data will still be rendered.
+**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
 
 ```tsx
 const data = [
@@ -401,22 +401,22 @@ getIndexBoundsForPointData(data, { min: 0, max: 1000 }, 'metadata.timestamp');
 
 <hr/>
 
-#### `getIndexBoundsForSpanData(data, range, minXValuePath, maxXValuePath)`
+#### `getIndexBoundsForSpanData(data, interval, minXValuePath, maxXValuePath)`
 
-Efficiently computes which span of indices in `data` intersect `range`. Each item in `data` is assumed to have start and end X values, the dot-separated path to which is given by `minXValuePath` and `maxXValuePath` respectively. `data` should be sorted by `minXValuePath`, ascending.
+Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` is assumed to have start and end X values, the dot-separated path to which is given by `minXValuePath` and `maxXValuePath` respectively. `data` should be sorted by `minXValuePath`, ascending.
 
-**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the range as well so halfway-visible data will still be rendered.
+**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
 
 ```tsx
 const data = [
   {
     value: 10,
-    timeRange: { from: 0, to: 47 }
+    timeInterval: { from: 0, to: 47 }
   },
   ...
 ]
 
-getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeRange.from', 'timeRange.to');
+getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeInterval.from', 'timeInterval.to');
 // -> { firstIndex: 0, lastIndex: ... }
 ```
 
@@ -456,84 +456,84 @@ computeTicks(scale, 2, '.5');
 
 <hr/>
 
-#### `enforceRangeBounds(range, bounds)`
+#### `enforceIntervalBounds(interval, bounds)`
 
-Adjust `range` to fit within `bounds` if possible, without changing the length of `range`. If `range` is longer than `bounds`, the extent is maintained and `range` is adjusted to have the same center as `bounds`.
+Adjust `interval` to fit within `bounds` if possible, without changing the length of `interval`. If `interval` is longer than `bounds`, the extent is maintained and `interval` is adjusted to have the same center as `bounds`.
 
 ```tsx
-enforceRangeBounds({ min: -10, max: 10 }, { min: 0, max: 100 });
+enforceIntervalBounds({ min: -10, max: 10 }, { min: 0, max: 100 });
 // -> { min: 0, max: 20 }
 
-enforceRangeBounds({ min: 0, max: 120 }, { min: 0, max: 100 });
+enforceIntervalBounds({ min: 0, max: 120 }, { min: 0, max: 100 });
 // -> { min: -10, max: 110 }
 ```
 
 <hr/>
 
-#### `enforceRangeExtent(range, minExtent, maxExtent)`
+#### `enforceIntervalExtent(interval, minExtent, maxExtent)`
 
-Adjust `range` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new range will be centered on the same point as the input range.
+Adjust `interval` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new interval will be centered on the same point as the input interval.
 
 ```tsx
-enforceRangeExtent({ min: 0, max: 100 }, 20, 80);
+enforceIntervalExtent({ min: 0, max: 100 }, 20, 80);
 // -> { min: 10, max: 90 }
 
-enforceRangeExtent({ min: 0, max: 100 }, 120, 200);
+enforceIntervalExtent({ min: 0, max: 100 }, 120, 200);
 // -> { min: -10, max: 110 }
 ```
 
 <hr/>
 
-#### `extendRange(range, factor)`
+#### `extendInterval(interval, factor)`
 
-Extends `range` on each end by `length of range * factor`.
+Extends `interval` on each end by `length of interval * factor`.
 
 ```tsx
-extendRange({ min: 0, max: 100 }, 0.1);
+extendInterval({ min: 0, max: 100 }, 0.1);
 // -> { min: -10, max: 110 }
 ```
 
 <hr/>
 
-#### `roundRange(range)`
+#### `roundInterval(interval)`
 
-Rounds each endpoint of `range` to the nearest integer.
+Rounds each endpoint of `interval` to the nearest integer.
 
 ```tsx
-roundRange({ min: 0.4, max: 1.7 });
+roundInterval({ min: 0.4, max: 1.7 });
 // -> { min: 0, max: 2 }
 ```
 
 <hr/>
 
-#### `niceRange(range)`
+#### `niceInterval(interval)`
 
-Uses [d3-scale's `nice`](https://github.com/d3/d3-scale#continuous_nice) to round the endpoints of `range` to nicer values.
+Uses [d3-scale's `nice`](https://github.com/d3/d3-scale#continuous_nice) to round the endpoints of `interval` to nicer values.
 
 ```tsx
-niceRange({ min: 34, max: 1454 });
+niceInterval({ min: 34, max: 1454 });
 // -> { min: 0, max: 1600 }
 ```
 
 <hr/>
 
-#### `mergeRanges(ranges)`
+#### `mergeIntervals(ranges)`
 
-Returns a range that covers all the provided ranges. Returns `null` if no ranges are given.
+Returns a interval that covers all the provided ranges. Returns `null` if no ranges are given.
 
 ```tsx
-mergeRanges([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);
+mergeIntervals([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);
 // -> { min: -10, max: 50 }
 
-mergeRanges([]);
+mergeIntervals([]);
 // -> null
 ```
 
 <hr/>
 
-#### `rangeContains(maybeLargerRange, maybeSmallerRange)`
+#### `rangeContains(maybeLargerInterval, maybeSmallerInterval)`
 
-Returns `true` if `maybeLargerRange` contains `maybeSmallerRange`, `false` otherwise.
+Returns `true` if `maybeLargerInterval` contains `maybeSmallerInterval`, `false` otherwise.
 
 ```tsx
 rangeContains({ min: 0, max: 100 }, { min: 0, max: 50 })
@@ -545,26 +545,26 @@ rangeContains({ min: 0, max: 100 }, { min: -50, max: 10 })
 
 <hr/>
 
-#### `panRange(range, delta)`
+#### `panInterval(interval, delta)`
 
-Shift both endpoints of the range over by the specified amount.
+Shift both endpoints of the interval over by the specified amount.
 
 ```tsx
-panRange({ min: 0, max: 100 }, 10);
+panInterval({ min: 0, max: 100 }, 10);
 // -> { min: 10, max: 110 }
 ```
 
 <hr/>
 
-#### `zoomRange(range, factor, anchorBias?)`
+#### `zoomInterval(interval, factor, anchorBias?)`
 
-Zoom the given range in/out by the specified factor. `factor > 1` zooms in, `factor < 1` zooms out. If provided, `anchorBias` should be a value on `[0, 1]` that specifies where the focus of the zoom is, where 0 means to hold the minimum value constant (therefore moving only the maximum value to perform the requested zoom) and 1 vice-versa.
+Zoom the given interval in/out by the specified factor. `factor > 1` zooms in, `factor < 1` zooms out. If provided, `anchorBias` should be a value on `[0, 1]` that specifies where the focus of the zoom is, where 0 means to hold the minimum value constant (therefore moving only the maximum value to perform the requested zoom) and 1 vice-versa.
 
 ```tsx
-zoomRange({ min: 0, max: 100 }, 2);
+zoomInterval({ min: 0, max: 100 }, 2);
 // -> { min: 25, max: 75 }
 
-zoomRange({ min: 0, max: 100 }, 2, 0);
+zoomInterval({ min: 0, max: 100 }, 2, 0);
 // -> { min: 0, max: 50 }
 ```
 

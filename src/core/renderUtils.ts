@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { SeriesData, Range, Ticks, TickFormat } from './interfaces';
+import { SeriesData, Interval, Ticks, TickFormat } from './interfaces';
 
 export interface IndexBounds {
   firstIndex: number;
@@ -22,7 +22,7 @@ function adjustBounds(firstIndex: number, lastIndex: number, dataLength: number)
 }
 
 // Assumption: data is sorted by `xValuePath` acending.
-export function getIndexBoundsForPointData(data: SeriesData, xValueBounds: Range, xValuePath: string): IndexBounds {
+export function getIndexBoundsForPointData(data: SeriesData, xValueBounds: Interval, xValuePath: string): IndexBounds {
   const lowerBound = _.set({}, xValuePath, xValueBounds.min);
   const upperBound = _.set({}, xValuePath, xValueBounds.max);
 
@@ -33,7 +33,7 @@ export function getIndexBoundsForPointData(data: SeriesData, xValueBounds: Range
 }
 
 // Assumption: data is sorted by `minXValuePath` ascending.
-export function getIndexBoundsForSpanData(data: SeriesData, xValueBounds: Range, minXValuePath: string, maxXValuePath: string): IndexBounds {
+export function getIndexBoundsForSpanData(data: SeriesData, xValueBounds: Interval, minXValuePath: string, maxXValuePath: string): IndexBounds {
   // Note that this is purposely reversed. Think about it.
   const upperBound = _.set({}, minXValuePath, xValueBounds.max);
 

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
 import {
-  Range,
+  Interval,
   Stack,
   ChartProvider,
   ConnectedSimpleLineLayer,
@@ -36,12 +36,12 @@ const DATA_LOADER = createStaticDataLoader({
 
 // Props we expect to receive from our our parent component.
 interface OwnProps {
-  resetXDomain: Range;
+  resetXDomain: Interval;
 }
 
 // Props auto-injected from the internally managed state.
 interface ConnectedProps {
-  currentXDomain: Range;
+  currentXDomain: Interval;
 }
 
 // Actions we want to be able to fire.

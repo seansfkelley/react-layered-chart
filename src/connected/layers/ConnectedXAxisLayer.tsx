@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Range, Color, ScaleFunction, Ticks, TickFormat, XAxisLayer as UnconnectedXAxisLayer} from '../../core';
+import { Interval, Color, ScaleFunction, Ticks, TickFormat, XAxisLayer as UnconnectedXAxisLayer} from '../../core';
 import { ChartState } from '../model/state';
 import { selectXDomain } from '../model/selectors';
 
@@ -15,7 +15,7 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  xDomain: Range;
+  xDomain: Interval;
 }
 
 @PureRender

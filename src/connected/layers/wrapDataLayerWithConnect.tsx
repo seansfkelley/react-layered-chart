@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Range, ScaleFunction, SeriesData} from '../../core';
+import { Interval, ScaleFunction, SeriesData} from '../../core';
 import { SeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectData, selectXDomain, selectYDomains } from '../model/selectors';
@@ -13,8 +13,8 @@ export interface SeriesIdProp {
 
 export interface ConnectedProps {
   data: SeriesData;
-  xDomain: Range;
-  yDomain: Range;
+  xDomain: Interval;
+  yDomain: Interval;
 }
 
 export default function<OwnProps, OriginalProps extends OwnProps & ConnectedProps>(OriginalComponent: React.ComponentClass<OriginalProps>): React.ComponentClass<OwnProps & SeriesIdProp> {

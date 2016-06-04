@@ -7,14 +7,14 @@ import * as React from 'react';
 
 import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
 import {
-  Range,
+  Interval,
   ChartProvider,
   Stack,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   createStaticDataLoader,
   // This utility function will do all the logic we need to implement this behavior.
-  enforceRangeBounds
+  enforceIntervalBounds
 } from '../src';
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7;
@@ -38,7 +38,7 @@ const DATA_LOADER = createStaticDataLoader({
 // For simplicity in this example, the controlled domain is kept on component
 // state, but you should use whatever means is appropriate for your environment.
 interface State {
-  xDomain: Range;
+  xDomain: Interval;
 }
 
 class ControlledInteractiveChart extends React.Component<{}, State> {
@@ -67,10 +67,10 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
     );
   }
 
-  private _onXDomainChange(xDomain: Range) {
+  private _onXDomainChange(xDomain: Interval) {
     // Use the provided utility to munge the X domain to something acceptable.
     this.setState({
-      xDomain: enforceRangeBounds(xDomain, CHART_BOUNDS)
+      xDomain: enforceIntervalBounds(xDomain, CHART_BOUNDS)
     });
   };
 }

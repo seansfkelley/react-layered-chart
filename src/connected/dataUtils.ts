@@ -1,11 +1,11 @@
 import * as _ from 'lodash';
 
-import { Range, SeriesData } from '../core';
+import { Interval, SeriesData } from '../core';
 import { SeriesId, TBySeriesId, DataLoader } from './interfaces';
 
 export function createStaticDataLoader(
   dataBySeriesId: TBySeriesId<SeriesData>,
-  yDomainBySeriesId: TBySeriesId<Range>
+  yDomainBySeriesId: TBySeriesId<Interval>
 ): DataLoader {
   return () => {
     return _.mapValues(dataBySeriesId, (data, seriesId) =>

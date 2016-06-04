@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Range, Color, BrushLayer as UnconnectedBrushLayer } from '../../core';
+import { Interval, Color, BrushLayer as UnconnectedBrushLayer } from '../../core';
 import { ChartState } from '../model/state';
 import { selectSelection, selectXDomain } from '../model/selectors';
 
@@ -12,8 +12,8 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  xDomain: Range;
-  selection?: Range;
+  xDomain: Interval;
+  selection?: Interval;
 }
 
 @PureRender

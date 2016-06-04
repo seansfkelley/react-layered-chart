@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { Range } from '../src';
+import { Interval } from '../src';
 
 // from https://datamarket.com/data/set/232f/chemical-concentration-readings#!ds=232f&display=line
 const UNPARSED_DATA = [{
@@ -605,12 +605,12 @@ export const DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
 const TIMESTAMPS = _.map<{}, number>(DATA, 'xValue');
 const VALUES = _.map<{}, number>(DATA, 'yValue');
 
-export const X_DOMAIN: Range = {
+export const X_DOMAIN: Interval = {
   min: _.min(TIMESTAMPS),
   max: _.max(TIMESTAMPS)
 };
 
-export const Y_DOMAIN: Range = {
+export const Y_DOMAIN: Interval = {
   min: _.min(VALUES),
   max: _.max(VALUES)
 };

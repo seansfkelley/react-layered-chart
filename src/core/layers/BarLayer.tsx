@@ -10,12 +10,12 @@ import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Color, Range, SpanDatum } from '../interfaces';
+import { Color, Interval, SpanDatum } from '../interfaces';
 
 export interface Props {
   data: SpanDatum[];
-  xDomain: Range;
-  yDomain: Range;
+  xDomain: Interval;
+  yDomain: Interval;
   color?: Color;
 }
 
@@ -27,8 +27,8 @@ class BarLayer extends React.Component<Props, void> {
 
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.spanDatum).isRequired,
-    xDomain: propTypes.range.isRequired,
-    yDomain: propTypes.range.isRequired,
+    xDomain: propTypes.interval.isRequired,
+    yDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string
   } as React.ValidationMap<any>;
 
