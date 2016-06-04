@@ -92,7 +92,7 @@ This component renders the X domain. By default, it interprets the numerical val
 - `color?`: a string specifying the color to use for drawing.
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
 
-There is a `ConnectedXAxisLayer` that accepts the same props, except `xDomain`.
+There is a `ConnectedXAxisLayer` that accepts the same props, except with `seriesId` instead of `xDomain`.
 
 <hr/>
 
@@ -114,7 +114,7 @@ This component renders one or more Y domains, lined up next to each other on the
 - `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
 - `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
 
-`YAxisLayer` does not yet have a "connected" variant.
+There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`.
 
 <hr/>
 
