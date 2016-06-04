@@ -66,7 +66,7 @@ The layers in this category are:
 - `HoverLineLayer`
 - `PointLayer`
 - `SimpleLineLayer`
-- `TimeSpanLayer`
+- `SpanLayer`
 
 Additionally, most of these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
 
