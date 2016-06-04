@@ -24,4 +24,9 @@ export {
   OwnProps as ConnectedXAxisLayerProps
 } from './ConnectedXAxisLayer';
 
+export {
+  default as ConnectedYAxisLayer,
+  OwnProps as ConnectedYAxisLayerProps
+} from './ConnectedYAxisLayer';
+
 export { SeriesIdProp } from './wrapDataLayerWithConnect';
