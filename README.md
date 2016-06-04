@@ -14,7 +14,7 @@ Be sure to include the styles from `react-layered-chart/react-layered-chart.css`
 
 ### `process.env.NODE_ENV`
 
-In development mode, react-layered-chart logs internal state changes rather verbosely for debugging purposes. Specify the value `"production"` for `process.env.NODE_ENV` in your build to turn this off.
+Your build should specify a value for `process.env.NODE_ENV`, or at least shim it out so it doesn't fail at runtime. If you would like to get verbose debugging for what's going on inside a `ChartProvider`, specify a value of `"development"` for `process.env.NODE_ENV`.
 
 ## Making Basic, Static Charts
 

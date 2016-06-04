@@ -17,7 +17,7 @@ function _createStore(chartId?: ChartId) {
     ThunkMiddleware
   ];
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
     middlewares.push(createLogger({
       actionTransformer: (action) => _.defaults({
         type: ActionType[ action.type ] || action.type
