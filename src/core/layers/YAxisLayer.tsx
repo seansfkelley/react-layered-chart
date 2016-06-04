@@ -9,16 +9,12 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { computeTicks } from '../renderUtils';
-import { Interval, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
+import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
 
 const DEFAULT_TICK_COUNT = 5;
 
-export interface YAxisSpec {
+export interface YAxisSpec extends AxisSpec {
   yDomain: Interval;
-  scale?: ScaleFunction;
-  ticks?: Ticks;
-  tickFormat?: TickFormat;
-  color?: Color;
   axisId?: string;
 }
 
@@ -81,13 +77,10 @@ export default class YAxisLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
-    axes: React.PropTypes.arrayOf(React.PropTypes.shape({
+    axes: React.PropTypes.arrayOf(React.PropTypes.shape(_.defaults({
       yDomain: propTypes.interval.isRequired,
-      scale: React.PropTypes.func,
-      ticks: propTypes.ticks,
-      tickFormat: propTypes.tickFormat,
-      color: React.PropTypes.string
-    })).isRequired,
+      axisId: React.PropTypes.string,
+    } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
     font: React.PropTypes.string,
     backgroundColor: React.PropTypes.string
   };

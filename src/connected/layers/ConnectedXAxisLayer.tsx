@@ -2,15 +2,11 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Interval, Color, ScaleFunction, Ticks, TickFormat, XAxisLayer as UnconnectedXAxisLayer} from '../../core';
+import { Interval, AxisSpec, XAxisLayer as UnconnectedXAxisLayer} from '../../core';
 import { ChartState } from '../model/state';
 import { selectXDomain } from '../model/selectors';
 
-export interface OwnProps {
-  scale?: ScaleFunction;
-  ticks?: Ticks;
-  tickFormat?: TickFormat;
-  color?: Color;
+export interface OwnProps extends AxisSpec {
   font?: string;
 }
 

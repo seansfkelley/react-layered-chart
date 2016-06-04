@@ -9,19 +9,15 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
 import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
-import { Interval, ScaleFunction, Ticks, TickFormat, Color } from '../interfaces';
+import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
 
 const DEFAULT_TICK_COUNT = 5;
 // TODO: Do any of these need to be configurable?
 const VERTICAL_PADDING = 4;
 const HORIZONTAL_PADDING = 6;
 
-export interface Props {
+export interface Props extends AxisSpec {
   xDomain: Interval;
-  scale?: ScaleFunction;
-  ticks?: Ticks;
-  tickFormat?: TickFormat;
-  color?: Color;
   font?: string;
 }
 
@@ -31,14 +27,10 @@ export interface Props {
 export default class XAxisLayer extends React.Component<Props, void> {
   context: Context;
 
-  static propTypes = {
+  static propTypes = _.defaults({
     xDomain: propTypes.interval.isRequired,
-    scale: React.PropTypes.func,
-    ticks: propTypes.ticks,
-    tickFormat: propTypes.tickFormat,
-    color: React.PropTypes.string,
     font: React.PropTypes.string
-  };
+  }, propTypes.axisSpecPartial);
 
   static defaultProps = {
     scale: d3Scale.scaleTime,

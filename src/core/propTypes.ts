@@ -36,11 +36,19 @@ export const tickFormat = React.PropTypes.oneOfType([
   React.PropTypes.string
 ]);
 
+export const axisSpecPartial = {
+  scale: React.PropTypes.func,
+  ticks: ticks,
+  tickFormat: tickFormat,
+  color: React.PropTypes.string
+};
+
 export default {
   interval,
   pointDatum,
   spanDatum,
   bucketDatum,
   ticks,
-  tickFormat
+  tickFormat,
+  axisSpecPartial
 };

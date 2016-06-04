@@ -32,3 +32,10 @@ export interface BucketDatum {
   firstYValue: number;
   lastYValue: number;
 }
+
+export interface AxisSpec {
+  scale?: ScaleFunction;
+  ticks?: Ticks;
+  tickFormat?: TickFormat;
+  color?: Color;
+}
