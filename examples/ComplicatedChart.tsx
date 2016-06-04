@@ -14,6 +14,7 @@ import {
   ConnectedHoverLineLayer,
   createStaticDataLoader,
   ConnectedXAxisLayer,
+  ConnectedYAxisLayer,
   YAxisLayer
 } from '../src';
 
@@ -67,12 +68,12 @@ const CHART = (
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
       {/* Show the hover line as the mouse moves around. */}
       <ConnectedHoverLineLayer/>
-      <YAxisLayer
+      <ConnectedYAxisLayer
         axes={[{
-          yDomain: Y_DOMAIN,
+          seriesId: TEST_SERIES_ID_1,
           color: COLOR_1
         }, {
-          yDomain: MUNGED_Y_DOMAIN,
+          seriesId: TEST_SERIES_ID_2,
           color: COLOR_2
         }]}
         font='12px MyriadPro-Regular'
