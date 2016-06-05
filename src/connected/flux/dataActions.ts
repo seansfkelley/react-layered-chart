@@ -18,7 +18,7 @@ function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void):
   }, 500, { leading: false, trailing: true });
 
   return function(keyedData: TBySeriesId<T>) {
-    _.extend(keyedBatchAccumulator, keyedData);
+    _.assign(keyedBatchAccumulator, keyedData);
     throttledBatchCallback();
   };
 }
