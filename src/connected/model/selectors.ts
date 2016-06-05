@@ -12,7 +12,7 @@ function createUiStateSelector<T>(selectUiState: (state: ChartState) => UiState,
   return createSelector(
     selectUiState,
     (uiState: UiState) => uiState[fieldName]
-  )
+  );
 }
 
 export const selectXDomain = createSelector(
@@ -24,7 +24,7 @@ export const selectXDomain = createSelector(
 export const selectYDomains = createSelector(
   createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
   createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
-  (internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) => <TBySeriesId<Interval>> _.assign({}, internal, override)
+  (internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) => _.assign(<TBySeriesId<Interval>> {}, internal, override)
 );
 
 export const selectHover = createSelector(
