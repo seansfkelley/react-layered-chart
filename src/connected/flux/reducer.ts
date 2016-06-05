@@ -37,13 +37,12 @@ export default function(state: ChartState, action: Action<any>): ChartState {
   }
 
   switch (action.type) {
-    case ActionType.SET_SERIES_IDS:
-    {
+    case ActionType.SET_SERIES_IDS: {
       const seriesIds = _.clone(action.payload);
       return update(state, {
         seriesIds: { $set: seriesIds },
         dataBySeriesId: { $set: objectWithKeysFromObject(state.dataBySeriesId, seriesIds, []) },
-        isLoadingBySeriesId: { $set: objectWithKeysFromObject(state.isLoadingBySeriesId, seriesIds, false) },
+        loadVersionBySeriesId: { $set: objectWithKeysFromObject(state.loadVersionBySeriesId, seriesIds, null) },
         errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) },
         uiState: {
           yDomainBySeriesId: { $set: objectWithKeysFromObject(state.uiState.yDomainBySeriesId, seriesIds, DEFAULT_Y_DOMAIN) }
@@ -52,24 +51,21 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     }
 
     case ActionType.DATA_REQUESTED:
-      // TODO: Should we merge load state and load version?
-      // TODO: This assumes that when you request a load, you request it for everything. This may not be true.
       return update(state, {
-        isLoadingBySeriesId: { $set: createConstantMapForAllSeries(true) },
-        loadVersion: { $set: action.payload }
+        loadVersionBySeriesId: { $assign: objectWithKeys(action.payload, _.uniqueId('load-version-')) }
       });
 
     case ActionType.DATA_RETURNED:
       return update(state, {
         dataBySeriesId: { $assign: action.payload },
-        isLoadingBySeriesId: { $assign: replaceValuesWithConstant(action.payload, false) },
+        loadVersionBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) },
         errorBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) }
       });
 
     case ActionType.DATA_ERRORED:
       // TODO: Should we clear the current data too?
       return update(state, {
-        isLoadingBySeriesId: { $assign: replaceValuesWithConstant(action.payload, false) },
+        loadVersionBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) },
         errorBySeriesId: { $assign: action.payload }
       });
 

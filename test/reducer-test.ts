@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as should from 'should';
 
 import reducer, { objectWithKeys, replaceValuesWithConstant, objectWithKeysFromObject } from '../src/connected/flux/reducer';
 import { ChartState, DEFAULT_CHART_STATE } from '../src/connected/model/state';
@@ -10,10 +11,6 @@ function action<T>(actionType: ActionType, payload: T): Action<T> {
     type: actionType,
     payload
   };
-}
-
-function loadVersion() {
-  return _.uniqueId('load-version-');
 }
 
 describe('objectWithKeys', () => {
@@ -130,7 +127,7 @@ describe('reducer', () => {
   function pickKeyedState(state: ChartState) {
     return {
       dataBySeriesId: state.dataBySeriesId,
-      isLoadingBySeriesId: state.isLoadingBySeriesId,
+      loadVersionBySeriesId: state.loadVersionBySeriesId,
       errorBySeriesId: state.errorBySeriesId,
       yDomainBySeriesId: state.uiState.yDomainBySeriesId
     };
@@ -147,7 +144,7 @@ describe('reducer', () => {
     state.seriesIds.should.deepEqual(ALL_SERIES);
     pickKeyedState(state).should.deepEqual({
       dataBySeriesId: objectWithKeys(ALL_SERIES, []),
-      isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
+      loadVersionBySeriesId: objectWithKeys(ALL_SERIES, null),
       errorBySeriesId: objectWithKeys(ALL_SERIES, null),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
@@ -163,30 +160,49 @@ describe('reducer', () => {
     state.seriesIds.should.deepEqual(ONLY_SERIES_A);
     pickKeyedState(state).should.deepEqual({
       dataBySeriesId: objectWithKeys(ONLY_SERIES_A, []),
-      isLoadingBySeriesId: objectWithKeys(ONLY_SERIES_A, false),
+      loadVersionBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
       errorBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
       yDomainBySeriesId: objectWithKeys(ONLY_SERIES_A, DEFAULT_Y_DOMAIN)
     });
   });
 
-  it('should not change anything except the loading state and load version when a load is requested', () => {
-    state = reducer(state, action(ActionType.SET_SERIES_IDS, ALL_SERIES));
-
-    const version = loadVersion();
-    const startingState = state;
-
-    state = reducer(state, action(ActionType.DATA_REQUESTED, version));
-
-    _.omit(state, 'isLoadingBySeriesId', 'loadVersion').should.deepEqual(_.omit(startingState, 'isLoadingBySeriesId', 'loadVersion'));
-
-    state.isLoadingBySeriesId.should.deepEqual(objectWithKeys(ALL_SERIES, true));
-    state.loadVersion.should.equal(version);
-  });
-
-  it('should unset the loading state and set the data for all series when they return successfully simultaneously', () => {
+  it('should update the load versions for only the series specified in a load request', () => {
     state = serial(state,
       action(ActionType.SET_SERIES_IDS, ALL_SERIES),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, [ SERIES_A ])
+    );
+
+    state.loadVersionBySeriesId.should.have.keys(ALL_SERIES);
+    should.exist(state.loadVersionBySeriesId[SERIES_A]);
+    should.not.exist(state.loadVersionBySeriesId[SERIES_B]);
+  });
+
+  it('should not change anything other than the load versions in a load request', () => {
+    state = reducer(state, action(ActionType.SET_SERIES_IDS, ALL_SERIES));
+
+    const startingState = state;
+
+    state = reducer(state, action(ActionType.DATA_REQUESTED, ALL_SERIES));
+
+    _.omit(state, 'loadVersionBySeriesId').should.deepEqual(_.omit(startingState, 'loadVersionBySeriesId'));
+  });
+
+  it('should clear the load version when a load returns for a particular series', () => {
+    state = serial(state,
+      action(ActionType.SET_SERIES_IDS, ALL_SERIES),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
+      action(ActionType.DATA_RETURNED, { [SERIES_A]: DATA_A })
+    );
+
+    state.loadVersionBySeriesId.should.have.keys(ALL_SERIES);
+    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
+    should.exist(state.loadVersionBySeriesId[SERIES_B]);
+  });
+
+  it('should clear the load version and set the data for all series when they return successfully simultaneously', () => {
+    state = serial(state,
+      action(ActionType.SET_SERIES_IDS, ALL_SERIES),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_RETURNED, {
         [SERIES_A]: DATA_A,
         [SERIES_B]: DATA_B
@@ -198,44 +214,39 @@ describe('reducer', () => {
         [SERIES_A]: DATA_A,
         [SERIES_B]: DATA_B
       },
-      isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
+      loadVersionBySeriesId: objectWithKeys(ALL_SERIES, null),
       errorBySeriesId: objectWithKeys(ALL_SERIES, null),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
 
-  it('should unset the loading state and set the data for a single series that returns successfully', () => {
+  it('should clear the loading state and set the data for a single series that returns successfully', () => {
     state = serial(state,
       action(ActionType.SET_SERIES_IDS, ALL_SERIES),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_RETURNED, {
         [SERIES_A]: DATA_A
       })
     );
 
-    pickKeyedState(state).should.deepEqual({
-      dataBySeriesId: {
-        [SERIES_A]: DATA_A,
-        [SERIES_B]: []
-      },
-      isLoadingBySeriesId: {
-        [SERIES_A]: false,
-        [SERIES_B]: true
-      },
-      errorBySeriesId: objectWithKeys(ALL_SERIES, null),
-      yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
+    state.dataBySeriesId.should.deepEqual({
+      [SERIES_A]: DATA_A,
+      [SERIES_B]: []
     });
+
+    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
+    should.exist(state.loadVersionBySeriesId[SERIES_B]);
   });
 
-  it('should unset the loading state, set the error state, and not change the data for all series when they return in error simultaneously', () => {
+  it('should clear the loading state, set the error state, and not change the data for all series when they return in error simultaneously', () => {
     state = serial(state,
       action(ActionType.SET_SERIES_IDS, ALL_SERIES),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_RETURNED, {
         [SERIES_A]: DATA_A,
         [SERIES_B]: DATA_B
       }),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_ERRORED, objectWithKeys(ALL_SERIES, ERROR))
     );
 
@@ -244,41 +255,37 @@ describe('reducer', () => {
         [SERIES_A]: DATA_A,
         [SERIES_B]: DATA_B
       },
-      isLoadingBySeriesId: objectWithKeys(ALL_SERIES, false),
+      loadVersionBySeriesId: objectWithKeys(ALL_SERIES, null),
       errorBySeriesId: objectWithKeys(ALL_SERIES, ERROR),
       yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
     });
   });
 
-  it('should unset the loading state, set the error state, and not change the data for a single series that returns in error', () => {
+  it('should clear the loading state, set the error state, and not change the data for a single series that returns in error', () => {
     state = serial(state,
       action(ActionType.SET_SERIES_IDS, ALL_SERIES),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_RETURNED, {
         [SERIES_A]: DATA_A,
         [SERIES_B]: DATA_B
       }),
-      action(ActionType.DATA_REQUESTED, loadVersion()),
+      action(ActionType.DATA_REQUESTED, ALL_SERIES),
       action(ActionType.DATA_ERRORED, {
         [SERIES_A]: ERROR
       })
     );
 
-    pickKeyedState(state).should.deepEqual({
-      dataBySeriesId: {
-        [SERIES_A]: DATA_A,
-        [SERIES_B]: DATA_B
-      },
-      isLoadingBySeriesId: {
-        [SERIES_A]: false,
-        [SERIES_B]: true
-      },
-      errorBySeriesId: {
-        [SERIES_A]: ERROR,
-        [SERIES_B]: null
-      },
-      yDomainBySeriesId: objectWithKeys(ALL_SERIES, DEFAULT_Y_DOMAIN)
+    state.dataBySeriesId.should.deepEqual({
+      [SERIES_A]: DATA_A,
+      [SERIES_B]: DATA_B
+    });
+
+    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
+    should.exist(state.loadVersionBySeriesId[SERIES_B]);
+
+    state.errorBySeriesId.should.deepEqual({
+      [SERIES_A]: ERROR,
+      [SERIES_B]: null
     });
   });
-
 });

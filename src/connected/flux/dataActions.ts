@@ -54,11 +54,14 @@ function _performDataLoad() {
       });
     });
 
+    function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
+      return preLoadChartState.loadVersionBySeriesId[seriesId] === postLoadChartState.loadVersionBySeriesId[seriesId];
+    }
+
     _.each(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
       dataPromise
       .then(loadedData => {
-        const postLoadChartState = getState();
-        if (preLoadChartState.loadVersion === postLoadChartState.loadVersion && _.includes(postLoadChartState.seriesIds, seriesId)) {
+        if (isResultStillRelevant(getState(), seriesId)) {
           batchedDataReturned({
             [seriesId]: loadedData.data
           });
@@ -69,8 +72,7 @@ function _performDataLoad() {
         }
       })
       .catch(error => {
-        const postLoadChartState = getState();
-        if (preLoadChartState.loadVersion === postLoadChartState.loadVersion && _.includes(postLoadChartState.seriesIds, seriesId)) {
+        if (isResultStillRelevant(getState(), seriesId)) {
           batchedDataErrored({
             [seriesId]: error
           });
@@ -89,11 +91,16 @@ function _performDataLoad() {
   return thunk;
 }
 
-export function requestDataLoad() {
+export function requestDataLoad(seriesIds?: SeriesId[]) {
   return (dispatch, getState) => {
+    const state: ChartState = getState();
+    const seriesIdsToLoad = seriesIds
+      ? _.intersection(seriesIds, state.seriesIds)
+      : state.seriesIds;
+
     dispatch({
       type: ActionType.DATA_REQUESTED,
-      payload: _.uniqueId('series-version-id-')
+      payload: seriesIdsToLoad
     });
 
     dispatch(_performDataLoad());

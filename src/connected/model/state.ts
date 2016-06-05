@@ -19,9 +19,8 @@ export interface ChartState {
   physicalChartWidth: number;
   seriesIds: SeriesId[];
   dataBySeriesId: TBySeriesId<SeriesData>;
-  isLoadingBySeriesId: TBySeriesId<boolean>;
+  loadVersionBySeriesId: TBySeriesId<string>;
   errorBySeriesId: TBySeriesId<any>;
-  loadVersion: string;
   dataLoader: DataLoader;
   uiState: UiState;
   uiStateConsumerOverrides: UiState;
@@ -37,9 +36,8 @@ export const DEFAULT_CHART_STATE: ChartState = {
   physicalChartWidth: 200,
   seriesIds: [],
   dataBySeriesId: {},
-  isLoadingBySeriesId: {},
+  loadVersionBySeriesId: {},
   errorBySeriesId: {},
-  loadVersion: null,
   dataLoader: invalidLoader,
   uiState: {
     xDomain: DEFAULT_X_DOMAIN,

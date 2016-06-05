@@ -120,20 +120,37 @@ export default class ChartProvider extends React.Component<Props, {}> {
     this._lastState = null;
   }
 
+  // TODO: This should probably be replaced with delegations to selectors.
   private _maybeFireAllCallbacks() {
     const state: ChartState = this._store.getState();
     this._maybeFireCallback(state.uiState.xDomain,           this._lastState.uiState.xDomain,           this.props.onXDomainChange);
     this._maybeFireCallback(state.uiState.yDomainBySeriesId, this._lastState.uiState.yDomainBySeriesId, this.props.onYDomainsChange);
     this._maybeFireCallback(state.uiState.selection,         this._lastState.uiState.selection,         this.props.onSelectionChange);
     this._maybeFireCallback(state.uiState.hover,             this._lastState.uiState.hover,             this.props.onHoverChange);
-    this._maybeFireCallback(state.isLoadingBySeriesId,       this._lastState.isLoadingBySeriesId,       this.props.onLoadStateChange);
     this._maybeFireCallback(state.errorBySeriesId,           this._lastState.errorBySeriesId,           this.props.onError);
+    this._maybeFireCallbackWithConversion(
+      state.loadVersionBySeriesId,
+      this._lastState.loadVersionBySeriesId,
+      (loadVersions) => _.mapValues(loadVersions, v => !!v),
+      this.props.onLoadStateChange
+    );
     this._lastState = state;
   }
 
   private _maybeFireCallback<T>(currentState: T, lastState: T, callback?: (value: T) => void) {
     if (callback && currentState !== lastState) {
       callback(currentState);
+    }
+  }
+
+  private _maybeFireCallbackWithConversion<T, U>(
+    currentState: T,
+    lastState: T,
+    conversion: (value: T) => U,
+    callback?: (value: U) => void
+  ) {
+    if (callback && currentState !== lastState) {
+      callback(conversion(currentState));
     }
   }
 
