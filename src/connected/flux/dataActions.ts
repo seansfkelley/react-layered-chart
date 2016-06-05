@@ -93,10 +93,10 @@ function _performDataLoad() {
 
 export function requestDataLoad(seriesIds?: SeriesId[]) {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const existingSeriesIds: SeriesId[] = getState().seriesIds;
     const seriesIdsToLoad = seriesIds
-      ? _.intersection(seriesIds, state.seriesIds)
-      : state.seriesIds;
+      ? _.intersection(seriesIds, existingSeriesIds)
+      : existingSeriesIds;
 
     dispatch({
       type: ActionType.DATA_REQUESTED,
@@ -109,16 +109,14 @@ export function requestDataLoad(seriesIds?: SeriesId[]) {
 
 export function setSeriesIds(payload: SeriesId[]) {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const newSeriesIds: SeriesId[] = _.difference(payload, getState().seriesIds);
 
-    if (!_.isEqual(_.sortBy(payload), _.sortBy(state.seriesIds))) {
-      dispatch({
-        type: ActionType.SET_SERIES_IDS,
-        payload
-      });
+    dispatch({
+      type: ActionType.SET_SERIES_IDS,
+      payload
+    });
 
-      dispatch(requestDataLoad());
-    }
+    dispatch(requestDataLoad(newSeriesIds));
   };
 }
 
