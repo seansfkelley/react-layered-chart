@@ -30,7 +30,7 @@ export const selectYDomains = createSelector(
 export const selectHover = createSelector(
   createUiStateSelector<number>(selectUiStateInternal, 'hover'),
   createUiStateSelector<number>(selectUiStateOverride, 'hover'),
-  (internal: number, override: number) => override || internal
+  (internal: number, override: number) => _.isNumber(override) ? override : internal
 );
 
 export const selectSelection = createSelector(
