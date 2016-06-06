@@ -69,18 +69,18 @@ export function niceInterval(interval: Interval): Interval {
   }
 }
 
-export function mergeIntervals(ranges: Interval[]): Interval {
-  if (ranges.length === 0) {
+export function mergeIntervals(intervals: Interval[]): Interval {
+  if (intervals.length === 0) {
     return null;
   } else {
     return {
-      min: _.min(_.map<Interval, number>(ranges, 'min')),
-      max: _.max(_.map<Interval, number>(ranges, 'max'))
+      min: _.min(_.map<Interval, number>(intervals, 'min')),
+      max: _.max(_.map<Interval, number>(intervals, 'max'))
     };
   }
 }
 
-export function rangeContains(maybeLargerInterval: Interval, maybeSmallerInterval: Interval) {
+export function intervalContains(maybeLargerInterval: Interval, maybeSmallerInterval: Interval) {
   return maybeLargerInterval.min <= maybeSmallerInterval.min && maybeLargerInterval.max >= maybeSmallerInterval.max;
 }
 

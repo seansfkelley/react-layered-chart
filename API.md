@@ -517,9 +517,9 @@ niceInterval({ min: 34, max: 1454 });
 
 <hr/>
 
-#### `mergeIntervals(ranges)`
+#### `mergeIntervals(intervals)`
 
-Returns a interval that covers all the provided ranges. Returns `null` if no ranges are given.
+Returns a interval that covers all the provided intervals. Returns `null` if no intervals are given.
 
 ```tsx
 mergeIntervals([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);
@@ -531,15 +531,15 @@ mergeIntervals([]);
 
 <hr/>
 
-#### `rangeContains(maybeLargerInterval, maybeSmallerInterval)`
+#### `intervalContains(maybeLargerInterval, maybeSmallerInterval)`
 
 Returns `true` if `maybeLargerInterval` contains `maybeSmallerInterval`, `false` otherwise.
 
 ```tsx
-rangeContains({ min: 0, max: 100 }, { min: 0, max: 50 })
+intervalContains({ min: 0, max: 100 }, { min: 0, max: 50 })
 // -> true
 
-rangeContains({ min: 0, max: 100 }, { min: -50, max: 10 })
+intervalContains({ min: 0, max: 100 }, { min: -50, max: 10 })
 // -> false
 ```
 

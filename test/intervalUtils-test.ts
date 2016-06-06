@@ -8,7 +8,7 @@ import {
   extendInterval,
   roundInterval,
   mergeIntervals,
-  rangeContains,
+  intervalContains,
   panInterval,
   zoomInterval
 } from '../src/core/intervalUtils';
@@ -150,7 +150,7 @@ describe('mergeIntervals', () => {
     ]).should.deepEqual(interval(0, 3));
   });
 
-  it('should not mutate the input ranges', () => {
+  it('should not mutate the input intervals', () => {
     const r1 = interval(0, 2);
     const r2 = interval(1, 3);
     mergeIntervals([ r1, r2 ]);
@@ -159,20 +159,20 @@ describe('mergeIntervals', () => {
   });
 });
 
-describe('rangeContains', () => {
+describe('intervalContains', () => {
   const SMALL_RANGE = { min: 1, max: 2 };
   const BIG_RANGE = { min: 0, max: 3 };
 
   it('should return true if the first interval is strictly larger than the second interval', () => {
-    rangeContains(BIG_RANGE, SMALL_RANGE).should.be.true();
+    intervalContains(BIG_RANGE, SMALL_RANGE).should.be.true();
   });
 
   it('should return true if the first interval is equal to the second interval', () => {
-    rangeContains(BIG_RANGE, BIG_RANGE).should.be.true();
+    intervalContains(BIG_RANGE, BIG_RANGE).should.be.true();
   });
 
   it('should return false if the first interval is strictly smaller than the second interval', () => {
-    rangeContains(SMALL_RANGE, BIG_RANGE).should.be.false();
+    intervalContains(SMALL_RANGE, BIG_RANGE).should.be.false();
   });
 });
 
