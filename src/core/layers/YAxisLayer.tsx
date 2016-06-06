@@ -15,7 +15,7 @@ const DEFAULT_TICK_COUNT = 5;
 
 export interface YAxisSpec extends AxisSpec {
   yDomain: Interval;
-  axisId?: string;
+  axisId?: number | string;
 }
 
 interface YAxisProps extends YAxisSpec {
@@ -79,7 +79,10 @@ export default class YAxisLayer extends React.Component<Props, void> {
   static propTypes = {
     axes: React.PropTypes.arrayOf(React.PropTypes.shape(_.defaults({
       yDomain: propTypes.interval.isRequired,
-      axisId: React.PropTypes.string,
+      axisId: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.number,
+      ])
     } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
     font: React.PropTypes.string,
     backgroundColor: React.PropTypes.string
@@ -98,7 +101,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
             {...axis}
             font={this.props.font}
             backgroundColor={this.props.backgroundColor}
-            key={axis.axisId || i}
+            key={_.isEmpty(axis.axisId) ? i : axis.axisId}
           />
         ))}
       </div>
