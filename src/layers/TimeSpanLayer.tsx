@@ -58,7 +58,7 @@ export default class TimeSpanLayer extends React.Component<Props, void> {
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .rangeRound([ 0, width ]);
 
-    for (let i = firstIndex; i <= lastIndex; ++i) {
+    for (let i = firstIndex; i < lastIndex; ++i) {
       const left = xScale(this.props.data[i].timeSpan.min);
       const right = xScale(this.props.data[i].timeSpan.max);
       context.beginPath();
