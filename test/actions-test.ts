@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import * as should from 'should';
+import * as sinon from 'sinon';
 import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
-import { requestDataLoad, setSeriesIds, setDataLoader } from '../src/connected/flux/dataActions';
+import { requestDataLoad, setSeriesIds, setDataLoader, _performDataLoad } from '../src/connected/flux/dataActions';
 import { ActionType } from '../src/connected/model/ActionType';
 import { ChartState } from '../src/connected/model/state';
 
@@ -14,13 +15,16 @@ describe('(action creator)', () => {
   const ALL_SERIES = [ SERIES_A, SERIES_B ];
 
   let store: Store;
+  let dataLoaderSpy: Sinon.SinonSpy;
 
   beforeEach(() => {
     store = applyMiddleware(ThunkMiddleware)(createStore)(reducer);
 
+    dataLoaderSpy = sinon.spy();
+
     store.dispatch({
       type: ActionType.SET_DATA_LOADER,
-      payload: () => {}
+      payload: dataLoaderSpy
     });
 
     store.dispatch({
@@ -109,6 +113,33 @@ describe('(action creator)', () => {
       const state: ChartState = store.getState();
 
       state.loadVersionBySeriesId.should.not.have.key(SERIES_C);
+    });
+
+    it('should call the data loader', () => {
+      store.dispatch(requestDataLoad());
+
+      dataLoaderSpy.calledOnce.should.be.true();
+    });
+  });
+
+  describe('_performDataLoad', () => {
+    it('should provide debounce metadata', () => {
+      const action = _performDataLoad();
+      should.exist(action.meta);
+      should.exist(action.meta.debounce);
+      should(action.meta.debounce.time).be.a.Number();
+      should(action.meta.debounce.key).be.a.String();
+    });
+
+    it('should call the load function with only the series IDs that have requested loads', () => {
+      store.dispatch({
+        type: ActionType.DATA_REQUESTED,
+        payload: [ SERIES_A ]
+      });
+      store.dispatch(_performDataLoad());
+
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[0].should.deepEqual([ SERIES_A ]);
     });
   });
 });

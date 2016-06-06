@@ -29,7 +29,7 @@ export function _performDataLoad() {
     const preLoadChartState = getState();
     const dataLoader = preLoadChartState.dataLoader;
 
-    const seriesIdsToLoad = _.keys(_.pick(preLoadChartState.loadVersionBySeriesId));
+    const seriesIdsToLoad = _.keys(_.pickBy(preLoadChartState.loadVersionBySeriesId));
 
     const loadPromiseBySeriesId = dataLoader(
       seriesIdsToLoad,
