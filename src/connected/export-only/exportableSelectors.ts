@@ -11,9 +11,9 @@ import {
 } from '../model/selectors';
 import { ChartState } from '../model/state';
 import { ChartProviderState } from './exportableState';
-import { SeriesId, TBySeriesId } from '../interfaces';
+import { SeriesId, TBySeriesId, StateSelector } from '../interfaces';
 
-function _wrapForTypeCast<T>(selector: (state: ChartState) => T): (state: ChartProviderState) => T {
+function _wrapForTypeCast<T>(selector: (state: ChartState) => T): StateSelector<T> {
   return (state: ChartProviderState) => selector(state as any as ChartState);
 }
 
