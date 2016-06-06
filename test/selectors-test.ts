@@ -149,7 +149,7 @@ describe('(selectors)', () => {
     const DATUM_2 = { x: 10 };
     const DATA = [ DATUM_1, DATUM_2 ];
 
-    it('should return nulls if hover is unset', () => {
+    it('should return undefineds if hover is unset', () => {
       selectDataForHover({
         dataBySeriesId: {
           [SERIES_A]: [{ x: 0}]
@@ -159,7 +159,7 @@ describe('(selectors)', () => {
         },
         uiStateConsumerOverrides: {}
       } as any).should.deepEqual({
-        [SERIES_A]: null
+        [SERIES_A]: undefined
       });
     });
 

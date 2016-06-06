@@ -36,8 +36,8 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
     internalSelectData,
     internalSelectHover,
     (dataBySeriesId: TBySeriesId<any>, hover?: number) => {
-      if (_.isUndefined(hover) || _.isNull(hover)) {
-        return _.mapValues(dataBySeriesId, _.constant(null));
+      if (_.isNil(hover)) {
+        return _.mapValues(dataBySeriesId, _.constant(undefined));
       } else {
         // This is cause sortedIndexBy prefers to have the same shape for the array items and the searched thing. We don't
         // know what that shape is, so we do some bullshit to make sure we can differentiate the hover value from the

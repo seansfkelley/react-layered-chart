@@ -120,14 +120,15 @@ export default class ChartProvider extends React.Component<Props, {}> {
     this._lastState = null;
   }
 
-  // TODO: This should probably be replaced with delegations to selectors.
   private _maybeFireAllCallbacks() {
     const state: ChartState = this._store.getState();
     this._maybeFireCallback(state.uiState.xDomain,           this._lastState.uiState.xDomain,           this.props.onXDomainChange);
     this._maybeFireCallback(state.uiState.yDomainBySeriesId, this._lastState.uiState.yDomainBySeriesId, this.props.onYDomainsChange);
     this._maybeFireCallback(state.uiState.selection,         this._lastState.uiState.selection,         this.props.onSelectionChange);
     this._maybeFireCallback(state.uiState.hover,             this._lastState.uiState.hover,             this.props.onHoverChange);
-    this._maybeFireCallback(state.errorBySeriesId,           this._lastState.errorBySeriesId,           this.props.onError);
+
+    // TODO: These two should maybe be replaced with delegations to selectors.
+    this._maybeFireCallback(state.errorBySeriesId, this._lastState.errorBySeriesId, this.props.onError);
     this._maybeFireCallbackWithConversion(
       state.loadVersionBySeriesId,
       this._lastState.loadVersionBySeriesId,
@@ -155,12 +156,12 @@ export default class ChartProvider extends React.Component<Props, {}> {
   }
 
   private _onPropsChange(nextProps: Props) {
-    this._maybeDispatchChangedProp(this.props.seriesIds,      nextProps.seriesIds,      setSeriesIds);
-    this._maybeDispatchChangedProp(this.props.loadData,       nextProps.loadData,       setDataLoader);
-    this._maybeDispatchChangedProp(this.props.xDomain,        nextProps.xDomain,        setXDomain);
-    this._maybeDispatchChangedProp(this.props.yDomains,       nextProps.yDomains,       setYDomain);
-    this._maybeDispatchChangedProp(this.props.hover,          nextProps.hover,          setHover);
-    this._maybeDispatchChangedProp(this.props.selection,      nextProps.selection,      setSelection);
+    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIds);
+    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoader);
+    this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setXDomain);
+    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setYDomain);
+    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setHover);
+    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setSelection);
   }
 
   private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T, isOverride?: boolean) => void) {
