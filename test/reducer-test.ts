@@ -173,8 +173,8 @@ describe('reducer', () => {
     );
 
     state.loadVersionBySeriesId.should.have.keys(ALL_SERIES);
-    should.exist(state.loadVersionBySeriesId[SERIES_A]);
-    should.not.exist(state.loadVersionBySeriesId[SERIES_B]);
+    should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
+    should(state.loadVersionBySeriesId[SERIES_B]).be.null();
   });
 
   it('should not change anything other than the load versions in a load request', () => {
@@ -195,8 +195,8 @@ describe('reducer', () => {
     );
 
     state.loadVersionBySeriesId.should.have.keys(ALL_SERIES);
-    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
-    should.exist(state.loadVersionBySeriesId[SERIES_B]);
+    should(state.loadVersionBySeriesId[SERIES_A]).be.null();
+    should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
   });
 
   it('should clear the load version and set the data for all series when they return successfully simultaneously', () => {
@@ -234,8 +234,8 @@ describe('reducer', () => {
       [SERIES_B]: []
     });
 
-    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
-    should.exist(state.loadVersionBySeriesId[SERIES_B]);
+    should(state.loadVersionBySeriesId[SERIES_A]).be.null();
+    should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
   });
 
   it('should clear the loading state, set the error state, and not change the data for all series when they return in error simultaneously', () => {
@@ -280,8 +280,8 @@ describe('reducer', () => {
       [SERIES_B]: DATA_B
     });
 
-    should.not.exist(state.loadVersionBySeriesId[SERIES_A]);
-    should.exist(state.loadVersionBySeriesId[SERIES_B]);
+    should(state.loadVersionBySeriesId[SERIES_A]).be.null();
+    should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
 
     state.errorBySeriesId.should.deepEqual({
       [SERIES_A]: ERROR,

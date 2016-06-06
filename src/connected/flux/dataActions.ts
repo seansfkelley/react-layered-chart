@@ -23,13 +23,16 @@ function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void):
   };
 }
 
-function _performDataLoad() {
+// Exported for testing.
+export function _performDataLoad() {
   const thunk: any = (dispatch, getState: () => ChartState) => {
     const preLoadChartState = getState();
     const dataLoader = preLoadChartState.dataLoader;
 
+    const seriesIdsToLoad = _.keys(_.pick(preLoadChartState.loadVersionBySeriesId));
+
     const loadPromiseBySeriesId = dataLoader(
-      preLoadChartState.seriesIds,
+      seriesIdsToLoad,
       selectXDomain(preLoadChartState),
       selectYDomains(preLoadChartState),
       preLoadChartState.physicalChartWidth,
