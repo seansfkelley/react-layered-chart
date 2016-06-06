@@ -6,7 +6,8 @@ import {
   selectSelection
 } from '../src/connected/model/selectors';
 import {
-  selectIsLoading
+  selectIsLoading,
+  createSelectDataForHover
 } from '../src/connected/export-only/exportableSelectors';
 
 describe('(selectors)', () => {
@@ -123,6 +124,97 @@ describe('(selectors)', () => {
           selection: INTERVAL_B
         }
       } as any).should.be.exactly(INTERVAL_B);
+    });
+  });
+
+  describe('selectIsLoading', () => {
+    it('should convert the raw map to be a map to booleans', () => {
+      selectIsLoading({
+        loadVersionBySeriesId: {
+          [SERIES_A]: null,
+          [SERIES_B]: 'foo'
+        }
+      } as any).should.deepEqual({
+        [SERIES_A]: false,
+        [SERIES_B]: true
+      });
+    });
+  });
+
+  describe('createSelectDataForHover', () => {
+    const xValueSelector = (seriesId, datum) => datum.x;
+    const selectDataForHover = createSelectDataForHover(xValueSelector);
+
+    const DATUM_1 = { x: 5 };
+    const DATUM_2 = { x: 10 };
+    const DATA = [ DATUM_1, DATUM_2 ];
+
+    it('should return nulls if hover is unset', () => {
+      selectDataForHover({
+        dataBySeriesId: {
+          [SERIES_A]: [{ x: 0}]
+        },
+        uiState: {
+          hover: null
+        },
+        uiStateConsumerOverrides: {}
+      } as any).should.deepEqual({
+        [SERIES_A]: null
+      });
+    });
+
+    it('should return undefineds for empty series', () => {
+      selectDataForHover({
+        dataBySeriesId: {
+          [SERIES_A]: []
+        },
+        uiState: {
+          hover: 10
+        },
+        uiStateConsumerOverrides: {}
+      } as any).should.deepEqual({
+        [SERIES_A]: undefined
+      });
+    });
+
+    it('should return the datum immediately preceding the hover value', () => {
+      selectDataForHover({
+        dataBySeriesId: {
+          [SERIES_A]: DATA
+        },
+        uiState: {
+          hover: 10
+        },
+        uiStateConsumerOverrides: {}
+      } as any)[SERIES_A].should.be.exactly(DATUM_1);
+    });
+
+    it('should return undefined for series whose earilest datum is after the hover', () => {
+      selectDataForHover({
+        dataBySeriesId: {
+          [SERIES_A]: DATA
+        },
+        uiState: {
+          hover: 0
+        },
+        uiStateConsumerOverrides: {}
+      } as any).should.deepEqual({
+        [SERIES_A]: undefined
+      });
+    });
+
+    it('should return the datum immediately preceding the hover value when hover is overridden', () => {
+      selectDataForHover({
+        dataBySeriesId: {
+          [SERIES_A]: DATA
+        },
+        uiState: {
+          hover: null
+        },
+        uiStateConsumerOverrides: {
+          hover: 10
+        }
+      } as any)[SERIES_A].should.be.exactly(DATUM_1);
     });
   });
 });
