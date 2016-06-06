@@ -13,9 +13,10 @@
     "pretty": true
   },
 
-  "files": [
-    "src/index.ts",
-    "typings/tsd.d.ts",
-    "extra-typings.d.ts"
+  "exclude": [
+    "node_modules",
+    "lib",
+    "test",
+    "examples"
   ]
 }

@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
 
-  .lc-layer {
+  > * {
     position: absolute;
     top: 0;
     left: 0;
@@ -10,7 +10,56 @@
     right: 0;
   }
 
-  .lc-layer.interaction-capture {
+  .interaction-capture {
     z-index: 1;
+  }
+
+
+  .y-axis-container {
+    display: flex;
+    flex-wrap: nowrap;
+
+    .single-y-axis {
+      height: 100%;
+      border-right: 1px solid;
+
+      .tick {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
+        height: 0;
+
+        .label {
+          margin: 0 4px 0 6px;
+        }
+
+        .mark {
+          width: 4px;
+          border-bottom: 1px solid;
+        }
+      }
+    }
+  }
+}
+
+.lc-chart-provider {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+
+  .lc-stack {
+    flex: 1;
+    // TODO: Autoprefixer.
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  // Make this pretty specific so you don't accidentally make it giant.
+  > .lc-stack.autoinjected-resize-sentinel-stack {
+    flex: initial;
+    height: 0;
   }
 }
