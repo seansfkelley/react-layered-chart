@@ -125,6 +125,10 @@ This likely happens because you've forgotten to include react-layered-chart's st
 
 Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mount it can retrieve its old state. See the [caveat on (un)mounting](#tracking-transient-state-across-unmount-cycles) for more details.
 
+### Loads are consistently and frequently triggered even when nothing is changing
+
+This can happen if you provide a functionally-equal but reference-unequal value for `ChartProvider`'s `loadData`. Changing the `loadData` reference triggers a load, which will likely return value-equal but reference-unequal results if nothing else has changed. If you take the direct or indirect result of this load (such as through an "on change" listener) and cause a rerender (such as by setting state) and you end up passing a new instance of a `loadData` function, you will be caught in a very slow infinite loop.
+
 ## API Reference
 
 See [API Reference](API.md).

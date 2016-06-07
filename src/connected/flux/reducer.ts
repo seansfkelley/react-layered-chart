@@ -38,16 +38,20 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
   switch (action.type) {
     case ActionType.SET_SERIES_IDS: {
-      const seriesIds = _.clone(action.payload);
-      return update(state, {
-        seriesIds: { $set: seriesIds },
-        dataBySeriesId: { $set: objectWithKeysFromObject(state.dataBySeriesId, seriesIds, []) },
-        loadVersionBySeriesId: { $set: objectWithKeysFromObject(state.loadVersionBySeriesId, seriesIds, null) },
-        errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) },
-        uiState: {
-          yDomainBySeriesId: { $set: objectWithKeysFromObject(state.uiState.yDomainBySeriesId, seriesIds, DEFAULT_Y_DOMAIN) }
-        }
-      });
+      if (_.isEqual(_.sortBy(action.payload), _.sortBy(state.seriesIds))) {
+        return state;
+      } else {
+        const seriesIds = _.clone(action.payload);
+        return update(state, {
+          seriesIds: { $set: seriesIds },
+          dataBySeriesId: { $set: objectWithKeysFromObject(state.dataBySeriesId, seriesIds, []) },
+          loadVersionBySeriesId: { $set: objectWithKeysFromObject(state.loadVersionBySeriesId, seriesIds, null) },
+          errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) },
+          uiState: {
+            yDomainBySeriesId: { $set: objectWithKeysFromObject(state.uiState.yDomainBySeriesId, seriesIds, DEFAULT_Y_DOMAIN) }
+          }
+        });
+      }
     }
 
     case ActionType.DATA_REQUESTED:

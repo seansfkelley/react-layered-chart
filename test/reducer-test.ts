@@ -150,6 +150,13 @@ describe('reducer', () => {
     });
   });
 
+  it('should do nothing if the same set of series IDs is provided that already exists', () => {
+    const beforeState = reducer(state, action(ActionType.SET_SERIES_IDS, ALL_SERIES));
+    const afterState = reducer(beforeState, action(ActionType.SET_SERIES_IDS, _.clone(ALL_SERIES).reverse()));
+
+    beforeState.should.be.exactly(afterState);
+  });
+
   it('should remove outdated keys from fields that are keyed by series ID when resetting series ID', () => {
     const ONLY_SERIES_A = [ SERIES_A ];
     state = serial(state,
