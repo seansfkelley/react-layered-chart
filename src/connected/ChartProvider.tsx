@@ -70,7 +70,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
   componentWillMount() {
     this._store = storeFactory(this.props.chartId);
     this._onStoreChange(this.props);
-    this._maybeFireAllCallbacks();
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -80,7 +79,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
     } else {
       this._onPropsChange(nextProps);
     }
-    this._maybeFireAllCallbacks();
   }
 
   componentWillUnmount() {
@@ -90,7 +88,6 @@ export default class ChartProvider extends React.Component<Props, {}> {
   private _onStoreChange(props: Props) {
     this._tryUnsubscribe();
     this._lastState = this._store.getState();
-    this._unsubscribeCallback = this._store.subscribe(this._maybeFireAllCallbacks.bind(this));
 
     this._store.dispatch(setSeriesIds(props.seriesIds));
     this._store.dispatch(setDataLoader(props.loadData));
@@ -111,6 +108,9 @@ export default class ChartProvider extends React.Component<Props, {}> {
     if (props.selection) {
       this._store.dispatch(setSelection(props.selection, true));
     }
+
+    this._maybeFireAllCallbacks();
+    this._unsubscribeCallback = this._store.subscribe(this._maybeFireAllCallbacks.bind(this));
   }
 
   private _tryUnsubscribe() {
