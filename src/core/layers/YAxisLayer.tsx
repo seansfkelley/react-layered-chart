@@ -18,13 +18,8 @@ export interface YAxisSpec extends AxisSpec {
   axisId?: number | string;
 }
 
-interface YAxisProps extends YAxisSpec {
-  font?: string;
-  backgroundColor: Color;
-}
-
 @PureRender
-class YAxis extends React.Component<YAxisProps, void> {
+class YAxis extends React.Component<YAxisSpec, void> {
   static defaultProps = {
     color: '#444',
   } as any;
@@ -49,8 +44,6 @@ class YAxis extends React.Component<YAxisProps, void> {
     return (
       <div className='single-y-axis' style={{
         color: this.props.color,
-        backgroundColor: this.props.backgroundColor,
-        font: this.props.font,
         borderRightColor: this.props.color
       }}>
         {tickMarks}
@@ -90,12 +83,16 @@ export default class YAxisLayer extends React.Component<Props, void> {
 
   render() {
     return (
-      <div className='y-axis-container'>
+      <div
+        className='y-axis-container'
+        style={{
+          font: this.props.font,
+          backgroundColor: this.props.backgroundColor
+        }}
+      >
         {this.props.axes.map((axis, i) => (
           <AnimatedYAxis
             {...axis}
-            font={this.props.font}
-            backgroundColor={this.props.backgroundColor}
             key={_.isEmpty(axis.axisId) ? i : axis.axisId}
           />
         ))}
