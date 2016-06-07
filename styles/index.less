@@ -1,6 +1,9 @@
 .lc-stack {
   position: relative;
   overflow: hidden;
+  // TODO: Autoprefixer.
+  user-select: none;
+  -webkit-user-select: none;
 
   > * {
     position: absolute;
@@ -9,37 +12,36 @@
     bottom: 0;
     right: 0;
   }
+}
 
-  .interaction-capture {
-    z-index: 1;
-  }
+.lc-stack .interaction-capture {
+  z-index: 1;
+}
 
+.lc-stack .y-axis-container {
+  display: flex;
+  flex-wrap: nowrap;
 
-  .y-axis-container {
-    display: flex;
-    flex-wrap: nowrap;
+  .single-y-axis {
+    height: 100%;
+    border-right: 1px solid;
 
-    .single-y-axis {
-      height: 100%;
-      border-right: 1px solid;
+    .tick {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
+      height: 0;
 
-      .tick {
-        position: relative;
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
-        align-items: center;
-        // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
-        height: 0;
+      .label {
+        margin: 0 4px 0 6px;
+      }
 
-        .label {
-          margin: 0 4px 0 6px;
-        }
-
-        .mark {
-          width: 4px;
-          border-bottom: 1px solid;
-        }
+      .mark {
+        width: 4px;
+        border-bottom: 1px solid;
       }
     }
   }
@@ -50,11 +52,8 @@
   flex-direction: column;
   height: 200px;
 
-  .lc-stack {
+  > .lc-stack {
     flex: 1;
-    // TODO: Autoprefixer.
-    user-select: none;
-    -webkit-user-select: none;
   }
 
   // Make this pretty specific so you don't accidentally make it giant.
