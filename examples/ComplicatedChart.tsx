@@ -77,12 +77,12 @@ const CHART = (
           seriesId: TEST_SERIES_ID_2,
           color: COLOR_2
         }]}
-        font='12px MyriadPro-Regular'
+        font='12px sans-serif'
       />
     </Stack>
     {/* Show the X axis. This stack puts the X axis in its own section. */}
     <Stack className='x-axis-stack'>
-      <ConnectedXAxisLayer font='12px MyriadPro-Regular'/>
+      <ConnectedXAxisLayer font='12px sans-serif'/>
     </Stack>
   </ChartProvider>
 );

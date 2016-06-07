@@ -90,7 +90,7 @@ This component renders the X domain. By default, it interprets the numerical val
 - `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
 - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
 - `color?`: a string specifying the color to use for drawing.
-- `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
+- `font?`: a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
 
 There is a `ConnectedXAxisLayer` that accepts the same props, except with `seriesId` instead of `xDomain`.
 
@@ -111,7 +111,7 @@ This component renders one or more Y domains, lined up next to each other on the
     - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
     - `color?`: a string specifying the color to use for drawing.
     - `axisId?`: a unique ID to identify this axis. Used to prevent jittery animations when adding/removing/rearranging axes.
-- `font?`: a *fully-qualified* name of a font with size, such as `'12px MyriadPro-Regular'`. A font-family is not sufficient.
+- `font?`: a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
 - `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
 
 There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`.

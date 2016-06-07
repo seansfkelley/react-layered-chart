@@ -117,17 +117,21 @@ A common example of undesirable state loss is in a tabbed application: charts in
 
 Please [file an issue on Github](https://github.com/palantir/react-layered-chart/issues) for any issues that aren't covered here.
 
-### The chart is invisible, zero-height or unstoppably increasing in height.
+#### The chart is invisible, zero-height or unstoppably increasing in height.
 
 This likely happens because you've forgotten to include react-layered-chart's stylesheet, which sets some default sizes to prevent this issue. See the [caveat about physical chart size](#physical-chart-size) for an explanation of why this happens.
 
-### When `ChartProvider` unmounts, I lose all my loaded state.
+#### When `ChartProvider` unmounts, I lose all my loaded state.
 
 Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mount it can retrieve its old state. See the [caveat on (un)mounting](#tracking-transient-state-across-unmount-cycles) for more details.
 
-### Loads are consistently and frequently triggered even when nothing is changing
+#### Loads are consistently and frequently triggered even when nothing is changing.
 
 This can happen if you provide a functionally-equal but reference-unequal value for `ChartProvider`'s `loadData`. Changing the `loadData` reference triggers a load, which will likely return value-equal but reference-unequal results if nothing else has changed. If you take the direct or indirect result of this load (such as through an "on change" listener) and cause a rerender (such as by setting state) and you end up passing a new instance of a `loadData` function, you will be caught in a very slow infinite loop.
+
+#### Textual elements (like axes) are using default fonts.
+
+`<canvas>` elements don't inherit the font from CSS. If you're implementing your own such layer, you have to explicitly set [`font`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font). If you're using a layer implemented with `<canvas>`, you likely have to pass a full [CSS `font` declaration](https://developer.mozilla.org/en-US/docs/Web/CSS/font) to it. Lastly, if your font file (of the appropriate style and weight) isn't automatically loaded into the page, ensure you have a `@font-face` declaration for it, or consider using a tool like [Web Font Loader](https://github.com/typekit/webfontloader).
 
 ## API Reference
 
