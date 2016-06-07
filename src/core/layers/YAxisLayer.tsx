@@ -23,13 +23,8 @@ interface YAxisProps extends YAxisSpec {
   backgroundColor: Color;
 }
 
-interface YAxisState {
-  width: number;
-  height: number;
-}
-
 @PureRender
-class YAxis extends React.Component<YAxisProps, YAxisState> {
+class YAxis extends React.Component<YAxisProps, void> {
   static defaultProps = {
     color: '#444',
   } as any;
