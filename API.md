@@ -202,7 +202,7 @@ import { selectXDomain, ChartProviderState } from 'react-layered-chart';
 
 class ExampleComponent extends React.Component<...> {
   render() {
-    console.log(this.props.xDomain);
+    return <div>{this.props.xDomain}</div>;
   }
 }
 
@@ -239,7 +239,7 @@ class ExampleComponent extends React.Component<...> {
   }
 }
 
-function mapStateToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators({ setXDomain }, dispatch);
 }
 
@@ -289,7 +289,7 @@ class ExampleComponent extends React.Component<...> {
   context: PixelRatioContextType;
 
   render() {
-    console.log(this.context.pixelRatio);
+    return <div>{this.context.pixelRatio}</div>;
   }
 }
 ```
@@ -370,7 +370,7 @@ interface Props {
 
 class ExampleComponent extends React.Component<Props, ...> {
   render() {
-    console.log(this.props.yDomain);
+    return <divL{this.props.yDomain}</div>;
   }
 }
 
