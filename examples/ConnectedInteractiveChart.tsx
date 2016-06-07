@@ -1,6 +1,6 @@
 /*
 This example implements a chart with both a custom view and some custom behavior.
-A button is added underneat the chart that displays the current X domain, and
+A button is added underneath the chart that displays the current X domain, and
 if you click it, it will reset the domain to where it started.
 */
 
@@ -21,7 +21,7 @@ import {
   // This is one such selector.
   selectXDomain,
   // This is one such action creator.
-  setXDomain,
+  setXDomain
 } from '../src';
 
 // All series need to have an ID.

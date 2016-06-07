@@ -1,6 +1,6 @@
 /*
 This chart implements the basic interactions using built-in layers and state
-management. It's pannable, zoomable and hoverable.
+management. It's pannable and zoomable.
 */
 
 import * as React from 'react';

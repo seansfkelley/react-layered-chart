@@ -66,8 +66,9 @@ const CHART = (
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID_2} color={COLOR_2}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
-      {/* Show the hover line as the mouse moves around. */}
+      {/* Show a reference line for hover as the mouse moves around. */}
       <ConnectedHoverLineLayer/>
+      {/* Show one Y axis per series, overlaid on the left side of the chart. */}
       <ConnectedYAxisLayer
         axes={[{
           seriesId: TEST_SERIES_ID_1,
@@ -79,7 +80,7 @@ const CHART = (
         font='12px MyriadPro-Regular'
       />
     </Stack>
-    {/* This stack puts the X axis in its own section. */}
+    {/* Show the X axis. This stack puts the X axis in its own section. */}
     <Stack className='x-axis-stack'>
       <ConnectedXAxisLayer font='12px MyriadPro-Regular'/>
     </Stack>
