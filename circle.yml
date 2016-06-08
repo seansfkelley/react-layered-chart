@@ -8,5 +8,5 @@ deployment:
     owner: palantir
     commands:
       - touch .npmrc
-      - echo "\n$NPM_REGISTRY_CREDS\n" >> .npmrc
+      - printf "\n$NPM_REGISTRY_CREDS\n" >> .npmrc
       - npm publish
