@@ -22,7 +22,7 @@ export interface YAxisSpec extends AxisSpec {
 class YAxis extends React.Component<YAxisSpec, void> {
   static defaultProps = {
     color: '#444',
-  } as any;
+  } as any as YAxisSpec;
 
   render() {
     const yScale = (this.props.scale || d3Scale.scaleLinear)()

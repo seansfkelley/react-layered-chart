@@ -24,7 +24,7 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, Stat
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
     className: React.PropTypes.string
-  };
+  } as React.ValidationMap<Props>;
 
   static resetCanvas(canvasLayer: AutoresizingCanvasLayer, pixelRatio: number = 1) {
     const canvas = canvasLayer.getCanvasElement();

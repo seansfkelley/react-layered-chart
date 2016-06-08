@@ -36,14 +36,14 @@ class PointLayer extends React.Component<Props, void> {
     color: React.PropTypes.string,
     radius: React.PropTypes.number,
     innerRadius: React.PropTypes.number
-  } as React.ValidationMap<any>;
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)',
     radius: 3,
     innerRadius: 0
-  } as any;
+  } as any as Props;
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;

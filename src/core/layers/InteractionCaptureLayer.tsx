@@ -38,14 +38,14 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     onHover: React.PropTypes.func,
     xDomain: propTypes.interval.isRequired,
     zoomSpeed: React.PropTypes.number
-  };
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     shouldZoom: (event) => true,
     shouldPan: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
     shouldBrush: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
     zoomSpeed: 0.05
-  };
+  } as any as Props;
 
   state = {
     isPanning: false,
@@ -68,18 +68,18 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     );
   }
 
-  _getBoundingClientRect() {
+  private _getBoundingClientRect() {
     return (this.refs['layer'] as Element).getBoundingClientRect();
   }
 
-  _createPhysicalToLogicalXScale() {
+  private _createPhysicalToLogicalXScale() {
     const boundingClientRect = this._getBoundingClientRect();
     return d3Scale.scaleLinear()
       .domain([ boundingClientRect.left, boundingClientRect.right ])
       .range([ this.props.xDomain.min, this.props.xDomain.max ]);
   }
 
-  _dispatchPanAndBrushEvents(event) {
+  private _dispatchPanAndBrushEvents(event) {
     if (this.props.onPan && this.state.isPanning) {
       if (this.state.lastPanClientX !== event.clientX) {
         const scale = this._createPhysicalToLogicalXScale();
@@ -100,7 +100,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     }
   }
 
-  _clearPanAndBrushState() {
+  private _clearPanAndBrushState() {
     this.setState({
       isPanning: false,
       isBrushing: false,
@@ -109,7 +109,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     });
   }
 
-  _onMouseDown = (event) => {
+  private _onMouseDown = (event) => {
     if (this.props.onPan && this.props.shouldPan(event)) {
       this.setState({ isPanning: true, lastPanClientX: event.clientX } as any);
     } else if (this.props.onBrush && this.props.shouldBrush(event)) {
@@ -119,13 +119,13 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     event.stopPropagation();
   };
 
-  _onMouseUp = (event) => {
+  private _onMouseUp = (event) => {
     this._dispatchPanAndBrushEvents(event);
     this._clearPanAndBrushState();
     event.stopPropagation();
   };
 
-  _onMouseMove = (event) => {
+  private _onMouseMove = (event) => {
     this._dispatchPanAndBrushEvents(event);
     if (this.props.onHover && !this.state.isPanning && !this.state.isBrushing) {
       const scale = this._createPhysicalToLogicalXScale();
@@ -134,7 +134,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     event.stopPropagation();
   };
 
-  _onMouseLeave = (event) => {
+  private _onMouseLeave = (event) => {
     this._dispatchPanAndBrushEvents(event);
     this._clearPanAndBrushState();
     if (this.props.onHover) {
@@ -143,7 +143,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     event.stopPropagation();
   };
 
-  _onWheel = (event) => {
+  private _onWheel = (event) => {
     if (this.props.onZoom && event.deltaY && this.props.shouldZoom(event)) {
       const boundingClientRect = this._getBoundingClientRect();
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;

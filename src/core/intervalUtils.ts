@@ -91,7 +91,7 @@ export function panInterval(interval: Interval, delta: number): Interval {
   };
 }
 
-export function zoomInterval(interval: Interval, factor: number, anchorBias: number = 0.5) {
+export function zoomInterval(interval: Interval, factor: number, anchorBias: number = 0.5): Interval {
   const currentExtent = interval.max - interval.min;
   const targetExtent = currentExtent / factor;
   const extentDelta = targetExtent - currentExtent;

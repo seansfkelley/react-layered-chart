@@ -57,7 +57,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
     onSelectionChange: React.PropTypes.func,
     hover: React.PropTypes.number,
     onHoverChange: React.PropTypes.func,
-  };
+  } as React.ValidationMap<Props>;
 
   private _store: Store;
   private _lastState: ChartState;
@@ -65,7 +65,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
   static defaultProps = {
     includeResizeSentinel: true
-  } as any;
+  } as any as Props;
 
   componentWillMount() {
     this._store = storeFactory(this.props.chartId);

@@ -30,11 +30,11 @@ class BarLayer extends React.Component<Props, void> {
     xDomain: propTypes.interval.isRequired,
     yDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string
-  } as React.ValidationMap<any>;
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     color: 'rgba(0, 0, 0, 0.7)'
-  } as any;
+  } as any as Props;
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;

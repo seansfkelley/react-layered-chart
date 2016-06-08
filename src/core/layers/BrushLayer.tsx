@@ -27,12 +27,12 @@ export default class BrushLayer extends React.Component<Props, void> {
     xDomain: propTypes.interval.isRequired,
     stroke: React.PropTypes.string,
     fill: React.PropTypes.string
-  };
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     stroke: 'rgba(0, 0, 0, 0.7)',
     fill: 'rgba(0, 0, 0, 0.1)'
-  };
+  } as any as Props;
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;

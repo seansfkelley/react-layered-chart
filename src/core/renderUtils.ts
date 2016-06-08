@@ -69,7 +69,7 @@ export function computeTicks(scale: any, ticks?: Ticks, tickFormat?: TickFormat)
     outputTicks = scale.ticks(DEFAULT_TICK_AMOUNT);
   }
 
-  let format;
+  let format: Function;
   if (_.isFunction(tickFormat)) {
     format = tickFormat;
   } else {

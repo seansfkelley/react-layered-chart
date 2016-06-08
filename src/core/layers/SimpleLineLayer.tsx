@@ -32,12 +32,12 @@ class SimpleLineLayer extends React.Component<Props, void> {
     yDomain: propTypes.interval.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
-  } as React.ValidationMap<any>;
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)'
-  } as any;
+  } as any as Props;
 
   render() {
     return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;

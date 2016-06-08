@@ -23,7 +23,7 @@ export const selectHover = _wrapForTypeCast(internalSelectHover);
 export const selectSelection = _wrapForTypeCast(internalSelectSelection);
 export const selectData = _wrapForTypeCast(internalSelectData);
 
-export const selectIsLoading = _wrapForTypeCast((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v));
+export const selectIsLoading = _wrapForTypeCast((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>);
 export const selectError = _wrapForTypeCast((state: ChartState) => state.errorBySeriesId);
 export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => state.physicalChartWidth);
 
@@ -31,7 +31,7 @@ export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => sta
 // may be confusing in this context.
 export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 
-export function createSelectDataForHover(xValueSelector: NumericalValueIterator) {
+export function createSelectDataForHover(xValueSelector: NumericalValueIterator): StateSelector<TBySeriesId<any>> {
   return _wrapForTypeCast(createSelector(
     internalSelectData,
     internalSelectHover,
