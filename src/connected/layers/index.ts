@@ -1,3 +1,4 @@
+export * from './wrapDataLayerWithConnect';
 export * from './connectedDataLayers';
 
 export {
@@ -29,4 +30,3 @@ export {
   OwnProps as ConnectedYAxisLayerProps
 } from './ConnectedYAxisLayer';
 
-export { SeriesIdProp } from './wrapDataLayerWithConnect';

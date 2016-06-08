@@ -380,6 +380,28 @@ export default wrapWithAnimatedYDomain(ExampleComponent);
 
 <hr/>
 
+#### `wrapDataLayerWithConnect(component)`
+
+Wraps the given component with a new component that accepts a `seriesId` instead of `data`, `xDomain` and `yDomain`. The new component is automatically [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options)ed and will inject these three props based on the value of the `seriesId` prop.
+
+**Note**: If you're using Typescript, you should explicitly parameterize the types for this function, or they may be inferred to be a too-loose value (such as `{}`). You can use `WrappedDataLayerConnectedProps` to refer to the props that will be auto-injected.
+
+```tsx
+import { WrappedDataLayerConnectedProps, wrapDataLayerWithConnect } from 'react-layered-chart';
+
+interface CommonProps {
+  color?: string;
+}
+
+type Props = CommonProps & WrappedDataLayerConnectedProps;
+
+class ExampleComponent extends React.Component<Props, ...> { ... }
+
+const ConnectedExampleComponent = wrapDataLayerWithConnect<CommonProps, Props>(ExampleComponent);
+```
+
+<hr/>
+
 #### `getIndexBoundsForPointData(data, interval, xValuePath)`
 
 Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
