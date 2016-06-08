@@ -4,10 +4,11 @@ hooks/
 styles/
 test/
 typings/
-webpack.config.*js
 *.pdf
 *.sublime-project
 *.sublime-workspace
+circle.yml
 tsconfig*.json
 tsd.json
 extra-typings.d.ts
+webpack.config.*js
