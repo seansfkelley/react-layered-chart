@@ -1,6 +1,6 @@
 dependencies:
-  cache_directories:
-    - typings
+  pre:
+    - "echo '{ \"token\": \"'$GITHUB_OAUTH_TOKEN'\" }' > .tsdrc"
 
 deployment:
   npm-publish:
