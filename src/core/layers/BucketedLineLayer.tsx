@@ -5,7 +5,7 @@ import * as d3Scale from 'd3-scale';
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
-import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
@@ -43,14 +43,15 @@ class BucketedLineLayer extends React.Component<Props, void> {
   };
 
   render() {
-    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
+    return <PollingResizingCanvasLayer
+      ref='canvasLayer'
+      onSizeChange={this.nonReactRender}
+      pixelRatio={this.context.pixelRatio}
+    />;
   }
 
   nonReactRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
-      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
-      this.context.pixelRatio
-    );
+    const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
 
     // Should we draw something if there is one data point?
     if (this.props.data.length < 2) {

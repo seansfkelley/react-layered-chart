@@ -1,12 +1,9 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
-import * as classNames from 'classnames';
-
-import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
 export interface Props {
   onSizeChange: () => void;
-  className?: string;
+  pixelRatio?: number;
 }
 
 export interface State {
@@ -15,30 +12,17 @@ export interface State {
 }
 
 @PureRender
-@PixelRatioContext
 export default class PollingResizingCanvasLayer extends React.Component<Props, State> {
-  context: Context;
-
   private __setSizeInterval: number;
 
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
-    className: React.PropTypes.string
+    pixelRatio: React.PropTypes.number
   } as React.ValidationMap<Props>;
 
-  static resetCanvas(canvasLayer: PollingResizingCanvasLayer, pixelRatio: number = 1) {
-    const canvas = canvasLayer.getCanvasElement();
-    const { width, height } = canvasLayer.getDimensions();
-    const context = canvas.getContext('2d');
-
-    context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
-    context.scale(pixelRatio, pixelRatio);
-    context.clearRect(0, 0, width, height);
-    // TODO: I think this might have to be multiplied by pixelRatio to properly un-blur the canvas.
-    context.translate(0.5, 0.5);
-
-    return { width, height, context };
-  }
+  static defaultProps = {
+    pixelRatio: 1
+  } as any as Props;
 
   state = {
     width: 0,
@@ -46,14 +30,13 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
   };
 
   render() {
-    const pixelRatio = this.context.pixelRatio || 1;
     return (
-      <div className={classNames('resizing-wrapper', this.props.className)} ref='wrapper'>
+      <div className='resizing-wrapper' ref='wrapper'>
         <canvas
           className='canvas'
           ref='canvas'
-          width={this.state.width * pixelRatio}
-          height={this.state.height * pixelRatio}
+          width={this.state.width * this.props.pixelRatio}
+          height={this.state.height * this.props.pixelRatio}
           style={{ width: this.state.width, height: this.state.height }}
         />
       </div>
@@ -71,20 +54,34 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
     };
   }
 
+  resetCanvas() {
+    const canvas = this.getCanvasElement();
+    const { width, height } = this.state;
+    const context = canvas.getContext('2d');
+
+    context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
+    context.scale(this.props.pixelRatio, this.props.pixelRatio);
+    context.clearRect(0, 0, width, height);
+    // TODO: I think this might have to be multiplied by pixelRatio to properly un-blur the canvas.
+    context.translate(0.5, 0.5);
+
+    return { width, height, context };
+  }
+
   componentDidUpdate() {
     this.props.onSizeChange();
   }
 
   componentDidMount() {
-    this.setSizeFromWrapper();
-    this.__setSizeInterval = setInterval(this.setSizeFromWrapper.bind(this), 1000);
+    this._setSizeFromWrapper();
+    this.__setSizeInterval = setInterval(this._setSizeFromWrapper.bind(this), 1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.__setSizeInterval);
   }
 
-  setSizeFromWrapper() {
+  private _setSizeFromWrapper() {
     const wrapper = this.refs['wrapper'] as HTMLElement;
     this.setState({
       width: wrapper.offsetWidth,

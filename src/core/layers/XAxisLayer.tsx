@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
-import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
 import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
@@ -39,18 +39,15 @@ export default class XAxisLayer extends React.Component<Props, void> {
   };
 
   render() {
-    return <AutoresizingCanvasLayer
-      className='x-axis'
+    return <PollingResizingCanvasLayer
       ref='canvasLayer'
       onSizeChange={this.nonReactRender}
+      pixelRatio={this.context.pixelRatio}
     />;
   }
 
   nonReactRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
-      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
-      this.context.pixelRatio
-    );
+    const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
 
     const xScale = this.props.scale()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])

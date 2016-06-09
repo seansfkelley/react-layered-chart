@@ -118,7 +118,9 @@ There is a `ConnectedYAxisLayer` that accepts the same props, except each item i
 
 <hr/>
 
-### `AutoresizingCanvasLayer`
+### ~~`AutoresizingCanvasLayer`~~
+
+**This component is deprecated. Use [`PollingResizingCanvasLayer`](#pollingresizingcanvaslayer) instead.**
 
 A component that wraps and exposes a `<canvas>` that (via polling) matches the size of its containing `Stack`. This class does no rendering of its own, but provides a well-behaved blank canvas for a parent component to draw on. All built-in data-rendering layers are based on this component in combination with the `NonReactRender` decorator.
 
@@ -135,6 +137,23 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 #### Static Methods
 
 - `resetCanvas(canvasLayer, pixelRatio?)`: clears and resizes the underlying `<canvas>` for the given `canvasLayer` in preparation for a rendering frame. Additionally, it translates the canvas by half a pixel to get crisper rendering behavior. Returns `{ width, height, context }`.
+
+<hr/>
+
+### `PollingResizingCanvasLayer`
+
+A component that wraps and exposes a `<canvas>` that (via polling) matches the size of its containing `Stack`. This class does no rendering of its own, but provides a well-behaved blank canvas for a parent component to draw on. All built-in data-rendering layers are based on this component in combination with the `NonReactRender` decorator.
+
+#### Props
+
+- `onSizeChange()`: a function called with no arguments when the size changes, usually, some kind of render method.
+- `pixelRatio?`: the pixel ratio this `<canvas>` should render at. See [`Stack`](#stack) for more on this value.
+
+#### Instance Methods
+
+- `getCanvasElement()`: returns the `<canvas>` element for this layer.
+- `getDimensions()`: returns the true `{ width, height }` of this layer.
+- `resetCanvas()`: clears and resizes the underlying `<canvas>` in preparation for a rendering frame. Additionally, it translates the canvas by half a pixel to get crisper rendering behavior. Returns `{ width, height, context }`.
 
 <hr/>
 
