@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
-import { Interval, SeriesData } from '../../core';
-import ActionType, { Action } from '../model/ActionType';
+import { Interval } from '../../core';
+import ActionType from '../model/ActionType';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
