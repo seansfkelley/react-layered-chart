@@ -17,6 +17,7 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
 
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
+    pixelRatio: React.PropTypes.number
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
