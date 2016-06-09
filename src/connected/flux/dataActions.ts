@@ -5,7 +5,7 @@ import ActionType, { Action } from '../model/ActionType';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
-import { selectXDomain, selectYDomains } from '../model/selectors';
+import { selectXDomain } from '../model/selectors';
 
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
   let keyedBatchAccumulator: TBySeriesId<T> = {};
@@ -34,7 +34,7 @@ export function _performDataLoad() {
     const loadPromiseBySeriesId = dataLoader(
       seriesIdsToLoad,
       selectXDomain(preLoadChartState),
-      selectYDomains(preLoadChartState),
+      preLoadChartState.uiState.yDomainBySeriesId,
       preLoadChartState.physicalChartWidth,
       preLoadChartState.dataBySeriesId
     );
