@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
-import * as _ from 'lodash';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
-import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
@@ -37,14 +36,15 @@ class BarLayer extends React.Component<Props, void> {
   } as any as Props;
 
   render() {
-    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
+    return <PollingResizingCanvasLayer
+      ref='canvasLayer'
+      onSizeChange={this.nonReactRender}
+      pixelRatio={this.context.pixelRatio}
+    />;
   }
 
   nonReactRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
-      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
-      this.context.pixelRatio
-    );
+    const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
 
     const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'minXValue', 'maxXValue');
     if (firstIndex === lastIndex) {

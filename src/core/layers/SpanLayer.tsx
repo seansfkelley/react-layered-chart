@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 
-import AutoresizingCanvasLayer from './AutoresizingCanvasLayer';
+import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
 import { Interval, Color } from '../interfaces';
@@ -42,14 +42,15 @@ export default class SpanLayer extends React.Component<Props, void> {
   };
 
   render() {
-    return <AutoresizingCanvasLayer ref='canvasLayer' onSizeChange={this.nonReactRender}/>;
+    return <PollingResizingCanvasLayer
+      ref='canvasLayer'
+      onSizeChange={this.nonReactRender}
+      pixelRatio={this.context.pixelRatio}
+    />;
   }
 
   nonReactRender = () => {
-    const { width, height, context } = AutoresizingCanvasLayer.resetCanvas(
-      this.refs['canvasLayer'] as AutoresizingCanvasLayer,
-      this.context.pixelRatio
-    );
+    const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
 
     const { firstIndex, lastIndex } = getIndexBoundsForSpanData(this.props.data, this.props.xDomain, 'minXValue', 'maxXValue');
     if (firstIndex === lastIndex) {
