@@ -1,11 +1,9 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
-import * as classNames from 'classnames';
 
 export interface Props {
   onSizeChange: () => void;
   pixelRatio?: number;
-  className?: string;
 }
 
 export interface State {
@@ -19,7 +17,6 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
 
   static propTypes = {
     onSizeChange: React.PropTypes.func.isRequired,
-    className: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
@@ -33,7 +30,7 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
 
   render() {
     return (
-      <div className={classNames('resizing-wrapper', this.props.className)} ref='wrapper'>
+      <div className='resizing-wrapper' ref='wrapper'>
         <canvas
           className='canvas'
           ref='canvas'

@@ -148,7 +148,6 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 
 - `onSizeChange()`: a function called with no arguments when the size changes, usually, some kind of render method.
 - `pixelRatio?`: the pixel ratio this `<canvas>` should render at. See [`Stack`](#stack) for more on this value.
-- `className?`: space-separated DOM class names to be merged with the default class names.
 
 #### Instance Methods
 
