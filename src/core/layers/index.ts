@@ -4,6 +4,11 @@ export {
 } from './AutoresizingCanvasLayer';
 
 export {
+  default as PollingResizingCanvasLayer,
+  Props as PollingResizingCanvasLayerProps
+} from './PollingResizingCanvasLayer';
+
+export {
   default as BarLayer,
   Props as BarLayerProps
 } from './BarLayer';
