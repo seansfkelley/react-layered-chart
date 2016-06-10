@@ -27,7 +27,7 @@ export function wrapDataLayerWithConnect<
     render() {
       return <OriginalComponent {...this.props}/>
     }
-  };
+  }
 
   function mapStateToProps(state: ChartState, ownProps: SeriesIdProp): WrappedDataLayerConnectedProps {
     return {
