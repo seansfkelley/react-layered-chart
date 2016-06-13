@@ -14,8 +14,7 @@ import {
   ConnectedHoverLineLayer,
   createStaticDataLoader,
   ConnectedXAxisLayer,
-  ConnectedYAxisLayer,
-  YAxisLayer
+  ConnectedYAxisLayer
 } from '../src';
 
 const X_EXTENT = X_DOMAIN.max - X_DOMAIN.min;
