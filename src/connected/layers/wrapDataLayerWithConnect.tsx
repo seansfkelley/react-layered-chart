@@ -22,13 +22,6 @@ export function wrapDataLayerWithConnect<
     OriginalProps extends OwnProps & WrappedDataLayerConnectedProps
   >(OriginalComponent: React.ComponentClass<OriginalProps>): React.ComponentClass<OwnProps & SeriesIdProp> {
 
-  @PureRender
-  class ConnectedLayerWrapper extends React.Component<OwnProps & WrappedDataLayerConnectedProps & SeriesIdProp, void> {
-    render() {
-      return <OriginalComponent {...this.props}/>
-    }
-  }
-
   function mapStateToProps(state: ChartState, ownProps: SeriesIdProp): WrappedDataLayerConnectedProps {
     return {
       data: selectData(state)[ownProps.seriesId],
@@ -37,5 +30,5 @@ export function wrapDataLayerWithConnect<
     };
   }
 
-  return connect(mapStateToProps)(ConnectedLayerWrapper) as React.ComponentClass<OwnProps & SeriesIdProp>;
+  return connect(mapStateToProps)(OriginalComponent) as React.ComponentClass<OwnProps & SeriesIdProp>;
 }
