@@ -12,7 +12,7 @@
     "url": "https://github.com/palantir/react-layered-chart.git"
   },
   "scripts": {
-    "dev:hot-reload": "NODE_ENV=development webpack-dev-server --config webpack.config.hot.js --inline --content-base examples/build/ --host 0.0.0.0 --port 8085 --hot true",
+    "start": "NODE_ENV=development webpack-dev-server --config webpack.config.hot.js --inline --content-base examples/build/ --host 0.0.0.0 --port 8085 --hot true",
     "pretest": "tsc -p tsconfig-test.json && cp test/mocha.opts test/build/",
     "test": "mocha --opts test/build/mocha.opts test/build/test/**/*.js",
     "prepublish": "tsd install && tsc && lessc --source-map styles/index.less react-layered-chart.css"

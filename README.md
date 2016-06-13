@@ -141,8 +141,8 @@ See [API Reference](API.md).
 
 ```
 npm install
-./hooks/install.sh
-npm run dev:hot-reload
+npm start
+./hooks/install.sh # (optional)
 ```
 
 Then visit [localhost:8085](http://localhost:8085/) to see the example page. This runs `webpack-dev-server` on port 8085, including auto-recompilation and hot code injection.
