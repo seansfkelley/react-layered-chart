@@ -5,7 +5,13 @@ import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
-import { requestDataLoad, setSeriesIds, setDataLoader, _performDataLoad } from '../src/connected/flux/dataActions';
+import {
+  requestDataLoad,
+  setSeriesIds,
+  setDataLoader,
+  _performDataLoad
+} from '../src/connected/flux/dataActions';
+import { setXDomain } from '../src/connected/flux/uiActions';
 import { ActionType } from '../src/connected/model/ActionType';
 import { ChartState } from '../src/connected/model/state';
 
@@ -72,6 +78,31 @@ describe('(action creator)', () => {
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
       should(state.loadVersionBySeriesId[SERIES_C]).not.be.null();
+    });
+  });
+
+  describe('setXDomain', () => {
+    const interval = { min: 0, max: 10 };
+    it('should call the data loader if setting the internal value with no override already set', () => {
+      store.dispatch(setXDomain(interval, false));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should call the data loader if setting the override', () => {
+      store.dispatch(setXDomain(interval, true));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should not call the data loader if setting the internal value with an override already set', () => {
+      store.dispatch(setXDomain(interval, true));
+
+      dataLoaderSpy.callCount.should.equal(1);
+
+      store.dispatch(setXDomain(interval, false));
+
+      dataLoaderSpy.callCount.should.equal(1);
     });
   });
 
