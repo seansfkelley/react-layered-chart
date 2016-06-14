@@ -144,6 +144,11 @@ describe('(interval utils)', () => {
       should(mergeIntervals([])).be.null();
     });
 
+    it('should return the default interval when a zero-length array and default is given', () => {
+      const i = interval(0, 5);
+      mergeIntervals([], i).should.be.exactly(i);
+    });
+
     it('should return a interval with min-of-mins and max-of-maxes', () => {
       mergeIntervals([
         interval(0, 2),
@@ -152,11 +157,11 @@ describe('(interval utils)', () => {
     });
 
     it('should not mutate the input intervals', () => {
-      const r1 = interval(0, 2);
-      const r2 = interval(1, 3);
-      mergeIntervals([r1, r2]);
-      r1.should.deepEqual(interval(0, 2));
-      r2.should.deepEqual(interval(1, 3));
+      const i1 = interval(0, 2);
+      const i2 = interval(1, 3);
+      mergeIntervals([i1, i2]);
+      i1.should.deepEqual(interval(0, 2));
+      i2.should.deepEqual(interval(1, 3));
     });
   });
 

@@ -69,9 +69,9 @@ export function niceInterval(interval: Interval): Interval {
   }
 }
 
-export function mergeIntervals(intervals: Interval[]): Interval {
+export function mergeIntervals(intervals: Interval[], defaultInterval?: Interval): Interval {
   if (intervals.length === 0) {
-    return null;
+    return defaultInterval || null;
   } else {
     return {
       min: _.min(_.map<Interval, number>(intervals, 'min')),
