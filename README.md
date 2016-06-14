@@ -4,6 +4,9 @@ A high-performance canvas-based time series visualization in Typescript + React.
 
 ![Example Image](./example.png)
 
+[![CircleCI](https://circleci.com/gh/palantir/react-layered-chart.svg?style=shield&circle-token=b88166d5bf8a2beba96fbfc3bd2e62cad17f204b)](https://circleci.com/gh/palantir/react-layered-chart)
+[![npm](https://img.shields.io/npm/v/react-layered-chart.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/react-layered-chart)
+
 ## Installation
 
 ```
