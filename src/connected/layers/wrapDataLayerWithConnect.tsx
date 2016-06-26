@@ -17,18 +17,18 @@ export interface WrappedDataLayerConnectedProps {
   yDomain: Interval;
 }
 
+function mapStateToProps(state: ChartState, ownProps: SeriesIdProp): WrappedDataLayerConnectedProps {
+  return {
+    data: selectData(state)[ownProps.seriesId],
+    xDomain: selectXDomain(state),
+    yDomain: selectYDomains(state)[ownProps.seriesId]
+  };
+}
+
 export function wrapDataLayerWithConnect<
     OwnProps,
     OriginalProps extends OwnProps & WrappedDataLayerConnectedProps
   >(OriginalComponent: React.ComponentClass<OriginalProps>): React.ComponentClass<OwnProps & SeriesIdProp> {
-
-  function mapStateToProps(state: ChartState, ownProps: SeriesIdProp): WrappedDataLayerConnectedProps {
-    return {
-      data: selectData(state)[ownProps.seriesId],
-      xDomain: selectXDomain(state),
-      yDomain: selectYDomains(state)[ownProps.seriesId]
-    };
-  }
 
   return connect(mapStateToProps)(OriginalComponent) as React.ComponentClass<OwnProps & SeriesIdProp>;
 }
