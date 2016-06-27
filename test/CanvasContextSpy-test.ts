@@ -1,8 +1,7 @@
 import CanvasContextSpy from './CanvasContextSpy';
 
 describe('CanvasContextSpy', () => {
-  // TODO: Typescript can't find this name for some reason.
-  let spy: any;
+  let spy: typeof CanvasContextSpy;
 
   beforeEach(() => {
     spy = new CanvasContextSpy();
@@ -12,7 +11,7 @@ describe('CanvasContextSpy', () => {
     spy.fillStyle = '#000';
 
     spy.operations.should.deepEqual([
-      { 'property': 'fillStyle', value: '#000' }
+      { property: 'fillStyle', value: '#000' }
     ]);
   });
 
@@ -21,6 +20,20 @@ describe('CanvasContextSpy', () => {
 
     spy.operations.should.deepEqual([
       { method: 'scale', arguments: [ 0, 0 ] }
+    ]);
+  });
+
+  it('should provide property sets and method calls in the order they happen', () => {
+    spy.fillStyle = '#000';
+    spy.scale(0, 0);
+    spy.lineWidth = 1;
+    spy.save();
+
+    spy.operations.should.deepEqual([
+      { property: 'fillStyle', value: '#000' },
+      { method: 'scale', arguments: [ 0, 0 ] },
+      { property: 'lineWidth', value: 1 },
+      { method: 'save', arguments: [] }
     ]);
   });
 });
