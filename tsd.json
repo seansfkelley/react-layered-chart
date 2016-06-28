@@ -15,7 +15,7 @@
       "commit": "7ad4e09016898d9c4837e250121fef2aedbecaaa"
     },
     "react/react.d.ts": {
-      "commit": "473232e5dbd179e9ee682fab12f796720f37b118"
+      "commit": "2743ece76d3b31df635afdc39c63ed13acf393ad"
     },
     "react/react-dom.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
@@ -61,6 +61,9 @@
     },
     "sinon/sinon.d.ts": {
       "commit": "993f83fe84ba1381d006772dc3343e1b8d5304f3"
+    },
+    "react/react-addons-test-utils.d.ts": {
+      "commit": "2743ece76d3b31df635afdc39c63ed13acf393ad"
     }
   }
 }

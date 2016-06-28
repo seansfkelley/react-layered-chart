@@ -49,35 +49,39 @@ class SimpleLineLayer extends React.Component<Props, void> {
 
   nonReactRender = () => {
     const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
-
-    // Should we draw something if there is one data point?
-    if (this.props.data.length < 2) {
-      return;
-    }
-
-    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'xValue');
-    if (firstIndex === lastIndex) {
-      return;
-    }
-
-    const xScale = d3Scale.scaleLinear()
-      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
-      .rangeRound([ 0, width ]);
-
-    const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
-      .rangeRound([ 0, height ]);
-
-    context.beginPath();
-
-    context.moveTo(xScale(this.props.data[firstIndex].xValue), height - yScale(this.props.data[firstIndex].yValue));
-    for (let i = firstIndex + 1; i < lastIndex; ++i) {
-      context.lineTo(xScale(this.props.data[i].xValue), height - yScale(this.props.data[i].yValue));
-    }
-
-    context.strokeStyle = this.props.color;
-    context.stroke();
+    _renderCanvas(this.props, width, height, context);
   };
 }
+
+// Export for testing.
+export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
+  // Should we draw something if there is one data point?
+  if (props.data.length < 2) {
+    return;
+  }
+
+  const { firstIndex, lastIndex } = getIndexBoundsForPointData(props.data, props.xDomain, 'xValue');
+  if (firstIndex === lastIndex) {
+    return;
+  }
+
+  const xScale = d3Scale.scaleLinear()
+    .domain([ props.xDomain.min, props.xDomain.max ])
+    .rangeRound([ 0, width ]);
+
+  const yScale = props.yScale()
+    .domain([ props.yDomain.min, props.yDomain.max ])
+    .rangeRound([ 0, height ]);
+
+  context.beginPath();
+
+  context.moveTo(xScale(props.data[firstIndex].xValue), height - yScale(props.data[firstIndex].yValue));
+  for (let i = firstIndex + 1; i < lastIndex; ++i) {
+    context.lineTo(xScale(props.data[i].xValue), height - yScale(props.data[i].yValue));
+  }
+
+  context.strokeStyle = props.color;
+  context.stroke();
+};
 
 export default wrapWithAnimatedYDomain(SimpleLineLayer);
