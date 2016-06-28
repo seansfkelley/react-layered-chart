@@ -12,18 +12,10 @@
     "noFallthroughCasesInSwitch": true,
     "pretty": true
   },
-  "filesGlob": [
-    "src/**/*.ts",
-    "typings/**/*.ts",
-    "extra-typings.d.ts"
-  ],
   "exclude": [
     "node_modules",
     "lib",
     "test",
     "examples"
-  ],
-  "atom": {
-    "rewriteTsconfig": false
-  }
+  ]
 }
