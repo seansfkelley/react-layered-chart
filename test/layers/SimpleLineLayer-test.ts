@@ -21,23 +21,32 @@ describe('SimpleLineLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(data: PointDatum[], spy: typeof CanvasContextSpy) {
+  function renderWithSpy(spy: typeof CanvasContextSpy, data: PointDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should not render anything if there is only one data point', () => {
-    renderWithSpy([
+    renderWithSpy(spy, [
       point(50, 50)
-    ], spy);
+    ]);
+
+    spy.calls.should.deepEqual([]);
+  });
+
+  it('should not render anything if all the data is entirely outside the X domain', () => {
+    renderWithSpy(spy, [
+      point(-100, 0),
+      point(-50, 0)
+    ]);
 
     spy.calls.should.deepEqual([]);
   });
 
   it('should render all the data if all the data fits in the domain', () => {
-    renderWithSpy([
+    renderWithSpy(spy, [
       point(25, 33),
       point(75, 50)
-    ], spy);
+    ]);
 
     spy.calls.should.deepEqual([
       method('beginPath', []),
@@ -48,13 +57,13 @@ describe('SimpleLineLayer', () => {
   });
 
   it('should render all visible data plus one on each end when the data spans more than the domain', () => {
-    renderWithSpy([
+    renderWithSpy(spy, [
       point(-10, 5),
       point(-5, 10),
       point(50, 15),
       point(105, 20),
       point(110, 2)
-    ], spy);
+    ]);
 
     spy.calls.should.deepEqual([
       method('beginPath', []),
@@ -66,10 +75,10 @@ describe('SimpleLineLayer', () => {
   });
 
   it('should round X and Y values to the nearest integer', () => {
-    renderWithSpy([
+    renderWithSpy(spy, [
       point(34.6, 22.1),
       point(55.4, 84.6)
-    ], spy);
+    ]);
 
     spy.calls.should.deepEqual([
       method('beginPath', []),
@@ -80,14 +89,14 @@ describe('SimpleLineLayer', () => {
   });
 
   it('should attempt to render points even if their X or Y values are NaN or infinite', () => {
-    renderWithSpy([
+    renderWithSpy(spy, [
       point(0, 50),
       point(50, Infinity),
       point(Infinity, 50),
       point(50, NaN),
       point(NaN, 50),
       point(100, 50)
-    ], spy);
+    ]);
 
     spy.calls.should.deepEqual([
       method('beginPath', []),
