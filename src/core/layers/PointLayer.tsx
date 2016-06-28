@@ -12,6 +12,8 @@ import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
 import { Interval, PointDatum, ScaleFunction, Color } from '../interfaces';
 
+const TWO_PI = Math.PI * 2;
+
 export interface Props {
   data: PointDatum[];
   xDomain: Interval;
@@ -55,48 +57,56 @@ class PointLayer extends React.Component<Props, void> {
 
   nonReactRender = () => {
     const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
-
-    const { firstIndex, lastIndex } = getIndexBoundsForPointData(this.props.data, this.props.xDomain, 'xValue');
-    if (firstIndex === lastIndex) {
-      return;
-    }
-
-    const xScale = d3Scale.scaleLinear()
-      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
-      .rangeRound([ 0, width ]);
-
-    const yScale = this.props.yScale()
-      .domain([ this.props.yDomain.min, this.props.yDomain.max ])
-      .rangeRound([ 0, height ]);
-
-    const isFilled = this.props.innerRadius === 0;
-
-    const radius = isFilled ? this.props.radius : (this.props.radius - this.props.innerRadius) / 2 + this.props.innerRadius;
-
-    context.lineWidth = this.props.radius - this.props.innerRadius;
-    context.strokeStyle = this.props.color;
-    context.fillStyle = this.props.color;
-    context.beginPath();
-    for (let i = firstIndex; i < lastIndex; ++i) {
-      const x = xScale(this.props.data[i].xValue);
-      const y = height - yScale(this.props.data[i].yValue);
-
-      // `fill` can be batched, but `stroke` can't (it draws  extraneous lines even with `moveTo`).
-      // https://html.spec.whatwg.org/multipage/scripting.html#dom-context-2d-arc
-      if (!isFilled) {
-        context.beginPath();
-        context.arc(x, y, radius, 0, Math.PI * 2);
-        context.stroke();
-      } else {
-        context.moveTo(x, y);
-        context.arc(x, y, radius, 0, Math.PI * 2);
-      }
-    }
-
-    if (isFilled) {
-      context.fill();
-    }
+    _renderCanvas(this.props, width, height, context);
   };
+}
+
+// Export for testing.
+export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
+  const { firstIndex, lastIndex } = getIndexBoundsForPointData(props.data, props.xDomain, 'xValue');
+  if (firstIndex === lastIndex) {
+    return;
+  }
+
+  const xScale = d3Scale.scaleLinear()
+    .domain([ props.xDomain.min, props.xDomain.max ])
+    .rangeRound([ 0, width ]);
+
+  const yScale = props.yScale()
+    .domain([ props.yDomain.min, props.yDomain.max ])
+    .rangeRound([ 0, height ]);
+
+  const isFilled = props.innerRadius === 0;
+
+  const radius = isFilled ? props.radius : (props.radius - props.innerRadius) / 2 + props.innerRadius;
+
+  context.lineWidth = props.radius - props.innerRadius;
+  context.strokeStyle = props.color;
+  context.fillStyle = props.color;
+
+  if (isFilled) {
+    context.beginPath();
+  }
+
+  for (let i = firstIndex; i < lastIndex; ++i) {
+    const x = xScale(props.data[i].xValue);
+    const y = height - yScale(props.data[i].yValue);
+
+    // `fill` can be batched, but `stroke` can't (it draws  extraneous lines even with `moveTo`).
+    // https://html.spec.whatwg.org/multipage/scripting.html#dom-context-2d-arc
+    if (!isFilled) {
+      context.beginPath();
+      context.arc(x, y, radius, 0, TWO_PI);
+      context.stroke();
+    } else {
+      context.moveTo(x, y);
+      context.arc(x, y, radius, 0, TWO_PI);
+    }
+  }
+
+  if (isFilled) {
+    context.fill();
+  }
 }
 
 export default wrapWithAnimatedYDomain(PointLayer);

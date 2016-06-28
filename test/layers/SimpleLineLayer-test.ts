@@ -42,7 +42,7 @@ describe('SimpleLineLayer', () => {
     spy.calls.should.deepEqual([]);
   });
 
-  it('should render all the data if all the data fits in the domain', () => {
+  it('should render all the data if all the data fits in the X domain', () => {
     renderWithSpy(spy, [
       point(25, 33),
       point(75, 50)
@@ -56,7 +56,7 @@ describe('SimpleLineLayer', () => {
     ]);
   });
 
-  it('should render all visible data plus one on each end when the data spans more than the domain', () => {
+  it('should render all visible data plus one on each end when the data spans more than the X domain', () => {
     renderWithSpy(spy, [
       point(-10, 5),
       point(-5, 10),
