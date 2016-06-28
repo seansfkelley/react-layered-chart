@@ -72,19 +72,8 @@ export interface MethodCall {
   arguments: any[];
 }
 
-interface CanvasContextSpyExtensions {
-  operations: (PropertySet | MethodCall)[];
-  prototype: MergedCanvasContext;
-  new(): MergedCanvasContext;
-}
-
-// I don't know why this roundabout type definition works and simpler definitions
-// don't, but it took me a while to get here so we're going to leave it, weird
-// though it is (and it requires an annoying `typeof` on definitions to work).
-type MergedCanvasContext = CanvasRenderingContext2D & CanvasContextSpyExtensions;
-
 class CanvasContextSpy {
-  public operations = [];
+  public operations: (PropertySet | MethodCall)[] = [];
 }
 
 PROPERTY_NAMES.forEach(property => {
@@ -100,5 +89,12 @@ METHOD_NAMES.forEach(method => {
     this.operations.push({ method, arguments: Array.prototype.slice.apply(arguments) });
   };
 });
+
+// I don't know why this roundabout type definition works and simpler definitions
+// don't, but it took me a while to get here so we're going to leave it, weird
+// though it is (and it requires an annoying `typeof` on definitions to work).
+type MergedCanvasContext = CanvasRenderingContext2D & CanvasContextSpy & {
+  new(): MergedCanvasContext;
+};
 
 export default CanvasContextSpy as any as MergedCanvasContext;
