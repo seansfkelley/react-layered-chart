@@ -25,6 +25,28 @@ describe('SimpleLineLayer', () => {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 
+  it('should not render anything if there is only one data point', () => {
+    renderWithSpy([
+      point(50, 50)
+    ], spy);
+
+    spy.calls.should.deepEqual([]);
+  });
+
+  it('should render all the data if all the data fits in the domain', () => {
+    renderWithSpy([
+      point(25, 33),
+      point(75, 50)
+    ], spy);
+
+    spy.calls.should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [ 25, 67 ]),
+      method('lineTo', [ 75, 50 ]),
+      method('stroke', [])
+    ]);
+  });
+
   it('should render all visible data plus one on each end when the data spans more than the domain', () => {
     renderWithSpy([
       point(-10, 5),
@@ -43,26 +65,6 @@ describe('SimpleLineLayer', () => {
     ]);
   });
 
-  it('should render all the data if all the data fits in the domain', () => {
-    renderWithSpy([
-      point(25, 33),
-      point(75, 50)
-    ], spy);
-
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
-      method('moveTo', [ 25, 67 ]),
-      method('lineTo', [ 75, 50 ]),
-      method('stroke', [])
-    ]);
-  });
-
-  it('should not render anything if there is only one data point', () => {
-    renderWithSpy([
-      point(50, 50)
-    ], spy);
-  });
-
   it('should round X and Y values to the nearest integer', () => {
     renderWithSpy([
       point(34.6, 22.1),
@@ -73,6 +75,28 @@ describe('SimpleLineLayer', () => {
       method('beginPath', []),
       method('moveTo', [ 35, 78 ]),
       method('lineTo', [ 55, 15 ]),
+      method('stroke', [])
+    ]);
+  });
+
+  it('should attempt to render points even if their X or Y values are NaN or infinite', () => {
+    renderWithSpy([
+      point(0, 50),
+      point(50, Infinity),
+      point(Infinity, 50),
+      point(50, NaN),
+      point(NaN, 50),
+      point(100, 50)
+    ], spy);
+
+    spy.calls.should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [ 0, 50 ]),
+      method('lineTo', [ 50, -Infinity ]),
+      method('lineTo', [ Infinity, 50 ]),
+      method('lineTo', [ 50, NaN ]),
+      method('lineTo', [ NaN, 50 ]),
+      method('lineTo', [ 100, 50 ]),
       method('stroke', [])
     ]);
   });
