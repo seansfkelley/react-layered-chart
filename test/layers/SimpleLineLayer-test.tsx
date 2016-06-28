@@ -26,11 +26,10 @@ describe('SimpleLineLayer', () => {
       color: '#000'
     }, 100, 100, spy);
 
-    spy.operations.should.deepEqual([
+    spy.calls.should.deepEqual([
       { method: 'beginPath', arguments: [] },
       { method: 'moveTo', arguments: [ 5, 67 ] },
       { method: 'lineTo', arguments: [ 10, 50 ] },
-      { property: 'strokeStyle', value: '#000' },
       { method: 'stroke', arguments: [] }
     ]);
   });

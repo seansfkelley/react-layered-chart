@@ -74,19 +74,25 @@ export interface MethodCall {
 
 class CanvasContextSpy {
   public operations: (PropertySet | MethodCall)[] = [];
+  public calls: MethodCall[] = [];
+  public properties: PropertySet[] = [];
 }
 
 PROPERTY_NAMES.forEach(property => {
   Object.defineProperty(CanvasContextSpy.prototype, property, {
     set: function(value: any) {
-      this.operations.push({ property, value });
+      const propertySet = { property, value };
+      this.properties.push(propertySet);
+      this.operations.push(propertySet);
     }
   });
 });
 
 METHOD_NAMES.forEach(method => {
   CanvasContextSpy.prototype[method] = function() {
-    this.operations.push({ method, arguments: Array.prototype.slice.apply(arguments) });
+    const call = { method, arguments: Array.prototype.slice.apply(arguments) };
+    this.calls.push(call);
+    this.operations.push(call);
   };
 });
 
