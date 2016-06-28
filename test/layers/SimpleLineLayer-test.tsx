@@ -2,9 +2,9 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
 
-import { PointDatum } from '../../src';
 import { point, method } from './layerTestUtils';
-import CanvasContextSpy from './CanvasContextSpy';
+import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
+import { PointDatum } from '../../src/core/interfaces';
 import { _renderCanvas, Props } from '../../src/core/layers/SimpleLineLayer';
 
 describe('SimpleLineLayer', () => {

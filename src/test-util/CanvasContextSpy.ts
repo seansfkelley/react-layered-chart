@@ -72,14 +72,14 @@ export interface MethodCall {
   arguments: any[];
 }
 
-class CanvasContextSpy {
+export class CanvasContextSpyExtensions {
   public operations: (PropertySet | MethodCall)[] = [];
   public calls: MethodCall[] = [];
   public properties: PropertySet[] = [];
 }
 
 PROPERTY_NAMES.forEach(property => {
-  Object.defineProperty(CanvasContextSpy.prototype, property, {
+  Object.defineProperty(CanvasContextSpyExtensions.prototype, property, {
     set: function(value: any) {
       const propertySet = { property, value };
       this.properties.push(propertySet);
@@ -89,7 +89,7 @@ PROPERTY_NAMES.forEach(property => {
 });
 
 METHOD_NAMES.forEach(method => {
-  CanvasContextSpy.prototype[method] = function() {
+  CanvasContextSpyExtensions.prototype[method] = function() {
     const call = { method, arguments: Array.prototype.slice.apply(arguments) };
     this.calls.push(call);
     this.operations.push(call);
@@ -99,8 +99,8 @@ METHOD_NAMES.forEach(method => {
 // I don't know why this roundabout type definition works and simpler definitions
 // don't, but it took me a while to get here so we're going to leave it, weird
 // though it is (and it requires an annoying `typeof` on definitions to work).
-type MergedCanvasContext = CanvasRenderingContext2D & CanvasContextSpy & {
+type MergedCanvasContext = CanvasRenderingContext2D & CanvasContextSpyExtensions & {
   new(): MergedCanvasContext;
 };
 
-export default CanvasContextSpy as any as MergedCanvasContext;
+export default CanvasContextSpyExtensions as any as MergedCanvasContext;

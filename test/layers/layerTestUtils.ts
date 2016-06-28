@@ -1,6 +1,5 @@
-import { PointDatum } from '../../src';
-
-import { MethodCall } from './CanvasContextSpy';
+import { PointDatum } from '../../src/core/interfaces';
+import { MethodCall } from '../../src/test-util/CanvasContextSpy';
 
 export function point(xValue: number, yValue: number): PointDatum {
   return { xValue, yValue };

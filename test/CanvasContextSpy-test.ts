@@ -1,4 +1,4 @@
-import CanvasContextSpy from './CanvasContextSpy';
+import CanvasContextSpy from '../src/test-util/CanvasContextSpy';
 
 describe('CanvasContextSpy', () => {
   let spy: typeof CanvasContextSpy;
