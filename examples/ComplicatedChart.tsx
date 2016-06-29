@@ -14,7 +14,8 @@ import {
   ConnectedHoverLineLayer,
   createStaticDataLoader,
   ConnectedXAxisLayer,
-  ConnectedYAxisLayer
+  ConnectedYAxisLayer,
+  ConnectedSpanLayer
 } from '../src';
 
 const X_EXTENT = X_DOMAIN.max - X_DOMAIN.min;
@@ -33,6 +34,7 @@ const MUNGED_Y_DOMAIN = {
 // All series need to have an ID.
 const TEST_SERIES_ID_1 = 'foo';
 const TEST_SERIES_ID_2 = 'bar';
+const SPAN_SERIES_ID = 'baz';
 
 const COLOR_1 = '#e11';
 const COLOR_2 = '#339';
@@ -40,7 +42,8 @@ const COLOR_2 = '#339';
 // Set up a test data loader that will just return this static data.
 const DATA_LOADER = createStaticDataLoader({
   [TEST_SERIES_ID_1]: DATA,
-  [TEST_SERIES_ID_2]: MUNGED_DATA
+  [TEST_SERIES_ID_2]: MUNGED_DATA,
+  [SPAN_SERIES_ID]: [{ minXValue: X_DOMAIN.min, maxXValue: X_DOMAIN.max }]
 }, {
   [TEST_SERIES_ID_1]: Y_DOMAIN,
   [TEST_SERIES_ID_2]: MUNGED_Y_DOMAIN
@@ -49,7 +52,7 @@ const DATA_LOADER = createStaticDataLoader({
 const CHART = (
   <ChartProvider
     // List all the series IDs that exist in this chart.
-    seriesIds={[ TEST_SERIES_ID_1, TEST_SERIES_ID_2 ]}
+    seriesIds={[ TEST_SERIES_ID_1, TEST_SERIES_ID_2, SPAN_SERIES_ID ]}
     loadData={DATA_LOADER}
     // This state is only read once on initialization. Provide a meaningful value
     // so we don't start the chart in the middle of nowhere.
@@ -63,6 +66,8 @@ const CHART = (
       {/* Render the test data as a simple line chart. */}
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID_1} color={COLOR_1}/>
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID_2} color={COLOR_2}/>
+      {/* Render a visual bounding box around the data. */}
+      <ConnectedSpanLayer seriesId={SPAN_SERIES_ID} fillColor='rgba(0, 0, 0, 0.05)' borderColor='#bbb'/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
       {/* Show a reference line for hover as the mouse moves around. */}

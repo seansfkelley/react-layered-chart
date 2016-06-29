@@ -46,11 +46,11 @@ export default class SpanLayer extends React.Component<Props, void> {
     color: deprecate(React.PropTypes.string, 'SpanLayer\'s \'color\' prop is deprecated in favor of \'fillColor\' and/or \'borderColor\''),
     fillColor: React.PropTypes.string,
     borderColor: React.PropTypes.string
-  };
+  } as React.ValidationMap<Props>;
 
   static defaultProps = {
     fillColor: 'rgba(0, 0, 0, 0.1)'
-  };
+  } as any as Props;
 
   render() {
     return <PollingResizingCanvasLayer

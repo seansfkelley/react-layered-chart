@@ -56,7 +56,7 @@ These components render different types of visualizations for data. They all fol
 - `xDomain`, which describes what horizontal domain they're currently covering so they can render the appropriate subset of data
 - usually `yDomain`, which describes what vertical domain they're currently covering so they can render the data in the appropriate visual location
 
-And some combination of `color`, `fill`, `stroke`, `font`, `yScale` or other display-related props.
+And some combination of `color`, `font`, `yScale` or other display-related props.
 
 The layers in this category are:
 
@@ -68,7 +68,7 @@ The layers in this category are:
 - `SimpleLineLayer`
 - `SpanLayer`
 
-Additionally, most of these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
+Additionally, these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
 
 - `ConnectedBarLayer`
 - `ConnectedBrushLayer`
@@ -76,6 +76,7 @@ Additionally, most of these layers have "connected" variants that replace the `x
 - `ConnectedHoverLineLayer`
 - `ConnectedPointLayer`
 - `ConnectedSimpleLineLayer`
+- `ConnectedSpanLayer`
 
 <hr/>
 

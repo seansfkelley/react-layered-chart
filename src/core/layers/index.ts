@@ -45,7 +45,8 @@ export {
 
 export {
   default as SpanLayer,
-  Props as SpanLayerProps
+  Props as SpanLayerProps,
+  ColoredSpanDatum
 } from './SpanLayer';
 
 export {

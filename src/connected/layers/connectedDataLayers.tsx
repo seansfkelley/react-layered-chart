@@ -8,7 +8,9 @@ import {
   PointLayer,
   PointLayerProps,
   SimpleLineLayer,
-  SimpleLineLayerProps
+  SimpleLineLayerProps,
+  SpanLayer,
+  SpanLayerProps
 } from '../../core';
 import { SeriesId } from '../interfaces';
 
@@ -46,4 +48,3 @@ export interface _CommonConnectedSimpleLineLayerProps {
 }
 export type ConnectedSimpleLineLayerProps = _CommonConnectedSimpleLineLayerProps & SeriesIdProp;
 export const ConnectedSimpleLineLayer = wrapDataLayerWithConnect<_CommonConnectedSimpleLineLayerProps, SimpleLineLayerProps>(SimpleLineLayer);
-
