@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
+import { deprecate } from 'react-is-deprecated';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -26,7 +27,7 @@ export default class HoverLineLayer extends React.Component<Props, void> {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
-    stroke: React.PropTypes.string,
+    stroke: deprecate(React.PropTypes.string, 'HoverLineLayer\'s \'stroke\' prop is deprecated in favor of \'color\''),
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 

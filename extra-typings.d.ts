@@ -4,3 +4,8 @@ declare module 'd3-scale' {
   var scale: any;
   export = scale;
 }
+
+declare module 'react-is-deprecated' {
+  import { Validator } from 'react';
+  export function deprecate<T>(validator: Validator<T>, message: string): Validator<T>;
+}
