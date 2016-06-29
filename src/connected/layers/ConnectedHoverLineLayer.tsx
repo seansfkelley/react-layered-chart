@@ -22,7 +22,7 @@ class ConnectedHoverLineLayer extends React.Component<OwnProps & ConnectedProps,
       <UnconnectedHoverLineLayer
         hover={this.props.hover}
         xDomain={this.props.xDomain}
-        stroke={this.props.color}
+        color={this.props.color}
       />
     );
   }
