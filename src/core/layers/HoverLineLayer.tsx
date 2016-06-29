@@ -42,24 +42,27 @@ export default class HoverLineLayer extends React.Component<Props, void> {
 
   nonReactRender = () => {
     const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
+    _renderCanvas(this.props, width, height, context);
+  };
+}
 
-    if (!_.isNumber(this.props.hover)) {
-      return;
-    }
+// Export for testing.
+export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
+  if (!_.isFinite(props.hover)) {
+    return;
+  }
 
-    const xScale = d3Scale.scaleLinear()
-      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
-      .rangeRound([ 0, width ]);
-    const xPos = xScale(this.props.hover);
+  const xScale = d3Scale.scaleLinear()
+    .domain([ props.xDomain.min, props.xDomain.max ])
+    .rangeRound([ 0, width ]);
+  const xPos = xScale(props.hover);
 
+  if (xPos >= 0 && xPos < width) {
+    context.lineWidth = 1;
+    context.strokeStyle = props.stroke;
     context.beginPath();
     context.moveTo(xPos, 0);
     context.lineTo(xPos, height);
-
-    if (this.props.stroke) {
-      context.lineWidth = 1;
-      context.strokeStyle = this.props.stroke;
-      context.stroke();
-    }
-  };
+    context.stroke();
+  }
 }
