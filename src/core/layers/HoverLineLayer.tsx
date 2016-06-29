@@ -14,6 +14,7 @@ export interface Props {
   xDomain: Interval;
   hover?: number;
   stroke?: Color;
+  color?: Color;
 }
 
 @PureRender
@@ -25,11 +26,12 @@ export default class HoverLineLayer extends React.Component<Props, void> {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
-    stroke: React.PropTypes.string
+    stroke: React.PropTypes.string,
+    color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
-    stroke: 'rgba(0, 0, 0, 1)'
+    color: 'rgba(0, 0, 0, 1)'
   } as any as Props;
 
   render() {
@@ -59,7 +61,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
 
   if (xPos >= 0 && xPos < width) {
     context.lineWidth = 1;
-    context.strokeStyle = props.stroke;
+    context.strokeStyle = props.stroke || props.color;
     context.beginPath();
     context.moveTo(xPos, 0);
     context.lineTo(xPos, height);

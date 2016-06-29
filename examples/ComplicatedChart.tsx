@@ -66,7 +66,7 @@ const CHART = (
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
       {/* Show a reference line for hover as the mouse moves around. */}
-      <ConnectedHoverLineLayer/>
+      <ConnectedHoverLineLayer color='green'/>
       {/* Show one Y axis per series, overlaid on the left side of the chart. */}
       <ConnectedYAxisLayer
         axes={[{
