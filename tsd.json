@@ -15,7 +15,7 @@
       "commit": "7ad4e09016898d9c4837e250121fef2aedbecaaa"
     },
     "react/react.d.ts": {
-      "commit": "2743ece76d3b31df635afdc39c63ed13acf393ad"
+      "commit": "4c15f524ed87a03b5465e9f5717a89baea041b6c"
     },
     "react/react-dom.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
@@ -64,6 +64,9 @@
     },
     "react/react-addons-test-utils.d.ts": {
       "commit": "2743ece76d3b31df635afdc39c63ed13acf393ad"
+    },
+    "react-is-deprecated/react-is-deprecated.d.ts": {
+      "commit": "4c15f524ed87a03b5465e9f5717a89baea041b6c"
     }
   }
 }
