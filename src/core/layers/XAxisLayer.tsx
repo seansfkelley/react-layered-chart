@@ -30,13 +30,13 @@ export default class XAxisLayer extends React.Component<Props, void> {
   static propTypes = _.defaults({
     xDomain: propTypes.interval.isRequired,
     font: React.PropTypes.string
-  }, propTypes.axisSpecPartial);
+  }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
 
   static defaultProps = {
     scale: d3Scale.scaleTime,
     color: '#444',
     font: '12px sans-serif'
-  };
+  } as any as Props;
 
   render() {
     return <PollingResizingCanvasLayer
