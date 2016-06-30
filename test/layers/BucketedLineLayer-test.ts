@@ -35,11 +35,21 @@ describe('BucketedLineLayer', () => {
 
   it('should round min-X up and max-X down to the nearest integer', () => {
     renderWithSpy(spy, [
-
+      bucket(10.4, 40.4, 40, 60, 45, 65),
+      bucket(60.6, 90.6, 40, 60, 45, 65)
     ]);
 
     spy.calls.should.deepEqual([
+      method('beginPath', []),
+      method('rect', [ 11, 40, 29, 20 ]),
+      method('rect', [ 61, 40, 29, 20 ]),
+      method('fill', []),
 
+      method('beginPath', []),
+      method('moveTo', [ 40, 35 ]),
+      method('lineTo', [ 61, 55 ]),
+      method('moveTo', [ 90, 35 ]),
+      method('stroke', [])
     ]);
   });
 
