@@ -61,7 +61,7 @@ And some combination of `color`, `font`, `yScale` or other display-related props
 The layers in this category are:
 
 - `BarLayer`
-- `BrushLayer`
+- ~~`BrushLayer`~~ (deprecated)
 - `BucketedLineLayer`
 - `HoverLineLayer`
 - `PointLayer`
@@ -71,12 +71,13 @@ The layers in this category are:
 Additionally, these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
 
 - `ConnectedBarLayer`
-- `ConnectedBrushLayer`
+- ~~`ConnectedBrushLayer`~~ (deprecated)
 - `ConnectedBucketedLineLayer`
 - `ConnectedHoverLineLayer`
 - `ConnectedPointLayer`
 - `ConnectedSimpleLineLayer`
 - `ConnectedSpanLayer`
+- `ConnectedSelectionBrushLayer`
 
 <hr/>
 
