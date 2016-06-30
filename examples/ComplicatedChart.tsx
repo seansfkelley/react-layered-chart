@@ -15,15 +15,17 @@ import {
   createStaticDataLoader,
   ConnectedXAxisLayer,
   ConnectedYAxisLayer,
-  ConnectedSpanLayer
+  ConnectedSpanLayer,
+  ConnectedBarLayer
 } from '../src';
 
 const X_EXTENT = X_DOMAIN.max - X_DOMAIN.min;
 const Y_EXTENT = Y_DOMAIN.max - Y_DOMAIN.min;
 
-const MUNGED_DATA = DATA.map(datum => ({
-  xValue: (Math.random() - 0.5) * X_EXTENT * 0.001 + datum.xValue,
-  yValue: (Math.random() - 0.5) * Y_EXTENT * 0.5 + datum.yValue
+const MUNGED_DATA = DATA.slice(0, DATA.length - 1).map((datum, i) => ({
+  minXValue: datum.xValue,
+  maxXValue: DATA[i + 1].xValue,
+  yValue: (Math.random() - 0.5) * datum.yValue
 }));
 
 const MUNGED_Y_DOMAIN = {
@@ -37,7 +39,7 @@ const TEST_SERIES_ID_2 = 'bar';
 const SPAN_SERIES_ID = 'baz';
 
 const COLOR_1 = '#e11';
-const COLOR_2 = '#339';
+const COLOR_2 = 'rgba(50, 50, 220, 0.2)';
 
 // Set up a test data loader that will just return this static data.
 const DATA_LOADER = createStaticDataLoader({
@@ -65,7 +67,7 @@ const CHART = (
     <Stack>
       {/* Render the test data as a simple line chart. */}
       <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID_1} color={COLOR_1}/>
-      <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID_2} color={COLOR_2}/>
+      <ConnectedBarLayer seriesId={TEST_SERIES_ID_2} color={COLOR_2}/>
       {/* Render a visual bounding box around the data. */}
       <ConnectedSpanLayer seriesId={SPAN_SERIES_ID} fillColor='rgba(0, 0, 0, 0.05)' borderColor='#bbb'/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
