@@ -21,6 +21,11 @@ export {
 } from './ConnectedResizeSentinelLayer';
 
 export {
+  default as ConnectedSelectionBrushLayer,
+  OwnProps as ConnectedSelectionBrushLayerProps
+} from './ConnectedSelectionBrushLayer';
+
+export {
   default as ConnectedSpanLayer,
   OwnProps as ConnectedSpanLayerProps
 } from './ConnectedSpanLayer';

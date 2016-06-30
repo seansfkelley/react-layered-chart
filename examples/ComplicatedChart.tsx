@@ -16,7 +16,8 @@ import {
   ConnectedXAxisLayer,
   ConnectedYAxisLayer,
   ConnectedSpanLayer,
-  ConnectedBarLayer
+  ConnectedBarLayer,
+  ConnectedSelectionBrushLayer
 } from '../src';
 
 const X_EXTENT = X_DOMAIN.max - X_DOMAIN.min;
@@ -71,9 +72,11 @@ const CHART = (
       {/* Render a visual bounding box around the data. */}
       <ConnectedSpanLayer seriesId={SPAN_SERIES_ID} fillColor='rgba(0, 0, 0, 0.05)' borderColor='#bbb'/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
-      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true}/>
+      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true} enableBrush={true}/>
       {/* Show a reference line for hover as the mouse moves around. */}
       <ConnectedHoverLineLayer color='green'/>
+      {/* Show a mostly-transparent box indicating the user's selection. */}
+      <ConnectedSelectionBrushLayer/>
       {/* Show one Y axis per series, overlaid on the left side of the chart. */}
       <ConnectedYAxisLayer
         axes={[{
