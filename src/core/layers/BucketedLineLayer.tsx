@@ -35,7 +35,7 @@ class BucketedLineLayer extends React.Component<Props, void> {
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
-    color: 'rgba(0, 0, 0, 0.7)'
+    color: '#444'
   } as any as Props;
 
   render() {
