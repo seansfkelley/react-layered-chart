@@ -38,10 +38,6 @@ class BucketedLineLayer extends React.Component<Props, void> {
     color: 'rgba(0, 0, 0, 0.7)'
   } as any as Props;
 
-  animatedProps = {
-    yDomain: 1000
-  };
-
   render() {
     return <PollingResizingCanvasLayer
       ref='canvasLayer'
