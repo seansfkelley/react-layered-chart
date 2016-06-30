@@ -32,4 +32,74 @@ describe('BucketedLineLayer', () => {
 
     spy.calls.should.deepEqual([]);
   });
+
+  it('should round min-X up and max-X down to the nearest integer', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should round all Y values down to the nearest integer', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should draw rects for each bucket, connected by non-overlapping lines', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should not draw rects for buckets that end up with height 1 after rounding', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should not draw rects for buckets that end up with width 1 after rounding', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should not draw lines for buckets that are edge-to-edge', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should always compute a width of at least 1, even for tiny buckets', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
 });
