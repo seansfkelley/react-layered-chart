@@ -92,17 +92,17 @@ describe('(selectors)', () => {
         }
       } as any).should.equal(10);
     });
-  });
 
-  it('should use the override even if it\'s set to 0', () => {
-    selectHover({
-      uiState: {
-        hover: 5
-      },
-      uiStateConsumerOverrides: {
-        hover: 0
-      }
-    } as any).should.equal(0);
+    it('should use the override even if it\'s set to 0', () => {
+      selectHover({
+        uiState: {
+          hover: 5
+        },
+        uiStateConsumerOverrides: {
+          hover: 0
+        }
+      } as any).should.equal(0);
+    });
   });
 
   describe('selectSelection', () => {
