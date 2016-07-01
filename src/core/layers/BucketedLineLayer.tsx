@@ -102,8 +102,6 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     };
   });
 
-  console.log(computedValuesForVisibleData);
-
   // Bars
   context.beginPath();
   for (let i = 0; i < computedValuesForVisibleData.length; ++i) {
@@ -126,10 +124,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)
   for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
-    const distanceFromPrevious = computedValues.minX - computedValuesForVisibleData[i - 1].maxX;
-    if (distanceFromPrevious < 0 || distanceFromPrevious > 1) {
-      context.lineTo(computedValues.minX, height - computedValues.firstY);
-    }
+    context.lineTo(computedValues.minX, height - computedValues.firstY);
     if (computedValues.width >= 1 && computedValues.height >= 1) {
       context.moveTo(computedValues.maxX, height - computedValues.lastY);
     }

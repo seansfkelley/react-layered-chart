@@ -113,43 +113,61 @@ describe('BucketedLineLayer', () => {
     ]);
   });
 
-  it('should not draw lines between rects when they overlap in Y and they are separated by 0 along X', () => {
+  xit('should not draw lines between rects when they overlap in Y and they are separated by 0 along X', () => {
     renderWithSpy(spy, [
-
+      bucket( 0,  50,  0,  60,  0,  60),
+      bucket(50, 100, 40, 100, 40, 100)
     ]);
 
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  50, 40 ]),
+      method('moveTo', [ 100,  0 ]),
+      method('stroke', [])
     ]);
   });
 
-  it('should not draw lines between rects when they overlap in Y and they are separated by 1 along X', () => {
+  xit('should not draw lines between rects when they overlap in Y and they are separated by 1 along X', () => {
     renderWithSpy(spy, [
-
+      bucket( 0,  50,  0,  60,  0,  60),
+      bucket(51, 100, 40, 100, 40, 100)
     ]);
 
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  50, 40 ]),
+      method('moveTo', [ 100,  0 ]),
+      method('stroke', [])
     ]);
   });
 
-  it('should draw lines between rects when they do not overlap in Y and they are separated by 0 along X', () => {
+  xit('should draw lines between rects when they do not overlap in Y and they are separated by 0 along X', () => {
     renderWithSpy(spy, [
-
+      bucket( 0,  50,  0,  40,  0,  40),
+      bucket(50, 100, 60, 100, 60, 100)
     ]);
 
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  50, 60 ]),
+      method('lineTo', [  50, 40 ]),
+      method('moveTo', [ 100,  0 ]),
+      method('stroke', [])
     ]);
   });
 
-  it('should draw lines between rects when they do not overlap in Y and they are separated by 1 along X', () => {
+  xit('should draw lines between rects when they do not overlap in Y and they are separated by 1 along X', () => {
     renderWithSpy(spy, [
-
+      bucket( 0,  50,  0,  40,  0,  40),
+      bucket(51, 100, 60, 100, 60, 100)
     ]);
 
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  50, 60 ]),
+      method('lineTo', [  51, 40 ]),
+      method('moveTo', [ 100,  0 ]),
+      method('stroke', [])
     ]);
   });
 
