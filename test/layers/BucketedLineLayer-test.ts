@@ -72,8 +72,7 @@ describe('BucketedLineLayer', () => {
     ]);
   });
 
-  /*
-  it('should not draw rects for buckets that end up with width 1 after rounding', () => {
+  xit('should not draw rects for buckets that end up with width 1 after rounding', () => {
     renderWithSpy(spy, [
       bucket(50, 50, 10, 40, 0, 0)
     ]);
@@ -83,7 +82,6 @@ describe('BucketedLineLayer', () => {
       method('fill', [])
     ]);
   });
-  */
 
   it('should not draw lines between rects when they overlap in Y and they are separated by 0 along X');
 
