@@ -25,83 +25,73 @@ describe('BucketedLineLayer', () => {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 
-  it('should not render anything if there is only one data point', () => {
+  it('should render a single rect for a single bucket', () => {
     renderWithSpy(spy, [
-      bucket(40, 60, 40, 60, 45, 55)
+      bucket(40, 67, 45, 55, 0, 0)
     ]);
 
-    spy.calls.should.deepEqual([]);
+    spy.calls.slice(0, 3).should.deepEqual([
+      method('beginPath', []),
+      method('rect', [ 40, 45, 27, 10 ]),
+      method('fill', []),
+    ]);
   });
 
   it('should round min-X up and max-X down to the nearest integer', () => {
     renderWithSpy(spy, [
-      bucket(10.4, 40.4, 40, 60, 45, 65),
-      bucket(60.6, 90.6, 40, 60, 45, 65)
+      bucket(10.4, 40.6, 45, 55, 0, 0)
     ]);
 
-    spy.calls.should.deepEqual([
+    spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
-      method('rect', [ 11, 40, 29, 20 ]),
-      method('rect', [ 61, 40, 29, 20 ]),
-      method('fill', []),
-
-      method('beginPath', []),
-      method('moveTo', [ 40, 35 ]),
-      method('lineTo', [ 61, 55 ]),
-      method('moveTo', [ 90, 35 ]),
-      method('stroke', [])
+      method('rect', [ 11, 45, 29, 10 ]),
+      method('fill', [])
     ]);
   });
 
-  it('should round all Y values down to the nearest integer', () => {
+  it('should round min-Y and max-Y values down to the nearest integer', () => {
     renderWithSpy(spy, [
-
+      bucket(10, 40, 40.4, 60.6, 0, 0)
     ]);
 
-    spy.calls.should.deepEqual([
-
-    ]);
-  });
-
-  it('should draw rects for each bucket, connected by non-overlapping lines', () => {
-    renderWithSpy(spy, [
-
-    ]);
-
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(0, 3).should.deepEqual([
+      method('beginPath', []),
+      method('rect', [ 10, 40, 30, 20 ]),
+      method('fill', [])
     ]);
   });
 
   it('should not draw rects for buckets that end up with height 1 after rounding', () => {
     renderWithSpy(spy, [
-
+      bucket(10, 40, 50, 50, 0, 0)
     ]);
 
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(0, 2).should.deepEqual([
+      method('beginPath', []),
+      method('fill', [])
     ]);
   });
 
+  /*
   it('should not draw rects for buckets that end up with width 1 after rounding', () => {
     renderWithSpy(spy, [
-
+      bucket(50, 50, 10, 40, 0, 0)
     ]);
 
-    spy.calls.should.deepEqual([
-
-    ]);
-  });
-
-  it('should not draw lines for buckets that are edge-to-edge', () => {
-    renderWithSpy(spy, [
-
-    ]);
-
-    spy.calls.should.deepEqual([
-
+    spy.calls.slice(0, 2).should.deepEqual([
+      method('beginPath', []),
+      method('fill', [])
     ]);
   });
+  */
+
+  it('should not draw lines between rects when they overlap in Y and they are separated by 0 along X');
+
+  it('should not draw lines between rects when they overlap in Y and they are separated by 1 along X');
+
+  it('should draw lines between rects when they don't overlap in Y and they are separated by 0 along X');
+
+  it('should draw lines between rects when they don't overlap in Y and they are separated by 1 along X');
 
   it('should always compute a width of at least 1, even for tiny buckets', () => {
     renderWithSpy(spy, [
@@ -112,4 +102,18 @@ describe('BucketedLineLayer', () => {
 
     ]);
   });
+
+  /*
+  it('should round first-Y and last-Y values down to the nearest integer', () => {
+    renderWithSpy(spy, [
+      bucket(10, 40, 40, 60, 45.6, 55.6)
+    ]);
+
+    spy.calls.slice(0, 3).should.deepEqual([
+      method('beginPath', []),
+      method('rect', [ 10, 40, 30, 20 ]),
+      method('fill', [])
+    ]);
+  });
+  */
 });

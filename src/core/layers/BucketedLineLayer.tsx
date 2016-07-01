@@ -54,12 +54,8 @@ class BucketedLineLayer extends React.Component<Props, void> {
 
 // Export for testing.
 export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
-  // Should we draw something if there is one data point?
-  if (props.data.length < 2) {
-    return;
-  }
-
   const { firstIndex, lastIndex } = getIndexBoundsForSpanData(props.data, props.xDomain, 'minXValue', 'maxXValue');
+
   if (firstIndex === lastIndex) {
     return;
   }
@@ -128,8 +124,10 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)
   for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
-    // TODO: Skip any that have touching rectangles?
-    context.lineTo(computedValues.minX, height - computedValues.firstY);
+    const distanceFromPrevious = computedValues.minX - computedValuesForVisibleData[i - 1].maxX;
+    if (distanceFromPrevious < 0 || distanceFromPrevious > 1) {
+      context.lineTo(computedValues.minX, height - computedValues.firstY);
+    }
     if (computedValues.width >= 1 && computedValues.height >= 1) {
       context.moveTo(computedValues.maxX, height - computedValues.lastY);
     }
