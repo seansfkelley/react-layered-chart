@@ -102,6 +102,8 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     };
   });
 
+  console.log(computedValuesForVisibleData);
+
   // Bars
   context.beginPath();
   for (let i = 0; i < computedValuesForVisibleData.length; ++i) {

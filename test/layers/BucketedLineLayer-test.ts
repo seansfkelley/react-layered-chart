@@ -27,43 +27,43 @@ describe('BucketedLineLayer', () => {
 
   it('should render a single rect for a single bucket', () => {
     renderWithSpy(spy, [
-      bucket(40, 67, 45, 55, 0, 0)
+      bucket(10, 25, 35, 80, 0, 0)
     ]);
 
     spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
-      method('rect', [ 40, 45, 27, 10 ]),
+      method('rect', [ 10, 20, 15, 45 ]),
       method('fill', []),
     ]);
   });
 
   it('should round min-X up and max-X down to the nearest integer', () => {
     renderWithSpy(spy, [
-      bucket(10.4, 40.6, 45, 55, 0, 0)
+      bucket(10.4, 40.6, 0, 100, 0, 0)
     ]);
 
     spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
-      method('rect', [ 11, 45, 29, 10 ]),
+      method('rect', [ 11, 0, 29, 100 ]),
       method('fill', [])
     ]);
   });
 
   it('should round min-Y and max-Y values down to the nearest integer', () => {
     renderWithSpy(spy, [
-      bucket(10, 40, 40.4, 60.6, 0, 0)
+      bucket(0, 100, 40.4, 60.6, 0, 0)
     ]);
 
     spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
-      method('rect', [ 10, 40, 30, 20 ]),
+      method('rect', [ 0, 40, 100, 20 ]),
       method('fill', [])
     ]);
   });
 
   it('should not draw rects for buckets that end up with height 1 after rounding', () => {
     renderWithSpy(spy, [
-      bucket(10, 40, 50, 50, 0, 0)
+      bucket(0, 100, 50, 50, 0, 0)
     ]);
 
     spy.calls.slice(0, 2).should.deepEqual([
@@ -74,7 +74,7 @@ describe('BucketedLineLayer', () => {
 
   xit('should not draw rects for buckets that end up with width 1 after rounding', () => {
     renderWithSpy(spy, [
-      bucket(50, 50, 10, 40, 0, 0)
+      bucket(50, 50, 0, 100, 0, 0)
     ]);
 
     spy.calls.slice(0, 2).should.deepEqual([
@@ -83,13 +83,75 @@ describe('BucketedLineLayer', () => {
     ]);
   });
 
-  it('should not draw lines between rects when they overlap in Y and they are separated by 0 along X');
+  it('should draw lines between the last and first (respectively) Y values of adjacent rects', () => {
+    renderWithSpy(spy, [
+      bucket( 0,  40, 0, 100,  0, 67),
+      bucket(60, 100, 0, 100, 45,  0)
+    ]);
 
-  it('should not draw lines between rects when they overlap in Y and they are separated by 1 along X');
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  40,  33 ]),
+      method('lineTo', [  60,  55 ]),
+      method('moveTo', [ 100, 100 ]),
+      method('stroke', [])
+    ]);
+  });
 
-  it('should draw lines between rects when they do not overlap in Y and they are separated by 0 along X');
+  it('should round first-Y and last-Y values down to the nearest integer', () => {
+    renderWithSpy(spy, [
+      bucket( 0,  40, 0, 100,    0, 67.6),
+      bucket(60, 100, 0, 100, 45.6,    0)
+    ]);
 
-  it('should draw lines between rects when they do not overlap in Y and they are separated by 1 along X');
+    spy.calls.slice(4).should.deepEqual([
+      method('beginPath', []),
+      method('moveTo', [  40,  33 ]),
+      method('lineTo', [  60,  55 ]),
+      method('moveTo', [ 100, 100 ]),
+      method('stroke', [])
+    ]);
+  });
+
+  it('should not draw lines between rects when they overlap in Y and they are separated by 0 along X', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should not draw lines between rects when they overlap in Y and they are separated by 1 along X', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should draw lines between rects when they do not overlap in Y and they are separated by 0 along X', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
+
+  it('should draw lines between rects when they do not overlap in Y and they are separated by 1 along X', () => {
+    renderWithSpy(spy, [
+
+    ]);
+
+    spy.calls.should.deepEqual([
+
+    ]);
+  });
 
   it('should always compute a width of at least 1, even for tiny buckets', () => {
     renderWithSpy(spy, [
