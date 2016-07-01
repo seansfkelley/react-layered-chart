@@ -87,9 +87,9 @@ describe('BucketedLineLayer', () => {
 
   it('should not draw lines between rects when they overlap in Y and they are separated by 1 along X');
 
-  it('should draw lines between rects when they don't overlap in Y and they are separated by 0 along X');
+  it('should draw lines between rects when they do not overlap in Y and they are separated by 0 along X');
 
-  it('should draw lines between rects when they don't overlap in Y and they are separated by 1 along X');
+  it('should draw lines between rects when they do not overlap in Y and they are separated by 1 along X');
 
   it('should always compute a width of at least 1, even for tiny buckets', () => {
     renderWithSpy(spy, [
