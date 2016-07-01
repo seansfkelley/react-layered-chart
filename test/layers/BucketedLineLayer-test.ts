@@ -61,26 +61,39 @@ describe('BucketedLineLayer', () => {
     ]);
   });
 
-  it('should not draw rects for buckets that end up with height 1 after rounding', () => {
+  it('should always draw a rect with width at least 1, even for tiny buckets', () => {
     renderWithSpy(spy, [
-      bucket(0, 100, 50, 50, 0, 0)
+      bucket(50, 50, 0, 100, 0, 100)
     ]);
 
-    spy.calls.slice(0, 2).should.deepEqual([
+    spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
+      method('rect', [ 50, 0, 1, 100 ]),
       method('fill', [])
     ]);
   });
 
-  xit('should not draw rects for buckets that end up with width 1 after rounding', () => {
+  it('should always draw a rect with height at least 1, even for tiny buckets', () => {
     renderWithSpy(spy, [
-      bucket(50, 50, 0, 100, 0, 0)
+      bucket(0, 100, 50, 50, 50, 50)
     ]);
 
-    spy.calls.slice(0, 2).should.deepEqual([
+    spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
+      method('rect', [ 0, 50, 100, 1 ]),
       method('fill', [])
     ]);
+  });
+
+  it('should not draw a rect for a bucket of both width and height of 1', () => {
+  renderWithSpy(spy, [
+    bucket(50, 50, 50, 50, 50, 50)
+  ]);
+
+  spy.calls.slice(0, 2).should.deepEqual([
+    method('beginPath', []),
+    method('fill', [])
+  ]);
   });
 
   it('should draw lines between the last and first (respectively) Y values of adjacent rects', () => {
@@ -170,28 +183,4 @@ describe('BucketedLineLayer', () => {
       method('stroke', [])
     ]);
   });
-
-  it('should always compute a width of at least 1, even for tiny buckets', () => {
-    renderWithSpy(spy, [
-
-    ]);
-
-    spy.calls.should.deepEqual([
-
-    ]);
-  });
-
-  /*
-  it('should round first-Y and last-Y values down to the nearest integer', () => {
-    renderWithSpy(spy, [
-      bucket(10, 40, 40, 60, 45.6, 55.6)
-    ]);
-
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 10, 40, 30, 20 ]),
-      method('fill', [])
-    ]);
-  });
-  */
 });

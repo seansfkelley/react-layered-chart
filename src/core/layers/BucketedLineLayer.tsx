@@ -106,7 +106,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.beginPath();
   for (let i = 0; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
-    if (computedValues.width >= 1 && computedValues.height >= 1) {
+    if (computedValues.width > 1 && computedValues.height > 1) {
       context.rect(
         computedValues.minX,
         height - computedValues.maxY,
@@ -125,9 +125,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
     context.lineTo(computedValues.minX, height - computedValues.firstY);
-    if (computedValues.width >= 1 && computedValues.height >= 1) {
-      context.moveTo(computedValues.maxX, height - computedValues.lastY);
-    }
+    context.moveTo(computedValues.maxX, height - computedValues.lastY);
   }
   context.strokeStyle = props.color;
   context.stroke();
