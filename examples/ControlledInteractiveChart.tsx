@@ -5,7 +5,7 @@ a week beyond the data, on either end.
 
 import * as React from 'react';
 
-import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 import {
   Interval,
   ChartProvider,
@@ -21,18 +21,18 @@ const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7;
 
 // The bounds within which the view should always be contained.
 const CHART_BOUNDS = {
-  min: X_DOMAIN.min - ONE_WEEK_MS,
-  max: X_DOMAIN.max + ONE_WEEK_MS
+  min: SIMPLE_LINE_X_DOMAIN.min - ONE_WEEK_MS,
+  max: SIMPLE_LINE_X_DOMAIN.max + ONE_WEEK_MS
 };
 
 // All series need to have an ID.
 const TEST_SERIES_ID = 'foo';
 
 // Set up a test data loader that will just return this static data.
-const DATA_LOADER = createStaticDataLoader({
-  [TEST_SERIES_ID]: DATA
+const SIMPLE_LINE_DATA_LOADER = createStaticDataLoader({
+  [TEST_SERIES_ID]: SIMPLE_LINE_DATA
 }, {
-  [TEST_SERIES_ID]: Y_DOMAIN
+  [TEST_SERIES_ID]: SIMPLE_LINE_Y_DOMAIN
 });
 
 // For simplicity in this example, the controlled domain is kept on component
@@ -44,7 +44,7 @@ interface State {
 class ControlledInteractiveChart extends React.Component<{}, State> {
   // Declare some sane default.
   state: State = {
-    xDomain: X_DOMAIN
+    xDomain: SIMPLE_LINE_X_DOMAIN
   };
 
   render() {
@@ -52,7 +52,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
       // See BasicInteractiveChart.tsx for comments on things that are not commented here.
       <ChartProvider
         seriesIds={[ TEST_SERIES_ID ]}
-        loadData={DATA_LOADER}
+        loadData={SIMPLE_LINE_DATA_LOADER}
         className='example-chart'
         // Control the prop!
         xDomain={this.state.xDomain}

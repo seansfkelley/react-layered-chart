@@ -8,7 +8,7 @@ import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { DATA, X_DOMAIN, Y_DOMAIN } from './test-data';
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 import {
   Interval,
   Stack,
@@ -25,13 +25,13 @@ import {
 } from '../src';
 
 // All series need to have an ID.
-const TEST_SERIES_ID = 'foo';
+const SERIES_ID = 'foo';
 
 // Set up a test data loader that will just return this static data.
-const DATA_LOADER = createStaticDataLoader({
-  [TEST_SERIES_ID]: DATA
+const SIMPLE_LINE_DATA_LOADER = createStaticDataLoader({
+  [SERIES_ID]: SIMPLE_LINE_DATA
 }, {
-  [TEST_SERIES_ID]: Y_DOMAIN
+  [SERIES_ID]: SIMPLE_LINE_Y_DOMAIN
 });
 
 // Props we expect to receive from our our parent component.
@@ -80,20 +80,20 @@ const ConnectedSnapToXDomainButton = connect(mapStateToProps, mapDispatchToProps
 const CHART = (
   // See BasicInteractiveChart.tsx for comments on things that are not commented here.
   <ChartProvider
-    seriesIds={[ TEST_SERIES_ID ]}
-    loadData={DATA_LOADER}
+    seriesIds={[ SERIES_ID ]}
+    loadData={SIMPLE_LINE_DATA_LOADER}
     defaultState={{
-      xDomain: X_DOMAIN
+      xDomain: SIMPLE_LINE_X_DOMAIN
     }}
     className='example-chart'
   >
     <Stack>
-      <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
+      <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
     </Stack>
     {/* Give the layer its own Stack so it appears visually separate from the main views. */}
     <Stack className='snap-to-x-domain-button-stack'>
-      <ConnectedSnapToXDomainButton resetXDomain={X_DOMAIN}/>
+      <ConnectedSnapToXDomainButton resetXDomain={SIMPLE_LINE_X_DOMAIN}/>
     </Stack>
   </ChartProvider>
 );
