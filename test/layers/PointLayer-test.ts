@@ -23,7 +23,7 @@ describe('PointLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: typeof CanvasContextSpy, data: PointDatum[], innerRadius: number = 0) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: PointDatum[], innerRadius: number = 0) {
     _renderCanvas(_.defaults({ data, innerRadius, radius: 5 }, DEFAULT_PROPS), 100, 100, spy);
   }
 

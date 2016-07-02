@@ -21,7 +21,7 @@ describe('SimpleLineLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: typeof CanvasContextSpy, data: PointDatum[]) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: PointDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 

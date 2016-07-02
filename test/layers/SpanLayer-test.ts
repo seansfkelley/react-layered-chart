@@ -20,7 +20,7 @@ describe('SpanLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: typeof CanvasContextSpy, data: XSpanDatum[]) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: XSpanDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 

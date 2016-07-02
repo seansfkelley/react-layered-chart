@@ -20,7 +20,7 @@ describe('BarLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: typeof CanvasContextSpy, data: SpanDatum[]) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: SpanDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 

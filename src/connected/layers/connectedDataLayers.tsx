@@ -8,9 +8,7 @@ import {
   PointLayer,
   PointLayerProps,
   SimpleLineLayer,
-  SimpleLineLayerProps,
-  SpanLayer,
-  SpanLayerProps
+  SimpleLineLayerProps
 } from '../../core';
 import { SeriesId } from '../interfaces';
 

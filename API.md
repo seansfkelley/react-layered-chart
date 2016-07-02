@@ -632,6 +632,7 @@ Because Canvas-based rendering is entirely outside the cycle of the React render
 
 - `calls`: an array of `{ method, arguments }` objects in the order the methods were called
 - `properties`: an array of `{ property, value }` objects in the order the properties were set
+- `operations`: a mixed array of `{ method, arguments }` and `{ property, value }` objects in the order the methods were called/properties were set
 - `callsOmit(...methodNames)`: like `calls`, but excludes the specified method names
 - `callsOnly(...methodNames)`: like `calls`, but includes only the specified method names
 
@@ -649,7 +650,7 @@ export default class ExampleComponent extends React.Component<Props, ...> {
   }
 
   nonReactRender() {
-  	_renderCanvas(this.props, this.refs.canvas.getContext('2d');
+    _renderCanvas(this.props, this.refs.canvas.getContext('2d');
   }
 }
 
@@ -671,13 +672,13 @@ describe('ExampleComponent', () => {
   let spy: typeof CanvasContextSpy;
 
   beforeEach(() => {
-  	spy = new CanvasContextSpy();
+    spy = new CanvasContextSpy();
   });
 
   it('should do anything at all', () => {
     _renderCanvas({ ... }, spy);
 
-    spy.operations.should.have.length.above(0);
+    spy.operations.length.should.be.above(0);
   });
 });
 ```
