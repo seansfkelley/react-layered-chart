@@ -80,7 +80,7 @@ describe('BucketedLineLayer', () => {
 
     spy.calls.slice(0, 3).should.deepEqual([
       method('beginPath', []),
-      method('rect', [ 0, 50, 100, 1 ]),
+      method('rect', [ 0, 49, 100, 1 ]),
       method('fill', [])
     ]);
   });

@@ -72,33 +72,22 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   const computedValuesForVisibleData = props.data
   .slice(firstIndex, lastIndex)
   .map(datum => {
-    const earliestX = Math.ceil(xScale(datum.minXValue));
-    const latestX = Math.floor(xScale(datum.maxXValue));
+    // TODO: Why is this ceiling'd? There must have been a reason...
+    const minX = Math.ceil(xScale(datum.minXValue));
+    const maxX = Math.max(Math.floor(xScale(datum.maxXValue)), minX + 1);
 
-    let preferredX1;
-    let preferredX2;
-    if (latestX - earliestX < 1) {
-      // Enforce that we have at least a pixel's width: this way, if the bounds span more than one value,
-      // we are sure to render a 1px wide rectangle that covers it.
-      preferredX1 = earliestX;
-      preferredX2 = earliestX + 1;
-    } else {
-      preferredX1 = earliestX;
-      preferredX2 = latestX;
-    }
-
-    const preferredY1 = Math.floor(yScale(datum.minYValue));
-    const preferredY2 = Math.floor(yScale(datum.maxYValue));
+    const minY = Math.floor(yScale(datum.minYValue));
+    const maxY = Math.max(Math.floor(yScale(datum.maxYValue)), minY + 1);
 
     return {
-      minX: preferredX1,
-      maxX: preferredX2,
-      minY: preferredY1,
-      maxY: preferredY2,
+      minX,
+      maxX,
+      minY,
+      maxY,
       firstY: Math.floor(yScale(datum.firstYValue)),
       lastY: Math.floor(yScale(datum.lastYValue)),
-      width: preferredX2 - preferredX1,
-      height: preferredY2 - preferredY1
+      width: maxX - minX,
+      height: maxY - minY
     };
   });
 
@@ -106,7 +95,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.beginPath();
   for (let i = 0; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
-    if (computedValues.width > 1 && computedValues.height > 1) {
+    if (computedValues.width !== 1 || computedValues.height !== 1) {
       context.rect(
         computedValues.minX,
         height - computedValues.maxY,
