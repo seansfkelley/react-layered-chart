@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `SpanLayer`'s `color` prop deprecated in favor of `fillColor` and `borderColor`.
 - `BrushLayer` deprecated in favor of `SpanLayer`.
 - `ConnectedBrushLayer` deprecated in favor of the new `ConnectedSelectionBrushLayer`.
+- `PollingResizingCanvasLayer`'s `resetCanvas` no longer automatically translates the canvas before returning it.
 
 ### Added
 

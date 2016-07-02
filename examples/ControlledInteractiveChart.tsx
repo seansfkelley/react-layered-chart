@@ -26,13 +26,13 @@ const CHART_BOUNDS = {
 };
 
 // All series need to have an ID.
-const TEST_SERIES_ID = 'foo';
+const SERIES_ID = 'foo';
 
 // Set up a test data loader that will just return this static data.
 const SIMPLE_LINE_DATA_LOADER = createStaticDataLoader({
-  [TEST_SERIES_ID]: SIMPLE_LINE_DATA
+  [SERIES_ID]: SIMPLE_LINE_DATA
 }, {
-  [TEST_SERIES_ID]: SIMPLE_LINE_Y_DOMAIN
+  [SERIES_ID]: SIMPLE_LINE_Y_DOMAIN
 });
 
 // For simplicity in this example, the controlled domain is kept on component
@@ -51,7 +51,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
     return (
       // See BasicInteractiveChart.tsx for comments on things that are not commented here.
       <ChartProvider
-        seriesIds={[ TEST_SERIES_ID ]}
+        seriesIds={[ SERIES_ID ]}
         loadData={SIMPLE_LINE_DATA_LOADER}
         className='example-chart'
         // Control the prop!
@@ -60,7 +60,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
         onXDomainChange={this._onXDomainChange.bind(this)}
       >
         <Stack>
-          <ConnectedSimpleLineLayer seriesId={TEST_SERIES_ID}/>
+          <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
           <ConnectedInteractionCaptureLayer enablePan={true}/>
         </Stack>
       </ChartProvider>

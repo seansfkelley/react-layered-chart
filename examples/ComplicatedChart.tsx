@@ -21,13 +21,12 @@ import {
 import {
   ChartProvider,
   Stack,
+  createStaticDataLoader,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   ConnectedHoverLineLayer,
-  createStaticDataLoader,
   ConnectedXAxisLayer,
   ConnectedYAxisLayer,
-  ConnectedSpanLayer,
   ConnectedBarLayer,
   ConnectedSelectionBrushLayer,
   ConnectedBucketedLineLayer
