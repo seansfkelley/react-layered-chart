@@ -18,6 +18,12 @@ export interface PointDatum {
   yValue: number;
 }
 
+export interface XSpanDatum {
+  minXValue: number;
+  maxXValue: number;
+  color?: Color;
+}
+
 export interface SpanDatum {
   minXValue: number;
   maxXValue: number;

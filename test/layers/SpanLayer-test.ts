@@ -5,9 +5,9 @@ import * as d3Scale from 'd3-scale';
 import { method, property } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
 import { PointDatum } from '../../src/core/interfaces';
-import { _renderCanvas, Props, ColoredSpanDatum } from '../../src/core/layers/SpanLayer';
+import { _renderCanvas, Props, XSpanDatum } from '../../src/core/layers/SpanLayer';
 
-function span(minXValue: number, maxXValue: number, fillColor?: string, borderColor?: string): ColoredSpanDatum {
+function span(minXValue: number, maxXValue: number, fillColor?: string, borderColor?: string): XSpanDatum {
   return { minXValue, maxXValue, fillColor, borderColor };
 }
 
@@ -22,7 +22,7 @@ describe('SpanLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: typeof CanvasContextSpy, data: ColoredSpanDatum[], fillColor: string = '#000', borderColor: string = '#fff') {
+  function renderWithSpy(spy: typeof CanvasContextSpy, data: XSpanDatum[], fillColor: string = '#000', borderColor: string = '#fff') {
     _renderCanvas(_.defaults({ data, fillColor, borderColor }, DEFAULT_PROPS), 100, 100, spy);
   }
 

@@ -10,18 +10,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Interval, Color } from '../interfaces';
-
-export interface ColoredSpanDatum {
-  minXValue: number;
-  maxXValue: number;
-  color?: Color;
-  fillColor?: Color;
-  borderColor?: Color;
-}
+import { Interval, Color, XSpanDatum } from '../interfaces';
 
 export interface Props {
-  data: ColoredSpanDatum[];
+  data: XSpanDatum[];
   xDomain: Interval;
   color?: Color;
   fillColor?: Color;
@@ -35,13 +27,7 @@ export default class SpanLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(React.PropTypes.shape({
-      minXValue: React.PropTypes.number.isRequired,
-      maxXValue: React.PropTypes.number.isRequired,
-      color: deprecate(React.PropTypes.string, 'SpanLayer\'s \'data[].color\' prop is deprecated in favor of \'data[].fillColor\' and/or \'data[].borderColor\''),
-      fillColor: React.PropTypes.string,
-      borderColor: React.PropTypes.string
-    })).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.xSpanDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     color: deprecate(React.PropTypes.string, 'SpanLayer\'s \'color\' prop is deprecated in favor of \'fillColor\' and/or \'borderColor\''),
     fillColor: React.PropTypes.string,
@@ -78,9 +64,9 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     .rangeRound([ 0, width ]);
 
   const defaultFill = props.color || props.fillColor;
-  const defaultStroke = props.borderColor;
 
   context.lineWidth = 1;
+  context.strokeStyle = props.borderColor;
 
   for (let i = firstIndex; i < lastIndex; ++i) {
     const left = xScale(props.data[i].minXValue);
@@ -88,15 +74,13 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     context.beginPath();
     context.rect(left, -1, right - left, height + 2);
 
-    const fillStyle = props.data[i].fillColor || defaultFill;
+    const fillStyle = props.data[i].color || defaultFill;
     if (fillStyle) {
       context.fillStyle = fillStyle;
       context.fill();
     }
 
-    const strokeStyle = props.data[i].borderColor || defaultStroke;
-    if (strokeStyle) {
-      context.strokeStyle = strokeStyle;
+    if (props.borderColor) {
       context.stroke();
     }
   }

@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `mergeIntervals` accepts a default argument to return in the case when no intervals are given. [#20](https://github.com/palantir/react-layered-chart/issues/20).
 - `HoverLineLayer`'s `stroke` prop deprecated in favor of `color`.
 - `SpanLayer`'s `color` prop deprecated in favor of `fillColor` and `borderColor`.
+- `SpanLayer`'s data's individual color settings are deprecated. Use the color settings directly on `SpanLayer`'s props.
 - `BrushLayer` deprecated in favor of `SpanLayer`.
 - `ConnectedBrushLayer` deprecated in favor of the new `ConnectedSelectionBrushLayer`.
 - `PollingResizingCanvasLayer`'s `resetCanvas` no longer automatically translates the canvas before returning it.
