@@ -58,4 +58,20 @@ describe('CanvasContextSpy', () => {
       { method: 'save', arguments: [] }
     ]);
   });
+
+  it('should exclude calls using callsOmit', () => {
+    doABunchOfStuff(spy);
+
+    spy.callsOmit('scale').should.deepEqual([
+      { method: 'save', arguments: [] }
+    ]);
+  });
+
+  it('should include calls using callsOnly', () => {
+    doABunchOfStuff(spy);
+
+    spy.callsOnly('scale').should.deepEqual([
+      { method: 'scale', arguments: [ 0, 0 ] }
+    ]);
+  });
 });

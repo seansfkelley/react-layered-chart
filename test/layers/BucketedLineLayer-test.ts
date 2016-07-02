@@ -30,10 +30,8 @@ describe('BucketedLineLayer', () => {
       bucket(10, 25, 35, 80, 0, 0)
     ]);
 
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 10, 20, 15, 45 ]),
-      method('fill', []),
+    spy.callsOnly('rect').should.deepEqual([
+      method('rect', [ 10, 20, 15, 45 ])
     ]);
   });
 
@@ -42,10 +40,8 @@ describe('BucketedLineLayer', () => {
       bucket(10.4, 40.6, 0, 100, 0, 0)
     ]);
 
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 11, 0, 29, 100 ]),
-      method('fill', [])
+    spy.callsOnly('rect').should.deepEqual([
+      method('rect', [ 11, 0, 29, 100 ])
     ]);
   });
 
@@ -54,10 +50,8 @@ describe('BucketedLineLayer', () => {
       bucket(0, 100, 40.4, 60.6, 0, 0)
     ]);
 
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 0, 40, 100, 20 ]),
-      method('fill', [])
+    spy.callsOnly('rect').should.deepEqual([
+      method('rect', [ 0, 40, 100, 20 ])
     ]);
   });
 
@@ -66,10 +60,8 @@ describe('BucketedLineLayer', () => {
       bucket(50, 50, 0, 100, 0, 100)
     ]);
 
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 50, 0, 1, 100 ]),
-      method('fill', [])
+    spy.callsOnly('rect').should.deepEqual([
+      method('rect', [ 50, 0, 1, 100 ])
     ]);
   });
 
@@ -78,22 +70,17 @@ describe('BucketedLineLayer', () => {
       bucket(0, 100, 50, 50, 50, 50)
     ]);
 
-    spy.calls.slice(0, 3).should.deepEqual([
-      method('beginPath', []),
-      method('rect', [ 0, 49, 100, 1 ]),
-      method('fill', [])
+    spy.callsOnly('rect').should.deepEqual([
+      method('rect', [ 0, 49, 100, 1 ])
     ]);
   });
 
   it('should not draw a rect for a bucket of both width and height of 1', () => {
-  renderWithSpy(spy, [
-    bucket(50, 50, 50, 50, 50, 50)
-  ]);
+    renderWithSpy(spy, [
+      bucket(50, 50, 50, 50, 50, 50)
+    ]);
 
-  spy.calls.slice(0, 2).should.deepEqual([
-    method('beginPath', []),
-    method('fill', [])
-  ]);
+    spy.callsOnly('rect').should.deepEqual([]);
   });
 
   it('should draw lines between the last and first (respectively) Y values of adjacent rects', () => {
@@ -102,12 +89,10 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45,  0)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  40,  33 ]),
       method('lineTo', [  60,  55 ]),
-      method('moveTo', [ 100, 100 ]),
-      method('stroke', [])
+      method('moveTo', [ 100, 100 ])
     ]);
   });
 
@@ -117,12 +102,10 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45.6,    0)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  40,  33 ]),
       method('lineTo', [  60,  55 ]),
-      method('moveTo', [ 100, 100 ]),
-      method('stroke', [])
+      method('moveTo', [ 100, 100 ])
     ]);
   });
 
@@ -132,11 +115,9 @@ describe('BucketedLineLayer', () => {
       bucket(50, 100, 40, 100, 40, 100)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  50, 40 ]),
       method('moveTo', [ 100,  0 ]),
-      method('stroke', [])
     ]);
   });
 
@@ -146,11 +127,9 @@ describe('BucketedLineLayer', () => {
       bucket(51, 100, 40, 100, 40, 100)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  50, 40 ]),
-      method('moveTo', [ 100,  0 ]),
-      method('stroke', [])
+      method('moveTo', [ 100,  0 ])
     ]);
   });
 
@@ -160,12 +139,10 @@ describe('BucketedLineLayer', () => {
       bucket(50, 100, 60, 100, 60, 100)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  50, 60 ]),
       method('lineTo', [  50, 40 ]),
-      method('moveTo', [ 100,  0 ]),
-      method('stroke', [])
+      method('moveTo', [ 100,  0 ])
     ]);
   });
 
@@ -175,12 +152,10 @@ describe('BucketedLineLayer', () => {
       bucket(51, 100, 60, 100, 60, 100)
     ]);
 
-    spy.calls.slice(4).should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [  50, 60 ]),
       method('lineTo', [  51, 40 ]),
-      method('moveTo', [ 100,  0 ]),
-      method('stroke', [])
+      method('moveTo', [ 100,  0 ])
     ]);
   });
 });

@@ -73,6 +73,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     .domain([ props.yDomain.min, props.yDomain.max ])
     .rangeRound([ 0, height ]);
 
+  context.translate(0.5, 0.5);
   context.beginPath();
 
   context.moveTo(xScale(props.data[firstIndex].xValue), height - yScale(props.data[firstIndex].yValue));

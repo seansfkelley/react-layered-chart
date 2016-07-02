@@ -55,6 +55,7 @@ export default class XAxisLayer extends React.Component<Props, void> {
 
     const { ticks, format } = computeTicks(xScale, this.props.ticks, this.props.tickFormat);
 
+    context.translate(0.5, 0.5);
     context.beginPath();
 
     context.textAlign = 'left';

@@ -73,6 +73,8 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   .slice(firstIndex, lastIndex)
   .map(datum => {
     // TODO: Why is this ceiling'd? There must have been a reason...
+    // I think this was to avoid jitter, but if you zoom really slowly when the rects
+    // are small you can still see them jitter in their width...
     const minX = Math.ceil(xScale(datum.minXValue));
     const maxX = Math.max(Math.floor(xScale(datum.maxXValue)), minX + 1);
 
@@ -108,6 +110,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.fill();
 
   // Lines
+  context.translate(0.5, 0.5);
   context.beginPath();
   const firstComputedValues = computedValuesForVisibleData[0];
   context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)

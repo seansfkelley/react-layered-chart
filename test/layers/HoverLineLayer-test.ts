@@ -55,22 +55,18 @@ describe('HoverLineLayer', () => {
   it('should render a hover line for a hover value in bounds', () => {
     renderWithSpy(spy, 50);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 50, 0 ]),
-      method('lineTo', [ 50, 100 ]),
-      method('stroke', [])
+      method('lineTo', [ 50, 100 ])
     ]);
   });
 
   it('should round the hover value to the integer', () => {
     renderWithSpy(spy, 33.4);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 33, 0 ]),
-      method('lineTo', [ 33, 100 ]),
-      method('stroke', [])
+      method('lineTo', [ 33, 100 ])
     ]);
   });
 });

@@ -48,11 +48,9 @@ describe('SimpleLineLayer', () => {
       point(75, 50)
     ]);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 25, 67 ]),
-      method('lineTo', [ 75, 50 ]),
-      method('stroke', [])
+      method('lineTo', [ 75, 50 ])
     ]);
   });
 
@@ -65,12 +63,10 @@ describe('SimpleLineLayer', () => {
       point(110, 2)
     ]);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ -5, 90 ]),
       method('lineTo', [ 50, 85 ]),
-      method('lineTo', [ 105, 80 ]),
-      method('stroke', [])
+      method('lineTo', [ 105, 80 ])
     ]);
   });
 
@@ -80,11 +76,9 @@ describe('SimpleLineLayer', () => {
       point(55.4, 84.6)
     ]);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 35, 78 ]),
-      method('lineTo', [ 55, 15 ]),
-      method('stroke', [])
+      method('lineTo', [ 55, 15 ])
     ]);
   });
 
@@ -98,15 +92,13 @@ describe('SimpleLineLayer', () => {
       point(100, 50)
     ]);
 
-    spy.calls.should.deepEqual([
-      method('beginPath', []),
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 0, 50 ]),
       method('lineTo', [ 50, -Infinity ]),
       method('lineTo', [ Infinity, 50 ]),
       method('lineTo', [ 50, NaN ]),
       method('lineTo', [ NaN, 50 ]),
-      method('lineTo', [ 100, 50 ]),
-      method('stroke', [])
+      method('lineTo', [ 100, 50 ])
     ]);
   });
 });

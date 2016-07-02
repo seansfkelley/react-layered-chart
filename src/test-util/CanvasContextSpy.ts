@@ -76,6 +76,14 @@ export class CanvasContextSpyExtensions {
   public operations: (PropertySet | MethodCall)[] = [];
   public calls: MethodCall[] = [];
   public properties: PropertySet[] = [];
+
+  public callsOmit(...methodNames: string[]) {
+    return this.calls.filter(call => methodNames.indexOf(call.method) === -1);
+  }
+
+  public callsOnly(...methodNames: string[]) {
+    return this.calls.filter(call => methodNames.indexOf(call.method) !== -1);
+  }
 }
 
 PROPERTY_NAMES.forEach(property => {

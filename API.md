@@ -155,7 +155,7 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 
 - `getCanvasElement()`: returns the `<canvas>` element for this layer.
 - `getDimensions()`: returns the true `{ width, height }` of this layer.
-- `resetCanvas()`: clears and resizes the underlying `<canvas>` in preparation for a rendering frame. Additionally, it translates the canvas by half a pixel to get crisper rendering behavior. Returns `{ width, height, context }`.
+- `resetCanvas()`: clears and resizes the underlying `<canvas>` in preparation for a rendering frame. Returns `{ width, height, context }`.
 
 <hr/>
 
@@ -627,6 +627,13 @@ A minimal mock class that mimics the `CanvasRenderingContext2D` interface. An in
 Note that this class does _not_ support reading properties or returning values from method calls. It only intercepts sets/calls and stores the values/arguments that were provided.
 
 Because Canvas-based rendering is entirely outside the cycle of the React rendering flow, you may want to export a stateless function to render the Canvas in addition to your component so you can import it for testing.
+
+`CanvasContextSpy` has the following fields and methods:
+
+- `calls`: an array of `{ method, arguments }` objects in the order the methods were called
+- `properties`: an array of `{ property, value }` objects in the order the properties were set
+- `callsOmit(...methodNames)`: like `calls`, but excludes the specified method names
+- `callsOnly(...methodNames)`: like `calls`, but includes only the specified method names
 
 Given a class that uses Canvas to render:
 
