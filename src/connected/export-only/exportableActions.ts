@@ -5,5 +5,5 @@ export {
 } from '../flux/atomicActions';
 
 export {
-  setXDomainAndMaybeLoad as setXDomain
+  setXDomainAndLoad as setXDomain
 } from '../flux/compoundActions';

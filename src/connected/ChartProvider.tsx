@@ -8,10 +8,19 @@ import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
-import { setYDomains, setOverrideYDomains, setOverrideSelection, setOverrideHover } from './flux/atomicActions';
-import { setOverrideXDomainAndLoad, setXDomainAndMaybeLoad } from './flux/compoundActions';
-import { setSeriesIds, setDataLoader } from './flux/dataActions';
 import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
+import {
+  setYDomains,
+  setOverrideYDomains,
+  setOverrideSelection,
+  setOverrideHover
+} from './flux/atomicActions';
+import {
+  setXDomainAndLoad,
+  setOverrideXDomainAndLoad,
+  setSeriesIdsAndLoad,
+  setDataLoaderAndLoad
+} from './flux/compoundActions';
 
 export interface Props {
   seriesIds: SeriesId[];
@@ -103,7 +112,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
     if (props.xDomain) {
       this._store.dispatch(setOverrideXDomainAndLoad(props.xDomain));
     } else if (props.defaultState && props.defaultState.xDomain) {
-      this._store.dispatch(setXDomainAndMaybeLoad(props.defaultState.xDomain));
+      this._store.dispatch(setXDomainAndLoad(props.defaultState.xDomain));
     }
     if (props.yDomains) {
       this._store.dispatch(setOverrideYDomains(props.yDomains));

@@ -11,7 +11,7 @@ import {
   InteractionCaptureLayer
 } from '../../core';
 import { setSelection, setHover } from '../flux/atomicActions';
-import { setXDomainAndMaybeLoad } from '../flux/compoundActions';
+import { setXDomainAndLoad } from '../flux/compoundActions';
 import { ChartState } from '../model/state';
 import { selectXDomain } from '../model/selectors';
 
@@ -31,7 +31,7 @@ export interface ConnectedProps {
 }
 
 export interface DispatchProps {
-  setXDomainAndMaybeLoad: typeof setXDomainAndMaybeLoad;
+  setXDomainAndLoad: typeof setXDomainAndLoad;
   setSelection: typeof setSelection;
   setHover: typeof setHover;
 }
@@ -55,11 +55,11 @@ export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps &
   }
 
   private _zoom = (factor: number, anchorBias: number) => {
-    this.props.setXDomainAndMaybeLoad(zoomInterval(this.props.xDomain, factor, anchorBias));
+    this.props.setXDomainAndLoad(zoomInterval(this.props.xDomain, factor, anchorBias));
   };
 
   private _pan = (logicalUnits: number) => {
-    this.props.setXDomainAndMaybeLoad(panInterval(this.props.xDomain, logicalUnits));
+    this.props.setXDomainAndLoad(panInterval(this.props.xDomain, logicalUnits));
   };
 
   private _brush = (logicalUnitInterval?: Interval) => {
@@ -79,7 +79,7 @@ function mapStateToProps(state: ChartState): ConnectedProps {
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return bindActionCreators({
-    setXDomainAndMaybeLoad,
+    setXDomainAndLoad,
     setSelection,
     setHover
   }, dispatch);
