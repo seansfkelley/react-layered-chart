@@ -6,6 +6,7 @@ import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { setYDomain } from './uiActions';
 import { selectXDomain } from '../model/selectors';
+import { setSeriesIds, setDataLoader, dataRequested, dataReturned, dataErrored } from './atomicActions';
 
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
   let keyedBatchAccumulator: TBySeriesId<T> = {};
@@ -40,10 +41,7 @@ export function _performDataLoad() {
     );
 
     const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
-      dispatch({
-        type: ActionType.DATA_RETURNED,
-        payload
-      });
+      dispatch(dataReturned(payload));
     });
 
     const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
@@ -51,10 +49,7 @@ export function _performDataLoad() {
     });
 
     const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
-      dispatch({
-        type: ActionType.DATA_ERRORED,
-        payload
-      });
+      dispatch(dataErrored(payload));
     });
 
     function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
@@ -101,11 +96,7 @@ export function requestDataLoad(seriesIds?: SeriesId[]) {
       ? _.intersection(seriesIds, existingSeriesIds)
       : existingSeriesIds;
 
-    dispatch({
-      type: ActionType.DATA_REQUESTED,
-      payload: seriesIdsToLoad
-    });
-
+    dispatch(dataRequested(seriesIdsToLoad));
     dispatch(_performDataLoad());
   };
 }
@@ -114,11 +105,7 @@ export function setSeriesIds(payload: SeriesId[]) {
   return (dispatch, getState) => {
     const newSeriesIds: SeriesId[] = _.difference(payload, getState().seriesIds);
 
-    dispatch({
-      type: ActionType.SET_SERIES_IDS,
-      payload
-    });
-
+    dispatch(setSeriesIds(payload));
     dispatch(requestDataLoad(newSeriesIds));
   };
 }
@@ -128,11 +115,7 @@ export function setDataLoader(payload: DataLoader) {
     const state: ChartState = getState();
 
     if (state.dataLoader !== payload) {
-      dispatch({
-        type: ActionType.SET_DATA_LOADER,
-        payload
-      });
-
+      dispatch(setDataLoader(payload));
       dispatch(requestDataLoad());
     }
   };
