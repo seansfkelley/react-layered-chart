@@ -7,25 +7,7 @@ import { ActionType, Action } from '../model/ActionType';
 import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
 import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
-
-// Exported for testing.
-export function objectWithKeys<T>(keys: string[], value: T): { [key: string]: T } {
-  const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = value });
-  return object;
-}
-
-// Exported for testing.
-export function replaceValuesWithConstant<T>(anyBySeriesId: TBySeriesId<any>, value: T): TBySeriesId<T> {
-  return _.mapValues(anyBySeriesId, _.constant(value));
-}
-
-// Exported for testing.
-export function objectWithKeysFromObject<T>(anyBySeriesId: TBySeriesId<any>, keys: string[], defaultValue: T): TBySeriesId<T> {
-  const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue });
-  return object;
-}
+import { objectWithKeys, replaceValuesWithConstant, objectWithKeysFromObject } from './reducerUtils';
 
 export default function(state: ChartState, action: Action<any>): ChartState {
   if (state === undefined) {
