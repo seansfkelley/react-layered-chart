@@ -1,3 +1,4 @@
+/*
 import * as _ from 'lodash';
 import * as should from 'should';
 import * as sinon from 'sinon';
@@ -174,3 +175,4 @@ describe('(action creator)', () => {
     });
   });
 });
+*/

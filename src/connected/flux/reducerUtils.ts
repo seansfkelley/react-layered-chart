@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { TBySeriesId } from '../interfaces';
 
 export function objectWithKeys<T>(keys: string[], value: T): { [key: string]: T } {

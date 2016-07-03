@@ -77,7 +77,8 @@ export function _performDataLoad() {
     });
 
     const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
-      dispatch(setYDomains(payload));
+      const state = getState();
+      dispatch(setYDomains(_.assign({}, state.uiState.yDomainBySeriesId, payload)));
     });
 
     const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {

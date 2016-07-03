@@ -68,7 +68,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_X_DOMAIN:
       return update(state, {
         uiState: {
-          xDomain: { $set: _.clone(action.payload) }
+          xDomain: { $set: action.payload }
         }
       });
 
@@ -76,7 +76,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       if (action.payload) {
         return update(state, {
           uiStateConsumerOverrides: {
-            xDomain: { $set: _.clone(action.payload) }
+            xDomain: { $set: action.payload }
           }
         });
       } else {
@@ -90,7 +90,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_Y_DOMAINS:
       return update(state, {
         uiState: {
-          yDomainBySeriesId: { $assign: action.payload }
+          yDomainBySeriesId: { $set: action.payload }
         }
       });
 
@@ -134,7 +134,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_SELECTION:
       return update(state, {
         uiState: {
-          selection: { $set: _.clone(action.payload) }
+          selection: { $set: action.payload }
         }
       });
 
@@ -142,7 +142,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       if (action.payload) {
         return update(state, {
           uiStateConsumerOverrides: {
-            selection: { $set: _.clone(action.payload) }
+            selection: { $set: action.payload }
           }
         });
       } else {
