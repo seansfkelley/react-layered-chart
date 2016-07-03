@@ -6,12 +6,6 @@ import { requestDataLoad } from './dataActions';
 import {
   setXDomain,
   setOverrideXDomain,
-  setYDomains,
-  setOverrideYDomains,
-  setHover,
-  setOverrideHover,
-  setSelection,
-  setOverrideSelection,
   setPhysicalChartWidth
 } from './atomicActions';
 
@@ -29,30 +23,6 @@ export function setXDomain(payload: Interval, isOverride: boolean = false) {
         dispatch(requestDataLoad());
       }
     };
-  }
-}
-
-export function setYDomain(payload: TBySeriesId<Interval>, isOverride: boolean = false) {
-  if (isOverride) {
-    return setYDomains(payload);
-  } else {
-    return setOverrideYDomains(payload);
-  }
-}
-
-export function setHover(payload: number, isOverride: boolean = false) {
-  if (isOverride) {
-    return setHover(payload);
-  } else {
-    return setOverrideHover(payload);
-  }
-}
-
-export function setSelection(payload: Interval, isOverride: boolean = false) {
-  if (isOverride) {
-    return setSelection(payload);
-  } else {
-    return setOverrideSelection(payload);
   }
 }
 

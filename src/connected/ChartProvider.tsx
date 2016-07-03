@@ -8,7 +8,8 @@ import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
-import { setXDomain, setYDomain, setHover, setSelection } from './flux/uiActions';
+import { setYDomains, setOverrideYDomains, setOverrideSelection, setOverrideHover } from './flux/atomicActions';
+import { setXDomain } from './flux/uiActions';
 import { setSeriesIds, setDataLoader } from './flux/dataActions';
 import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
 
@@ -105,15 +106,15 @@ export default class ChartProvider extends React.Component<Props, {}> {
       this._store.dispatch(setXDomain(props.defaultState.xDomain));
     }
     if (props.yDomains) {
-      this._store.dispatch(setYDomain(props.yDomains, true));
+      this._store.dispatch(setOverrideYDomains(props.yDomains));
     } else if (props.defaultState && props.defaultState.yDomains) {
-      this._store.dispatch(setYDomain(props.defaultState.yDomains));
+      this._store.dispatch(setYDomains(props.defaultState.yDomains));
     }
     if (props.hover) {
-      this._store.dispatch(setHover(props.hover, true));
+      this._store.dispatch(setOverrideHover(props.hover));
     }
     if (props.selection) {
-      this._store.dispatch(setSelection(props.selection, true));
+      this._store.dispatch(setOverrideSelection(props.selection));
     }
 
     this._maybeFireAllCallbacks();
@@ -159,9 +160,9 @@ export default class ChartProvider extends React.Component<Props, {}> {
     this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIds);
     this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoader);
     this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setXDomain);
-    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setYDomain);
-    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setHover);
-    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setSelection);
+    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setOverrideYDomains);
+    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setOverrideHover);
+    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setOverrideSelection);
   }
 
   private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T, isOverride?: boolean) => void) {

@@ -4,9 +4,8 @@ import { Interval } from '../../core';
 import ActionType from '../model/ActionType';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
-import { setYDomain } from './uiActions';
 import { selectXDomain } from '../model/selectors';
-import { setSeriesIds, setDataLoader, dataRequested, dataReturned, dataErrored } from './atomicActions';
+import { setYDomains, setSeriesIds, setDataLoader, dataRequested, dataReturned, dataErrored } from './atomicActions';
 
 function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
   let keyedBatchAccumulator: TBySeriesId<T> = {};
@@ -45,7 +44,7 @@ export function _performDataLoad() {
     });
 
     const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
-      dispatch(setYDomain(payload));
+      dispatch(setYDomains(payload));
     });
 
     const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
