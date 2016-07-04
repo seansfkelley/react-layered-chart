@@ -17,22 +17,6 @@ import {
   dataErrored
 } from './atomicActions';
 
-function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
-  let keyedBatchAccumulator: TBySeriesId<T> = {};
-
-  const throttledBatchCallback = _.throttle(() => {
-    // Save it off first in case the batch triggers any more additions.
-    const batchData = keyedBatchAccumulator;
-    keyedBatchAccumulator = {};
-    onBatch(batchData);
-  }, 500, { leading: false, trailing: true });
-
-  return function(keyedData: TBySeriesId<T>) {
-    _.assign(keyedBatchAccumulator, keyedData);
-    throttledBatchCallback();
-  };
-}
-
 export function setXDomainAndLoad(payload: Interval, isOverride: boolean = false) {
   return (dispatch, getState) => {
     dispatch(setXDomain(payload));
@@ -53,6 +37,57 @@ export function setChartPhysicalWidthAndLoad(payload: number) {
   return (dispatch, getState) => {
     dispatch(setChartPhysicalWidth(payload));
     dispatch(_requestDataLoad());
+  };
+}
+
+export function setSeriesIdsAndLoad(payload: SeriesId[]) {
+  return (dispatch, getState) => {
+    const newSeriesIds: SeriesId[] = _.difference(payload, getState().seriesIds);
+
+    dispatch(setSeriesIds(payload));
+    dispatch(_requestDataLoad(newSeriesIds));
+  };
+}
+
+export function setDataLoaderAndLoad(payload: DataLoader) {
+  return (dispatch, getState) => {
+    const state: ChartState = getState();
+
+    if (state.dataLoader !== payload) {
+      dispatch(setDataLoader(payload));
+      dispatch(_requestDataLoad());
+    }
+  };
+}
+
+// Exported for testing.
+export const _BATCH_DURATION = 500;
+export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
+  let keyedBatchAccumulator: TBySeriesId<T> = {};
+
+  const throttledBatchCallback = _.throttle(() => {
+    // Save it off first in case the batch triggers any more additions.
+    const batchData = keyedBatchAccumulator;
+    keyedBatchAccumulator = {};
+    onBatch(batchData);
+  }, _BATCH_DURATION, { leading: false, trailing: true });
+
+  return function(keyedData: TBySeriesId<T>) {
+    _.assign(keyedBatchAccumulator, keyedData);
+    throttledBatchCallback();
+  };
+}
+
+// Exported for testing.
+export function _requestDataLoad(seriesIds?: SeriesId[]) {
+  return (dispatch, getState) => {
+    const existingSeriesIds: SeriesId[] = getState().seriesIds;
+    const seriesIdsToLoad = seriesIds
+      ? _.intersection(seriesIds, existingSeriesIds)
+      : existingSeriesIds;
+
+    dispatch(dataRequested(seriesIdsToLoad));
+    dispatch(_performDataLoad());
   };
 }
 
@@ -89,7 +124,7 @@ export function _performDataLoad() {
       return preLoadChartState.loadVersionBySeriesId[seriesId] === postLoadChartState.loadVersionBySeriesId[seriesId];
     }
 
-    _.each(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
+    const dataPromises = _.map(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
       dataPromise
       .then(loadedData => {
         if (isResultStillRelevant(getState(), seriesId)) {
@@ -110,6 +145,8 @@ export function _performDataLoad() {
         }
       })
     );
+
+    return Promise.all(dataPromises);
   };
 
   thunk.meta = {
@@ -120,37 +157,4 @@ export function _performDataLoad() {
   };
 
   return thunk;
-}
-
-// Exported for testing.
-export function _requestDataLoad(seriesIds?: SeriesId[]) {
-  return (dispatch, getState) => {
-    const existingSeriesIds: SeriesId[] = getState().seriesIds;
-    const seriesIdsToLoad = seriesIds
-      ? _.intersection(seriesIds, existingSeriesIds)
-      : existingSeriesIds;
-
-    dispatch(dataRequested(seriesIdsToLoad));
-    dispatch(_performDataLoad());
-  };
-}
-
-export function setSeriesIdsAndLoad(payload: SeriesId[]) {
-  return (dispatch, getState) => {
-    const newSeriesIds: SeriesId[] = _.difference(payload, getState().seriesIds);
-
-    dispatch(setSeriesIds(payload));
-    dispatch(_requestDataLoad(newSeriesIds));
-  };
-}
-
-export function setDataLoaderAndLoad(payload: DataLoader) {
-  return (dispatch, getState) => {
-    const state: ChartState = getState();
-
-    if (state.dataLoader !== payload) {
-      dispatch(setDataLoader(payload));
-      dispatch(_requestDataLoad());
-    }
-  };
 }

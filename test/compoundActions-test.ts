@@ -18,7 +18,8 @@ import {
   setOverrideXDomainAndLoad,
   setChartPhysicalWidthAndLoad,
   _requestDataLoad,
-  _performDataLoad
+  _performDataLoad,
+  _BATCH_DURATION
 } from '../src/connected/flux/compoundActions';
 import { ActionType } from '../src/connected/model/ActionType';
 import { ChartState } from '../src/connected/model/state';
@@ -129,7 +130,7 @@ describe('(action creator)', () => {
   });
 
   describe('_requestDataLoad', () => {
-    it('should request data for all existing series if no parameter is provided', () => {
+    it('should mark data requested for all existing series if no parameter is provided', () => {
       store.dispatch(_requestDataLoad());
 
       const state: ChartState = store.getState();
@@ -138,7 +139,7 @@ describe('(action creator)', () => {
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
     });
 
-    it('should request data for the provided series IDs if they exist in the store', () => {
+    it('should mark data requested for the provided series IDs if they exist in the store', () => {
       store.dispatch(_requestDataLoad([ SERIES_A ]));
 
       const state: ChartState = store.getState();
@@ -147,7 +148,7 @@ describe('(action creator)', () => {
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
     });
 
-    it('should not request loads for series IDs that are not in the store', () => {
+    it('should not mark data requested for series IDs that are not in the store', () => {
       const SERIES_C = 'c';
 
       store.dispatch(_requestDataLoad([SERIES_C]));
@@ -173,7 +174,7 @@ describe('(action creator)', () => {
       should(action.meta.debounce.key).be.a.String();
     });
 
-    it('should call the load function with only the series IDs that have requested loads', () => {
+    it('should call the data loader with only the series IDs that have requested loads', () => {
       store.dispatch({
         type: ActionType.DATA_REQUESTED,
         payload: [ SERIES_A ]
@@ -183,5 +184,25 @@ describe('(action creator)', () => {
       dataLoaderSpy.calledOnce.should.be.true();
       dataLoaderSpy.firstCall.args[0].should.deepEqual([ SERIES_A ]);
     });
+
+    it('should call the data loader with the overridden X domain if one is set');
+
+    it('should call the data loader with the internal Y domains, even if an override is set');
+
+    it('should ignore results for series that have had another request come in before the load finishes');
+
+    it('should ignore errors for series that have had another request come in before the load finishes');
+
+    it('should batch up firing actions for results that arrive in quick succession');
+  });
+
+  describe('_makeKeyedDataBatcher', () => {
+    it('should not fire the callback immediately');
+
+    it(`should fire the callback every ${_BATCH_DURATION}ms as long as it keeps getting called`);
+
+    it('should merge all the provided values shallowly into a single batch');
+
+    it('should not merge two batches together if the callback calls the batcher');
   });
 });
