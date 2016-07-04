@@ -8,6 +8,7 @@ import reducer from '../src/connected/flux/reducer';
 import {
   setSeriesIds,
   setDataLoader,
+  dataRequested,
   dataReturned,
   setOverrideXDomain
 } from '../src/connected/flux/atomicActions';
@@ -21,7 +22,6 @@ import {
   _performDataLoad,
   _BATCH_DURATION
 } from '../src/connected/flux/compoundActions';
-import { ActionType } from '../src/connected/model/ActionType';
 import { ChartState } from '../src/connected/model/state';
 
 describe('(action creator)', () => {
@@ -175,10 +175,7 @@ describe('(action creator)', () => {
     });
 
     it('should call the data loader with only the series IDs that have requested loads', () => {
-      store.dispatch({
-        type: ActionType.DATA_REQUESTED,
-        payload: [ SERIES_A ]
-      });
+      store.dispatch(dataRequested([ SERIES_A ]));
       store.dispatch(_performDataLoad());
 
       dataLoaderSpy.calledOnce.should.be.true();

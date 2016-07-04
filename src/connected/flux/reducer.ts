@@ -3,7 +3,7 @@ import update = require('immutability-helper');
 
 update.extend('$assign', (spec, object) => _.assign({}, object, spec));
 
-import { ActionType, Action } from '../model/ActionType';
+import { ActionType, Action } from './atomicActions';
 import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
 import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';

@@ -6,10 +6,10 @@ import { TBySeriesId } from '../src/connected/interfaces';
 import reducer from '../src/connected/flux/reducer';
 import { objectWithKeys } from '../src/connected/flux/reducerUtils';
 import { ChartState, DEFAULT_CHART_STATE } from '../src/connected/model/state';
-import { ActionType, Action } from '../src/connected/model/ActionType';
 import { DEFAULT_Y_DOMAIN } from '../src/connected/model/constants';
 
 import {
+  Action,
   setSeriesIds,
   setDataLoader,
   setChartPhysicalWidth,

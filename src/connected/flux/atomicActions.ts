@@ -18,8 +18,13 @@ export enum ActionType {
   SET_CHART_PHYSICAL_WIDTH
 }
 
-function createActionCreator<T>(type: ActionType) {
-  return function(payload: T) {
+export interface Action<P> {
+  type: ActionType;
+  payload: P;
+}
+
+function createActionCreator<P>(type: ActionType) {
+  return function(payload: P): Action<P> {
     return { type, payload };
   };
 }
