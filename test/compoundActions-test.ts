@@ -23,7 +23,8 @@ import {
   setOverrideXDomainAndLoad,
   setChartPhysicalWidthAndLoad,
   _requestDataLoad,
-  _performDataLoad
+  _performDataLoad,
+  _makeKeyedDataBatcher
 } from '../src/connected/flux/compoundActions';
 
 function delay(timeout: number) {
@@ -321,12 +322,38 @@ describe('(action creator)', () => {
   });
 
   describe('_makeKeyedDataBatcher', () => {
-    it('should not fire the callback immediately');
+    let batcher: Function;
+    let callbackSpy: Sinon.SinonSpy;
 
-    it('should fire the callback every N ms as long as it keeps getting called');
+    beforeEach(() => {
+      callbackSpy = sinon.spy();
+      batcher = _makeKeyedDataBatcher(callbackSpy, 10);
+    });
 
-    it('should merge all the provided values shallowly into a single batch');
+    it('should not fire the callback before the timeout', () => {
+      batcher({});
 
-    it('should not merge two batches together if the callback calls the batcher');
+      return Promise.resolve()
+      .then(delay(5))
+      .then(() => {
+        callbackSpy.callCount.should.equal(0);
+      })
+      .then(delay(5))
+      .then(() => {
+        callbackSpy.callCount.should.equal(1);
+      });
+    });
+
+    it('should merge all the provided values shallowly into a single batch', () => {
+      batcher({ a: 1 });
+      batcher({ b: 2 });
+
+      return Promise.resolve()
+      .then(delay(10))
+      .then(() => {
+        callbackSpy.callCount.should.equal(1);
+        callbackSpy.firstCall.args[0].should.deepEqual({ a: 1, b: 2 });
+      });
+    });
   });
 });
