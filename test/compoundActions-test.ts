@@ -5,12 +5,16 @@ import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
+import { ChartState } from '../src/connected/model/state';
 import {
+  Action,
   setSeriesIds,
   setDataLoader,
   dataRequested,
   dataReturned,
-  setOverrideXDomain
+  setYDomains,
+  setOverrideXDomain,
+  setOverrideYDomains
 } from '../src/connected/flux/atomicActions';
 import {
   setSeriesIdsAndLoad,
@@ -19,24 +23,33 @@ import {
   setOverrideXDomainAndLoad,
   setChartPhysicalWidthAndLoad,
   _requestDataLoad,
-  _performDataLoad,
-  _BATCH_DURATION
+  _performDataLoad
 } from '../src/connected/flux/compoundActions';
-import { ChartState } from '../src/connected/model/state';
+
+function delay(timeout: number) {
+  return () => new Promise((resolve, reject) => {
+    setTimeout(resolve, timeout);
+  });
+}
 
 describe('(action creator)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
+  const DATA_A = [{ __a: true }];
+  const DATA_B = [{ __b: true }];
   const ALL_SERIES_IDS = [ SERIES_A, SERIES_B ];
-  const REQUEST_X_DOMAIN = { min: 0, max: 10 };
+  const DUMMY_DOMAIN = { min: -1, max: 1 };
+  const DUMMY_DOMAIN_2 = { min: -10, max: 10 };
 
   let store: Store;
   let dataLoaderSpy: Sinon.SinonSpy;
+  let dataLoaderStub: Sinon.SinonStub;
 
   beforeEach(() => {
     store = applyMiddleware(ThunkMiddleware)(createStore)(reducer);
 
     dataLoaderSpy = sinon.spy();
+    dataLoaderStub = sinon.stub();
 
     store.dispatch(setDataLoader(dataLoaderSpy));
     store.dispatch(setSeriesIds(ALL_SERIES_IDS));
@@ -97,17 +110,17 @@ describe('(action creator)', () => {
 
   describe('setXDomainAndLoad', () => {
     it('should call the data loader when there is no override set', () => {
-      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+      store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
 
       dataLoaderSpy.callCount.should.equal(1);
     });
 
     it('should not call the data loader with an override already set', () => {
-      store.dispatch(setOverrideXDomain(REQUEST_X_DOMAIN));
+      store.dispatch(setOverrideXDomain(DUMMY_DOMAIN));
 
       dataLoaderSpy.callCount.should.equal(0);
 
-      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+      store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
 
       dataLoaderSpy.callCount.should.equal(0);
     });
@@ -115,7 +128,7 @@ describe('(action creator)', () => {
 
   describe('setOverrideXDomainAndLoad', () => {
     it('should call the data loader always', () => {
-      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+      store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
 
       dataLoaderSpy.callCount.should.equal(1);
     });
@@ -182,21 +195,135 @@ describe('(action creator)', () => {
       dataLoaderSpy.firstCall.args[0].should.deepEqual([ SERIES_A ]);
     });
 
-    it('should call the data loader with the overridden X domain if one is set');
+    it('should call the data loader with the overridden X domain if one is set', () => {
+      store.dispatch(setOverrideXDomain(DUMMY_DOMAIN));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+      store.dispatch(_performDataLoad());
 
-    it('should call the data loader with the internal Y domains, even if an override is set');
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[1].should.be.exactly(DUMMY_DOMAIN);
+    });
 
-    it('should ignore results for series that have had another request come in before the load finishes');
+    it('should call the data loader with the internal Y domains, even if an override is set', () => {
+      store.dispatch(setYDomains({
+        [SERIES_A]: DUMMY_DOMAIN,
+        [SERIES_B]: DUMMY_DOMAIN
+      }));
+      store.dispatch(setOverrideYDomains({
+        [SERIES_A]: DUMMY_DOMAIN_2,
+        [SERIES_B]: DUMMY_DOMAIN_2
+      }));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+      store.dispatch(_performDataLoad());
 
-    it('should ignore errors for series that have had another request come in before the load finishes');
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[2].should.deepEqual({
+        [SERIES_A]: DUMMY_DOMAIN,
+        [SERIES_B]: DUMMY_DOMAIN
+      });
+    });
 
-    it('should batch up firing actions for results that arrive in quick succession');
+    it('should set the data and Y domain as-is from the result of the data loader', () => {
+      dataLoaderStub.onFirstCall().returns({
+        [SERIES_A]: Promise.resolve({ data: DATA_A, yDomain: DUMMY_DOMAIN }),
+        [SERIES_B]: Promise.resolve({ data: DATA_B, yDomain: DUMMY_DOMAIN })
+      });
+
+      store.dispatch(setDataLoader(dataLoaderStub));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+
+      return store.dispatch(_performDataLoad(0))
+      .then(delay(10))
+      .then(() => {
+        const state: ChartState = store.getState();
+
+        state.loadVersionBySeriesId.should.deepEqual({
+          [SERIES_A]: null,
+          [SERIES_B]: null
+        });
+
+        state.dataBySeriesId.should.deepEqual({
+          [SERIES_A]: DATA_A,
+          [SERIES_B]: DATA_B
+        });
+
+        state.uiState.yDomainBySeriesId.should.deepEqual({
+          [SERIES_A]: DUMMY_DOMAIN,
+          [SERIES_B]: DUMMY_DOMAIN
+        });
+      });
+    });
+
+    it('should set the error as-is from the result of the data loader', () => {
+      dataLoaderStub.onFirstCall().returns({
+        [SERIES_A]: Promise.reject('a failed'),
+        [SERIES_B]: Promise.reject('b failed')
+      });
+
+      store.dispatch(setDataLoader(dataLoaderStub));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+
+      return store.dispatch(_performDataLoad(0))
+      .then(delay(10))
+      .then(() => {
+        store.getState().errorBySeriesId.should.deepEqual({
+          [SERIES_A]: 'a failed',
+          [SERIES_B]: 'b failed'
+        });
+      });
+    });
+
+    it('should ignore results for series that have had another request come in before the load finishes', () => {
+      dataLoaderStub.onFirstCall().returns({
+        [SERIES_A]: Promise.resolve({ data: DATA_A }),
+        [SERIES_B]: Promise.resolve({ data: DATA_B })
+      });
+
+      store.dispatch(setDataLoader(dataLoaderStub));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+
+      const loadPromise = store.dispatch(_performDataLoad(0));
+
+      store.dispatch(dataRequested([ SERIES_A ]));
+
+      return loadPromise
+      .then(delay(10))
+      .then(() => {
+        store.getState().dataBySeriesId.should.deepEqual({
+          [SERIES_A]: [],
+          [SERIES_B]: DATA_B
+        });
+      });
+    });
+
+    it('should ignore errors for series that have had another request come in before the load finishes', () => {
+      dataLoaderStub.onFirstCall().returns({
+        [SERIES_A]: Promise.reject('a failed'),
+        [SERIES_B]: Promise.reject('b failed')
+      });
+
+      store.dispatch(setDataLoader(dataLoaderStub));
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+
+      const loadPromise = store.dispatch(_performDataLoad(0));
+
+      store.dispatch(dataRequested([ SERIES_A ]));
+
+      return loadPromise
+      .then(delay(10))
+      .then(() => {
+        store.getState().errorBySeriesId.should.deepEqual({
+          [SERIES_A]: null,
+          [SERIES_B]: 'b failed'
+        });
+      });
+    });
   });
 
   describe('_makeKeyedDataBatcher', () => {
     it('should not fire the callback immediately');
 
-    it(`should fire the callback every ${_BATCH_DURATION}ms as long as it keeps getting called`);
+    it('should fire the callback every N ms as long as it keeps getting called');
 
     it('should merge all the provided values shallowly into a single batch');
 

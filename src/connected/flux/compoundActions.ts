@@ -61,24 +61,6 @@ export function setDataLoaderAndLoad(payload: DataLoader) {
 }
 
 // Exported for testing.
-export const _BATCH_DURATION = 500;
-export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void): (partialData: TBySeriesId<T>) => void {
-  let keyedBatchAccumulator: TBySeriesId<T> = {};
-
-  const throttledBatchCallback = _.throttle(() => {
-    // Save it off first in case the batch triggers any more additions.
-    const batchData = keyedBatchAccumulator;
-    keyedBatchAccumulator = {};
-    onBatch(batchData);
-  }, _BATCH_DURATION, { leading: false, trailing: true });
-
-  return function(keyedData: TBySeriesId<T>) {
-    _.assign(keyedBatchAccumulator, keyedData);
-    throttledBatchCallback();
-  };
-}
-
-// Exported for testing.
 export function _requestDataLoad(seriesIds?: SeriesId[]) {
   return (dispatch, getState) => {
     const existingSeriesIds: SeriesId[] = getState().seriesIds;
@@ -92,7 +74,24 @@ export function _requestDataLoad(seriesIds?: SeriesId[]) {
 }
 
 // Exported for testing.
-export function _performDataLoad() {
+export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) => void, timeout: number): (partialData: TBySeriesId<T>) => void {
+  let keyedBatchAccumulator: TBySeriesId<T> = {};
+
+  const throttledBatchCallback = _.throttle(() => {
+    // Save it off first in case the batch triggers any more additions.
+    const batchData = keyedBatchAccumulator;
+    keyedBatchAccumulator = {};
+    onBatch(batchData);
+  }, timeout, { leading: false, trailing: true });
+
+  return function(keyedData: TBySeriesId<T>) {
+    _.assign(keyedBatchAccumulator, keyedData);
+    throttledBatchCallback();
+  };
+}
+
+// Exported for testing.
+export function _performDataLoad(timeout: number = 500) {
   const thunk: any = (dispatch, getState: () => ChartState) => {
     const preLoadChartState = getState();
     const dataLoader = preLoadChartState.dataLoader;
@@ -109,16 +108,16 @@ export function _performDataLoad() {
 
     const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
       dispatch(dataReturned(payload));
-    });
+    }, timeout);
 
     const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
       const state = getState();
       dispatch(setYDomains(_.assign({}, state.uiState.yDomainBySeriesId, payload)));
-    });
+    }, timeout);
 
     const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
       dispatch(dataErrored(payload));
-    });
+    }, timeout);
 
     function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
       return preLoadChartState.loadVersionBySeriesId[seriesId] === postLoadChartState.loadVersionBySeriesId[seriesId];
