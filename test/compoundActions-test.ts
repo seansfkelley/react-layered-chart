@@ -1,4 +1,3 @@
-/*
 import * as _ from 'lodash';
 import * as should from 'should';
 import * as sinon from 'sinon';
@@ -7,19 +6,28 @@ import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
 import {
-  requestDataLoad,
   setSeriesIds,
   setDataLoader,
+  dataReturned,
+  setOverrideXDomain
+} from '../src/connected/flux/atomicActions';
+import {
+  setSeriesIdsAndLoad,
+  setDataLoaderAndLoad,
+  setXDomainAndLoad,
+  setOverrideXDomainAndLoad,
+  setChartPhysicalWidthAndLoad,
+  _requestDataLoad,
   _performDataLoad
-} from '../src/connected/flux/dataActions';
-import { setXDomain } from '../src/connected/flux/uiActions';
+} from '../src/connected/flux/compoundActions';
 import { ActionType } from '../src/connected/model/ActionType';
 import { ChartState } from '../src/connected/model/state';
 
 describe('(action creator)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
-  const ALL_SERIES = [ SERIES_A, SERIES_B ];
+  const ALL_SERIES_IDS = [ SERIES_A, SERIES_B ];
+  const REQUEST_X_DOMAIN = { min: 0, max: 10 };
 
   let store: Store;
   let dataLoaderSpy: Sinon.SinonSpy;
@@ -29,30 +37,19 @@ describe('(action creator)', () => {
 
     dataLoaderSpy = sinon.spy();
 
-    store.dispatch({
-      type: ActionType.SET_DATA_LOADER,
-      payload: dataLoaderSpy
-    });
-
-    store.dispatch({
-      type: ActionType.SET_SERIES_IDS,
-      payload: ALL_SERIES
-    });
-
-    store.dispatch({
-      type: ActionType.DATA_RETURNED,
-      payload: {
-        [SERIES_A]: [],
-        [SERIES_B]: []
-      }
-    });
+    store.dispatch(setDataLoader(dataLoaderSpy));
+    store.dispatch(setSeriesIds(ALL_SERIES_IDS));
+    store.dispatch(dataReturned({
+      [SERIES_A]: [],
+      [SERIES_B]: []
+    }));
   });
 
-  describe('test suite', () => {
-    it('should be initialized with two series with no pending loads, data or errors', () => {
+  describe('(meta: test suite)', () => {
+    it('should be initialized with two series with no pending loads, data, errors and no load invocations', () => {
       const state: ChartState = store.getState();
 
-      state.seriesIds.should.deepEqual(ALL_SERIES);
+      state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
       state.loadVersionBySeriesId.should.deepEqual({
         [SERIES_A]: null,
         [SERIES_B]: null
@@ -65,51 +62,30 @@ describe('(action creator)', () => {
         [SERIES_A]: null,
         [SERIES_B]: null
       });
+
+      dataLoaderSpy.callCount.should.equal(0);
     });
   });
 
-  describe('setSeriesIds', () => {
+  describe('setSeriesIdsAndLoad', () => {
     it('should request a data load for any series that didn\'t already exist', () => {
       const SERIES_C = 'c';
 
-      store.dispatch(setSeriesIds([ SERIES_C ].concat(ALL_SERIES)));
+      store.dispatch(setSeriesIdsAndLoad([ SERIES_C ].concat(ALL_SERIES_IDS)));
 
       const state: ChartState = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
       should(state.loadVersionBySeriesId[SERIES_C]).not.be.null();
-    });
-  });
-
-  describe('setXDomain', () => {
-    const interval = { min: 0, max: 10 };
-    it('should call the data loader if setting the internal value with no override already set', () => {
-      store.dispatch(setXDomain(interval, false));
-
-      dataLoaderSpy.callCount.should.equal(1);
-    });
-
-    it('should call the data loader if setting the override', () => {
-      store.dispatch(setXDomain(interval, true));
-
-      dataLoaderSpy.callCount.should.equal(1);
-    });
-
-    it('should not call the data loader if setting the internal value with an override already set', () => {
-      store.dispatch(setXDomain(interval, true));
-
-      dataLoaderSpy.callCount.should.equal(1);
-
-      store.dispatch(setXDomain(interval, false));
 
       dataLoaderSpy.callCount.should.equal(1);
     });
   });
 
-  describe('setDataLoader', () => {
+  describe('setDataLoaderAndLoad', () => {
     it('should request a data load for all existing series', () => {
-      store.dispatch(setDataLoader((() => {}) as any));
+      store.dispatch(setDataLoaderAndLoad((() => {}) as any));
 
       const state: ChartState = store.getState();
 
@@ -118,9 +94,43 @@ describe('(action creator)', () => {
     });
   });
 
-  describe('requestDataLoad', () => {
+  describe('setXDomainAndLoad', () => {
+    it('should call the data loader when there is no override set', () => {
+      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should not call the data loader with an override already set', () => {
+      store.dispatch(setOverrideXDomain(REQUEST_X_DOMAIN));
+
+      dataLoaderSpy.callCount.should.equal(0);
+
+      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+
+      dataLoaderSpy.callCount.should.equal(0);
+    });
+  });
+
+  describe('setOverrideXDomainAndLoad', () => {
+    it('should call the data loader always', () => {
+      store.dispatch(setXDomainAndLoad(REQUEST_X_DOMAIN));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+  });
+
+  describe('setChartPhysicalWidthAndLoad', () => {
+    it('should call the data loader always', () => {
+      store.dispatch(setChartPhysicalWidthAndLoad(1337));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+  });
+
+  describe('_requestDataLoad', () => {
     it('should request data for all existing series if no parameter is provided', () => {
-      store.dispatch(requestDataLoad());
+      store.dispatch(_requestDataLoad());
 
       const state: ChartState = store.getState();
 
@@ -129,7 +139,7 @@ describe('(action creator)', () => {
     });
 
     it('should request data for the provided series IDs if they exist in the store', () => {
-      store.dispatch(requestDataLoad([ SERIES_A ]));
+      store.dispatch(_requestDataLoad([ SERIES_A ]));
 
       const state: ChartState = store.getState();
 
@@ -140,7 +150,7 @@ describe('(action creator)', () => {
     it('should not request loads for series IDs that are not in the store', () => {
       const SERIES_C = 'c';
 
-      store.dispatch(requestDataLoad([SERIES_C]));
+      store.dispatch(_requestDataLoad([SERIES_C]));
 
       const state: ChartState = store.getState();
 
@@ -148,7 +158,7 @@ describe('(action creator)', () => {
     });
 
     it('should call the data loader', () => {
-      store.dispatch(requestDataLoad());
+      store.dispatch(_requestDataLoad());
 
       dataLoaderSpy.calledOnce.should.be.true();
     });
@@ -175,4 +185,3 @@ describe('(action creator)', () => {
     });
   });
 });
-*/
