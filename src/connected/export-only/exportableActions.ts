@@ -1,5 +1,5 @@
 export {
-  setYDomain,
+  setYDomains,
   setHover,
   setSelection
 } from '../flux/atomicActions';

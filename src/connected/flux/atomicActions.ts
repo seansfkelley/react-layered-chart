@@ -24,12 +24,8 @@ function createActionCreator<T>(type: ActionType) {
   };
 }
 
-export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);
-export const dataReturned = createActionCreator<TBySeriesId<SeriesData>>(ActionType.DATA_RETURNED);
-export const dataErrored = createActionCreator<TBySeriesId<any>>(ActionType.DATA_ERRORED);
-
-export const setDataLoader = createActionCreator<DataLoader>(ActionType.SET_DATA_LOADER);
 export const setSeriesIds = createActionCreator<SeriesId[]>(ActionType.SET_SERIES_IDS);
+export const setDataLoader = createActionCreator<DataLoader>(ActionType.SET_DATA_LOADER);
 export const setChartPhysicalWidth = createActionCreator<number>(ActionType.SET_CHART_PHYSICAL_WIDTH);
 
 export const setXDomain = createActionCreator<Interval>(ActionType.SET_X_DOMAIN);
@@ -40,3 +36,7 @@ export const setHover = createActionCreator<number>(ActionType.SET_HOVER);
 export const setOverrideHover = createActionCreator<number>(ActionType.SET_OVERRIDE_HOVER);
 export const setSelection = createActionCreator<Interval>(ActionType.SET_SELECTION);
 export const setOverrideSelection = createActionCreator<Interval>(ActionType.SET_OVERRIDE_SELECTION);
+
+export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);
+export const dataReturned = createActionCreator<TBySeriesId<SeriesData>>(ActionType.DATA_RETURNED);
+export const dataErrored = createActionCreator<TBySeriesId<any>>(ActionType.DATA_ERRORED);

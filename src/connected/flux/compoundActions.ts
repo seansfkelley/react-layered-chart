@@ -9,7 +9,7 @@ import {
   setXDomain,
   setOverrideXDomain,
   setYDomains,
-  setPhysicalChartWidth,
+  setChartPhysicalWidth,
   setSeriesIds,
   setDataLoader,
   dataRequested,
@@ -49,7 +49,7 @@ export function setOverrideXDomainAndLoad(payload: Interval) {
   };
 }
 
-export function setPhysicalChartWidthAndLoad(payload: number) {
+export function setChartPhysicalWidthAndLoad(payload: number) {
   return (dispatch, getState) => {
     dispatch(setChartPhysicalWidth(payload));
     dispatch(_requestDataLoad());

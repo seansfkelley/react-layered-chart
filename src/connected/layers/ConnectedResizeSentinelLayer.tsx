@@ -4,10 +4,10 @@ import * as PureRender from 'pure-render-decorator';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { setPhysicalChartWidthAndLoad } from '../flux/compoundActions';
+import { setChartPhysicalWidthAndLoad } from '../flux/compoundActions';
 
 interface DispatchProps {
-  setPhysicalChartWidthAndLoad: typeof setPhysicalChartWidthAndLoad;
+  setChartPhysicalWidthAndLoad: typeof setChartPhysicalWidthAndLoad;
 }
 
 @PureRender
@@ -30,9 +30,9 @@ class ConnectedResizeSentinelLayer extends React.Component<DispatchProps, void> 
     clearInterval(this.__setSizeInterval);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.actions !== nextProps.actions && _.isNumber(this.__lastWidth)) {
-      this.props.setPhysicalChartWidthAndLoad(this.__lastWidth);
+  componentWillReceiveProps(nextProps: DispatchProps) {
+    if (this.props.setChartPhysicalWidthAndLoad !== nextProps.setChartPhysicalWidthAndLoad && _.isNumber(this.__lastWidth)) {
+      this.props.setChartPhysicalWidthAndLoad(this.__lastWidth);
     }
   }
 
@@ -40,13 +40,13 @@ class ConnectedResizeSentinelLayer extends React.Component<DispatchProps, void> 
     const newWidth = (this.refs['element'] as HTMLElement).offsetWidth;
     if (this.__lastWidth !== newWidth) {
       this.__lastWidth = newWidth;
-      this.props.setPhysicalChartWidthAndLoad(this.__lastWidth);
+      this.props.setChartPhysicalWidthAndLoad(this.__lastWidth);
     }
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-  return bindActionCreators({ setPhysicalChartWidthAndLoad }, dispatch);
+  return bindActionCreators({ setChartPhysicalWidthAndLoad }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(ConnectedResizeSentinelLayer) as any as React.ComponentClass<void>;

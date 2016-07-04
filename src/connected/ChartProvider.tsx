@@ -106,8 +106,8 @@ export default class ChartProvider extends React.Component<Props, {}> {
   private _onStoreChange(props: Props) {
     this._lastState = this._store.getState();
 
-    this._store.dispatch(setSeriesIds(props.seriesIds));
-    this._store.dispatch(setDataLoader(props.loadData));
+    this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
+    this._store.dispatch(setDataLoaderAndLoad(props.loadData));
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.
     if (props.xDomain) {
       this._store.dispatch(setOverrideXDomainAndLoad(props.xDomain));
@@ -166,8 +166,8 @@ export default class ChartProvider extends React.Component<Props, {}> {
   }
 
   private _onPropsChange(nextProps: Props) {
-    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIds);
-    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoader);
+    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIdsAndLoad);
+    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoaderAndLoad);
     this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setOverrideXDomainAndLoad);
     this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setOverrideYDomains);
     this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setOverrideHover);
