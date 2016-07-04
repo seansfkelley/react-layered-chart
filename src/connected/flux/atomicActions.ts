@@ -1,5 +1,5 @@
 import { Interval, SeriesData } from '../../core/interfaces';
-import { SeriesId, TBySeriesId, DataLoader } from '../interfaces';
+import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 
 export enum ActionType {
   DATA_REQUESTED = 1,
