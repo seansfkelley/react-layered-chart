@@ -90,9 +90,9 @@ describe('BucketedLineLayer', () => {
     ]);
 
     spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
-      method('moveTo', [  40,  33 ]),
-      method('lineTo', [  60,  55 ]),
-      method('moveTo', [ 100, 100 ])
+      method('moveTo', [ 39,  33 ]),
+      method('lineTo', [ 60,  55 ]),
+      method('moveTo', [ 99, 100 ])
     ]);
   });
 
@@ -103,9 +103,9 @@ describe('BucketedLineLayer', () => {
     ]);
 
     spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
-      method('moveTo', [  40,  33 ]),
-      method('lineTo', [  60,  55 ]),
-      method('moveTo', [ 100, 100 ])
+      method('moveTo', [ 39,  33 ]),
+      method('lineTo', [ 60,  55 ]),
+      method('moveTo', [ 99, 100 ])
     ]);
   });
 

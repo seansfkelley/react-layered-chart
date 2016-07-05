@@ -110,14 +110,14 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.fill();
 
   // Lines
-  context.translate(0.5, 0.5);
+  context.translate(0.5, -0.5);
   context.beginPath();
   const firstComputedValues = computedValuesForVisibleData[0];
-  context.moveTo(firstComputedValues.maxX, height - firstComputedValues.lastY)
+  context.moveTo(firstComputedValues.maxX - 1, height - firstComputedValues.lastY);
   for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
     context.lineTo(computedValues.minX, height - computedValues.firstY);
-    context.moveTo(computedValues.maxX, height - computedValues.lastY);
+    context.moveTo(computedValues.maxX - 1, height - computedValues.lastY);
   }
   context.strokeStyle = props.color;
   context.stroke();
