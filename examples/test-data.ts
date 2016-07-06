@@ -597,20 +597,61 @@ const UNPARSED_DATA = [{
   value: 17.4
 }];
 
-export const DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
+export const SIMPLE_LINE_DATA = UNPARSED_DATA.map(({ timestamp, value }) => ({
   xValue: moment(timestamp).valueOf(),
   yValue: value
 }));
 
-const TIMESTAMPS = _.map<{}, number>(DATA, 'xValue');
-const VALUES = _.map<{}, number>(DATA, 'yValue');
-
-export const X_DOMAIN: Interval = {
-  min: _.min(TIMESTAMPS),
-  max: _.max(TIMESTAMPS)
+export const SIMPLE_LINE_X_DOMAIN: Interval = {
+  min: _.first(SIMPLE_LINE_DATA).xValue,
+  max: _.last(SIMPLE_LINE_DATA).xValue
 };
 
-export const Y_DOMAIN: Interval = {
-  min: _.min(VALUES),
-  max: _.max(VALUES)
+export const SIMPLE_LINE_Y_DOMAIN = {
+  min: _.minBy(SIMPLE_LINE_DATA, 'yValue').yValue,
+  max: _.maxBy(SIMPLE_LINE_DATA, 'yValue').yValue
+};
+
+export const BAR_DATA = SIMPLE_LINE_DATA.slice(0, SIMPLE_LINE_DATA.length - 1).map((datum, i) => ({
+  minXValue: datum.xValue,
+  maxXValue: SIMPLE_LINE_DATA[i + 1].xValue,
+  yValue: (Math.random() - 0.5) * datum.yValue * 0.75 + datum.yValue * 0.25
+}));
+
+export const BAR_X_DOMAIN: Interval = {
+  min: _.first(BAR_DATA).minXValue,
+  max: _.last(BAR_DATA).maxXValue
+};
+
+export const BAR_Y_DOMAIN = {
+  min: _.minBy(BAR_DATA, 'yValue').yValue,
+  max: _.maxBy(BAR_DATA, 'yValue').yValue
+};
+
+export const BUCKETED_LINE_DATA = SIMPLE_LINE_DATA.slice(0, SIMPLE_LINE_DATA.length - 1).map((datum, i) => {
+  const xExtent = SIMPLE_LINE_DATA[i + 1].xValue - datum.xValue;
+
+  const minYValue = datum.yValue - Math.random() * 2;
+  const maxYValue = datum.yValue + Math.random() * 2;
+
+  const yExtent = maxYValue - minYValue;
+
+  return {
+    minXValue: datum.xValue + xExtent * 0.25,
+    maxXValue: datum.xValue + xExtent * 0.75,
+    minYValue,
+    maxYValue,
+    firstYValue: minYValue + Math.random() * yExtent,
+    lastYValue: minYValue + Math.random() * yExtent
+  };
+});
+
+export const BUCKETED_LINE_X_DOMAIN: Interval = {
+  min: _.first(BUCKETED_LINE_DATA).minXValue,
+  max: _.last(BUCKETED_LINE_DATA).maxXValue
+};
+
+export const BUCKETED_LINE_Y_DOMAIN = {
+  min: _.minBy(BUCKETED_LINE_DATA, 'minYValue').minYValue,
+  max: _.maxBy(BUCKETED_LINE_DATA, 'maxYValue').maxYValue
 };

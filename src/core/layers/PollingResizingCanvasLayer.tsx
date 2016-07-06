@@ -62,8 +62,6 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
     context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
     context.scale(this.props.pixelRatio, this.props.pixelRatio);
     context.clearRect(0, 0, width, height);
-    // TODO: I think this might have to be multiplied by pixelRatio to properly un-blur the canvas.
-    context.translate(0.5, 0.5);
 
     return { width, height, context };
   }

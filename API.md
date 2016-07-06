@@ -56,26 +56,28 @@ These components render different types of visualizations for data. They all fol
 - `xDomain`, which describes what horizontal domain they're currently covering so they can render the appropriate subset of data
 - usually `yDomain`, which describes what vertical domain they're currently covering so they can render the data in the appropriate visual location
 
-And some combination of `color`, `fill`, `stroke`, `font`, `yScale` or other display-related props.
+And some combination of `color`, `font`, `yScale` or other display-related props.
 
 The layers in this category are:
 
 - `BarLayer`
-- `BrushLayer`
+- ~~`BrushLayer`~~ (deprecated)
 - `BucketedLineLayer`
 - `HoverLineLayer`
 - `PointLayer`
 - `SimpleLineLayer`
 - `SpanLayer`
 
-Additionally, most of these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
+Additionally, these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
 
 - `ConnectedBarLayer`
-- `ConnectedBrushLayer`
+- ~~`ConnectedBrushLayer`~~ (deprecated)
 - `ConnectedBucketedLineLayer`
 - `ConnectedHoverLineLayer`
 - `ConnectedPointLayer`
 - `ConnectedSimpleLineLayer`
+- `ConnectedSpanLayer`
+- `ConnectedSelectionBrushLayer`
 
 <hr/>
 
@@ -153,7 +155,7 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 
 - `getCanvasElement()`: returns the `<canvas>` element for this layer.
 - `getDimensions()`: returns the true `{ width, height }` of this layer.
-- `resetCanvas()`: clears and resizes the underlying `<canvas>` in preparation for a rendering frame. Additionally, it translates the canvas by half a pixel to get crisper rendering behavior. Returns `{ width, height, context }`.
+- `resetCanvas()`: clears and resizes the underlying `<canvas>` in preparation for a rendering frame. Returns `{ width, height, context }`.
 
 <hr/>
 
@@ -615,3 +617,68 @@ zoomInterval({ min: 0, max: 100 }, 2, 0);
 
 - `DEFAULT_X_DOMAIN`
 - `DEFAULT_Y_DOMAIN`
+
+### Testing
+
+#### `CanvasContextSpy`
+
+A minimal mock class that mimics the `CanvasRenderingContext2D` interface. An instance of this class will capture all property sets and method calls and allow you to make assertions about it. Using this class helps avoid needing a DOM or a non-browser Canvas implementation and is often sufficient for testing (as Canvas rendering is simply a series of imperative property sets and method calls).
+
+Note that this class does _not_ support reading properties or returning values from method calls. It only intercepts sets/calls and stores the values/arguments that were provided.
+
+Because Canvas-based rendering is entirely outside the cycle of the React rendering flow, you may want to export a stateless function to render the Canvas in addition to your component so you can import it for testing.
+
+`CanvasContextSpy` has the following fields and methods:
+
+- `calls`: an array of `{ method, arguments }` objects in the order the methods were called
+- `properties`: an array of `{ property, value }` objects in the order the properties were set
+- `operations`: a mixed array of `{ method, arguments }` and `{ property, value }` objects in the order the methods were called/properties were set
+- `callsOmit(...methodNames)`: like `calls`, but excludes the specified method names
+- `callsOnly(...methodNames)`: like `calls`, but includes only the specified method names
+
+Given a class that uses Canvas to render:
+
+```tsx
+import { NonReactRender } from 'react-layered-chart';
+
+interface Props { ... }
+
+@NonReactRender
+export default class ExampleComponent extends React.Component<Props, ...> {
+  render() {
+    return <canvas ref='canvas'/>;
+  }
+
+  nonReactRender() {
+    _renderCanvas(this.props, this.refs.canvas.getContext('2d');
+  }
+}
+
+// Exported only for testing purposes.
+export function _renderCanvas(props: Props, context: CanvasRenderingContext2D) {
+  // Render the things.
+}
+```
+
+You can write tests that look like this (assuming you have some test/assertion frameworks already set up):
+
+```tsx
+import { CanvasContextSpy } from 'react-layered-chart';
+import { _renderCanvas } from './ExampleComponent';
+
+describe('ExampleComponent', () => {
+  // Because CanvasRenderingContext2D is available at compile time (but not runtime)
+  // on Node, the type definition is a bit weird and you have to use `typeof` here.
+  let spy: typeof CanvasContextSpy;
+
+  beforeEach(() => {
+    spy = new CanvasContextSpy();
+  });
+
+  it('should do anything at all', () => {
+    _renderCanvas({ ... }, spy);
+
+    spy.operations.length.should.be.above(0);
+  });
+});
+```

@@ -1,11 +1,7 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
-import * as d3Scale from 'd3-scale';
 
-import NonReactRender from '../decorators/NonReactRender';
-import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
-
-import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
+import SpanLayer from './SpanLayer';
 import propTypes from '../propTypes';
 import { Interval, Color } from '../interfaces';
 
@@ -17,11 +13,7 @@ export interface Props {
 }
 
 @PureRender
-@NonReactRender
-@PixelRatioContext
 export default class BrushLayer extends React.Component<Props, void> {
-  context: Context;
-
   static propTypes = {
     selection: propTypes.interval,
     xDomain: propTypes.interval.isRequired,
@@ -35,38 +27,14 @@ export default class BrushLayer extends React.Component<Props, void> {
   } as any as Props;
 
   render() {
-    return <PollingResizingCanvasLayer
-      ref='canvasLayer'
-      onSizeChange={this.nonReactRender}
-      pixelRatio={this.context.pixelRatio}
+    const data = this.props.selection
+      ? [{ minXValue: this.props.selection.min, maxXValue: this.props.selection.max }]
+      : [];
+    return <SpanLayer
+      data={data}
+      xDomain={this.props.xDomain}
+      fillColor={this.props.fill}
+      borderColor={this.props.stroke}
     />;
   }
-
-  nonReactRender = () => {
-    const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
-
-    if (!this.props.selection) {
-      return;
-    }
-
-    const xScale = d3Scale.scaleLinear()
-      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
-      .rangeRound([ 0, width ]);
-
-    const left = xScale(this.props.selection.min);
-    const right = xScale(this.props.selection.max);
-    context.beginPath();
-    context.rect(left, -1, right - left, height + 2);
-
-    if (this.props.stroke) {
-      context.lineWidth = 1;
-      context.strokeStyle = this.props.stroke;
-      context.stroke();
-    }
-
-    if (this.props.fill) {
-      context.fillStyle = this.props.fill;
-      context.fill();
-    }
-  };
 }

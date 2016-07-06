@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
+import { deprecate } from 'react-is-deprecated';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -14,6 +15,7 @@ export interface Props {
   xDomain: Interval;
   hover?: number;
   stroke?: Color;
+  color?: Color;
 }
 
 @PureRender
@@ -25,11 +27,12 @@ export default class HoverLineLayer extends React.Component<Props, void> {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
-    stroke: React.PropTypes.string
+    stroke: deprecate(React.PropTypes.string, 'HoverLineLayer\'s \'stroke\' prop is deprecated in favor of \'color\''),
+    color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
-    stroke: 'rgba(0, 0, 0, 1)'
+    color: 'rgba(0, 0, 0, 1)'
   } as any as Props;
 
   render() {
@@ -42,24 +45,28 @@ export default class HoverLineLayer extends React.Component<Props, void> {
 
   nonReactRender = () => {
     const { width, height, context } = (this.refs['canvasLayer'] as PollingResizingCanvasLayer).resetCanvas();
+    _renderCanvas(this.props, width, height, context);
+  };
+}
 
-    if (!_.isNumber(this.props.hover)) {
-      return;
-    }
+// Export for testing.
+export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
+  if (!_.isFinite(props.hover)) {
+    return;
+  }
 
-    const xScale = d3Scale.scaleLinear()
-      .domain([ this.props.xDomain.min, this.props.xDomain.max ])
-      .rangeRound([ 0, width ]);
-    const xPos = xScale(this.props.hover);
+  const xScale = d3Scale.scaleLinear()
+    .domain([ props.xDomain.min, props.xDomain.max ])
+    .rangeRound([ 0, width ]);
+  const xPos = xScale(props.hover);
 
+  if (xPos >= 0 && xPos < width) {
+    context.lineWidth = 1;
+    context.strokeStyle = props.stroke || props.color;
+    context.translate(0.5, -0.5);
     context.beginPath();
     context.moveTo(xPos, 0);
     context.lineTo(xPos, height);
-
-    if (this.props.stroke) {
-      context.lineWidth = 1;
-      context.strokeStyle = this.props.stroke;
-      context.stroke();
-    }
-  };
+    context.stroke();
+  }
 }

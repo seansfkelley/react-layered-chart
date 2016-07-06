@@ -12,7 +12,6 @@
     "noFallthroughCasesInSwitch": true,
     "pretty": true
   },
-
   "exclude": [
     "node_modules",
     "lib",

@@ -13,6 +13,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Non-standard `npm run dev:hot-reload` replaced with standard `npm start`. [#33](https://github.com/palantir/react-layered-chart/pull/33).
 - `mergeIntervals` accepts a default argument to return in the case when no intervals are given. [#20](https://github.com/palantir/react-layered-chart/issues/20).
+- `HoverLineLayer`'s `stroke` prop deprecated in favor of `color`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `SpanLayer`'s `color` prop deprecated in favor of `fillColor` and `borderColor`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `SpanLayer`'s data's individual color settings are deprecated. Use the color settings directly on `SpanLayer`'s props. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `BrushLayer` deprecated in favor of `SpanLayer`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `ConnectedBrushLayer` deprecated in favor of the new `ConnectedSelectionBrushLayer`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `PollingResizingCanvasLayer`'s `resetCanvas` no longer automatically translates the canvas before returning it. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+
+### Added
+
+- `CanvasContextSpy` for testing canvas-based layers cheaply. [#49](https://github.com/palantir/react-layered-chart/issues/49).
+- `ConnectedSelectionBrushLayer`, replacing `ConnectedBrushLayer`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
 
 ## 1.1.0 (2016-06-09)
 

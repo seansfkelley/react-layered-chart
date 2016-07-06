@@ -23,6 +23,7 @@ const TEST_COMPONENT = (
     <div className='explanation'>This chart is pannable and zoomable, and can be reset by clicking the button.</div>
     {CONNECTED_INTERACTIVE_CHART}
     <div className='explanation'>This chart implements a bunch of features from around the library all in one.</div>
+    <div className='explanation'>Drag to pan, zoom to scroll and shift-drag to draw a selection.</div>
     {COMPLICATED_CHART}
   </div>
 );

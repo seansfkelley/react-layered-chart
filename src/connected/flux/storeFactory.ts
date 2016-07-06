@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 import * as createLogger from 'redux-logger';
 import createDebounced from 'redux-debounced';
@@ -11,7 +11,7 @@ import { ChartId } from '../interfaces';
 declare var process: any;
 
 // chartId is only used for memoization.
-function _createStore(chartId?: ChartId) {
+function _createStore(chartId?: ChartId): Store {
   let middlewares: Redux.Middleware[] = [
     createDebounced(),
     ThunkMiddleware

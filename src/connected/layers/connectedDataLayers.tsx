@@ -46,4 +46,3 @@ export interface _CommonConnectedSimpleLineLayerProps {
 }
 export type ConnectedSimpleLineLayerProps = _CommonConnectedSimpleLineLayerProps & SeriesIdProp;
 export const ConnectedSimpleLineLayer = wrapDataLayerWithConnect<_CommonConnectedSimpleLineLayerProps, SimpleLineLayerProps>(SimpleLineLayer);
-
