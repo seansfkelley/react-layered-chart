@@ -165,24 +165,6 @@ describe('(interval utils)', () => {
     });
   });
 
-  describe('intervalContains', () => {
-    const SMALL_RANGE = { min: 1, max: 2 };
-    const BIG_RANGE = { min: 0, max: 3 };
-
-    it('should return true if the first interval is strictly larger than the second interval', () => {
-      intervalContains(BIG_RANGE, SMALL_RANGE).should.be.true();
-    });
-
-    it('should return true if the first interval is equal to the second interval', () => {
-      intervalContains(BIG_RANGE, BIG_RANGE).should.be.true();
-    });
-
-    it('should return false if the first interval is strictly smaller than the second interval', () => {
-      intervalContains(SMALL_RANGE, BIG_RANGE).should.be.false();
-    });
-  });
-
-
   describe('panInterval', () => {
     it('should apply the delta value to both min and max', () => {
       panInterval({
@@ -192,6 +174,13 @@ describe('(interval utils)', () => {
         min: 5,
         max: 15
       });
+    });
+
+    it('should not mutate the input interval', () => {
+      const input = interval(0, 10);
+      const output = panInterval(input, 5);
+      input.should.deepEqual(interval(0, 10));
+      output.should.not.deepEqual(interval(0, 10));
     });
   });
 
@@ -244,6 +233,30 @@ describe('(interval utils)', () => {
         min: -7,
         max: 1
       });
+    });
+
+    it('should not mutate the input interval', () => {
+      const input = interval(0, 10);
+      const output = zoomInterval(input, 1 / 2, 2);
+      input.should.deepEqual(interval(0, 10));
+      output.should.not.deepEqual(interval(0, 10));
+    });
+  });
+
+  describe('intervalContains', () => {
+    const SMALL_RANGE = { min: 1, max: 2 };
+    const BIG_RANGE = { min: 0, max: 3 };
+
+    it('should return true if the first interval is strictly larger than the second interval', () => {
+      intervalContains(BIG_RANGE, SMALL_RANGE).should.be.true();
+    });
+
+    it('should return true if the first interval is equal to the second interval', () => {
+      intervalContains(BIG_RANGE, BIG_RANGE).should.be.true();
+    });
+
+    it('should return false if the first interval is strictly smaller than the second interval', () => {
+      intervalContains(SMALL_RANGE, BIG_RANGE).should.be.false();
     });
   });
 });
