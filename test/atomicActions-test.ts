@@ -164,14 +164,20 @@ describe('(atomic actions)', () => {
   });
 
   describe('dataReturned', () => {
-     it('should clear the load version when a load returns for a particular series', () => {
+    it('should clear the load version and set the data for a single series that returns successfully', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
-        dataReturned({ [SERIES_A]: DATA_A })
+        dataReturned({
+          [SERIES_A]: DATA_A
+        })
       );
 
-      state.loadVersionBySeriesId.should.have.keys(ALL_SERIES_IDS);
+      state.dataBySeriesId.should.deepEqual({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: []
+      });
+
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
     });
@@ -196,28 +202,10 @@ describe('(atomic actions)', () => {
         yDomainBySeriesId: objectWithKeys(ALL_SERIES_IDS, DEFAULT_Y_DOMAIN)
       });
     });
-
-    it('should clear the loading state and set the data for a single series that returns successfully', () => {
-      state = serial(state,
-        setSeriesIds(ALL_SERIES_IDS),
-        dataRequested(ALL_SERIES_IDS),
-        dataReturned({
-          [SERIES_A]: DATA_A
-        })
-      );
-
-      state.dataBySeriesId.should.deepEqual({
-        [SERIES_A]: DATA_A,
-        [SERIES_B]: []
-      });
-
-      should(state.loadVersionBySeriesId[SERIES_A]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
-    });
   });
 
   describe('dataErrored', () => {
-    it('should clear the loading state, set the error state, and not change the data for all series when they return in error simultaneously', () => {
+    it('should clear the load version, set the error state, and not change the data for all series when they return in error simultaneously', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
@@ -240,7 +228,7 @@ describe('(atomic actions)', () => {
       });
     });
 
-    it('should clear the loading state, set the error state, and not change the data for a single series that returns in error', () => {
+    it('should clear the load version, set the error state, and not change the data for a single series that returns in error', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),

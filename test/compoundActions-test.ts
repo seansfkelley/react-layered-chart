@@ -18,6 +18,7 @@ import {
 } from '../src/connected/flux/atomicActions';
 import {
   setSeriesIdsAndLoad,
+  setOverrideData,
   setDataLoaderAndLoad,
   setXDomainAndLoad,
   setOverrideXDomainAndLoad,
@@ -33,7 +34,7 @@ function delay(timeout: number) {
   });
 }
 
-describe('(action creator)', () => {
+describe('(compound actions)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
   const DATA_A = [{ __a: true }];
@@ -43,6 +44,7 @@ describe('(action creator)', () => {
   const DUMMY_DOMAIN_2 = { min: -10, max: 10 };
 
   let store: Store;
+  let state: ChartState;
   let dataLoaderSpy: Sinon.SinonSpy;
   let dataLoaderStub: Sinon.SinonStub;
 
@@ -62,7 +64,7 @@ describe('(action creator)', () => {
 
   describe('(meta: test suite)', () => {
     it('should be initialized with two series with no pending loads, data, errors and no load invocations', () => {
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
       state.loadVersionBySeriesId.should.deepEqual({
@@ -83,12 +85,12 @@ describe('(action creator)', () => {
   });
 
   describe('setSeriesIdsAndLoad', () => {
-    it('should request a data load for any series that didn\'t already exist', () => {
+    it('should request a data load for any series that did not already exist when using a loader', () => {
       const SERIES_C = 'c';
 
       store.dispatch(setSeriesIdsAndLoad([ SERIES_C ].concat(ALL_SERIES_IDS)));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
@@ -98,14 +100,86 @@ describe('(action creator)', () => {
     });
   });
 
+  describe('setOverrideData', () => {
+    it('should unset the data loader', () => {
+      store.dispatch(setOverrideData({}));
+
+      state = store.getState();
+
+      should(state.dataLoader).be.null();
+    });
+
+    it('should clear all loading flags and set the data directly', () => {
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+
+      state = store.getState();
+
+      should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
+      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+
+      store.dispatch(setOverrideData({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: DATA_B
+      }));
+
+      state = store.getState();
+
+      state.loadVersionBySeriesId.should.deepEqual({
+        [SERIES_A]: null,
+        [SERIES_B]: null
+      });
+
+      state.dataBySeriesId.should.deepEqual({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: DATA_B
+      });
+    });
+
+    it('should fill in any keys that were not provided with the empty array', () => {
+      store.dispatch(setOverrideData({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: DATA_B
+      }));
+
+      state = store.getState();
+
+      state.dataBySeriesId.should.deepEqual({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: DATA_B
+      });
+
+      store.dispatch(setOverrideData({
+        [SERIES_A]: DATA_A
+      }));
+
+      state = store.getState();
+
+      state.dataBySeriesId.should.deepEqual({
+        [SERIES_A]: DATA_A,
+        [SERIES_B]: []
+      });
+    });
+  });
+
   describe('setDataLoaderAndLoad', () => {
     it('should request a data load for all existing series', () => {
       store.dispatch(setDataLoaderAndLoad((() => {}) as any));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+    });
+
+    it('should not request a data load if setting the loader to a reference-equal value', () => {
+      store.dispatch(setDataLoaderAndLoad(dataLoaderSpy));
+
+      state = store.getState();
+
+      state.loadVersionBySeriesId.should.deepEqual({
+        [SERIES_A]: null,
+        [SERIES_B]: null
+      });
     });
   });
 
@@ -147,7 +221,7 @@ describe('(action creator)', () => {
     it('should mark data requested for all existing series if no parameter is provided', () => {
       store.dispatch(_requestDataLoad());
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
@@ -156,7 +230,7 @@ describe('(action creator)', () => {
     it('should mark data requested for the provided series IDs if they exist in the store', () => {
       store.dispatch(_requestDataLoad([ SERIES_A ]));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
@@ -167,7 +241,7 @@ describe('(action creator)', () => {
 
       store.dispatch(_requestDataLoad([SERIES_C]));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       state.loadVersionBySeriesId.should.not.have.key(SERIES_C);
     });
@@ -176,6 +250,17 @@ describe('(action creator)', () => {
       store.dispatch(_requestDataLoad());
 
       dataLoaderSpy.calledOnce.should.be.true();
+    });
+
+    it('should not change the state and not call the data loader if there is no data loader set', () => {
+      store.dispatch(setDataLoader(null));
+
+      state = store.getState();
+
+      store.dispatch(_requestDataLoad());
+
+      store.getState().should.be.exactly(state);
+      dataLoaderSpy.callCount.should.equal(0);
     });
   });
 
@@ -236,7 +321,7 @@ describe('(action creator)', () => {
       return store.dispatch(_performDataLoad(0))
       .then(delay(10))
       .then(() => {
-        const state: ChartState = store.getState();
+        state = store.getState();
 
         state.loadVersionBySeriesId.should.deepEqual({
           [SERIES_A]: null,

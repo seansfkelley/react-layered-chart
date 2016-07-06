@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Interval } from '../../core';
+import { Interval, SeriesData } from '../../core';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { selectXDomain } from '../model/selectors';
@@ -49,6 +49,22 @@ export function setSeriesIdsAndLoad(payload: SeriesId[]) {
   };
 }
 
+export function setOverrideData(data: TBySeriesId<SeriesData>) {
+  return (dispatch, getState) => {
+    const state: ChartState = getState();
+
+    let filledData = _.clone(data);
+    state.seriesIds.forEach(seriesId => {
+      if (!filledData[seriesId]) {
+        filledData[seriesId] = [];
+      }
+    });
+
+    dispatch(setDataLoader(null));
+    dispatch(dataReturned(filledData));
+  };
+}
+
 export function setDataLoaderAndLoad(payload: DataLoader) {
   return (dispatch, getState) => {
     const state: ChartState = getState();
@@ -63,13 +79,17 @@ export function setDataLoaderAndLoad(payload: DataLoader) {
 // Exported for testing.
 export function _requestDataLoad(seriesIds?: SeriesId[]) {
   return (dispatch, getState) => {
-    const existingSeriesIds: SeriesId[] = getState().seriesIds;
-    const seriesIdsToLoad = seriesIds
-      ? _.intersection(seriesIds, existingSeriesIds)
-      : existingSeriesIds;
+    const state: ChartState = getState();
 
-    dispatch(dataRequested(seriesIdsToLoad));
-    dispatch(_performDataLoad());
+    if (state.dataLoader) {
+      const existingSeriesIds = state.seriesIds;
+      const seriesIdsToLoad = seriesIds
+        ? _.intersection(seriesIds, existingSeriesIds)
+        : existingSeriesIds;
+
+      dispatch(dataRequested(seriesIdsToLoad));
+      dispatch(_performDataLoad());
+    }
   };
 }
 

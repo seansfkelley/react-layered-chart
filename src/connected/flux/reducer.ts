@@ -4,7 +4,7 @@ import update = require('immutability-helper');
 update.extend('$assign', (spec, object) => _.assign({}, object, spec));
 
 import { ActionType, Action } from './atomicActions';
-import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
+import { ChartState, DEFAULT_CHART_STATE } from '../model/state';
 import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
 import { objectWithKeys, replaceValuesWithConstant, objectWithKeysFromObject } from './reducerUtils';
@@ -57,7 +57,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
     case ActionType.SET_DATA_LOADER:
       return update(state, {
-        dataLoader: { $set: action.payload || invalidLoader }
+        dataLoader: { $set: action.payload }
       });
 
     case ActionType.SET_CHART_PHYSICAL_WIDTH:

@@ -26,17 +26,13 @@ export interface ChartState {
   uiStateConsumerOverrides: UiState;
 }
 
-export const invalidLoader = (() => {
-  throw new Error('No data loader specified.');
-}) as any as DataLoader;
-
 export const DEFAULT_CHART_STATE: ChartState = {
   physicalChartWidth: 200,
   seriesIds: [],
   dataBySeriesId: {},
   loadVersionBySeriesId: {},
   errorBySeriesId: {},
-  dataLoader: invalidLoader,
+  dataLoader: null,
   uiState: {
     xDomain: DEFAULT_X_DOMAIN,
     yDomainBySeriesId: {},
