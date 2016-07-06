@@ -63,7 +63,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   if (xPos >= 0 && xPos < width) {
     context.lineWidth = 1;
     context.strokeStyle = props.stroke || props.color;
-    context.translate(0.5, 0.5);
+    context.translate(0.5, -0.5);
     context.beginPath();
     context.moveTo(xPos, 0);
     context.lineTo(xPos, height);
