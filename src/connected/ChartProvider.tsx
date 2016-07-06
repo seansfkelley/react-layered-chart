@@ -8,9 +8,19 @@ import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
 import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
-import { setXDomain, setYDomain, setHover, setSelection } from './flux/uiActions';
-import { setSeriesIds, setDataLoader } from './flux/dataActions';
 import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
+import {
+  setYDomains,
+  setOverrideYDomains,
+  setOverrideSelection,
+  setOverrideHover
+} from './flux/atomicActions';
+import {
+  setXDomainAndLoad,
+  setOverrideXDomainAndLoad,
+  setSeriesIdsAndLoad,
+  setDataLoaderAndLoad
+} from './flux/compoundActions';
 
 export interface Props {
   seriesIds: SeriesId[];
@@ -96,24 +106,24 @@ export default class ChartProvider extends React.Component<Props, {}> {
   private _onStoreChange(props: Props) {
     this._lastState = this._store.getState();
 
-    this._store.dispatch(setSeriesIds(props.seriesIds));
-    this._store.dispatch(setDataLoader(props.loadData));
+    this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
+    this._store.dispatch(setDataLoaderAndLoad(props.loadData));
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.
     if (props.xDomain) {
-      this._store.dispatch(setXDomain(props.xDomain, true));
+      this._store.dispatch(setOverrideXDomainAndLoad(props.xDomain));
     } else if (props.defaultState && props.defaultState.xDomain) {
-      this._store.dispatch(setXDomain(props.defaultState.xDomain));
+      this._store.dispatch(setXDomainAndLoad(props.defaultState.xDomain));
     }
     if (props.yDomains) {
-      this._store.dispatch(setYDomain(props.yDomains, true));
+      this._store.dispatch(setOverrideYDomains(props.yDomains));
     } else if (props.defaultState && props.defaultState.yDomains) {
-      this._store.dispatch(setYDomain(props.defaultState.yDomains));
+      this._store.dispatch(setYDomains(props.defaultState.yDomains));
     }
     if (props.hover) {
-      this._store.dispatch(setHover(props.hover, true));
+      this._store.dispatch(setOverrideHover(props.hover));
     }
     if (props.selection) {
-      this._store.dispatch(setSelection(props.selection, true));
+      this._store.dispatch(setOverrideSelection(props.selection));
     }
 
     this._maybeFireAllCallbacks();
@@ -156,17 +166,17 @@ export default class ChartProvider extends React.Component<Props, {}> {
   }
 
   private _onPropsChange(nextProps: Props) {
-    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIds);
-    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoader);
-    this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setXDomain);
-    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setYDomain);
-    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setHover);
-    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setSelection);
+    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIdsAndLoad);
+    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoaderAndLoad);
+    this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setOverrideXDomainAndLoad);
+    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setOverrideYDomains);
+    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setOverrideHover);
+    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setOverrideSelection);
   }
 
-  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T, isOverride?: boolean) => void) {
+  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => void) {
     if (prop !== nextProp) {
-      this._store.dispatch(actionCreator(nextProp, true));
+      this._store.dispatch(actionCreator(nextProp));
     }
   }
 

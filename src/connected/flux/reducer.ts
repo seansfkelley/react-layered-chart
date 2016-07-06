@@ -3,29 +3,11 @@ import update = require('immutability-helper');
 
 update.extend('$assign', (spec, object) => _.assign({}, object, spec));
 
-import { ActionType, Action } from '../model/ActionType';
+import { ActionType, Action } from './atomicActions';
 import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
 import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
-
-// Exported for testing.
-export function objectWithKeys<T>(keys: string[], value: T): { [key: string]: T } {
-  const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = value });
-  return object;
-}
-
-// Exported for testing.
-export function replaceValuesWithConstant<T>(anyBySeriesId: TBySeriesId<any>, value: T): TBySeriesId<T> {
-  return _.mapValues(anyBySeriesId, _.constant(value));
-}
-
-// Exported for testing.
-export function objectWithKeysFromObject<T>(anyBySeriesId: TBySeriesId<any>, keys: string[], defaultValue: T): TBySeriesId<T> {
-  const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue });
-  return object;
-}
+import { objectWithKeys, replaceValuesWithConstant, objectWithKeysFromObject } from './reducerUtils';
 
 export default function(state: ChartState, action: Action<any>): ChartState {
   if (state === undefined) {
@@ -86,7 +68,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_X_DOMAIN:
       return update(state, {
         uiState: {
-          xDomain: { $set: _.clone(action.payload) }
+          xDomain: { $set: action.payload }
         }
       });
 
@@ -94,7 +76,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       if (action.payload) {
         return update(state, {
           uiStateConsumerOverrides: {
-            xDomain: { $set: _.clone(action.payload) }
+            xDomain: { $set: action.payload }
           }
         });
       } else {
@@ -108,7 +90,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_Y_DOMAINS:
       return update(state, {
         uiState: {
-          yDomainBySeriesId: { $assign: action.payload }
+          yDomainBySeriesId: { $set: action.payload }
         }
       });
 
@@ -152,7 +134,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
     case ActionType.SET_SELECTION:
       return update(state, {
         uiState: {
-          selection: { $set: _.clone(action.payload) }
+          selection: { $set: action.payload }
         }
       });
 
@@ -160,7 +142,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       if (action.payload) {
         return update(state, {
           uiStateConsumerOverrides: {
-            selection: { $set: _.clone(action.payload) }
+            selection: { $set: action.payload }
           }
         });
       } else {

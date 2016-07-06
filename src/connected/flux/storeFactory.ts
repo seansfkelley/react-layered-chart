@@ -4,7 +4,7 @@ import ThunkMiddleware from 'redux-thunk';
 import * as createLogger from 'redux-logger';
 import createDebounced from 'redux-debounced';
 
-import { ActionType } from '../model/ActionType';
+import { ActionType } from './atomicActions';
 import reducer from './reducer';
 import { ChartId } from '../interfaces';
 
