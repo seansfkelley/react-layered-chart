@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- `InteractionCaptureLayer`'s and `YAxisLayer`'s CSS class names were made more specific. The old class names are still present. [#54](https://github.com/palantir/react-layered-chart/issues/54).
+
 ### Deprecated
 
 - `XAxisLayer`'s and `YAxisLayer`'s `font` prop is deprecated in favor of using CSS rules. [#54](https://github.com/palantir/react-layered-chart/issues/54).
@@ -20,7 +24,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Non-standard `npm run dev:hot-reload` replaced with standard `npm start`. [#33](https://github.com/palantir/react-layered-chart/pull/33).
 - `mergeIntervals` accepts a default argument to return in the case when no intervals are given. [#20](https://github.com/palantir/react-layered-chart/issues/20).
 - `PollingResizingCanvasLayer`'s `resetCanvas` no longer automatically translates the canvas before returning it. [#49](https://github.com/palantir/react-layered-chart/issues/49).
-- `InteractionCaptureLayer`'s and `YAxisLayer`'s CSS class names were made more specific. The old class names are still present. [#54](https://github.com/palantir/react-layered-chart/issues/54).
 
 ### Added
 
