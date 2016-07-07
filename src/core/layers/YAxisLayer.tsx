@@ -31,22 +31,17 @@ class YAxis extends React.Component<YAxisSpec, void> {
 
     const { ticks, format } = computeTicks(yScale, this.props.ticks, this.props.tickFormat);
 
-    let tickMarks = [];
-    for (let i = 0; i < ticks.length; ++i) {
-      tickMarks.push(
-        <div className='tick' style={{ top: `${100 - yScale(ticks[i])}%` }} key={i}>
-          <span className='label'>{format(ticks[i])}</span>
-          <span className='mark' style={{ borderBottomColor: this.props.color }}/>
-        </div>
-      );
-    }
-
     return (
       <div className='single-y-axis' style={{
         color: this.props.color,
         borderRightColor: this.props.color
       }}>
-        {tickMarks}
+        {ticks.map((tick, i) =>
+          <div className='tick' style={{ top: `${100 - yScale(tick)}%` }} key={i}>
+            <span className='label'>{format(tick)}</span>
+            <span className='mark' style={{ borderBottomColor: this.props.color }}/>
+          </div>
+        )}
       </div>
     );
   }
