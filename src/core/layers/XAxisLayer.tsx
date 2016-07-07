@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
+import { deprecate } from 'react-is-deprecated';
 
 import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
@@ -18,13 +19,12 @@ export interface Props extends AxisSpec {
 export default class XAxisLayer extends React.Component<Props, void> {
   static propTypes = _.defaults({
     xDomain: propTypes.interval.isRequired,
-    font: React.PropTypes.string
+    font: deprecate(React.PropTypes.string, 'XAxisLayer\'s \'font\' prop is deprecated. Use CSS rules instead.')
   }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
 
   static defaultProps = {
     scale: d3Scale.scaleTime,
-    color: '#444',
-    font: '12px sans-serif'
+    color: '#444'
   } as any as Props;
 
   render() {

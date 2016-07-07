@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
+import { deprecate } from 'react-is-deprecated';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -67,12 +68,11 @@ export default class YAxisLayer extends React.Component<Props, void> {
         React.PropTypes.number,
       ])
     } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
-    font: React.PropTypes.string,
+    font: deprecate(React.PropTypes.string, 'YAxisLayer\'s \'font\' prop is deprecated. Use CSS rules instead.'),
     backgroundColor: React.PropTypes.string
   };
 
   static defaultProps = {
-    font: '12px sans-serif',
     backgroundColor: 'rgba(255, 255, 255, 0.8)'
   };
 

@@ -91,8 +91,8 @@ This component renders the X domain. By default, it interprets the numerical val
 - `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleTime`.
 - `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
 - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-- `color?`: a string specifying the color to use for drawing.
-- `font?`: a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
+- `color?`: a string specifying the color to use for ticks and labels.
+- ~~`font?`~~ (**deprecated**, use CSS rules instead): a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
 
 There is a `ConnectedXAxisLayer` that accepts the same props, except with `seriesId` instead of `xDomain`.
 
@@ -107,13 +107,13 @@ This component renders one or more Y domains, lined up next to each other on the
 #### Props
 
 - `axes`: an array of all the Y axes to render. Each object has the following fields:
-    - `yDomain`: the Interval to render for this axis.
+    - `yDomain`: the `Interval` to render for this axis.
     - `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleLinear`.
     - `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
     - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-    - `color?`: a string specifying the color to use for drawing.
+    - `color?`: a string specifying the color to use for ticks and labels.
     - `axisId?`: a unique ID to identify this axis. Used to prevent jittery animations when adding/removing/rearranging axes.
-- `font?`: a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
+- ~~`font?`~~ (**deprecated**, use CSS rules instead): a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
 - `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
 
 There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`.
