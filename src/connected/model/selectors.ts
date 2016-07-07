@@ -24,7 +24,7 @@ export const selectXDomain = createSelector(
 export const selectYDomains = createSelector(
   createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
   createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
-  (internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) => _.assign(<TBySeriesId<Interval>> {}, internal, override)
+  (internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) => override || internal
 );
 
 export const selectHover = createSelector(

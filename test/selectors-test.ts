@@ -13,10 +13,8 @@ import {
 describe('(selectors)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
-  const SERIES_C = 'c';
   const INTERVAL_A: Interval = { min: 0, max: 1 };
   const INTERVAL_B: Interval = { min: 2, max: 3 };
-  const INTERVAL_C: Interval = { min: 4, max: 5 };
 
   describe('selectXDomain', () => {
     it('should use the internal value if no override is set', () => {
@@ -49,24 +47,24 @@ describe('(selectors)', () => {
           }
         },
         uiStateConsumerOverrides: {}
-      } as any).should.deepEqual({ [SERIES_A]: INTERVAL_A });
+      } as any).should.deepEqual({
+        [SERIES_A]: INTERVAL_A
+      });
     });
 
-    it('should use the override for any series that have it set', () => {
+    it('should use the override if set', () => {
       selectYDomains({
         uiState: {
           yDomainBySeriesId: {
-            [SERIES_A]: INTERVAL_A,
-            [SERIES_B]: INTERVAL_B
+            [SERIES_A]: INTERVAL_A
           }
         },
         uiStateConsumerOverrides: {
           yDomainBySeriesId: {
-            [SERIES_A]: INTERVAL_C
+            [SERIES_B]: INTERVAL_B
           }
         }
       } as any).should.deepEqual({
-        [SERIES_A]: INTERVAL_C,
         [SERIES_B]: INTERVAL_B
       });
     });
