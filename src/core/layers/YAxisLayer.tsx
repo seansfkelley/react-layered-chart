@@ -79,7 +79,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
   render() {
     return (
       <div
-        className='y-axis-container'
+        className='y-axis-container y-axis-layer'
         style={{
           font: this.props.font,
           backgroundColor: this.props.backgroundColor
