@@ -43,6 +43,7 @@ describe('(compound actions)', () => {
   const DUMMY_DOMAIN_2 = { min: -10, max: 10 };
 
   let store: Store;
+  let state: ChartState;
   let dataLoaderSpy: Sinon.SinonSpy;
   let dataLoaderStub: Sinon.SinonStub;
 
@@ -62,7 +63,7 @@ describe('(compound actions)', () => {
 
   describe('(meta: test suite)', () => {
     it('should be initialized with two series with no pending loads, data, errors and no load invocations', () => {
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
       state.loadVersionBySeriesId.should.deepEqual({
@@ -88,7 +89,7 @@ describe('(compound actions)', () => {
 
       store.dispatch(setSeriesIdsAndLoad([ SERIES_C ].concat(ALL_SERIES_IDS)));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
@@ -96,16 +97,38 @@ describe('(compound actions)', () => {
 
       dataLoaderSpy.callCount.should.equal(1);
     });
+
+    it('should not change state and not call the data loader if the series IDs are deep equal', () => {
+      state = store.getState();
+
+      store.dispatch(setSeriesIdsAndLoad(_.clone(ALL_SERIES_IDS)));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
+    });
   });
 
   describe('setDataLoaderAndLoad', () => {
     it('should request a data load for all existing series', () => {
       store.dispatch(setDataLoaderAndLoad((() => {}) as any));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+    });
+
+    it('should not change state and not call the data loader if the data loader is reference equal', () => {
+      state = store.getState();
+
+      store.dispatch(setDataLoaderAndLoad(state.dataLoader));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
     });
   });
 
@@ -125,21 +148,58 @@ describe('(compound actions)', () => {
 
       dataLoaderSpy.callCount.should.equal(0);
     });
+
+    it('should not change state and not call the data loader if the X domain is deep-equal to the current internal value', () => {
+      state = store.getState();
+
+      store.dispatch(setXDomainAndLoad(_.clone(state.uiState.xDomain)));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
+    });
   });
 
   describe('setOverrideXDomainAndLoad', () => {
-    it('should call the data loader always', () => {
-      store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
+    it('should call the data loader', () => {
+      store.dispatch(setOverrideXDomainAndLoad(DUMMY_DOMAIN));
 
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should not change state and not call the data loader if the X domain is deep-equal to the current override value', () => {
+      store.dispatch(setOverrideXDomainAndLoad(DUMMY_DOMAIN));
+
+      dataLoaderSpy.callCount.should.equal(1);
+
+      state = store.getState();
+
+      store.dispatch(setOverrideXDomainAndLoad(_.clone(state.uiStateConsumerOverrides.xDomain)));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
       dataLoaderSpy.callCount.should.equal(1);
     });
   });
 
   describe('setChartPhysicalWidthAndLoad', () => {
-    it('should call the data loader always', () => {
+    it('should call the data loader', () => {
       store.dispatch(setChartPhysicalWidthAndLoad(1337));
 
       dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should not change state and not call the data loader if the value is the same as the current value', () => {
+      state = store.getState();
+
+      store.dispatch(setChartPhysicalWidthAndLoad(state.physicalChartWidth));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
     });
   });
 
@@ -147,7 +207,7 @@ describe('(compound actions)', () => {
     it('should mark data requested for all existing series if no parameter is provided', () => {
       store.dispatch(_requestDataLoad());
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
@@ -156,7 +216,7 @@ describe('(compound actions)', () => {
     it('should mark data requested for the provided series IDs if they exist in the store', () => {
       store.dispatch(_requestDataLoad([ SERIES_A ]));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).be.null();
@@ -167,7 +227,7 @@ describe('(compound actions)', () => {
 
       store.dispatch(_requestDataLoad([SERIES_C]));
 
-      const state: ChartState = store.getState();
+      state = store.getState();
 
       state.loadVersionBySeriesId.should.not.have.key(SERIES_C);
     });
@@ -236,7 +296,7 @@ describe('(compound actions)', () => {
       return store.dispatch(_performDataLoad(0))
       .then(delay(10))
       .then(() => {
-        const state: ChartState = store.getState();
+        state = store.getState();
 
         state.loadVersionBySeriesId.should.deepEqual({
           [SERIES_A]: null,

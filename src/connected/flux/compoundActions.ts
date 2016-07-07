@@ -17,35 +17,50 @@ import {
   dataErrored
 } from './atomicActions';
 
-export function setXDomainAndLoad(payload: Interval, isOverride: boolean = false) {
+export function setXDomainAndLoad(payload: Interval) {
   return (dispatch, getState) => {
-    dispatch(setXDomain(payload));
-    if (!getState().uiStateConsumerOverrides.xDomain) {
-      dispatch(_requestDataLoad());
+    const state: ChartState = getState();
+
+    if (!_.isEqual(payload, state.uiState.xDomain)) {
+      dispatch(setXDomain(payload));
+      if (!state.uiStateConsumerOverrides.xDomain) {
+        dispatch(_requestDataLoad());
+      }
     }
   };
 }
 
 export function setOverrideXDomainAndLoad(payload: Interval) {
   return (dispatch, getState) => {
-    dispatch(setOverrideXDomain(payload));
-    dispatch(_requestDataLoad());
+    const state: ChartState = getState();
+
+    if (!_.isEqual(payload, state.uiStateConsumerOverrides.xDomain)) {
+      dispatch(setOverrideXDomain(payload));
+      dispatch(_requestDataLoad());
+    }
   };
 }
 
 export function setChartPhysicalWidthAndLoad(payload: number) {
   return (dispatch, getState) => {
-    dispatch(setChartPhysicalWidth(payload));
-    dispatch(_requestDataLoad());
+    const state: ChartState = getState();
+
+    if (payload !== state.physicalChartWidth) {
+      dispatch(setChartPhysicalWidth(payload));
+      dispatch(_requestDataLoad());
+    }
   };
 }
 
 export function setSeriesIdsAndLoad(payload: SeriesId[]) {
   return (dispatch, getState) => {
-    const newSeriesIds: SeriesId[] = _.difference(payload, getState().seriesIds);
+    const state: ChartState = getState();
 
-    dispatch(setSeriesIds(payload));
-    dispatch(_requestDataLoad(newSeriesIds));
+    if (!_.isEqual(payload, state.seriesIds)) {
+      const newSeriesIds: SeriesId[] = _.difference(payload, state.seriesIds);
+      dispatch(setSeriesIds(payload));
+      dispatch(_requestDataLoad(newSeriesIds));
+    }
   };
 }
 

@@ -90,13 +90,6 @@ describe('(atomic actions)', () => {
       });
     });
 
-    it('should do nothing if the same set of series IDs is provided that already exists', () => {
-      const beforeState = reducer(state, setSeriesIds(ALL_SERIES_IDS));
-      const afterState = reducer(beforeState, setSeriesIds(_.clone(ALL_SERIES_IDS).reverse()));
-
-      beforeState.should.be.exactly(afterState);
-    });
-
     it('should remove outdated keys from fields that are keyed by series ID', () => {
       const ONLY_SERIES_A = [SERIES_A];
       state = serial(state,
