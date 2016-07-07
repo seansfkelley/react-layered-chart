@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Deprecated
+
+- `XAxisLayer`'s and `YAxisLayer`'s `font` prop is deprecated in favor of using CSS rules. [#54](https://github.com/palantir/react-layered-chart/issues/54).
+
+## 1.2.0 (2016-07-05)
+
 ### Fixed
 
 - Zooming too far out with an X axis no longer goes into an infinite loop. [#34](https://github.com/palantir/react-layered-chart/issues/34).
@@ -28,7 +34,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `SpanLayer`'s data's individual color settings are deprecated. Use the color settings directly on `SpanLayer`'s props. [#49](https://github.com/palantir/react-layered-chart/issues/49).
 - `BrushLayer` deprecated in favor of `SpanLayer`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
 - `ConnectedBrushLayer` deprecated in favor of the new `ConnectedSelectionBrushLayer`. [#49](https://github.com/palantir/react-layered-chart/issues/49).
-- `XAxisLayer`'s and `YAxisLayer`'s `font` prop is deprecated in favor of using CSS rules. [#54](https://github.com/palantir/react-layered-chart/issues/54).
 
 ## 1.1.0 (2016-06-09)
 
