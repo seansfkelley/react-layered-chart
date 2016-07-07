@@ -33,7 +33,7 @@ function delay(timeout: number) {
   });
 }
 
-describe('(action creator)', () => {
+describe('(compound actions)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
   const DATA_A = [{ __a: true }];
@@ -338,7 +338,7 @@ describe('(action creator)', () => {
       .then(() => {
         callbackSpy.callCount.should.equal(0);
       })
-      .then(delay(5))
+      .then(delay(10))
       .then(() => {
         callbackSpy.callCount.should.equal(1);
       });

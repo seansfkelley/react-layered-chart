@@ -14,11 +14,11 @@
   }
 }
 
-.lc-stack .interaction-capture {
+.lc-stack .interaction-capture-layer {
   z-index: 1;
 }
 
-.lc-stack .y-axis-container {
+.lc-stack .y-axis-layer {
   display: flex;
   flex-wrap: nowrap;
   right: auto;
@@ -44,6 +44,26 @@
         width: 4px;
         border-bottom: 1px solid;
       }
+    }
+  }
+}
+
+.lc-stack .x-axis-layer {
+  display: flex;
+  flex-wrap: nowrap;
+  text-transform: uppercase;
+  font-size: 12px;
+
+  .tick {
+    position: relative;
+    width: 0;
+    white-space: nowrap;
+    border-left: 1px solid;
+    display: flex;
+    align-items: center;
+
+    .label {
+      margin-left: 4px;
     }
   }
 }

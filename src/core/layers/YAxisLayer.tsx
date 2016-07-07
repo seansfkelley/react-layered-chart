@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
+import { deprecate } from 'react-is-deprecated';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -31,22 +32,17 @@ class YAxis extends React.Component<YAxisSpec, void> {
 
     const { ticks, format } = computeTicks(yScale, this.props.ticks, this.props.tickFormat);
 
-    let tickMarks = [];
-    for (let i = 0; i < ticks.length; ++i) {
-      tickMarks.push(
-        <div className='tick' style={{ top: `${100 - yScale(ticks[i])}%` }} key={i}>
-          <span className='label'>{format(ticks[i])}</span>
-          <span className='mark' style={{ borderBottomColor: this.props.color }}/>
-        </div>
-      );
-    }
-
     return (
       <div className='single-y-axis' style={{
         color: this.props.color,
         borderRightColor: this.props.color
       }}>
-        {tickMarks}
+        {ticks.map((tick, i) =>
+          <div className='tick' style={{ top: `${100 - yScale(tick)}%` }} key={i}>
+            <span className='label'>{format(tick)}</span>
+            <span className='mark' style={{ borderBottomColor: this.props.color }}/>
+          </div>
+        )}
       </div>
     );
   }
@@ -72,19 +68,18 @@ export default class YAxisLayer extends React.Component<Props, void> {
         React.PropTypes.number,
       ])
     } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
-    font: React.PropTypes.string,
+    font: deprecate(React.PropTypes.string, 'YAxisLayer\'s \'font\' prop is deprecated. Use CSS rules instead.'),
     backgroundColor: React.PropTypes.string
   };
 
   static defaultProps = {
-    font: '12px sans-serif',
     backgroundColor: 'rgba(255, 255, 255, 0.8)'
   };
 
   render() {
     return (
       <div
-        className='y-axis-container'
+        className='y-axis-container y-axis-layer'
         style={{
           font: this.props.font,
           backgroundColor: this.props.backgroundColor
