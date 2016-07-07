@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - `InteractionCaptureLayer`'s and `YAxisLayer`'s CSS class names were made more specific. The old class names are still present. [#54](https://github.com/palantir/react-layered-chart/issues/54).
+- Changing `ChartProvider`'s `xDomain` and `seriesIds` props to a value that is reference-unequal but value-equal will no longer trigger a load. This also applies to the `setXDomain` action. [c22a4ac](https://github.com/palantir/react-layered-chart/commit/c22a4accee79a20727f6d37ad473906f47b2f3db).
 
 ### Deprecated
 
