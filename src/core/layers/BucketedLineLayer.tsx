@@ -52,6 +52,10 @@ class BucketedLineLayer extends React.Component<Props, void> {
   };
 }
 
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(min, value), max);
+}
+
 // Export for testing.
 export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
   const { firstIndex, lastIndex } = getIndexBoundsForSpanData(props.data, props.xDomain, 'minXValue', 'maxXValue');
@@ -86,8 +90,8 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
       maxX,
       minY,
       maxY,
-      firstY: Math.floor(yScale(datum.firstYValue)),
-      lastY: Math.floor(yScale(datum.lastYValue)),
+      firstY: clamp(Math.floor(yScale(datum.firstYValue)), minY, maxY - 1),
+      lastY: clamp(Math.floor(yScale(datum.lastYValue)), minY, maxY - 1),
       width: maxX - minX,
       height: maxY - minY
     };

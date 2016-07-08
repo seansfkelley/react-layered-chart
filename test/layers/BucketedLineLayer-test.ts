@@ -109,6 +109,19 @@ describe('BucketedLineLayer', () => {
     ]);
   });
 
+  it('should clamp first-Y and last-Y values to be between the min Y and max Y - 1', () => {
+    renderWithSpy(spy, [
+      bucket( 0,  40, 0,   40, 0, 100),
+      bucket(60, 100, 60, 100, 0, 100)
+    ]);
+
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+      method('moveTo', [ 39, 61 ]),
+      method('lineTo', [ 60, 40 ]),
+      method('moveTo', [ 99,  1 ])
+    ]);
+  });
+
   xit('should not draw lines between rects when they overlap in Y and they are separated by 0 along X', () => {
     renderWithSpy(spy, [
       bucket( 0,  50,  0,  60,  0,  60),
