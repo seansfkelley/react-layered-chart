@@ -11,7 +11,7 @@ import { ChartId } from '../interfaces';
 declare var process: any;
 
 // chartId is only used for memoization.
-function _createStore(): Store {
+function _createStore(chartId?: ChartId): Store {
   let middlewares: Redux.Middleware[] = [
     createDebounced(),
     ThunkMiddleware
