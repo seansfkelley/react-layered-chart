@@ -30,7 +30,8 @@ export {
 
 export {
   default as InteractionCaptureLayer,
-  Props as InteractionCaptureLayerProps
+  Props as InteractionCaptureLayerProps,
+  Direction
 } from './InteractionCaptureLayer';
 
 export {
