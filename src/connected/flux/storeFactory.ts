@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { applyMiddleware, createStore, Store } from 'redux';
+import { applyMiddleware, createStore, Store, compose } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 import * as createLogger from 'redux-logger';
 import createDebounced from 'redux-debounced';
@@ -11,7 +11,7 @@ import { ChartId } from '../interfaces';
 declare var process: any;
 
 // chartId is only used for memoization.
-function _createStore(chartId?: ChartId): Store {
+function _createStore(): Store {
   let middlewares: Redux.Middleware[] = [
     createDebounced(),
     ThunkMiddleware
@@ -24,6 +24,12 @@ function _createStore(chartId?: ChartId): Store {
       }, action),
       collapsed: true
     }));
+    const enhancers = compose(
+      applyMiddleware(...middlewares),
+      // Enable Chrome Redux Extension, see: https://github.com/zalmoxisus/redux-devtools-extension
+      (window as any).devToolsExtension ? (window as any).devToolsExtension() : _.identity
+    );
+    return createStore(reducer, enhancers);
   }
 
   return applyMiddleware(...middlewares)(createStore)(reducer);
