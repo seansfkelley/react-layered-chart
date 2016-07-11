@@ -17,7 +17,9 @@ function _createStore(): Store {
     ThunkMiddleware
   ];
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'development') {
+    return applyMiddleware(...middlewares)(createStore)(reducer);
+  } else {
     middlewares.push(createLogger({
       actionTransformer: (action) => _.defaults({
         type: ActionType[ action.type ] || action.type
@@ -31,8 +33,6 @@ function _createStore(): Store {
     );
     return createStore(reducer, enhancers);
   }
-
-  return applyMiddleware(...middlewares)(createStore)(reducer);
 }
 
 const memoizedCreateStore = _.memoize(_createStore);
