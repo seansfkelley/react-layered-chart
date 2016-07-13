@@ -120,7 +120,7 @@ A common example of undesirable state loss is in a tabbed application: charts in
 
 Please [file an issue on Github](https://github.com/palantir/react-layered-chart/issues) for any issues that aren't covered here.
 
-#### The chart is invisible, zero-height or unstoppably increasing in height.
+#### The chart is invisible, zero-height, unstoppably increasing in height; or, my loader is receiving `0` for the chart width parameter.
 
 This likely happens because you've forgotten to include react-layered-chart's stylesheet, which sets some default sizes to prevent this issue. See the [caveat about physical chart size](#physical-chart-size) for an explanation of why this happens.
 
