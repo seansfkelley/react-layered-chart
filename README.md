@@ -104,7 +104,9 @@ If you'd like to add animation to your custom view, I recommend [react-motion](h
 
 `ChartProvider` needs to know how large it is on the page in order to scale and request data at an appropriate resolution. By default, it injects a hidden `ConnectedResizeSentinelLayer` to poll for the width of the container.
 
-If you adjust the margins/padding or change the layout to be horizontally-aligned, you may need to set `ChartProvider`'s `includeResizeSentinel` to `false` and supply your own `ConnectedResizeSentinelLayer` in a place where it can determine the correct width. You only need one.
+If you adjust the margins/padding or change the layout to be horizontally-aligned, you may need to set `ChartProvider`'s `includeResizeSentinel` to `false` and supply your own `ConnectedResizeSentinelLayer` in a place where it can determine the correct width. You only need one per `ChartProvider`, as all charts are assumed to be the same width.
+
+The included CSS provides some easily-overridden defaults to prevent some issues around zero-size charts. Ensure you have [included the stylesheet](#installation) and set a meaningful width/height for your chart.
 
 ### Usage with react-redux
 
@@ -122,7 +124,7 @@ Please [file an issue on Github](https://github.com/palantir/react-layered-chart
 
 #### The chart is invisible, zero-height, unstoppably increasing in height; or, my loader is receiving `0` for the chart width parameter.
 
-This likely happens because you've forgotten to include react-layered-chart's stylesheet, which sets some default sizes to prevent this issue. See the [caveat about physical chart size](#physical-chart-size) for an explanation of why this happens.
+This likely happens because you've either forgotten to [include react-layered-chart's stylesheet](#installation) (which sets some default sizes to prevent some of these issues) or you haven't provided any CSS rules to size the chart horizontally. See the [caveat about physical chart size](#physical-chart-size) for an explanation of why this happens.
 
 #### When `ChartProvider` unmounts, I lose all my loaded state.
 
