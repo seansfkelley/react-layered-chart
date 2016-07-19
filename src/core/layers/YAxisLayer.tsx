@@ -4,15 +4,21 @@ import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 import { deprecate } from 'react-is-deprecated';
 
-import NonReactRender from '../decorators/NonReactRender';
-import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
+import { Context } from '../decorators/PixelRatioContext';
 
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { computeTicks } from '../renderUtils';
-import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
+import { Interval, Color, AxisSpec, BooleanMouseEventHandlerWithId } from '../interfaces';
+import InteractionCaptureLayer, {Direction} from './InteractionCaptureLayer';
 
-const DEFAULT_TICK_COUNT = 5;
+export interface YAxisControls {
+  shouldZoom?: BooleanMouseEventHandlerWithId;
+  shouldPan?: BooleanMouseEventHandlerWithId;
+  onZoom?: (factor: number, anchorBias: number, axisId: number | string) => void;
+  onPan?: (logicalUnits: number, axisId: number | string) => void;
+  zoomSpeed?: number;
+}
 
 export interface YAxisSpec extends AxisSpec {
   yDomain: Interval;
@@ -20,9 +26,11 @@ export interface YAxisSpec extends AxisSpec {
 }
 
 @PureRender
-class YAxis extends React.Component<YAxisSpec, void> {
+class YAxis extends React.Component<YAxisSpec & YAxisControls, void> {
   static defaultProps = {
     color: '#444',
+    shouldPan: () => true,
+    shouldZoom: () => true
   } as any as YAxisSpec;
 
   render() {
@@ -43,14 +51,38 @@ class YAxis extends React.Component<YAxisSpec, void> {
             <span className='mark' style={{ borderBottomColor: this.props.color }}/>
           </div>
         )}
+        <InteractionCaptureLayer
+          direction={Direction.VERTICAL}
+          domain={this.props.yDomain}
+          onZoom={this._zoom}
+          onPan={this._pan}
+          shouldZoom={(event) => this.props.shouldZoom(event, this.props.axisId)}
+          shouldPan={(event) => this.props.shouldPan(event, this.props.axisId)}
+          shouldBrush={() => false}
+          zoomSpeed={this.props.zoomSpeed}
+        />
       </div>
     );
   }
+
+  private _zoom = (factor: number, anchorBias: number) => {
+    if (this.props.onZoom) {
+      // Y Axis display is inverted compared to DOM mouse location, invert anchorBias accordingly.
+      this.props.onZoom(factor, -anchorBias + 1.0, this.props.axisId);
+    }
+  };
+
+  private _pan = (logicalUnits: number) => {
+    if (this.props.onPan) {
+      // Y Axis display is inverted compared to DOM mouse location, invert pan actions accordingly.
+      this.props.onPan(-logicalUnits, this.props.axisId);
+    }
+  };
 }
 
 const AnimatedYAxis = wrapWithAnimatedYDomain(YAxis);
 
-export interface Props {
+export interface Props extends YAxisControls {
   axes: YAxisSpec[];
   font?: string;
   backgroundColor?: Color;
@@ -69,7 +101,12 @@ export default class YAxisLayer extends React.Component<Props, void> {
       ])
     } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
     font: deprecate(React.PropTypes.string, 'YAxisLayer\'s \'font\' prop is deprecated. Use CSS rules instead.'),
-    backgroundColor: React.PropTypes.string
+    backgroundColor: React.PropTypes.string,
+    shouldZoom: React.PropTypes.func,
+    shouldPan: React.PropTypes.func,
+    onZoom: React.PropTypes.func,
+    onPan: React.PropTypes.func,
+    zoomSpeed: React.PropTypes.number
   };
 
   static defaultProps = {
@@ -77,6 +114,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
   };
 
   render() {
+    const axisControls: YAxisControls = _.pick(this.props, ['shouldZoom', 'shouldPan', 'onZoom', 'onPan', 'zoomSpeed']);
     return (
       <div
         className='y-axis-container y-axis-layer'
@@ -88,6 +126,7 @@ export default class YAxisLayer extends React.Component<Props, void> {
         {this.props.axes.map((axis, i) => (
           <AnimatedYAxis
             {...axis}
+            {...axisControls}
             key={_.isEmpty(axis.axisId) ? i : axis.axisId}
           />
         ))}

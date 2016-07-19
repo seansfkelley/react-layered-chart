@@ -115,8 +115,15 @@ This component renders one or more Y domains, lined up next to each other on the
     - `axisId?`: a unique ID to identify this axis. Used to prevent jittery animations when adding/removing/rearranging axes.
 - ~~`font?`~~ (**deprecated**, use CSS rules instead): a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
 - `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
+- `shouldZoom?(event, axisId)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming.
+- `shouldPan?(event, axisId)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture.
+- `onZoom?(factor, anchorBias, axisId)`: fired when the user performs a legal zoom gesture. See `zoomInterval` for an explanation of the parameters.
+- `onPan?(logicalUnits, axisId)`: fired when the user moves their mouse during a legal pan gesture.
+- `zoomSpeed?`: a constant factor to adjust the sensitivity of the zooming gesture for different scroll velocities.
 
-There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`.
+There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`, and `axisId` in callbacks will be the `seriesId`.  This also includes shortcuts for enabling y-axis controls:
+- `enablePan?`: whether or not to fire events for pan gestures. Default `false` - has no effect if `shouldPan` is defined
+- `enableZoom?`: whether or not to fire events for zoom gestures. Default `false` - has no effect if `shouldZoom` is defined
 
 <hr/>
 
@@ -165,7 +172,9 @@ This layer displays nothing, but captures all mouse events and translates them i
 
 #### Props
 
-- `xDomain`: specifies the X domain this layer currently covers so it can translate mouse positions to logical values.
+- `domain`: specifies the X domain this layer currently covers so it can translate mouse positions to logical values.
+- `xDomain` (**deprecated**): Same as domain.
+- `direction?`: specifies the direction to track mouse events.  Default: Direction.HORIZONTAL
 - `shouldZoom?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming.
 - `shouldPan?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture.
 - `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture.

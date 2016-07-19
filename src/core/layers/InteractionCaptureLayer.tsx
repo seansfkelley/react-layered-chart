@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
+import { deprecate } from 'react-is-deprecated';
 
 import propTypes from '../propTypes';
 import { Interval, BooleanMouseEventHandler } from '../interfaces';
@@ -14,6 +15,7 @@ export enum Direction {
 export interface Props {
   direction?: Direction;
   domain: Interval;
+  xDomain?: Interval; // Deprecated
   shouldZoom?: BooleanMouseEventHandler;
   shouldPan?: BooleanMouseEventHandler;
   shouldBrush?: BooleanMouseEventHandler;
@@ -42,6 +44,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     onPan: React.PropTypes.func,
     onBrush: React.PropTypes.func,
     onHover: React.PropTypes.func,
+    xDomain: deprecate(propTypes.interval, 'InteractionCaptureLayer\'s \'xDomain\' prop is deprecated. Use domain instead.'),
     domain: propTypes.interval.isRequired,
     zoomSpeed: React.PropTypes.number
   } as React.ValidationMap<Props>;
@@ -89,9 +92,13 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
         [boundingClientRect.left, boundingClientRect.right] :
         [boundingClientRect.top, boundingClientRect.bottom]
     );
+    const range = (this.props.domain ?
+      [ this.props.domain.min, this.props.domain.max ] :
+      [ this.props.xDomain.min, this.props.xDomain.max ]
+    );
     return d3Scale.scaleLinear()
       .domain(domain)
-      .range([ this.props.domain.min, this.props.domain.max ]);
+      .range(range);
   }
 
   private _getEventLocation(event): number {

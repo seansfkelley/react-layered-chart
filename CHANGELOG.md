@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Changed
+
+- Added interaction controls to y-axes
+
+
 ## 1.3.0 (2016-07-07)
 
 ### Changed
