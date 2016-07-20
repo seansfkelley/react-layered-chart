@@ -4,12 +4,13 @@ import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 
-import { Interval, Color, AxisSpec, YAxisLayer as UnconnectedYAxisLayer, YAxisControls} from '../../core';
-import { SeriesId, TBySeriesId } from '../interfaces';
+import {
+  Interval, Color, AxisSpec, YAxisLayer as UnconnectedYAxisLayer, YAxisControls, zoomInterval, panInterval
+} from '../../core';
+import {SeriesId, TBySeriesId} from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectYDomains } from '../model/selectors';
 import { setOverrideYDomains } from '../flux/atomicActions';
-import { zoomInterval, panInterval } from '../../../lib/core/intervalUtils';
 
 export interface ConnectedYAxisSpec extends AxisSpec {
   seriesId: SeriesId;
