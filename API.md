@@ -122,8 +122,8 @@ This component renders one or more Y domains, lined up next to each other on the
 - `zoomSpeed?`: a constant factor to adjust the sensitivity of the zooming gesture for different scroll velocities.
 
 There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`, and `axisId` in callbacks will be the `seriesId`.  This also includes shortcuts for enabling y-axis controls:
-- `enablePan?`: whether or not to fire events for pan gestures. Default `false` - has no effect if `shouldPan` is defined
-- `enableZoom?`: whether or not to fire events for zoom gestures. Default `false` - has no effect if `shouldZoom` is defined
+- `enablePan?`: whether or not allow pan gestures. Has no effect if `shouldPan` or `onPan` is defined.  Default `false`
+- `enableZoom?`: whether or not allow zoom gestures. Has no effect if `shouldZoom` or `onZoom` is defined.  Default `false`
 
 <hr/>
 
