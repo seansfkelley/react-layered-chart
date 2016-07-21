@@ -30,7 +30,8 @@ export {
 
 export {
   default as InteractionCaptureLayer,
-  Props as InteractionCaptureLayerProps
+  Props as InteractionCaptureLayerProps,
+  Direction
 } from './InteractionCaptureLayer';
 
 export {
@@ -55,5 +56,6 @@ export {
 
 export {
   default as YAxisLayer,
-  Props as YAxisLayerProps
+  Props as YAxisLayerProps,
+  YAxisControls
 } from './YAxisLayer';

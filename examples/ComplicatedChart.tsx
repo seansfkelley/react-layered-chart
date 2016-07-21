@@ -98,6 +98,8 @@ const CHART = (
           color: COLOR_3
         }]}
         font='12px sans-serif'
+        enableZoom={true}
+        enablePan={true}
       />
     </Stack>
     {/* Show the X axis. This stack puts the X axis in its own section. */}
