@@ -8,8 +8,7 @@ import {
   BooleanMouseEventHandler,
   panInterval,
   zoomInterval,
-  InteractionCaptureLayer,
-  Direction
+  InteractionCaptureLayer
 } from '../../core';
 import { setSelection, setHover } from '../flux/atomicActions';
 import { setXDomainAndLoad } from '../flux/compoundActions';
@@ -42,8 +41,7 @@ export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps &
   render() {
     return (
       <InteractionCaptureLayer
-        direction={Direction.HORIZONTAL}
-        domain={this.props.xDomain}
+        xDomain={this.props.xDomain}
         onZoom={this.props.enableZoom && this._zoom}
         onPan={this.props.enablePan && this._pan}
         onHover={this.props.enableHover && this._hover}
