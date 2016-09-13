@@ -6,9 +6,7 @@ import { deprecate } from 'react-is-deprecated';
 
 import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
-import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
-
-const DEFAULT_TICK_COUNT = 5;
+import { Interval, AxisSpec } from '../interfaces';
 
 export interface Props extends AxisSpec {
   xDomain: Interval;

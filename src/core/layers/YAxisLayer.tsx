@@ -4,15 +4,10 @@ import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 import { deprecate } from 'react-is-deprecated';
 
-import NonReactRender from '../decorators/NonReactRender';
-import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
-
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import { computeTicks } from '../renderUtils';
-import { Interval, ScaleFunction, Ticks, TickFormat, Color, AxisSpec } from '../interfaces';
-
-const DEFAULT_TICK_COUNT = 5;
+import { Interval, Color, AxisSpec } from '../interfaces';
 
 export interface YAxisSpec extends AxisSpec {
   yDomain: Interval;
@@ -58,8 +53,6 @@ export interface Props {
 
 @PureRender
 export default class YAxisLayer extends React.Component<Props, void> {
-  context: Context;
-
   static propTypes = {
     axes: React.PropTypes.arrayOf(React.PropTypes.shape(_.defaults({
       yDomain: propTypes.interval.isRequired,
@@ -70,11 +63,11 @@ export default class YAxisLayer extends React.Component<Props, void> {
     } as React.ValidationMap<any>, propTypes.axisSpecPartial))).isRequired,
     font: deprecate(React.PropTypes.string, 'YAxisLayer\'s \'font\' prop is deprecated. Use CSS rules instead.'),
     backgroundColor: React.PropTypes.string
-  };
+  } as any as React.ValidationMap<Props>;
 
   static defaultProps = {
     backgroundColor: 'rgba(255, 255, 255, 0.8)'
-  };
+  } as any as Props;
 
   render() {
     return (

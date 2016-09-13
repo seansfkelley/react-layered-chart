@@ -1,9 +1,8 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Interval, Color, AxisSpec, YAxisLayer as UnconnectedYAxisLayer} from '../../core';
-import { SeriesId, TBySeriesId } from '../interfaces';
+import { Color, AxisSpec, YAxisSpec, YAxisLayer } from '../../core';
+import { SeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectYDomains } from '../model/selectors';
 
@@ -18,28 +17,17 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  yDomainsBySeriesId: TBySeriesId<Interval>;
+  axes: YAxisSpec[];
 }
 
-@PureRender
-export class ConnectedYAxisLayer extends React.Component<OwnProps & ConnectedProps, {}> {
-  render() {
-    const denormalizedProps = _.defaults({
-      axes: this.props.axes.map(axis => _.defaults({
-        yDomain: this.props.yDomainsBySeriesId[axis.seriesId],
-        axisId: axis.seriesId
-      }, axis))
-    }, this.props);
-    return (
-      <UnconnectedYAxisLayer {...denormalizedProps}/>
-    );
-  }
-}
-
-function mapStateToProps(state: ChartState): ConnectedProps {
+function mapStateToProps(state: ChartState, ownProps: OwnProps): ConnectedProps {
+  const yDomainsBySeriesId = selectYDomains(state);
   return {
-    yDomainsBySeriesId: selectYDomains(state)
+    axes: ownProps.axes.map(axis => _.defaults({
+      yDomain: yDomainsBySeriesId[axis.seriesId],
+      axisId: axis.seriesId
+    }, axis))
   };
 }
 
-export default connect(mapStateToProps)(ConnectedYAxisLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(YAxisLayer) as React.ComponentClass<OwnProps>;
