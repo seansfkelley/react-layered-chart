@@ -106,69 +106,73 @@ export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) =>
 }
 
 // Exported for testing.
-export function _performDataLoad(timeout: number = 500) {
-  const thunk: any = (dispatch, getState: () => ChartState) => {
-    const preLoadChartState = getState();
-    const dataLoader = preLoadChartState.dataLoader;
+export function _performDataLoad(batchingTimeout: number = 200) {
+  return (dispatch, getState: () => ChartState) => {
+    const adjustedTimeout = Math.min(batchingTimeout, getState().debounceTimeout);
 
-    const seriesIdsToLoad = _.keys(_.pickBy(preLoadChartState.loadVersionBySeriesId));
+    const thunk: any = (dispatch, getState: () => ChartState) => {
+      const preLoadChartState = getState();
+      const dataLoader = preLoadChartState.dataLoader;
 
-    const loadPromiseBySeriesId = dataLoader(
-      seriesIdsToLoad,
-      selectXDomain(preLoadChartState),
-      preLoadChartState.uiState.yDomainBySeriesId,
-      preLoadChartState.physicalChartWidth,
-      preLoadChartState.dataBySeriesId
-    );
+      const seriesIdsToLoad = _.keys(_.pickBy(preLoadChartState.loadVersionBySeriesId));
 
-    const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
-      dispatch(dataReturned(payload));
-    }, timeout);
+      const loadPromiseBySeriesId = dataLoader(
+        seriesIdsToLoad,
+        selectXDomain(preLoadChartState),
+        preLoadChartState.uiState.yDomainBySeriesId,
+        preLoadChartState.physicalChartWidth,
+        preLoadChartState.dataBySeriesId
+      );
 
-    const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
-      const state = getState();
-      dispatch(setYDomains(_.assign({}, state.uiState.yDomainBySeriesId, payload)));
-    }, timeout);
+      const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
+        dispatch(dataReturned(payload));
+      }, adjustedTimeout);
 
-    const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
-      dispatch(dataErrored(payload));
-    }, timeout);
+      const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
+        const state = getState();
+        dispatch(setYDomains(_.assign({}, state.uiState.yDomainBySeriesId, payload)));
+      }, adjustedTimeout);
 
-    function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
-      return preLoadChartState.loadVersionBySeriesId[seriesId] === postLoadChartState.loadVersionBySeriesId[seriesId];
-    }
+      const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
+        dispatch(dataErrored(payload));
+      }, adjustedTimeout);
 
-    const dataPromises = _.map(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
-      dataPromise
-      .then(loadedData => {
-        if (isResultStillRelevant(getState(), seriesId)) {
-          batchedDataReturned({
-            [seriesId]: loadedData.data
-          });
+      function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
+        return preLoadChartState.loadVersionBySeriesId[ seriesId ] === postLoadChartState.loadVersionBySeriesId[ seriesId ];
+      }
 
-          batchedSetYDomains({
-            [seriesId]: loadedData.yDomain
-          });
-        }
-      })
-      .catch(error => {
-        if (isResultStillRelevant(getState(), seriesId)) {
-          batchedDataErrored({
-            [seriesId]: error
-          });
-        }
-      })
-    );
+      const dataPromises = _.map(loadPromiseBySeriesId, (dataPromise: Promise<LoadedSeriesData>, seriesId: SeriesId) =>
+        dataPromise
+          .then(loadedData => {
+            if (isResultStillRelevant(getState(), seriesId)) {
+              batchedDataReturned({
+                [seriesId]: loadedData.data
+              });
 
-    return Promise.all(dataPromises);
+              batchedSetYDomains({
+                [seriesId]: loadedData.yDomain
+              });
+            }
+          })
+          .catch(error => {
+            if (isResultStillRelevant(getState(), seriesId)) {
+              batchedDataErrored({
+                [seriesId]: error
+              });
+            }
+          })
+      );
+
+      return Promise.all(dataPromises);
+    };
+
+    thunk.meta = {
+      debounce: {
+        time: getState().debounceTimeout,
+        key: 'data-load'
+      }
+    };
+
+    return dispatch(thunk);
   };
-
-  thunk.meta = {
-    debounce: {
-      time: 1000,
-      key: 'data-load'
-    }
-  };
-
-  return thunk;
 }

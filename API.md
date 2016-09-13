@@ -30,6 +30,7 @@ For specifics on the exact types of these components/functions/values, please ch
 - `onLoadStateChange?`: called with the load states of all series whenever any one of them changes.
 - `onError?`: called with the error state of all series whenever any one of them changes.
 - `includeResizeSentinel?`: if `false`, prevents the automatic addition of a `ConnectedResizeSentinelLayer`. Use this option if you have layouts or styles that cause the included sentinel layer to incorrectly report the physical chart size. Be sure to replace it with your own `ConnectedResizeSentinelLayer`, otherwise your chart won't render with the correct dimensions!
+- `loadDataDebounceTimeout?`: debounce interval in milliseconds for calling `loadData` (default `1000`). Use lower numbers if your requests are cheap/fast and higher numbers if they aren't.
 
 #### Controlled Props
 

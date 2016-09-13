@@ -10,6 +10,7 @@ import {
   Action,
   setSeriesIds,
   setDataLoader,
+  setDataLoaderDebounceTimeout,
   dataRequested,
   dataReturned,
   setYDomains,
@@ -241,11 +242,20 @@ describe('(compound actions)', () => {
 
   describe('_performDataLoad', () => {
     it('should provide debounce metadata', () => {
-      const action = _performDataLoad();
+      const action = _performDataLoad()(_.identity, () => ({ debounceTimeout: 1000 }) as ChartState);
       should.exist(action.meta);
       should.exist(action.meta.debounce);
-      should(action.meta.debounce.time).be.a.Number();
-      should(action.meta.debounce.key).be.a.String();
+      action.meta.debounce.time.should.be.a.Number();
+      action.meta.debounce.key.should.be.a.String();
+    });
+
+    it('should respect the debounce timeout set on the store', () => {
+      store.dispatch(setDataLoaderDebounceTimeout(1337));
+
+      const action = _performDataLoad()(_.identity, store.getState);
+      should.exist(action.meta);
+      should.exist(action.meta.debounce);
+      action.meta.debounce.time.should.equal(1337);
     });
 
     it('should call the data loader with only the series IDs that have requested loads', () => {

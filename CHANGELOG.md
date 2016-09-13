@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - `SimpleLineLayer` and `BucketedLineLayer` now accept a `joinType` enumeration prop of type `JoinType` to specify if they should drawing joining lines between points directly (the default and current behavior) or using only vertical/horizontal lines with vertical-first ("leading") or vertical-last ("trailing"). [#67](https://github.com/palantir/react-layered-chart/issues/67).
+- Added `loadDataDebounceTimeout` prop to `ChartProvider`. [#69](https://github.com/palantir/react-layered-chart/issues/69)
 
 ## 1.3.0 (2016-07-07)
 

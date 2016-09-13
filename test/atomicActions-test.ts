@@ -12,6 +12,7 @@ import {
   Action,
   setSeriesIds,
   setDataLoader,
+  setDataLoaderDebounceTimeout,
   setChartPhysicalWidth,
   setXDomain,
   setOverrideXDomain,
@@ -63,6 +64,7 @@ describe('(atomic actions)', () => {
 
   beforeEach(() => {
     state = {
+      debounceTimeout: 1000,
       physicalChartWidth: 0,
       seriesIds: [],
       dataBySeriesId: {},
@@ -295,6 +297,11 @@ describe('(atomic actions)', () => {
     }
 
     const TEST_CASES: PassThroughTestCase<any>[] = [{
+      name: 'setDataLoaderDebounceTimeout',
+      actionCreator: setDataLoaderDebounceTimeout,
+      actionValue: 1337,
+      valuePath: 'debounceTimeout'
+    }, {
       name: 'setChartPhysicalWidth',
       actionCreator: setChartPhysicalWidth,
       actionValue: 1337,

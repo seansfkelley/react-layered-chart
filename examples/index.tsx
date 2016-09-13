@@ -28,4 +28,9 @@ const TEST_COMPONENT = (
   </div>
 );
 
-ReactDOM.render(TEST_COMPONENT, APP_ELEMENT);
+// This setTimeout fixes a demo-only issue where Webpack's delivery of the CSS via JS injection comes too late and the
+// polling canvas layers render for a split second too small. It's not a library bug, just a side effect of the way that
+// Webpack's style-loader injects styles interacting poorly with react-layered-chart checking how large a <canvas> is.`
+setTimeout(() => {
+  ReactDOM.render(TEST_COMPONENT, APP_ELEMENT);
+}, 50);

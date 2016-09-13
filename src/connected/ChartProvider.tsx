@@ -13,7 +13,8 @@ import {
   setYDomains,
   setOverrideYDomains,
   setOverrideSelection,
-  setOverrideHover
+  setOverrideHover,
+  setDataLoaderDebounceTimeout
 } from './flux/atomicActions';
 import {
   setXDomainAndLoad,
@@ -33,6 +34,7 @@ export interface Props {
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
   includeResizeSentinel?: boolean;
+  loadDataDebounceTimeout?: number;
 
   // Controlled props go here.
   xDomain?: Interval;
@@ -108,6 +110,9 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
     this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
     this._store.dispatch(setDataLoaderAndLoad(props.loadData));
+    if (this.props.loadDataDebounceTimeout) {
+      this._store.dispatch(setDataLoaderDebounceTimeout(props.loadDataDebounceTimeout));
+    }
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.
     if (props.xDomain) {
       this._store.dispatch(setOverrideXDomainAndLoad(props.xDomain));
@@ -168,6 +173,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
   private _onPropsChange(nextProps: Props) {
     this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIdsAndLoad);
     this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoaderAndLoad);
+    this._maybeDispatchChangedProp(this.props.loadDataDebounceTimeout, nextProps.loadDataDebounceTimeout, setDataLoaderDebounceTimeout);
     this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setOverrideXDomainAndLoad);
     this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setOverrideYDomains);
     this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setOverrideHover);

@@ -1,6 +1,6 @@
 /*
 This chart implements a bunch of various features from around the library to
-demonstate a more complex chart.
+demonstrate a more complex chart.
 */
 
 import * as _ from 'lodash';
