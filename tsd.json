@@ -42,10 +42,7 @@
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
     },
     "moment/moment.d.ts": {
-      "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
-    },
-    "moment/moment-node.d.ts": {
-      "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
+      "commit": "6547d812453fb0e53f03b01fd6c0bf3bb30736b5"
     },
     "react-redux/react-redux.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
