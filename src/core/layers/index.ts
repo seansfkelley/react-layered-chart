@@ -55,5 +55,6 @@ export {
 
 export {
   default as YAxisLayer,
-  Props as YAxisLayerProps
+  Props as YAxisLayerProps,
+  YAxisSpec
 } from './YAxisLayer';
