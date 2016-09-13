@@ -9,7 +9,7 @@ import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Interval, Color, ScaleFunction, BucketDatum } from '../interfaces';
+import { Interval, Color, ScaleFunction, BucketDatum, JoinType } from '../interfaces';
 
 export interface Props {
   data: BucketDatum[];
@@ -17,6 +17,7 @@ export interface Props {
   yDomain: Interval;
   yScale?: ScaleFunction;
   color?: Color;
+  joinType?: JoinType;
 }
 
 @PureRender
@@ -35,7 +36,8 @@ class BucketedLineLayer extends React.Component<Props, void> {
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
-    color: '#444'
+    color: '#444',
+    joinType: JoinType.DIRECT
   } as any as Props;
 
   render() {
@@ -120,6 +122,13 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.moveTo(firstComputedValues.maxX - 1, height - firstComputedValues.lastY);
   for (let i = 1; i < computedValuesForVisibleData.length; ++i) {
     const computedValues = computedValuesForVisibleData[i];
+
+    if (props.joinType === JoinType.LEADING) {
+      context.lineTo(computedValuesForVisibleData[i - 1].maxX - 1, height - computedValues.firstY);
+    } else if (props.joinType === JoinType.TRAILING) {
+      context.lineTo(computedValues.minX, height - computedValuesForVisibleData[i - 1].lastY);
+    }
+
     context.lineTo(computedValues.minX, height - computedValues.firstY);
     context.moveTo(computedValues.maxX - 1, height - computedValues.lastY);
   }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
-import * as _ from 'lodash';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -10,7 +9,7 @@ import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForPointData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Interval, PointDatum, ScaleFunction, Color } from '../interfaces';
+import { Interval, PointDatum, ScaleFunction, Color, JoinType } from '../interfaces';
 
 export interface Props {
   data: PointDatum[];
@@ -18,6 +17,7 @@ export interface Props {
   yDomain: Interval;
   yScale?: ScaleFunction;
   color?: Color;
+  joinType?: JoinType;
 }
 
 @PureRender
@@ -36,7 +36,8 @@ class SimpleLineLayer extends React.Component<Props, void> {
 
   static defaultProps = {
     yScale: d3Scale.scaleLinear,
-    color: 'rgba(0, 0, 0, 0.7)'
+    color: 'rgba(0, 0, 0, 0.7)',
+    joinType: JoinType.DIRECT
   } as any as Props;
 
   render() {
@@ -78,7 +79,16 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
 
   context.moveTo(xScale(props.data[firstIndex].xValue), height - yScale(props.data[firstIndex].yValue));
   for (let i = firstIndex + 1; i < lastIndex; ++i) {
-    context.lineTo(xScale(props.data[i].xValue), height - yScale(props.data[i].yValue));
+    const xValue = xScale(props.data[i].xValue);
+    const yValue = height - yScale(props.data[i].yValue);
+
+    if (props.joinType === JoinType.LEADING) {
+      context.lineTo(xScale(props.data[i - 1].xValue), yValue);
+    } else if (props.joinType === JoinType.TRAILING) {
+      context.lineTo(xValue, height - yScale(props.data[i - 1].yValue));
+    }
+
+    context.lineTo(xValue, yValue);
   }
 
   context.strokeStyle = props.color;
