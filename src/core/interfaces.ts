@@ -45,3 +45,9 @@ export interface AxisSpec {
   tickFormat?: TickFormat;
   color?: Color;
 }
+
+export enum JoinType {
+  DIRECT,
+  LEADING,
+  TRAILING
+}

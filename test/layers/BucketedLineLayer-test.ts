@@ -4,7 +4,7 @@ import * as d3Scale from 'd3-scale';
 
 import { bucket, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
-import { BucketDatum } from '../../src/core/interfaces';
+import { BucketDatum, JoinType } from '../../src/core/interfaces';
 import { _renderCanvas, Props } from '../../src/core/layers/BucketedLineLayer';
 
 describe('BucketedLineLayer', () => {
@@ -21,8 +21,8 @@ describe('BucketedLineLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: CanvasRenderingContext2D, data: BucketDatum[]) {
-    _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: BucketDatum[], joinType?: JoinType) {
+    _renderCanvas(_.defaults({ data, joinType }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should render a single rect for a single bucket', () => {
@@ -91,6 +91,34 @@ describe('BucketedLineLayer', () => {
 
     spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 39,  33 ]),
+      method('lineTo', [ 60,  55 ]),
+      method('moveTo', [ 99, 100 ])
+    ]);
+  });
+
+  it('should draw an extra segment, vertical-first, when JoinType is LEADING', () => {
+    renderWithSpy(spy, [
+      bucket( 0,  40, 0, 100,  0, 67),
+      bucket(60, 100, 0, 100, 45,  0)
+    ], JoinType.LEADING);
+
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+      method('moveTo', [ 39,  33 ]),
+      method('lineTo', [ 39,  55 ]),
+      method('lineTo', [ 60,  55 ]),
+      method('moveTo', [ 99, 100 ])
+    ]);
+  });
+
+  it('should draw an extra segment, vertical-last, when JoinType is TRAILING', () => {
+    renderWithSpy(spy, [
+      bucket( 0,  40, 0, 100,  0, 67),
+      bucket(60, 100, 0, 100, 45,  0)
+    ], JoinType.TRAILING);
+
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+      method('moveTo', [ 39,  33 ]),
+      method('lineTo', [ 60,  33 ]),
       method('lineTo', [ 60,  55 ]),
       method('moveTo', [ 99, 100 ])
     ]);

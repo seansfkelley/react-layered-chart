@@ -4,7 +4,7 @@ import * as d3Scale from 'd3-scale';
 
 import { point, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
-import { PointDatum } from '../../src/core/interfaces';
+import { PointDatum, JoinType } from '../../src/core/interfaces';
 import { _renderCanvas, Props } from '../../src/core/layers/SimpleLineLayer';
 
 describe('SimpleLineLayer', () => {
@@ -21,8 +21,8 @@ describe('SimpleLineLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: CanvasRenderingContext2D, data: PointDatum[]) {
-    _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: PointDatum[], joinType?: JoinType) {
+    _renderCanvas(_.defaults({ data, joinType }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should not render anything if there is only one data point', () => {
@@ -50,6 +50,32 @@ describe('SimpleLineLayer', () => {
 
     spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
       method('moveTo', [ 25, 67 ]),
+      method('lineTo', [ 75, 50 ])
+    ]);
+  });
+
+  it('should render an extra segment, vertical-first, when JoinType is LEADING', () => {
+    renderWithSpy(spy, [
+      point(25, 33),
+      point(75, 50)
+    ], JoinType.LEADING);
+
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+      method('moveTo', [ 25, 67 ]),
+      method('lineTo', [ 25, 50 ]),
+      method('lineTo', [ 75, 50 ])
+    ]);
+  });
+
+  it('should render an extra segment, vertical-last, when JoinType is TRAILING', () => {
+    renderWithSpy(spy, [
+      point(25, 33),
+      point(75, 50)
+    ], JoinType.TRAILING);
+
+    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+      method('moveTo', [ 25, 67 ]),
+      method('lineTo', [ 75, 67 ]),
       method('lineTo', [ 75, 50 ])
     ]);
   });
