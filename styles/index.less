@@ -22,33 +22,35 @@
   display: flex;
   flex-wrap: nowrap;
   right: auto;
+}
 
-  .single-y-axis {
-    height: 100%;
-    border-right: 1px solid;
+.lc-stack .y-axis, .lc-stack .y-axis-layer .single-y-axis {
+  height: 100%;
+  border-right: 1px solid;
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.7);
 
-    .tick {
-      position: relative;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-      align-items: center;
-      // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
-      height: 0;
+  .tick {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    // This way, when they are positioned in javascript, the values are a function of the height of the container, only.
+    height: 0;
 
-      .label {
-        margin: 0 4px 0 6px;
-      }
+    .label {
+      margin: 0 4px 0 6px;
+    }
 
-      .mark {
-        width: 4px;
-        border-bottom: 1px solid;
-      }
+    .mark {
+      width: 4px;
+      border-bottom: 1px solid;
     }
   }
 }
 
-.lc-stack .x-axis-layer {
+.lc-stack .x-axis-layer, .lc-stack .x-axis {
   display: flex;
   flex-wrap: nowrap;
   text-transform: uppercase;
@@ -57,8 +59,9 @@
   .tick {
     position: relative;
     width: 0;
-    white-space: nowrap;
     border-left: 1px solid;
+    margin-left: -1px; // To make up for the border rule ^.
+    white-space: nowrap;
     display: flex;
     align-items: center;
 
