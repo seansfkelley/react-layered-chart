@@ -57,7 +57,12 @@ export function computeTicks(scale: any, ticks?: Ticks, tickFormat?: TickFormat)
   if (ticks) {
     if (_.isFunction(ticks)) {
       const [ min, max ] = scale.domain();
-      outputTicks = ticks({ min, max });
+      const maybeOutputTicks = ticks({ min, max });
+      if (_.isNumber(maybeOutputTicks)) {
+        outputTicks = scale.ticks(maybeOutputTicks);
+      } else {
+        outputTicks = maybeOutputTicks;
+      }
     } else if (_.isArray<number>(ticks)) {
       outputTicks = ticks;
     } else if (_.isNumber(ticks)) {

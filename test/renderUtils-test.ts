@@ -1,6 +1,12 @@
+import * as d3Scale from 'd3-scale';
+import {
+  Ticks,
+  TickFormat
+} from '../src/core/interfaces';
 import {
   getIndexBoundsForPointData,
-  getIndexBoundsForSpanData
+  getIndexBoundsForSpanData,
+  computeTicks
 } from '../src/core/renderUtils';
 
 describe('(render utils)', () => {
@@ -477,6 +483,43 @@ describe('(render utils)', () => {
         firstIndex: 1,
         lastIndex: 6
       });
+    });
+  });
+
+  describe('computeTicks', () => {
+    const scale = d3Scale.scaleLinear()
+      .domain([0, 1])
+      .range([0, 1]);
+
+    it('should return an array of numbers and a function when only the scale is passed', () => {
+      const { ticks, format } = computeTicks(scale);
+      ticks.should.be.an.Array();
+      format.should.be.a.Function();
+    });
+
+    it('should return an array of numbers when given a number for ticks', () => {
+      computeTicks(scale, 5).ticks.should.be.an.Array();
+    });
+
+    it('should return an array of numbers as-is when given an array for ticks', () => {
+      const ticks = [ 1, 2, 3 ];
+      computeTicks(scale, ticks).ticks.should.be.exactly(ticks);
+    });
+
+    it('should return an array of numbers when given a function that returns an array of numbers', () => {
+      const ticks = [ 1, 2, 3 ];
+      const fn = function() { return ticks; } as any;
+      computeTicks(scale, fn).ticks.should.be.exactly(ticks);
+    });
+
+    it('should return an array of numbers when given a function that returns a number', () => {
+      const fn = function() { return 5; } as any;
+      computeTicks(scale, fn).ticks.should.be.an.Array();
+    });
+
+    it('should return the format function as-is when passed', () => {
+      const fn = function(){} as any;
+      computeTicks(scale, null, fn).format.should.be.exactly(fn);
     });
   });
 });
