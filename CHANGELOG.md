@@ -12,6 +12,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - `XAxisLayer` and `YAxisLayer` in favor of `XAxis` and `YAxis`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
 
+### Changed
+
+- Expanded the legal arguments to `computeTicks`. [#23](https://github.com/palantir/react-layered-chart/pull/23).
+
 ## 1.4.1 (2016-09-13)
 
 ### Added

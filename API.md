@@ -509,7 +509,7 @@ Compute the appropriate tick values and tick formatter for the given [d3-scale](
 `ticks` may take the following types:
 
 - `number` or absent: it will be passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks) to pick approximately that many ticks.
-- `function`: it will be given the domain of the provided scale as `{ min, max }` and should return an array of numbers.
+- `function`: it will be given the domain of the provided scale as `{ min, max }` and should return an array of numbers (returned as-is) or a number (passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks)).
 - `array`: assumed to be an array of numbers and will be used as-is.
 
 `tickFormat` may take the following types:
