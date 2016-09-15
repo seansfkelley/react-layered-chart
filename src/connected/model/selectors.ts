@@ -12,41 +12,50 @@ function createUiStateSelector<T>(selectUiState: (state: ChartState) => UiState,
   );
 }
 
-const selectLoadedSeriesData = (state: ChartState) => state.loadedDataBySeriesId;
-const selectUiStateInternal = (state: ChartState) => state.uiState;
-const selectUiStateOverride = (state: ChartState) => state.uiStateConsumerOverrides;
+export const selectIsLoading = (state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>;
+export const selectError = (state: ChartState) => state.errorBySeriesId;
+export const selectChartPixelWidth = (state: ChartState) => state.physicalChartWidth;
 
-export const selectLoadedYDomains = createSelector(
-  selectLoadedSeriesData,
-  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.yDomain)
-);
+const selectLoadedSeriesData = (state: ChartState) => state.loadedDataBySeriesId;
 
 export const selectData = createSelector(
   selectLoadedSeriesData,
   (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.data)
 );
 
+const selectUiStateInternal = (state: ChartState) => state.uiState;
+const selectUiStateOverride = (state: ChartState) => state.uiStateConsumerOverrides;
+
+export const selectXDomainInternal = createUiStateSelector<Interval>(selectUiStateInternal, 'xDomain');
 export const selectXDomain = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'xDomain'),
+  selectXDomainInternal,
   createUiStateSelector<Interval>(selectUiStateOverride, 'xDomain'),
   (internal: Interval, override: Interval) => override || internal
 );
 
+export const selectYDomainsInternal = createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId');
+export const selectYDomainsLoaded = createSelector(
+  selectLoadedSeriesData,
+  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.yDomain)
+);
 export const selectYDomains = createSelector(
-  selectLoadedYDomains,
-  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
+  selectYDomainsLoaded,
+  selectYDomainsInternal,
   createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
-  (loaded, internal, override) => _.assign({}, loaded, internal, override) as TBySeriesId<Interval>
+  (loaded: TBySeriesId<Interval>, internal: TBySeriesId<Interval>, override: TBySeriesId<Interval>) =>
+    _.assign({}, loaded, internal, override) as TBySeriesId<Interval>
 );
 
+export const selectHoverInternal = createUiStateSelector<number>(selectUiStateInternal, 'hover');
 export const selectHover = createSelector(
-  createUiStateSelector<number>(selectUiStateInternal, 'hover'),
+  selectHoverInternal,
   createUiStateSelector<number>(selectUiStateOverride, 'hover'),
   (internal: number, override: number) => _.isNumber(override) ? override : internal
 );
 
+export const selectSelectionInternal = createUiStateSelector<Interval>(selectUiStateInternal, 'selection');
 export const selectSelection = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'selection'),
+  selectSelectionInternal,
   createUiStateSelector<Interval>(selectUiStateOverride, 'selection'),
   (internal: Interval, override: Interval) => override || internal
 );

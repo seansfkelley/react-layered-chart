@@ -1,10 +1,14 @@
 import { Interval } from '../src/core/interfaces';
 import {
+  selectXDomainInternal,
   selectXDomain,
+  selectYDomainsLoaded,
+  selectYDomainsInternal,
   selectYDomains,
+  selectHoverInternal,
   selectHover,
+  selectSelectionInternal,
   selectSelection,
-  selectLoadedYDomains,
   selectData
 } from '../src/connected/model/selectors';
 import {
@@ -208,7 +212,7 @@ describe('(selectors)', () => {
 
   describe('selectLoadedYDomains', () => {
     it('should select only the loaded Y domains even if action-set values and overrides are set', () => {
-      selectLoadedYDomains({
+      selectYDomainsLoaded({
         loadedDataBySeriesId: {
           [SERIES_A]: {
             data: [],

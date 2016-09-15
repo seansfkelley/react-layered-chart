@@ -3,11 +3,14 @@ import { createSelector } from 'reselect';
 
 import { Interval } from '../../core';
 import {
-  selectXDomain as internalSelectXDomain,
-  selectYDomains as internalSelectYDomains,
-  selectHover as internalSelectHover,
-  selectSelection as internalSelectSelection,
-  selectData as internalSelectData
+  selectXDomain as selectXDomainPrivate,
+  selectYDomains as selectYDomainsPrivate,
+  selectHover as selectHoverPrivate,
+  selectSelection as selectSelectionPrivate,
+  selectData as selectDataPrivate,
+  selectIsLoading as selectIsLoadingPrivate,
+  selectError as selectErrorPrivate,
+  selectChartPixelWidth as selectChartPixelWidthPrivate
 } from '../model/selectors';
 import { ChartState } from '../model/state';
 import { ChartProviderState } from './exportableState';
@@ -17,15 +20,14 @@ function _wrapForTypeCast<T>(selector: (state: ChartState) => T): StateSelector<
   return (state: ChartProviderState) => selector(state as any as ChartState);
 }
 
-export const selectXDomain = _wrapForTypeCast(internalSelectXDomain);
-export const selectYDomains = _wrapForTypeCast(internalSelectYDomains);
-export const selectHover = _wrapForTypeCast(internalSelectHover);
-export const selectSelection = _wrapForTypeCast(internalSelectSelection);
-export const selectData = _wrapForTypeCast(internalSelectData);
-
-export const selectIsLoading = _wrapForTypeCast((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>);
-export const selectError = _wrapForTypeCast((state: ChartState) => state.errorBySeriesId);
-export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => state.physicalChartWidth);
+export const selectXDomain = _wrapForTypeCast(selectXDomainPrivate);
+export const selectYDomains = _wrapForTypeCast(selectYDomainsPrivate);
+export const selectHover = _wrapForTypeCast(selectHoverPrivate);
+export const selectSelection = _wrapForTypeCast(selectSelectionPrivate);
+export const selectData = _wrapForTypeCast(selectDataPrivate);
+export const selectIsLoading = _wrapForTypeCast(selectIsLoadingPrivate);
+export const selectError = _wrapForTypeCast(selectErrorPrivate);
+export const selectChartPixelWidth = _wrapForTypeCast(selectChartPixelWidthPrivate);
 
 // We inherit the name of "iterator" from Lodash. I would prefer this to be called a "selector", but obviously that
 // may be confusing in this context.
@@ -33,8 +35,8 @@ export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 
 export function createSelectDataForHover(xValueSelector: NumericalValueIterator): StateSelector<TBySeriesId<any>> {
   return _wrapForTypeCast(createSelector(
-    internalSelectData,
-    internalSelectHover,
+    selectDataPrivate,
+    selectHoverPrivate,
     (dataBySeriesId: TBySeriesId<any>, hover?: number) => {
       if (_.isNil(hover)) {
         return _.mapValues(dataBySeriesId, _.constant(undefined));
