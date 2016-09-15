@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### Unreleased
+## Unreleased
 
 ### Added
 
@@ -11,10 +11,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 - `XAxisLayer` and `YAxisLayer` in favor of `XAxis` and `YAxis`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
+- `loadData`'s 3rd (`currentYDomains`) and 5th (`currentData`) arguments are deprecated in favor of the new 6th argument (`currentLoadedData`). [#77](https://github.com/palantir/react-layered-chart/pull/77).
+- `createStaticDataLoader` is deprecated in favor of creating a `Promise` and returning your data from that. [#77](https://github.com/palantir/react-layered-chart/issues/79).
 
 ### Changed
 
 - Expanded the legal arguments to `computeTicks`. [#23](https://github.com/palantir/react-layered-chart/pull/23).
+- Added an extra argument to `loadData` for the currently-loaded data. [#77](https://github.com/palantir/react-layered-chart/issues/77).
+- The data-loading pipeline no longer uses `setYDomains`, thus avoiding mixed signals when custom components try to use `setYDomains` also. `setYDomains` now always takes precendence over the values returned from `loadData`. [#77](https://github.com/palantir/react-layered-chart/issues/77).
+- `ChartProvider`'s `yDomains` prop and `setYDomains` no longer need to include an entry for every series. Whatever subset they provide will be merged with any appropriate defaults. [#78](https://github.com/palantir/react-layered-chart/issues/78).
+
 
 ## 1.4.1 (2016-09-13)
 

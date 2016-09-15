@@ -3,7 +3,9 @@ import {
   selectXDomain,
   selectYDomains,
   selectHover,
-  selectSelection
+  selectSelection,
+  selectLoadedYDomains,
+  selectData
 } from '../src/connected/model/selectors';
 import {
   selectIsLoading,
@@ -13,8 +15,11 @@ import {
 describe('(selectors)', () => {
   const SERIES_A = 'a';
   const SERIES_B = 'b';
+  const SERIES_C = 'c';
   const INTERVAL_A: Interval = { min: 0, max: 1 };
   const INTERVAL_B: Interval = { min: 2, max: 3 };
+  const INTERVAL_C: Interval = { min: 4, max: 5 };
+  const DATA_A = [{ a: true }];
 
   describe('selectXDomain', () => {
     it('should use the internal value if no override is set', () => {
@@ -39,8 +44,29 @@ describe('(selectors)', () => {
   });
 
   describe('selectYDomains', () => {
-    it('should use the internal value if no override is set', () => {
+    it('should use the loaded value if no action-set value or override are set', () => {
       selectYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_A
+          }
+        },
+        uiState: {},
+        uiStateConsumerOverrides: {}
+      } as any).should.deepEqual({
+        [SERIES_A]: INTERVAL_A
+      });
+    });
+
+    it('should use the action-set value if no override is set', () => {
+      selectYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_B
+          }
+        },
         uiState: {
           yDomainBySeriesId: {
             [SERIES_A]: INTERVAL_A
@@ -52,20 +78,75 @@ describe('(selectors)', () => {
       });
     });
 
-    it('should use the override if set', () => {
+    it('should use the override if all three values are set', () => {
       selectYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_B
+          }
+        },
         uiState: {
           yDomainBySeriesId: {
-            [SERIES_A]: INTERVAL_A
+            [SERIES_A]: INTERVAL_B
           }
         },
         uiStateConsumerOverrides: {
           yDomainBySeriesId: {
-            [SERIES_B]: INTERVAL_B
+            [SERIES_A]: INTERVAL_A
           }
         }
       } as any).should.deepEqual({
-        [SERIES_B]: INTERVAL_B
+        [SERIES_A]: INTERVAL_A
+      });
+    });
+
+    it('should use the override if set', () => {
+      selectYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_B
+          }
+        },
+        uiState: {},
+        uiStateConsumerOverrides: {
+          yDomainBySeriesId: {
+            [SERIES_A]: INTERVAL_A
+          }
+        }
+      } as any).should.deepEqual({
+        [SERIES_A]: INTERVAL_A
+      });
+    });
+
+    it('should merge subets of domains from different settings, preferring override, then action-set, then loaded', () => {
+      selectYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_A
+          },
+          [SERIES_B]: {
+            data: [],
+            yDomain: INTERVAL_A
+          }
+        },
+        uiState: {
+          yDomainBySeriesId: {
+            [SERIES_B]: INTERVAL_B,
+            [SERIES_C]: INTERVAL_B
+          }
+        },
+        uiStateConsumerOverrides: {
+          yDomainBySeriesId: {
+            [SERIES_C]: INTERVAL_C
+          }
+        }
+      } as any).should.deepEqual({
+        [SERIES_A]: INTERVAL_A,
+        [SERIES_B]: INTERVAL_B,
+        [SERIES_C]: INTERVAL_C
       });
     });
   });
@@ -125,6 +206,46 @@ describe('(selectors)', () => {
     });
   });
 
+  describe('selectLoadedYDomains', () => {
+    it('should select only the loaded Y domains even if action-set values and overrides are set', () => {
+      selectLoadedYDomains({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_A
+          }
+        },
+        uiState: {
+          yDomainBySeriesId: {
+            [SERIES_A]: INTERVAL_B
+          }
+        },
+        uiStateConsumerOverrides: {
+          yDomainBySeriesId: {
+            [SERIES_A]: INTERVAL_B
+          }
+        }
+      } as any).should.deepEqual({
+        [SERIES_A]: INTERVAL_A
+      });
+    });
+  });
+
+  describe('selectData', () => {
+    it('should select only the data arrays', () => {
+      selectData({
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: DATA_A,
+            yDomain: INTERVAL_A
+          }
+        }
+      } as any).should.deepEqual({
+        [SERIES_A]: DATA_A
+      });
+    });
+  });
+
   describe('selectIsLoading', () => {
     it('should convert the raw map to be a map to booleans', () => {
       selectIsLoading({
@@ -149,8 +270,11 @@ describe('(selectors)', () => {
 
     it('should return undefineds if hover is unset', () => {
       selectDataForHover({
-        dataBySeriesId: {
-          [SERIES_A]: [{ x: 0}]
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [{ x: 0}],
+            yDomain: INTERVAL_A
+          }
         },
         uiState: {
           hover: null
@@ -163,8 +287,11 @@ describe('(selectors)', () => {
 
     it('should return undefineds for empty series', () => {
       selectDataForHover({
-        dataBySeriesId: {
-          [SERIES_A]: []
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: [],
+            yDomain: INTERVAL_A
+          }
         },
         uiState: {
           hover: 10
@@ -177,8 +304,11 @@ describe('(selectors)', () => {
 
     it('should return the datum immediately preceding the hover value', () => {
       selectDataForHover({
-        dataBySeriesId: {
-          [SERIES_A]: DATA
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: DATA,
+            yDomain: INTERVAL_A
+          }
         },
         uiState: {
           hover: 10
@@ -189,8 +319,11 @@ describe('(selectors)', () => {
 
     it('should return undefined for series whose earilest datum is after the hover', () => {
       selectDataForHover({
-        dataBySeriesId: {
-          [SERIES_A]: DATA
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: DATA,
+            yDomain: INTERVAL_A
+          }
         },
         uiState: {
           hover: 0
@@ -203,8 +336,11 @@ describe('(selectors)', () => {
 
     it('should return the datum immediately preceding the hover value when hover is overridden', () => {
       selectDataForHover({
-        dataBySeriesId: {
-          [SERIES_A]: DATA
+        loadedDataBySeriesId: {
+          [SERIES_A]: {
+            data: DATA,
+            yDomain: INTERVAL_A
+          }
         },
         uiState: {
           hover: null

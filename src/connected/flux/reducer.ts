@@ -23,12 +23,9 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       const seriesIds = action.payload;
       return update(state, {
         seriesIds: { $set: seriesIds },
-        dataBySeriesId: { $set: objectWithKeysFromObject(state.dataBySeriesId, seriesIds, []) },
+        loadedDataBySeriesId: { $set: objectWithKeysFromObject(state.loadedDataBySeriesId, seriesIds, { data: [], yDomain: DEFAULT_Y_DOMAIN }) },
         loadVersionBySeriesId: { $set: objectWithKeysFromObject(state.loadVersionBySeriesId, seriesIds, null) },
-        errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) },
-        uiState: {
-          yDomainBySeriesId: { $set: objectWithKeysFromObject(state.uiState.yDomainBySeriesId, seriesIds, DEFAULT_Y_DOMAIN) }
-        }
+        errorBySeriesId: { $set: objectWithKeysFromObject(state.errorBySeriesId, seriesIds, null) }
       });
     }
 
@@ -39,7 +36,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
 
     case ActionType.DATA_RETURNED:
       return update(state, {
-        dataBySeriesId: { $assign: action.payload },
+        loadedDataBySeriesId: { $assign: action.payload },
         loadVersionBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) },
         errorBySeriesId: { $assign: replaceValuesWithConstant(action.payload, null) }
       });

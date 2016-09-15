@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
 import * as should from 'should';
 
-import { SeriesData } from '../src/core/interfaces';
-import { TBySeriesId } from '../src/connected/interfaces';
+import { TBySeriesId, LoadedSeriesData } from '../src/connected/interfaces';
 import reducer from '../src/connected/flux/reducer';
 import { objectWithKeys } from '../src/connected/flux/reducerUtils';
 import { ChartState, DEFAULT_CHART_STATE } from '../src/connected/model/state';
@@ -29,10 +28,9 @@ import {
 
 function pickKeyedState(state: ChartState) {
   return {
-    dataBySeriesId: state.dataBySeriesId,
+    loadedDataBySeriesId: state.loadedDataBySeriesId,
     loadVersionBySeriesId: state.loadVersionBySeriesId,
-    errorBySeriesId: state.errorBySeriesId,
-    yDomainBySeriesId: state.uiState.yDomainBySeriesId
+    errorBySeriesId: state.errorBySeriesId
   };
 }
 
@@ -47,13 +45,19 @@ describe('(atomic actions)', () => {
   const ALL_SERIES_IDS = [SERIES_A, SERIES_B];
   const DATA_A = [{ __a: true }];
   const DATA_B = [{ __b: true }];
-  const ALL_SERIES_DATA: TBySeriesId<SeriesData> = {
-    [SERIES_A]: DATA_A,
-    [SERIES_B]: DATA_B
-  };
   const INTERVAL_A = { min: 0, max: 10 };
   const INTERVAL_B = { min: 100, max: 1000 };
   const DUMMY_INTERVAL = { min: -1, max: 1 };
+  const ALL_SERIES_DATA: TBySeriesId<LoadedSeriesData> = {
+    [SERIES_A]: {
+      data: DATA_A,
+      yDomain: INTERVAL_A
+    },
+    [SERIES_B]: {
+      data: DATA_B,
+      yDomain: INTERVAL_B
+    }
+  };
   const ALL_INTERVALS = {
     [SERIES_A]: INTERVAL_A,
     [SERIES_B]: INTERVAL_B
@@ -67,7 +71,7 @@ describe('(atomic actions)', () => {
       debounceTimeout: 1000,
       physicalChartWidth: 0,
       seriesIds: [],
-      dataBySeriesId: {},
+      loadedDataBySeriesId: {},
       loadVersionBySeriesId: {},
       errorBySeriesId: {},
       dataLoader: null,
@@ -85,10 +89,9 @@ describe('(atomic actions)', () => {
 
       state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
       pickKeyedState(state).should.deepEqual({
-        dataBySeriesId: objectWithKeys(ALL_SERIES_IDS, []),
+        loadedDataBySeriesId: objectWithKeys(ALL_SERIES_IDS, { data: [], yDomain: DEFAULT_Y_DOMAIN }),
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
         errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
-        yDomainBySeriesId: objectWithKeys(ALL_SERIES_IDS, DEFAULT_Y_DOMAIN)
       });
     });
 
@@ -101,10 +104,9 @@ describe('(atomic actions)', () => {
 
       state.seriesIds.should.deepEqual(ONLY_SERIES_A);
       pickKeyedState(state).should.deepEqual({
-        dataBySeriesId: objectWithKeys(ONLY_SERIES_A, []),
+        loadedDataBySeriesId: objectWithKeys(ONLY_SERIES_A, { data: [], yDomain: DEFAULT_Y_DOMAIN }),
         loadVersionBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
-        errorBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
-        yDomainBySeriesId: objectWithKeys(ONLY_SERIES_A, DEFAULT_Y_DOMAIN)
+        errorBySeriesId: objectWithKeys(ONLY_SERIES_A, null)
       });
     });
   });
@@ -127,11 +129,11 @@ describe('(atomic actions)', () => {
         dataReturned(ALL_SERIES_DATA)
       );
 
-      state.dataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
+      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
 
       state = reducer(state, setDataLoader(dataLoader));
 
-      state.dataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
+      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
     });
   });
 
@@ -163,7 +165,12 @@ describe('(atomic actions)', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
-        dataReturned({ [SERIES_A]: DATA_A })
+        dataReturned({
+          [SERIES_A]: {
+            data: DATA_A,
+            yDomain: INTERVAL_A
+          }
+        })
       );
 
       state.loadVersionBySeriesId.should.have.keys(ALL_SERIES_IDS);
@@ -175,20 +182,13 @@ describe('(atomic actions)', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
-        dataReturned({
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        })
+        dataReturned(ALL_SERIES_DATA)
       );
 
       pickKeyedState(state).should.deepEqual({
-        dataBySeriesId: {
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        },
+        loadedDataBySeriesId: ALL_SERIES_DATA,
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
-        errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
-        yDomainBySeriesId: objectWithKeys(ALL_SERIES_IDS, DEFAULT_Y_DOMAIN)
+        errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, null)
       });
     });
 
@@ -197,13 +197,22 @@ describe('(atomic actions)', () => {
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
         dataReturned({
-          [SERIES_A]: DATA_A
+          [SERIES_A]: {
+            data: DATA_A,
+            yDomain: INTERVAL_A
+          }
         })
       );
 
-      state.dataBySeriesId.should.deepEqual({
-        [SERIES_A]: DATA_A,
-        [SERIES_B]: []
+      state.loadedDataBySeriesId.should.deepEqual({
+        [SERIES_A]: {
+          data: DATA_A,
+          yDomain: INTERVAL_A
+        },
+        [SERIES_B]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        }
       });
 
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
@@ -216,22 +225,15 @@ describe('(atomic actions)', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
-        dataReturned({
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        }),
+        dataReturned(ALL_SERIES_DATA),
         dataRequested(ALL_SERIES_IDS),
         dataErrored(objectWithKeys(ALL_SERIES_IDS, ERROR))
       );
 
       pickKeyedState(state).should.deepEqual({
-        dataBySeriesId: {
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        },
+        loadedDataBySeriesId: ALL_SERIES_DATA,
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
-        errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, ERROR),
-        yDomainBySeriesId: objectWithKeys(ALL_SERIES_IDS, DEFAULT_Y_DOMAIN)
+        errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, ERROR)
       });
     });
 
@@ -239,20 +241,14 @@ describe('(atomic actions)', () => {
       state = serial(state,
         setSeriesIds(ALL_SERIES_IDS),
         dataRequested(ALL_SERIES_IDS),
-        dataReturned({
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        }),
+        dataReturned(ALL_SERIES_DATA),
         dataRequested(ALL_SERIES_IDS),
         dataErrored({
           [SERIES_A]: ERROR
         })
       );
 
-      state.dataBySeriesId.should.deepEqual({
-        [SERIES_A]: DATA_A,
-        [SERIES_B]: DATA_B
-      });
+      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
 
       should(state.loadVersionBySeriesId[SERIES_A]).be.null();
       should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();

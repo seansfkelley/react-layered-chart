@@ -137,36 +137,31 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
   private _maybeFireAllCallbacks() {
     const state: ChartState = this._store.getState();
-    this._maybeFireCallback(state.uiState.xDomain,           this._lastState.uiState.xDomain,           this.props.onXDomainChange);
-    this._maybeFireCallback(state.uiState.yDomainBySeriesId, this._lastState.uiState.yDomainBySeriesId, this.props.onYDomainsChange);
-    this._maybeFireCallback(state.uiState.selection,         this._lastState.uiState.selection,         this.props.onSelectionChange);
-    this._maybeFireCallback(state.uiState.hover,             this._lastState.uiState.hover,             this.props.onHoverChange);
+    this._maybeFireCallback(state.uiState.xDomain,   this._lastState.uiState.xDomain,   this.props.onXDomainChange);
+    this._maybeFireCallback(state.uiState.selection, this._lastState.uiState.selection, this.props.onSelectionChange);
+    this._maybeFireCallback(state.uiState.hover,     this._lastState.uiState.hover,     this.props.onHoverChange);
+    this._maybeFireCallback(state.errorBySeriesId,   this._lastState.errorBySeriesId,   this.props.onError);
 
-    // TODO: These two should maybe be replaced with delegations to selectors.
-    this._maybeFireCallback(state.errorBySeriesId, this._lastState.errorBySeriesId, this.props.onError);
-    this._maybeFireCallbackWithConversion(
-      state.loadVersionBySeriesId,
-      this._lastState.loadVersionBySeriesId,
-      (loadVersions) => _.mapValues(loadVersions, v => !!v),
-      this.props.onLoadStateChange
-    );
+    if (this.props.onLoadStateChange) {
+      if (state.loadVersionBySeriesId !== this._lastState.loadVersionBySeriesId) {
+        this.props.onLoadStateChange(_.mapValues(state.loadVersionBySeriesId, v => !!v));
+      }
+    }
+
+    if (this.props.onYDomainsChange) {
+      if (state.uiState.yDomainBySeriesId !== this._lastState.uiState.yDomainBySeriesId || state.loadedDataBySeriesId !== this._lastState.loadedDataBySeriesId) {
+        const internalYDomains = _.assign({}, state.uiState.yDomainBySeriesId, _.mapValues(state.loadedDataBySeriesId, loadedData => loadedData.yDomain));
+        this.props.onYDomainsChange(internalYDomains);
+      }
+    }
+
+
     this._lastState = state;
   }
 
   private _maybeFireCallback<T>(currentState: T, lastState: T, callback?: (value: T) => void) {
     if (callback && currentState !== lastState) {
       callback(currentState);
-    }
-  }
-
-  private _maybeFireCallbackWithConversion<T, U>(
-    currentState: T,
-    lastState: T,
-    conversion: (value: T) => U,
-    callback?: (value: U) => void
-  ) {
-    if (callback && currentState !== lastState) {
-      callback(conversion(currentState));
     }
   }
 

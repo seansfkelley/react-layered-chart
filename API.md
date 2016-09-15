@@ -34,7 +34,7 @@ For specifics on the exact types of these components/functions/values, please ch
 
 #### Controlled Props
 
-These props come in read-write pairs and implement the ["controlled component" pattern](https://facebook.github.io/react/docs/forms.html#controlled-components). The "value" props unconditionally trump any automatically-computed values. The "on change" props are called any time the automatically-computed values change to give the parent a chance to incorporate those changes. You can provide any combination of these parameters; providing a "value" prop doesn't imply you need an "on change" prop, nor vice versa.
+These props come in read-write pairs and implement the ["controlled component" pattern](https://facebook.github.io/react/docs/forms.html#controlled-components). The "value" props unconditionally trump any automatically-computed values or values set with action creators. The "on change" props are called any time the automatically-computed values change to give the parent a chance to incorporate those changes. You can provide any combination of these parameters; providing a "value" prop doesn't imply you need an "on change" prop, nor vice versa.
 
 - `xDomain?`
 - `onXDomainChange?()`
@@ -277,7 +277,7 @@ export default connect(mapStateToProps)(ExampleComponent);
 
 ### Action Creators
 
-These action creators are analogous to some of the "controlled props" on `ChartProvider`. They are intended to be used with [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) and, optionally, [`bindActionCreators`](http://redux.js.org/docs/api/bindActionCreators.html).
+These action creators are analogous to some of the "controlled props" on `ChartProvider`. They are intended to be used with [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) and, optionally, [`bindActionCreators`](http://redux.js.org/docs/api/bindActionCreators.html). Values set with action creators are preferred over automatically-computed values or defaults, but `ChartProvider`'s controlled props are preferred over all.
 
 - `setXDomain(domain)`
 - `setYDomains(domains)`
@@ -373,7 +373,9 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 ### Functions
 
-#### `createStaticDataLoader(data, yDomains)`
+#### ~~`createStaticDataLoader(data, yDomains)`~~
+
+**This function is deprecated. Create a `Promise` and return that from a function instead.**
 
 Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
 

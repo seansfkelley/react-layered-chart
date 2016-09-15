@@ -6,6 +6,7 @@ import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
 import { ChartState } from '../src/connected/model/state';
+import { DEFAULT_Y_DOMAIN } from '../src/connected/model/constants';
 import {
   Action,
   setSeriesIds,
@@ -57,8 +58,14 @@ describe('(compound actions)', () => {
     store.dispatch(setDataLoader(dataLoaderSpy));
     store.dispatch(setSeriesIds(ALL_SERIES_IDS));
     store.dispatch(dataReturned({
-      [SERIES_A]: [],
-      [SERIES_B]: []
+      [SERIES_A]: {
+        data: [],
+        yDomain: DEFAULT_Y_DOMAIN
+      },
+      [SERIES_B]: {
+        data: [],
+        yDomain: DEFAULT_Y_DOMAIN
+      }
     }));
   });
 
@@ -71,9 +78,15 @@ describe('(compound actions)', () => {
         [SERIES_A]: null,
         [SERIES_B]: null
       });
-      state.dataBySeriesId.should.deepEqual({
-        [SERIES_A]: [],
-        [SERIES_B]: []
+      state.loadedDataBySeriesId.should.deepEqual({
+        [SERIES_A]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        },
+        [SERIES_B]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        }
       });
       state.errorBySeriesId.should.deepEqual({
         [SERIES_A]: null,
@@ -275,7 +288,7 @@ describe('(compound actions)', () => {
       dataLoaderSpy.firstCall.args[1].should.be.exactly(DUMMY_DOMAIN);
     });
 
-    it('should call the data loader with the internal Y domains, even if an override is set', () => {
+    it('should call the data loader with the previously-loaded Y domains, even if an override is set', () => {
       store.dispatch(setYDomains({
         [SERIES_A]: DUMMY_DOMAIN,
         [SERIES_B]: DUMMY_DOMAIN
@@ -289,8 +302,36 @@ describe('(compound actions)', () => {
 
       dataLoaderSpy.calledOnce.should.be.true();
       dataLoaderSpy.firstCall.args[2].should.deepEqual({
-        [SERIES_A]: DUMMY_DOMAIN,
-        [SERIES_B]: DUMMY_DOMAIN
+        [SERIES_A]: DEFAULT_Y_DOMAIN,
+        [SERIES_B]: DEFAULT_Y_DOMAIN
+      });
+    });
+
+    it('should call the data loader with the previously-loaded data', () => {
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+      store.dispatch(_performDataLoad());
+
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[4].should.deepEqual({
+        [SERIES_A]: [],
+        [SERIES_B]: []
+      });
+    });
+
+    it('should call the data loader with the previously-loaded data + Y domains', () => {
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+      store.dispatch(_performDataLoad());
+
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[5].should.deepEqual({
+        [SERIES_A]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        },
+        [SERIES_B]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        }
       });
     });
 
@@ -313,14 +354,15 @@ describe('(compound actions)', () => {
           [SERIES_B]: null
         });
 
-        state.dataBySeriesId.should.deepEqual({
-          [SERIES_A]: DATA_A,
-          [SERIES_B]: DATA_B
-        });
-
-        state.uiState.yDomainBySeriesId.should.deepEqual({
-          [SERIES_A]: DUMMY_DOMAIN,
-          [SERIES_B]: DUMMY_DOMAIN
+        state.loadedDataBySeriesId.should.deepEqual({
+          [SERIES_A]: {
+            data: DATA_A,
+            yDomain: DUMMY_DOMAIN
+          },
+          [SERIES_B]: {
+            data: DATA_B,
+            yDomain: DUMMY_DOMAIN
+          }
         });
       });
     });
@@ -346,8 +388,8 @@ describe('(compound actions)', () => {
 
     it('should ignore results for series that have had another request come in before the load finishes', () => {
       dataLoaderStub.onFirstCall().returns({
-        [SERIES_A]: Promise.resolve({ data: DATA_A }),
-        [SERIES_B]: Promise.resolve({ data: DATA_B })
+        [SERIES_A]: Promise.resolve({ data: DATA_A, yDomain: DUMMY_DOMAIN }),
+        [SERIES_B]: Promise.resolve({ data: DATA_B, yDomain: DUMMY_DOMAIN })
       });
 
       store.dispatch(setDataLoader(dataLoaderStub));
@@ -360,9 +402,15 @@ describe('(compound actions)', () => {
       return loadPromise
       .then(delay(10))
       .then(() => {
-        store.getState().dataBySeriesId.should.deepEqual({
-          [SERIES_A]: [],
-          [SERIES_B]: DATA_B
+        store.getState().loadedDataBySeriesId.should.deepEqual({
+          [SERIES_A]: {
+            data: [],
+            yDomain: DEFAULT_Y_DOMAIN
+          },
+          [SERIES_B]: {
+            data: DATA_B,
+            yDomain: DUMMY_DOMAIN
+          }
         });
       });
     });
