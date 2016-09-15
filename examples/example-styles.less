@@ -4,6 +4,10 @@
   .example-chart {
     border: 1px solid #eee;
     height: 100px;
+
+    &.complicated {
+      height: 140px;
+    }
   }
 
   .explanation {
@@ -13,7 +17,22 @@
 
   .lc-stack.x-axis-stack {
     flex: initial;
-    height: 20px;
+    height: 40px;
+  }
+
+  .left-align-layer {
+    display: flex;
+    flex-wrap: nowrap;
+    right: auto;
+  }
+
+  .vertical-split-layer {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      flex: 1;
+    }
   }
 
   .lc-stack.snap-to-x-domain-button-stack {

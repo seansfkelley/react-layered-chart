@@ -1,5 +1,6 @@
 export * from './interfaces';
 export * from './layers';
+export * from './axes';
 export * from './export-only/exportableActions';
 export * from './export-only/exportableSelectors';
 export * from './export-only/exportableState';

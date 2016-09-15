@@ -2,12 +2,22 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### Unreleased
+
+### Added
+
+- `XAxis` and `YAxis` as more-flexible versions of `XAxisLayer` and `YAxisLayer`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
+
+### Deprecated
+
+- `XAxisLayer` and `YAxisLayer` in favor of `XAxis` and `YAxis`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
+
 ## 1.4.1 (2016-09-13)
 
 ### Added
 
 - `SimpleLineLayer` and `BucketedLineLayer` now accept a `joinType` enumeration prop of type `JoinType` to specify if they should drawing joining lines between points directly (the default and current behavior) or using only vertical/horizontal lines with vertical-first ("leading") or vertical-last ("trailing"). [#67](https://github.com/palantir/react-layered-chart/issues/67).
-- Added `loadDataDebounceTimeout` prop to `ChartProvider`. [#69](https://github.com/palantir/react-layered-chart/issues/69)
+- Added `loadDataDebounceTimeout` prop to `ChartProvider`. [#69](https://github.com/palantir/react-layered-chart/issues/69).
 
 ## 1.4.0
 

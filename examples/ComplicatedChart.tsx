@@ -25,11 +25,11 @@ import {
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   ConnectedHoverLineLayer,
-  ConnectedXAxisLayer,
-  ConnectedYAxisLayer,
   ConnectedBarLayer,
   ConnectedSelectionBrushLayer,
-  ConnectedBucketedLineLayer
+  ConnectedBucketedLineLayer,
+  ConnectedXAxis,
+  ConnectedYAxis
 } from '../src';
 
 // All series need to have an ID.
@@ -71,7 +71,7 @@ const CHART = (
     defaultState={{
       xDomain: SIMPLE_LINE_X_DOMAIN
     }}
-    className='example-chart'
+    className='example-chart complicated'
   >
     {/* This stack has all the main views. */}
     <Stack>
@@ -86,23 +86,18 @@ const CHART = (
       {/* Show a mostly-transparent box indicating the user's selection. */}
       <ConnectedSelectionBrushLayer/>
       {/* Show one Y axis per series, overlaid on the left side of the chart. */}
-      <ConnectedYAxisLayer
-        axes={[{
-          seriesId: SIMPLE_LINE_SERIES_ID,
-          color: COLOR_1
-        }, {
-          seriesId: BAR_SERIES_ID,
-          color: COLOR_2
-        }, {
-          seriesId: BUCKETED_LINE_SERIES_ID,
-          color: COLOR_3
-        }]}
-        font='12px sans-serif'
-      />
+      <div className='left-align-layer'>
+         <ConnectedYAxis seriesId={BAR_SERIES_ID} color={COLOR_2}/>
+         <ConnectedYAxis seriesId={SIMPLE_LINE_SERIES_ID} color={COLOR_1}/>
+         <ConnectedYAxis seriesId={BUCKETED_LINE_SERIES_ID} color={COLOR_3}/>
+      </div>
     </Stack>
-    {/* Show the X axis. This stack puts the X axis in its own section. */}
+    {/* Show some X axes. This Stack puts the X axes in their own section. */}
     <Stack className='x-axis-stack'>
-      <ConnectedXAxisLayer font='12px sans-serif'/>
+      <div className='vertical-split-layer'>
+        <ConnectedXAxis ticks={10}/>
+        <ConnectedXAxis ticks={3}/>
+      </div>
     </Stack>
   </ChartProvider>
 );
