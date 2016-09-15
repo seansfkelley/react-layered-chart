@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Interval } from '../../core';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
-import { selectXDomain } from '../model/selectors';
+import { selectXDomain, selectData, selectLoadedYDomains } from '../model/selectors';
 
 import {
   setXDomain,
@@ -119,18 +119,14 @@ export function _performDataLoad(batchingTimeout: number = 200) {
       const loadPromiseBySeriesId = dataLoader(
         seriesIdsToLoad,
         selectXDomain(preLoadChartState),
-        preLoadChartState.uiState.yDomainBySeriesId,
+        selectLoadedYDomains(preLoadChartState),
         preLoadChartState.physicalChartWidth,
-        preLoadChartState.dataBySeriesId
+        selectData(preLoadChartState),
+        preLoadChartState.loadedDataBySeriesId
       );
 
       const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
         dispatch(dataReturned(payload));
-      }, adjustedTimeout);
-
-      const batchedSetYDomains = _makeKeyedDataBatcher<Interval>((payload: TBySeriesId<Interval>) => {
-        const state = getState();
-        dispatch(setYDomains(_.assign({}, state.uiState.yDomainBySeriesId, payload)));
       }, adjustedTimeout);
 
       const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
@@ -146,11 +142,7 @@ export function _performDataLoad(batchingTimeout: number = 200) {
           .then(loadedData => {
             if (isResultStillRelevant(getState(), seriesId)) {
               batchedDataReturned({
-                [seriesId]: loadedData.data
-              });
-
-              batchedSetYDomains({
-                [seriesId]: loadedData.yDomain
+                [seriesId]: loadedData
               });
             }
           })

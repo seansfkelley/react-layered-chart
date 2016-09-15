@@ -1,4 +1,4 @@
-import { Interval, SeriesData } from '../../core';
+import { Interval } from '../../core';
 
 import { DEFAULT_X_DOMAIN } from './constants';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
@@ -19,7 +19,7 @@ export interface ChartState {
   debounceTimeout: number;
   physicalChartWidth: number;
   seriesIds: SeriesId[];
-  dataBySeriesId: TBySeriesId<SeriesData>;
+  loadedDataBySeriesId: TBySeriesId<LoadedSeriesData>;
   loadVersionBySeriesId: TBySeriesId<string>;
   errorBySeriesId: TBySeriesId<any>;
   dataLoader: DataLoader;
@@ -35,7 +35,7 @@ export const DEFAULT_CHART_STATE: ChartState = {
   debounceTimeout: 1000,
   physicalChartWidth: 200,
   seriesIds: [],
-  dataBySeriesId: {},
+  loadedDataBySeriesId: {},
   loadVersionBySeriesId: {},
   errorBySeriesId: {},
   dataLoader: invalidLoader,

@@ -1,4 +1,4 @@
-import { Interval, SeriesData } from '../../core/interfaces';
+import { Interval } from '../../core/interfaces';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 
 export enum ActionType {
@@ -45,5 +45,5 @@ export const setSelection = createActionCreator<Interval>(ActionType.SET_SELECTI
 export const setOverrideSelection = createActionCreator<Interval>(ActionType.SET_OVERRIDE_SELECTION);
 
 export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);
-export const dataReturned = createActionCreator<TBySeriesId<SeriesData>>(ActionType.DATA_RETURNED);
+export const dataReturned = createActionCreator<TBySeriesId<LoadedSeriesData>>(ActionType.DATA_RETURNED);
 export const dataErrored = createActionCreator<TBySeriesId<any>>(ActionType.DATA_ERRORED);

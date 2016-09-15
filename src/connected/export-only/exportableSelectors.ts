@@ -48,7 +48,7 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
           return datum.hasOwnProperty('__haxWrappedHover')
             ? datum.__haxWrappedHover
             : xValueSelector(seriesId, datum);
-        }
+        };
 
         return _.mapValues(dataBySeriesId, (data: any[], seriesId: SeriesId) => {
           // -1 because sortedIndexBy returns the first index that would be /after/ the input value, but we're trying to
