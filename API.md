@@ -34,7 +34,7 @@ For specifics on the exact types of these components/functions/values, please ch
 
 #### Controlled Props
 
-These props come in read-write pairs and implement the ["controlled component" pattern](https://facebook.github.io/react/docs/forms.html#controlled-components). The "value" props unconditionally trump any automatically-computed values or values set with action creators. The "on change" props are called any time the automatically-computed values change to give the parent a chance to incorporate those changes. You can provide any combination of these parameters; providing a "value" prop doesn't imply you need an "on change" prop, nor vice versa.
+These props come in read-write pairs and implement the ["controlled component" pattern](https://facebook.github.io/react/docs/forms.html#controlled-components). The "value" props unconditionally trump any values set by default/`loadData`/action creators. The "on change" props are called any time `loadData` or an action creator attempts a change. You can provide any subset of these parameters; providing a "value" prop doesn't imply you need an "on change" prop, nor vice versa.
 
 - `xDomain?`
 - `onXDomainChange?()`
@@ -277,7 +277,7 @@ export default connect(mapStateToProps)(ExampleComponent);
 
 ### Action Creators
 
-These action creators are analogous to some of the "controlled props" on `ChartProvider`. They are intended to be used with [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) and, optionally, [`bindActionCreators`](http://redux.js.org/docs/api/bindActionCreators.html). Values set with action creators are preferred over automatically-computed values or defaults, but `ChartProvider`'s controlled props are preferred over all.
+These action creators are analogous to some of the "controlled props" on `ChartProvider`. They are intended to be used with [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) and, optionally, [`bindActionCreators`](http://redux.js.org/docs/api/bindActionCreators.html). Values set with action creators are preferred over defaults or values returned from `loadData`, but `ChartProvider`'s controlled props are preferred over all.
 
 - `setXDomain(domain)`
 - `setYDomains(domains)`
@@ -310,7 +310,7 @@ export default connect(null, mapDispatchToProps)(ExampleComponent);
 
 #### `NonReactRender`
 
-A class decorator that defers the bulk of rendering work until the next [animation frame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame). Useful primarily for expensive rendering that cannot be represented in the virtual DOM, such as when rendering to a `<canvas>`. You must define a method named `nonReactRender` that does the actual work of rendering.
+A class decorator that defers rendering work until the next [animation frame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame). Useful primarily for expensive rendering that cannot be represented in the virtual DOM, such as when rendering to a `<canvas>`. You must define a method named `nonReactRender` that does the actual work of rendering.
 
 You can access a mixin version at `NonReactRenderMixin`.
 
@@ -324,7 +324,7 @@ class ExampleComponent extends React.Component<...> {
   }
 
   nonReactRender() {
-    const canvas = this.refs.canvas;
+    const canvas = this.refs['canvas'];
     // Do the actual rendering work.
   }
 }
@@ -430,7 +430,7 @@ interface Props {
 
 class ExampleComponent extends React.Component<Props, ...> {
   render() {
-    return <divL{this.props.yDomain}</div>;
+    return <div>{this.props.yDomain}</div>;
   }
 }
 
@@ -506,18 +506,18 @@ getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeInterval.from', 'tim
 
 #### `computeTicks(scale, ticks?, tickFormat?)`
 
-Compute the appropriate tick values and tick formatter for the given [d3-scale](https://github.com/d3/d3-scale) instance and configuration parameters. Returns `{ ticks, format }`.
+Compute the appropriate tick values and tick formatter for the given [d3-scale](https://github.com/d3/d3-scale) instance and configuration parameters. Returns `{ ticks: number[], format: (number) => string }`.
 
 `ticks` may take the following types:
 
-- `number` or absent: it will be passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks) to pick approximately that many ticks.
-- `function`: it will be given the domain of the provided scale as `{ min, max }` and should return an array of numbers (returned as-is) or a number (passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks)).
-- `array`: assumed to be an array of numbers and will be used as-is.
+- `number` or absent: it will be passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks) to pick approximately that many ticks
+- `function`: it will be given the domain of the provided scale as `{ min, max }` and should return an array of numbers (returned as-is) or a number (passed to [d3-scale's `ticks`](https://github.com/d3/d3-scale#continuous_ticks))
+- `array`: assumed to be an array of numbers and will be used as-is
 
 `tickFormat` may take the following types:
 
-- `string` or absent: it will be passed to [d3-scale's `tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat) to generate a formatter.
-- `function`: assumed to be a function from number to string and will be passed back as-is.
+- `string` or absent: it will be passed to [d3-scale's `tickFormat`](https://github.com/d3/d3-scale#continuous_tickFormat) to generate a formatter
+- `function`: assumed to be a function from number to string and will be passed back as-is
 
 ```tsx
 import * as d3Scale from 'd3-scale';
@@ -667,7 +667,7 @@ Note that this class does _not_ support reading properties or returning values f
 
 Because Canvas-based rendering is entirely outside the cycle of the React rendering flow, you may want to export a stateless function to render the Canvas in addition to your component so you can import it for testing.
 
-`CanvasContextSpy` has the following fields and methods:
+`CanvasContextSpy` has the following fields and methods in addition to the `CanvasRenderingContext2D` ones:
 
 - `calls`: an array of `{ method, arguments }` objects in the order the methods were called
 - `properties`: an array of `{ property, value }` objects in the order the properties were set
