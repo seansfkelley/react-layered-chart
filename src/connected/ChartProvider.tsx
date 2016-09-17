@@ -149,12 +149,15 @@ export default class ChartProvider extends React.Component<Props, {}> {
     }
 
     if (this.props.onYDomainsChange) {
-      if (state.uiState.yDomainBySeriesId !== this._lastState.uiState.yDomainBySeriesId || state.loadedDataBySeriesId !== this._lastState.loadedDataBySeriesId) {
-        const internalYDomains = _.assign({}, state.uiState.yDomainBySeriesId, _.mapValues(state.loadedDataBySeriesId, loadedData => loadedData.yDomain));
+      if (state.uiState.yDomainBySeriesId !== this._lastState.uiState.yDomainBySeriesId ||
+          state.loadedDataBySeriesId !== this._lastState.loadedDataBySeriesId) {
+        const internalYDomains = _.assign(
+          _.mapValues(state.loadedDataBySeriesId, loadedData => loadedData.yDomain),
+          state.uiState.yDomainBySeriesId
+        );
         this.props.onYDomainsChange(internalYDomains);
       }
     }
-
 
     this._lastState = state;
   }
