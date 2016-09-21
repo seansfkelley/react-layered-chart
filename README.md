@@ -19,6 +19,10 @@ Be sure to include the styles from `react-layered-chart/react-layered-chart.css`
 
 Your build should specify a value for `process.env.NODE_ENV`, or at least shim it out so it doesn't fail at runtime. If you would like to get verbose debugging for what's going on inside a `ChartProvider`, specify a value of `"development"` for `process.env.NODE_ENV`.
 
+### Typings
+
+If you're using Typescript, you must provide typings for a global `Promise`, as this type appears in the API of react-layered-chart. If you're targeting ES6, the standard library typings should suffice. Otherwise, you can install something like [`es6-promise`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/es6-promise) or typings for your library of choice, such as [Bluebird](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/bluebird).
+
 ## Making Basic, Static Charts
 
 > See the [section on developing](#developing) to set up a page you can play around with yourself. Check the [caveats](#caveatslimitations) and [common issues](#common-issues) if you run into problems.
