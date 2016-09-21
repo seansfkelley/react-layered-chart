@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added an extra argument to `loadData` for the currently-loaded data. [#77](https://github.com/palantir/react-layered-chart/issues/77).
 - The data-loading pipeline no longer uses `setYDomains`, thus avoiding mixed signals when custom components try to use `setYDomains` also. `setYDomains` now always takes precedence over the values returned from `loadData`. [#77](https://github.com/palantir/react-layered-chart/issues/77).
 - `ChartProvider`'s `yDomains` prop and the `setYDomains` action creator no longer need to include an entry for every series. Whatever subset they provide will be merged with any appropriate defaults. [#78](https://github.com/palantir/react-layered-chart/issues/78).
+- "Connected" data-rendering layers now throw an exception if asked to render a series ID that doesn't exist in the chart. [#60](https://github.com/palantir/react-layered-chart/issues/60).
 
 ## 1.4.1 (2016-09-13)
 

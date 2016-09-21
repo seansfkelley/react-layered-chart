@@ -18,6 +18,10 @@ export interface ConnectedProps {
 }
 
 function mapStateToProps(state: ChartState, ownProps: OwnProps): ConnectedProps {
+  if (state.seriesIds.indexOf(ownProps.seriesId) === -1) {
+    throw new Error(`Cannot render data for missing series ID ${ownProps.seriesId}`);
+  }
+
   return {
     data: selectData(state)[ownProps.seriesId],
     xDomain: selectXDomain(state)

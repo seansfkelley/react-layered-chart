@@ -18,6 +18,10 @@ export interface WrappedDataLayerConnectedProps {
 }
 
 function mapStateToProps(state: ChartState, ownProps: SeriesIdProp): WrappedDataLayerConnectedProps {
+  if (state.seriesIds.indexOf(ownProps.seriesId) === -1) {
+    throw new Error(`Cannot render data for missing series ID ${ownProps.seriesId}`);
+  }
+
   return {
     data: selectData(state)[ownProps.seriesId],
     xDomain: selectXDomain(state),
