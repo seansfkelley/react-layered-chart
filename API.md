@@ -440,7 +440,9 @@ export default wrapWithAnimatedYDomain(ExampleComponent);
 
 <hr/>
 
-#### `wrapDataLayerWithConnect(component)`
+#### ~~`wrapDataLayerWithConnect(component)`~~
+
+**This function is deprecated. Layers should be individually `connect`ed as appropriate in a type-safe manner.**
 
 Wraps the given component with a new component that accepts a `seriesId` instead of `data`, `xDomain` and `yDomain`. The new component is automatically [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options)ed and will inject these three props based on the value of the `seriesId` prop.
 

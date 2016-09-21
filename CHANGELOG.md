@@ -12,7 +12,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - `XAxisLayer` and `YAxisLayer` in favor of `XAxis` and `YAxis`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
 - `loadData`'s 3rd (`currentYDomains`) and 5th (`currentData`) arguments are deprecated in favor of the new 6th argument (`currentLoadedData`). [#77](https://github.com/palantir/react-layered-chart/pull/77).
-- `createStaticDataLoader` is deprecated in favor of creating a `Promise` and returning your data from that. [#77](https://github.com/palantir/react-layered-chart/issues/79).
+- `createStaticDataLoader` is deprecated in favor of creating a `Promise` and returning your data from that. [#79](https://github.com/palantir/react-layered-chart/issues/79).
+- `wrapDataLayerWithConnect` is deprecated with no replacement. [#32](https://github.com/palantir/react-layered-chart/issues/32).
 
 ### Changed
 
