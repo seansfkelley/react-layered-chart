@@ -7,6 +7,18 @@ A high-performance canvas-based time series visualization in Typescript + React.
 [![CircleCI](https://circleci.com/gh/palantir/react-layered-chart.svg?style=shield&circle-token=b88166d5bf8a2beba96fbfc3bd2e62cad17f204b)](https://circleci.com/gh/palantir/react-layered-chart)
 [![npm](https://img.shields.io/npm/v/react-layered-chart.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/react-layered-chart)
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Making Basic, Static Charts](#making-basic-static-charts)
+* [Interactive Charts](#interactive-charts)
+* [Adding Custom Behavior](#adding-custom-behavior)
+* [Caveats/Limitations](#caveatslimitations)
+* [Common Issues](#common-issues)
+* [Developing](#developing)
+
+The [API reference can be found at API.md](API.md).
+
 ## Installation
 
 ```
@@ -142,16 +154,11 @@ This can happen if you provide a functionally-equal but reference-unequal value 
 
 `<canvas>` elements don't inherit the font from CSS. If you're implementing your own such layer, you have to explicitly set [`font`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font). If you're using a layer implemented with `<canvas>`, you likely have to pass a full [CSS `font` declaration](https://developer.mozilla.org/en-US/docs/Web/CSS/font) to it. Lastly, if your font file (of the appropriate style and weight) isn't automatically loaded into the page, ensure you have a `@font-face` declaration for it, or consider using a tool like [Web Font Loader](https://github.com/typekit/webfontloader).
 
-## API Reference
-
-See [API Reference](API.md).
-
 ## Developing
 
 ```
 npm install
 npm start
-./hooks/install.sh # (optional)
 ```
 
 Then visit [localhost:8085](http://localhost:8085/) to see the example page. This runs `webpack-dev-server` on port 8085, including auto-recompilation and hot code injection.
