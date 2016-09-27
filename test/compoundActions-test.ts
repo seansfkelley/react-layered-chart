@@ -122,6 +122,17 @@ describe('(compound actions)', () => {
       state.should.be.exactly(newState);
       dataLoaderSpy.callCount.should.equal(0);
     });
+
+    it('should not change state and not call the data loader if the series ID are equal but in a different order', () => {
+      state = store.getState();
+
+      store.dispatch(setSeriesIdsAndLoad(_.clone(ALL_SERIES_IDS).reverse()));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
+    });
   });
 
   describe('setDataLoaderAndLoad', () => {

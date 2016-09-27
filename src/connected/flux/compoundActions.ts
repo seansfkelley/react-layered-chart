@@ -55,10 +55,11 @@ export function setChartPhysicalWidthAndLoad(payload: number) {
 export function setSeriesIdsAndLoad(payload: SeriesId[]) {
   return (dispatch, getState) => {
     const state: ChartState = getState();
+    const orderedSeriesIds = _.sortBy(payload);
 
-    if (!_.isEqual(payload, state.seriesIds)) {
-      const newSeriesIds: SeriesId[] = _.difference(payload, state.seriesIds);
-      dispatch(setSeriesIds(payload));
+    if (!_.isEqual(orderedSeriesIds, state.seriesIds)) {
+      const newSeriesIds: SeriesId[] = _.difference(orderedSeriesIds, state.seriesIds);
+      dispatch(setSeriesIds(orderedSeriesIds));
       dispatch(_requestDataLoad(newSeriesIds));
     }
   };
