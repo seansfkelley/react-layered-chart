@@ -54,7 +54,6 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
           ref='canvas'
           width={this.state.width * pixelRatio}
           height={this.state.height * pixelRatio}
-          style={{ width: this.state.width, height: this.state.height }}
         />
       </div>
     );
