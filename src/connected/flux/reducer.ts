@@ -1,5 +1,7 @@
 import * as _ from 'lodash';
-import update = require('immutability-helper');
+import { newContext } from 'immutability-helper';
+
+const update = newContext();
 
 update.extend('$assign', (spec, object) => _.assign({}, object, spec));
 
