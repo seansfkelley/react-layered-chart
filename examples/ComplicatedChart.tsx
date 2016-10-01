@@ -72,6 +72,7 @@ const CHART = (
       xDomain: SIMPLE_LINE_X_DOMAIN
     }}
     className='example-chart complicated'
+    loadDataDebounceTimeout={0}
   >
     {/* This stack has all the main views. */}
     <Stack>

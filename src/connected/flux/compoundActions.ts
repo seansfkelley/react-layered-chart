@@ -109,7 +109,12 @@ export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) =>
 // Exported for testing.
 export function _performDataLoad(batchingTimeout: number = 200) {
   return (dispatch, getState: () => ChartState) => {
-    const adjustedTimeout = Math.min(batchingTimeout, getState().debounceTimeout);
+    let { debounceTimeout } = getState();
+
+    // redux-debounced checks falsy-ness, so 0 will behave as if there is no debouncing!
+    debounceTimeout = debounceTimeout === 0 ? 1 : debounceTimeout;
+
+    const adjustedBatchingTimeout = Math.min(batchingTimeout, debounceTimeout);
 
     const thunk: any = (dispatch, getState: () => ChartState) => {
       const preLoadChartState = getState();
@@ -128,11 +133,11 @@ export function _performDataLoad(batchingTimeout: number = 200) {
 
       const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
         dispatch(dataReturned(payload));
-      }, adjustedTimeout);
+      }, adjustedBatchingTimeout);
 
       const batchedDataErrored = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {
         dispatch(dataErrored(payload));
-      }, adjustedTimeout);
+      }, adjustedBatchingTimeout);
 
       function isResultStillRelevant(postLoadChartState: ChartState, seriesId: SeriesId) {
         return preLoadChartState.loadVersionBySeriesId[ seriesId ] === postLoadChartState.loadVersionBySeriesId[ seriesId ];
@@ -161,7 +166,7 @@ export function _performDataLoad(batchingTimeout: number = 200) {
 
     thunk.meta = {
       debounce: {
-        time: getState().debounceTimeout,
+        time: debounceTimeout,
         key: 'data-load'
       }
     };

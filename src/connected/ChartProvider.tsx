@@ -112,7 +112,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
     this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
     this._store.dispatch(setDataLoaderAndLoad(props.loadData));
-    if (this.props.loadDataDebounceTimeout) {
+    if (_.isNumber(this.props.loadDataDebounceTimeout)) {
       this._store.dispatch(setDataLoaderDebounceTimeout(props.loadDataDebounceTimeout));
     }
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.

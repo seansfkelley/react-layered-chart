@@ -282,6 +282,15 @@ describe('(compound actions)', () => {
       action.meta.debounce.time.should.equal(1337);
     });
 
+    it('should use a debounce timeout of 1 if the store specifies a value of 0', () => {
+      store.dispatch(setDataLoaderDebounceTimeout(0));
+
+      const action = _performDataLoad()(_.identity, store.getState);
+      should.exist(action.meta);
+      should.exist(action.meta.debounce);
+      action.meta.debounce.time.should.equal(1);
+    });
+
     it('should call the data loader with only the series IDs that have requested loads', () => {
       store.dispatch(dataRequested([ SERIES_A ]));
       store.dispatch(_performDataLoad());

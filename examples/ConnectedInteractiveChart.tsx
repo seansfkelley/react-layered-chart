@@ -86,6 +86,7 @@ const CHART = (
       xDomain: SIMPLE_LINE_X_DOMAIN
     }}
     className='example-chart'
+    loadDataDebounceTimeout={0}
   >
     <Stack>
       <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
