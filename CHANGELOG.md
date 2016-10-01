@@ -29,6 +29,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - `immutability-helper`'s `newContext` method is now used to prevent customizations from leaking into other node libraries that may share an instance of the library. [#86](https://github.com/palantir/react-layered-chart/issues/86).
 - Added a missing prop types to `ChartProvider` for `loadDataDebounceTimeout` and `defaultChartState`. [d3f5dbd](https://github.com/palantir/react-layered-chart/commit/d3f5dbd7ac72d7e0434c9ffe69ddce6314d7d9ab).
+- Specifying a `loadDataDebounceTimeout` of `0` no longer causes the chart to load synchronously on almost every change. [5932645](https://github.com/palantir/react-layered-chart/commit/593264570832db682d9c41162b90881126276bf5).
 
 ## 1.4.1 (2016-09-13)
 
