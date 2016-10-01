@@ -31,15 +31,12 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
 
   render() {
     return (
-      <div className='resizing-wrapper' ref='wrapper'>
-        <canvas
-          className='canvas'
-          ref='canvas'
-          width={this.state.width * this.props.pixelRatio}
-          height={this.state.height * this.props.pixelRatio}
-          style={{ width: this.state.width, height: this.state.height }}
-        />
-      </div>
+      <canvas
+        className='lc-polling-resizing-canvas-layer'
+        ref='canvas'
+        width={this.state.width * this.props.pixelRatio}
+        height={this.state.height * this.props.pixelRatio}
+      />
     );
   }
 
@@ -71,16 +68,16 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
   }
 
   componentDidMount() {
-    this._setSizeFromWrapper();
-    this.__setSizeInterval = setInterval(this._setSizeFromWrapper.bind(this), 1000);
+    this._setSizeFromDom();
+    this.__setSizeInterval = setInterval(this._setSizeFromDom.bind(this), 1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.__setSizeInterval);
   }
 
-  private _setSizeFromWrapper() {
-    const wrapper = this.refs['wrapper'] as HTMLElement;
+  private _setSizeFromDom() {
+    const wrapper = this.refs['canvas'] as HTMLElement;
     this.setState({
       width: wrapper.offsetWidth,
       height: wrapper.offsetHeight

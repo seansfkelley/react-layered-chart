@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `ChartProvider`'s `yDomains` prop and the `setYDomains` action creator no longer need to include an entry for every series. Whatever subset they provide will be merged with any appropriate defaults. [#78](https://github.com/palantir/react-layered-chart/issues/78).
 - "Connected" data-rendering layers now throw an exception if asked to render a series ID that doesn't exist in the chart. [#60](https://github.com/palantir/react-layered-chart/issues/60).
 - `ChartProvider`'s `seriesIds` prop is now ordering-independent and will not trigger loads for series IDs that already exist, regardless of position. [d4f56db](https://github.com/palantir/react-layered-chart/commit/d4f56dbfe1588fbbe7f3a66838b047089deed3fb).
+- `PollingResizingCanvasLayer` now eagerly resizes the `<canvas>` to reduce visual jitter. [ae4520a](https://github.com/palantir/react-layered-chart/commit/ae4520a70153765ace918a6b1527017321184b83).
 
 ### Fixed
 
