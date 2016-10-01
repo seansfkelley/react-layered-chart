@@ -16,7 +16,7 @@ export interface State {
 
 @PureRender
 @PixelRatioContext
-export default class PollingResizingCanvasLayer extends React.Component<Props, State> {
+export default class AutoresizingCanvasLayer extends React.Component<Props, State> {
   context: Context;
 
   private __setSizeInterval: number;
@@ -26,7 +26,7 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
     className: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
-  static resetCanvas(canvasLayer: PollingResizingCanvasLayer, pixelRatio: number = 1) {
+  static resetCanvas(canvasLayer: AutoresizingCanvasLayer, pixelRatio: number = 1) {
     const canvas = canvasLayer.getCanvasElement();
     const { width, height } = canvasLayer.getDimensions();
     const context = canvas.getContext('2d');
