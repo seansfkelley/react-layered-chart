@@ -50,6 +50,11 @@ export const axisSpecPartial = {
   color: React.PropTypes.string
 };
 
+export const defaultChartState = React.PropTypes.shape({
+  xDomain: interval,
+  yDomains: React.PropTypes.objectOf(interval)
+});
+
 export default {
   interval,
   pointDatum,
@@ -58,5 +63,6 @@ export default {
   xSpanDatum,
   ticks,
   tickFormat,
-  axisSpecPartial
+  axisSpecPartial,
+  defaultChartState
 };

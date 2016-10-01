@@ -57,9 +57,11 @@ export default class ChartProvider extends React.Component<Props, {}> {
     className: React.PropTypes.string,
     pixelRatio: React.PropTypes.number,
     chartId: React.PropTypes.string,
+    defaultState: propTypes.defaultChartState,
     onLoadStateChange: React.PropTypes.func,
     onError: React.PropTypes.func,
     includeResizeSentinel: React.PropTypes.bool,
+    loadDataDebounceTimeout: React.PropTypes.number,
 
     xDomain: propTypes.interval,
     onXDomainChange: React.PropTypes.func,
