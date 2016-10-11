@@ -8,7 +8,8 @@ import {
   PointLayer,
   PointLayerProps,
   SimpleLineLayer,
-  SimpleLineLayerProps
+  SimpleLineLayerProps,
+  JoinType
 } from '../../core';
 import { SeriesId } from '../interfaces';
 
@@ -25,6 +26,7 @@ export const ConnectedBarLayer = wrapDataLayerWithConnect<_CommonConnectedBarLay
 export interface _CommonConnectedBucketedLineLayerProps {
   yScale?: ScaleFunction;
   color?: Color;
+  joinType?: JoinType;
 }
 export type ConnectedBucketedLineLayerProps = _CommonConnectedBucketedLineLayerProps & SeriesIdProp;
 export const ConnectedBucketedLineLayer = wrapDataLayerWithConnect<_CommonConnectedBucketedLineLayerProps, BucketedLineLayerProps>(BucketedLineLayer);
@@ -43,6 +45,7 @@ export const ConnectedPointLayer = wrapDataLayerWithConnect<_CommonConnectedPoin
 export interface _CommonConnectedSimpleLineLayerProps {
   yScale?: ScaleFunction;
   color?: Color;
+  joinType?: JoinType;
 }
 export type ConnectedSimpleLineLayerProps = _CommonConnectedSimpleLineLayerProps & SeriesIdProp;
 export const ConnectedSimpleLineLayer = wrapDataLayerWithConnect<_CommonConnectedSimpleLineLayerProps, SimpleLineLayerProps>(SimpleLineLayer);
