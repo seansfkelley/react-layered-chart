@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.5.0 (2016-10-10)
+
 ### Added
 
 - `XAxis` and `YAxis` as more-flexible versions of `XAxisLayer` and `YAxisLayer`. [#72](https://github.com/palantir/react-layered-chart/issues/72).
