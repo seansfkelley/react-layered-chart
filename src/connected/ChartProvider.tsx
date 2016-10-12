@@ -20,7 +20,8 @@ import {
   setXDomainAndLoad,
   setOverrideXDomainAndLoad,
   setSeriesIdsAndLoad,
-  setDataLoaderAndLoad
+  setDataLoaderAndLoad,
+  setDataLoaderContextAndLoad
 } from './flux/compoundActions';
 
 export interface Props {
@@ -34,6 +35,7 @@ export interface Props {
   onLoadStateChange?: (isLoading: TBySeriesId<boolean>) => void;
   onError?: (errors: TBySeriesId<any>) => void;
   includeResizeSentinel?: boolean;
+  loadDataContext?: any;
   loadDataDebounceTimeout?: number;
 
   // Controlled props go here.
@@ -61,6 +63,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
     onLoadStateChange: React.PropTypes.func,
     onError: React.PropTypes.func,
     includeResizeSentinel: React.PropTypes.bool,
+    // loadDataContext doesn't need a prop type, as it's `any?` and therefore we can make no assertions about it.
     loadDataDebounceTimeout: React.PropTypes.number,
 
     xDomain: propTypes.interval,
@@ -112,6 +115,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
 
     this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
     this._store.dispatch(setDataLoaderAndLoad(props.loadData));
+    this._store.dispatch(setDataLoaderContextAndLoad(props.loadDataContext));
     if (_.isNumber(this.props.loadDataDebounceTimeout)) {
       this._store.dispatch(setDataLoaderDebounceTimeout(props.loadDataDebounceTimeout));
     }
@@ -171,13 +175,14 @@ export default class ChartProvider extends React.Component<Props, {}> {
   }
 
   private _onPropsChange(nextProps: Props) {
-    this._maybeDispatchChangedProp(this.props.seriesIds, nextProps.seriesIds, setSeriesIdsAndLoad);
-    this._maybeDispatchChangedProp(this.props.loadData,  nextProps.loadData,  setDataLoaderAndLoad);
+    this._maybeDispatchChangedProp(this.props.seriesIds,               nextProps.seriesIds,               setSeriesIdsAndLoad);
+    this._maybeDispatchChangedProp(this.props.loadData,                nextProps.loadData,                setDataLoaderAndLoad);
+    this._maybeDispatchChangedProp(this.props.loadDataContext,         nextProps.loadDataContext,         setDataLoaderContextAndLoad);
     this._maybeDispatchChangedProp(this.props.loadDataDebounceTimeout, nextProps.loadDataDebounceTimeout, setDataLoaderDebounceTimeout);
-    this._maybeDispatchChangedProp(this.props.xDomain,   nextProps.xDomain,   setOverrideXDomainAndLoad);
-    this._maybeDispatchChangedProp(this.props.yDomains,  nextProps.yDomains,  setOverrideYDomains);
-    this._maybeDispatchChangedProp(this.props.hover,     nextProps.hover,     setOverrideHover);
-    this._maybeDispatchChangedProp(this.props.selection, nextProps.selection, setOverrideSelection);
+    this._maybeDispatchChangedProp(this.props.xDomain,                 nextProps.xDomain,                 setOverrideXDomainAndLoad);
+    this._maybeDispatchChangedProp(this.props.yDomains,                nextProps.yDomains,                setOverrideYDomains);
+    this._maybeDispatchChangedProp(this.props.hover,                   nextProps.hover,                   setOverrideHover);
+    this._maybeDispatchChangedProp(this.props.selection,               nextProps.selection,               setOverrideSelection);
   }
 
   private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => void) {

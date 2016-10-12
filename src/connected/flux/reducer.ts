@@ -55,6 +55,11 @@ export default function(state: ChartState, action: Action<any>): ChartState {
         dataLoader: { $set: action.payload || invalidLoader }
       });
 
+    case ActionType.SET_DATA_LOADER_CONTEXT:
+      return update(state, {
+        loaderContext: { $set: action.payload }
+      });
+
     case ActionType.SET_DATA_LOADER_DEBOUNCE_TIMEOUT:
       return update(state, {
         debounceTimeout: { $set: _.isNumber(action.payload) ? action.payload : state.debounceTimeout }

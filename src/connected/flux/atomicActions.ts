@@ -8,6 +8,7 @@ export enum ActionType {
   SET_SERIES_IDS,
   SET_DATA_LOADER,
   SET_DATA_LOADER_DEBOUNCE_TIMEOUT,
+  SET_DATA_LOADER_CONTEXT,
   SET_X_DOMAIN,
   SET_OVERRIDE_X_DOMAIN,
   SET_Y_DOMAINS,
@@ -33,6 +34,7 @@ function createActionCreator<P>(type: ActionType) {
 export const setSeriesIds = createActionCreator<SeriesId[]>(ActionType.SET_SERIES_IDS);
 export const setDataLoader = createActionCreator<DataLoader>(ActionType.SET_DATA_LOADER);
 export const setDataLoaderDebounceTimeout = createActionCreator<number>(ActionType.SET_DATA_LOADER_DEBOUNCE_TIMEOUT);
+export const setDataLoaderContext = createActionCreator<any>(ActionType.SET_DATA_LOADER_CONTEXT);
 export const setChartPhysicalWidth = createActionCreator<number>(ActionType.SET_CHART_PHYSICAL_WIDTH);
 
 export const setXDomain = createActionCreator<Interval>(ActionType.SET_X_DOMAIN);

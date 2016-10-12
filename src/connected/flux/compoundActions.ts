@@ -12,6 +12,7 @@ import {
   setChartPhysicalWidth,
   setSeriesIds,
   setDataLoader,
+  setDataLoaderContext,
   dataRequested,
   dataReturned,
   dataErrored
@@ -76,6 +77,17 @@ export function setDataLoaderAndLoad(payload: DataLoader) {
   };
 }
 
+export function setDataLoaderContextAndLoad(payload: any) {
+  return (dispatch, getState) => {
+    const state: ChartState = getState();
+
+    if (payload !== state.loaderContext) {
+      dispatch(setDataLoaderContext(payload));
+      dispatch(_requestDataLoad());
+    }
+  };
+}
+
 // Exported for testing.
 export function _requestDataLoad(seriesIds?: SeriesId[]) {
   return (dispatch, getState) => {
@@ -119,6 +131,7 @@ export function _performDataLoad(batchingTimeout: number = 200) {
     const thunk: any = (dispatch, getState: () => ChartState) => {
       const preLoadChartState = getState();
       const dataLoader = preLoadChartState.dataLoader;
+      const loaderContext = preLoadChartState.loaderContext;
 
       const seriesIdsToLoad = _.keys(_.pickBy(preLoadChartState.loadVersionBySeriesId));
 
@@ -128,7 +141,8 @@ export function _performDataLoad(batchingTimeout: number = 200) {
         selectLoadedYDomains(preLoadChartState),
         preLoadChartState.physicalChartWidth,
         selectData(preLoadChartState),
-        preLoadChartState.loadedDataBySeriesId
+        preLoadChartState.loadedDataBySeriesId,
+        loaderContext
       );
 
       const batchedDataReturned = _makeKeyedDataBatcher<any>((payload: TBySeriesId<any>) => {

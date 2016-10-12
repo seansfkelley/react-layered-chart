@@ -65,10 +65,13 @@ For specifics on the exact types of these components/functions/values, please ch
 
 `ChartProvider` is the parent of all state-managed layers in react-layered-chart. It creates almost no DOM of its own, but is instead a wrapper around react-redux's [`Provider`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store) that mediates between its own props and state that is automatically loaded/computed.
 
-#### Props
+#### Required Props
 
 - `seriesIds`: a list of all the series that are present in this chart. IDs are arbitrary and must be unique within a single `ChartProvider`. Series IDs not present here will be silently ignored.
-- `loadData`: a stateless function to load the appropriate data for all series. Called whenever `ChartProvider` needs new data. This is where you should do caching or other loading optimizations. Avoid using an inline definition, as that creates a new function object, and data must be reloaded whenever `loadData` changes.
+- `loadData`: a _stateless_ function to load the appropriate data for all series. Called whenever `ChartProvider` needs new data. This is where you should do caching or other loading optimizations. Avoid using an inline definition, as that creates a new function object, and data must be reloaded whenever `loadData` changes. See also `loadDataContext` and `loadDataDebounceTimeout`.
+
+#### Optional Props
+
 - `className?`: space-separated DOM class names to be merged with the default class names.
 - `pixelRatio?`: the desired pixel density of this chart. See [`window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio). Performance may suffer with higher values. This value is not transparently applied and must be explicitly respected by any contained `Layer`s (the built-in ones all do). If specified here, you do not need to specify this value on any contained `Stack`s.
 - `chartId?`: an arbitrary, globally-unique ID for the state of this chart that maintains a reference across mount/unmount cycles.
@@ -76,6 +79,7 @@ For specifics on the exact types of these components/functions/values, please ch
 - `onLoadStateChange?`: called with the load states of all series whenever any one of them changes.
 - `onError?`: called with the error state of all series whenever any one of them changes.
 - `includeResizeSentinel?`: if `false`, prevents the automatic addition of a `ConnectedResizeSentinelLayer`. Use this option if you have layouts or styles that cause the included sentinel layer to incorrectly report the physical chart size. Be sure to replace it with your own `ConnectedResizeSentinelLayer`, otherwise your chart won't render with the correct dimensions!
+- `loadDataContext?`: an arbitrary value passed as-is to `loadData`. All data is reloaded any time this value changes shallowly. You should use this prop to pass along necessary metadata to `loadData` rather than using `Function#bind` or other mechanisms which create new `Function` instances.
 - `loadDataDebounceTimeout?`: debounce interval in milliseconds for calling `loadData` (default `1000`). Use lower numbers if your requests are cheap/fast and higher numbers if they aren't.
 
 #### Controlled Props

@@ -5,6 +5,7 @@ import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
+import { DataLoader } from '../src/connected/interfaces';
 import { ChartState } from '../src/connected/model/state';
 import { DEFAULT_Y_DOMAIN } from '../src/connected/model/constants';
 import {
@@ -12,6 +13,7 @@ import {
   setSeriesIds,
   setDataLoader,
   setDataLoaderDebounceTimeout,
+  setDataLoaderContext,
   dataRequested,
   dataReturned,
   setYDomains,
@@ -21,6 +23,7 @@ import {
 import {
   setSeriesIdsAndLoad,
   setDataLoaderAndLoad,
+  setDataLoaderContextAndLoad,
   setXDomainAndLoad,
   setOverrideXDomainAndLoad,
   setChartPhysicalWidthAndLoad,
@@ -70,7 +73,7 @@ describe('(compound actions)', () => {
   });
 
   describe('(meta: test suite)', () => {
-    it('should be initialized with two series with no pending loads, data, errors and no load invocations', () => {
+    it('should be initialized with two series with no pending loads, data, errors, load invocations or context', () => {
       state = store.getState();
 
       state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
@@ -92,6 +95,7 @@ describe('(compound actions)', () => {
         [SERIES_A]: null,
         [SERIES_B]: null
       });
+      should(state.loaderContext).be.undefined();
 
       dataLoaderSpy.callCount.should.equal(0);
     });
@@ -136,8 +140,10 @@ describe('(compound actions)', () => {
   });
 
   describe('setDataLoaderAndLoad', () => {
+    const LOADER: DataLoader =(() => {}) as any;
+
     it('should request a data load for all existing series', () => {
-      store.dispatch(setDataLoaderAndLoad((() => {}) as any));
+      store.dispatch(setDataLoaderAndLoad(LOADER));
 
       state = store.getState();
 
@@ -146,9 +152,36 @@ describe('(compound actions)', () => {
     });
 
     it('should not change state and not call the data loader if the data loader is reference equal', () => {
+      store.dispatch(setDataLoader(LOADER));
+
       state = store.getState();
+      state.dataLoader.should.be.exactly(LOADER);
 
       store.dispatch(setDataLoaderAndLoad(state.dataLoader));
+
+      const newState: ChartState = store.getState();
+
+      state.should.be.exactly(newState);
+      dataLoaderSpy.callCount.should.equal(0);
+    });
+  });
+
+  describe('setDataLoaderContextAndLoad', () => {
+    const CONTEXT = { foo: 'bar' };
+
+    it('should call the data loader', () => {
+      store.dispatch(setDataLoaderContextAndLoad(CONTEXT));
+
+      dataLoaderSpy.callCount.should.equal(1);
+    });
+
+    it('should not change state and not call the data loader if the value is reference-equals to the current value', () => {
+      store.dispatch(setDataLoaderContext(CONTEXT));
+      dataLoaderSpy.callCount.should.equal(0);
+
+      state = store.getState();
+
+      store.dispatch(setDataLoaderContextAndLoad(CONTEXT));
 
       const newState: ChartState = store.getState();
 
@@ -353,6 +386,16 @@ describe('(compound actions)', () => {
           yDomain: DEFAULT_Y_DOMAIN
         }
       });
+    });
+
+    it('should call the data loader with the loader context', () => {
+      const CONTEXT = { foo: 'bar' };
+
+      store.dispatch(setDataLoaderContext(CONTEXT));
+      store.dispatch(_performDataLoad());
+
+      dataLoaderSpy.calledOnce.should.be.true();
+      dataLoaderSpy.firstCall.args[6].should.be.exactly(CONTEXT);
     });
 
     it('should set the data and Y domain as-is from the result of the data loader', () => {

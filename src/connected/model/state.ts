@@ -17,6 +17,7 @@ export interface UiState {
 
 export interface ChartState {
   debounceTimeout: number;
+  loaderContext?: any;
   physicalChartWidth: number;
   seriesIds: SeriesId[];
   loadedDataBySeriesId: TBySeriesId<LoadedSeriesData>;
