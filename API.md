@@ -537,11 +537,11 @@ const ConnectedExampleComponent = wrapDataLayerWithConnect<CommonProps, Props>(E
 
 <hr/>
 
-#### `getIndexBoundsForPointData(data, interval, xValuePath)`
+#### `getIndexBoundsForPointData(data, interval, xValueAccessor)`
 
-Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` is assumed to have a single X value, the dot-separated path to which is given by `xValuePath`. `data` should be sorted by `xValuePath`, ascending.
+Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` should have a single representative X value. `xValueAccessor` may be a dot-separated string specifying the path to the value or a function from datum to value. `data` **must be sorted**, ascending, by the same metric that `xValueAccessor` uses.
 
-**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
+**Note**: because this function is generally intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
 
 ```tsx
 const data = [
@@ -552,17 +552,28 @@ const data = [
   ...
 ]
 
-getIndexBoundsForPointData(data, { min: 0, max: 1000 }, 'metadata.timestamp');
+getIndexBoundsForPointData(
+  data, 
+  { min: 0, max: 1000 }, 
+  'metadata.timestamp'
+);
+// -> { firstIndex: 0, lastIndex: ... }
+
+getIndexBoundsForPointData(
+  data, 
+  { min: 0, max: 1000 }, 
+  datum => datum.metadata.timestamp + 10
+);
 // -> { firstIndex: 0, lastIndex: ... }
 ```
 
 <hr/>
 
-#### `getIndexBoundsForSpanData(data, interval, minXValuePath, maxXValuePath)`
+#### `getIndexBoundsForSpanData(data, interval, minXValueAccessor, maxXValueAccessor)`
 
-Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` is assumed to have start and end X values, the dot-separated path to which is given by `minXValuePath` and `maxXValuePath` respectively. `data` should be sorted by `minXValuePath`, ascending.
+Efficiently computes which span of indices in `data` intersect `interval`. Each item in `data` should have distinct minimum and maximum X values. `minXValueAccessor` and `maxXValueAccessor` may be dot-separated strings specifying the path to the value or functions from datum to value. `data` **must be sorted**, ascending, by the same metric that `minXValueAccessor` uses.
 
-**Note**: because this function is intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
+**Note**: because this function is generally intended as a helper to make rendering more efficient, it includes items just beyond the ends of the interval as well so halfway-visible data will still be rendered.
 
 ```tsx
 const data = [
@@ -573,7 +584,20 @@ const data = [
   ...
 ]
 
-getIndexBoundsForSpanData(data, { min: 0, max: 1000 }, 'timeInterval.from', 'timeInterval.to');
+getIndexBoundsForSpanData(
+  data, 
+  { min: 0, max: 1000 }, 
+  'timeInterval.from', 
+  'timeInterval.to'
+);
+// -> { firstIndex: 0, lastIndex: ... }
+
+getIndexBoundsForSpanData(
+  data, 
+  { min: 0, max: 1000 }, 
+  datum => datum.timeInterval.from - 10,
+  datum => datum.timeInterval.to + 10
+);
 // -> { firstIndex: 0, lastIndex: ... }
 ```
 
