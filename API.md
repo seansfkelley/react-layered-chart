@@ -29,6 +29,7 @@ For specifics on the exact types of these components/functions/values, please ch
     * [`PixelRatioContextProvider`](#pixelratiocontextprovider)
   * [Functions](#functions)
     * [~~`createStaticDataLoader(data, yDomains)`~~](#createstaticdataloaderdata-ydomains)
+    * [`chainLoaders(...loaders)`](#chainloadersloaders)
     * [`createSelectDataForHover(xValueIterator)`](#createselectdataforhoverxvalueiterator)
     * [`wrapWithAnimatedYDomain(ComponentClass)`](#wrapwithanimatedydomaincomponentclass)
     * [~~`wrapDataLayerWithConnect(component)`~~](#wrapdatalayerwithconnectcomponent)
@@ -443,6 +444,28 @@ const dataLoader = createStaticDataLoader({
 });
 
 <ChartProvider loadData={dataLoader} .../>
+```
+
+<hr/>
+
+#### `chainLoaders(...loaders)`
+
+Chain multiple `DataLoader`s into one, serially. Each loader receives identical arguments, except that the list of requested series IDs will only include those IDs that have not already been handled by an earlier loader. Each loader should include map entries only for those series it understands and leave others absent, `undefined` or `null`. Any series IDs left over after all loaders have been run will be automatically mapped to a rejected promise.
+
+**Note that this function is variadic.**
+
+```ts
+import { chainLoaders } from 'react-layered-chart';
+
+function loadFirstSeriesOnly(seriesIds, ...) {
+  const firstSeriesId = seriesIds[0];
+  return {
+    [firstSeriesId]: Promise.resolve([])
+  };
+}
+
+chainLoaders(loadFirstSeriesOnly, loadFirstSeriesOnly)([ 'a', 'b', 'c' ], ...);
+// -> { a: <resolved promise>, b: <resolved promise>, c: <rejected promise> }
 ```
 
 <hr/>
