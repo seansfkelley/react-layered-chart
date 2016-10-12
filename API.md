@@ -41,7 +41,7 @@ For specifics on the exact types of these components/functions/values, please ch
     * [`extendInterval(interval, factor)`](#extendintervalinterval-factor)
     * [`roundInterval(interval)`](#roundintervalinterval)
     * [`niceInterval(interval)`](#niceintervalinterval)
-    * [`mergeIntervals(intervals)`](#mergeintervalsintervals)
+    * [`mergeIntervals(intervals, defaultInterval)`](#mergeintervalsintervals-defaultinterval)
     * [`intervalContains(maybeLargerInterval, maybeSmallerInterval)`](#intervalcontainsmaybelargerinterval-maybesmallerinterval)
     * [`panInterval(interval, delta)`](#panintervalinterval-delta)
     * [`zoomInterval(interval, factor, anchorBias?)`](#zoomintervalinterval-factor-anchorbias)
@@ -698,13 +698,16 @@ niceInterval({ min: 34, max: 1454 });
 
 <hr/>
 
-#### `mergeIntervals(intervals)`
+#### `mergeIntervals(intervals, defaultInterval?)`
 
-Returns a interval that covers all the provided intervals. Returns `null` if no intervals are given.
+Returns a interval that covers all the provided intervals. Returns `defaultInterval` if no intervals are given and `null` if `defaultInterval` is not given either.
 
 ```tsx
 mergeIntervals([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);
 // -> { min: -10, max: 50 }
+
+mergeIntervals([], { min: 0, max: 1 });
+// -> { min: 0, max: 1 }
 
 mergeIntervals([]);
 // -> null
