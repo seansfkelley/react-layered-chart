@@ -12,6 +12,7 @@ import {
   setSeriesIds,
   setDataLoader,
   setDataLoaderDebounceTimeout,
+  setDataLoaderContext,
   setChartPhysicalWidth,
   setXDomain,
   setOverrideXDomain,
@@ -297,6 +298,11 @@ describe('(atomic actions)', () => {
       actionCreator: setDataLoaderDebounceTimeout,
       actionValue: 1337,
       valuePath: 'debounceTimeout'
+    }, {
+      name: 'setDataLoaderContext',
+      actionCreator: setDataLoaderContext,
+      actionValue: { foo: 'bar' },
+      valuePath: 'loaderContext'
     }, {
       name: 'setChartPhysicalWidth',
       actionCreator: setChartPhysicalWidth,

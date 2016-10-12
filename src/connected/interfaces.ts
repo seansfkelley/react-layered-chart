@@ -14,4 +14,5 @@ export type DataLoader = (seriesIds: SeriesId[],
                           currentYDomains: TBySeriesId<Interval>,
                           chartPixelWidth: number,
                           currentData: TBySeriesId<SeriesData>,
-                          currentLoadedData: TBySeriesId<LoadedSeriesData>) => TBySeriesId<Promise<LoadedSeriesData>>;
+                          currentLoadedData: TBySeriesId<LoadedSeriesData>,
+                          context?: any) => TBySeriesId<Promise<LoadedSeriesData>>;
