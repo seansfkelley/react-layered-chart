@@ -31,6 +31,10 @@ export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => sta
 // may be confusing in this context.
 export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 
+// This is cause sortedIndexBy prefers to have the same shape for the array items and the searched thing. We don't
+// know what that shape is, so we have a sentinel + accompanying function to figure out when it's asking for the hover value.
+function HOVER_VALUE_SENTINEL() {}
+
 export function createSelectDataForHover(xValueSelector: NumericalValueIterator): StateSelector<TBySeriesId<any>> {
   return _wrapForTypeCast(createSelector(
     internalSelectData,
@@ -39,22 +43,14 @@ export function createSelectDataForHover(xValueSelector: NumericalValueIterator)
       if (_.isNil(hover)) {
         return _.mapValues(dataBySeriesId, _.constant(undefined));
       } else {
-        // This is cause sortedIndexBy prefers to have the same shape for the array items and the searched thing. We don't
-        // know what that shape is, so we do some bullshit to make sure we can differentiate the hover value from the
-        // other data.
-        const haxWrappedHover = { __haxWrappedHover: hover };
-
         const xIterator = (seriesId: SeriesId, datum: any) => {
-          return datum.hasOwnProperty('__haxWrappedHover')
-            ? datum.__haxWrappedHover
-            : xValueSelector(seriesId, datum);
+          return datum === HOVER_VALUE_SENTINEL ? hover : xValueSelector(seriesId, datum);
         };
-
         return _.mapValues(dataBySeriesId, (data: any[], seriesId: SeriesId) => {
           // -1 because sortedIndexBy returns the first index that would be /after/ the input value, but we're trying to
           // get whichever value comes before. Note that this may return undefined, but that's specifically allowed:
           // there may not be an appropriate hover value for this series.
-          return data[ _.sortedIndexBy(data, haxWrappedHover, xIterator.bind(null, seriesId)) - 1 ];
+          return data[ _.sortedIndexBy(data, HOVER_VALUE_SENTINEL, xIterator.bind(null, seriesId)) - 1 ];
         });
       }
     }
