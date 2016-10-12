@@ -1,11 +1,13 @@
 import * as _ from 'lodash';
 
-import { SeriesData, Interval, Ticks, TickFormat } from './interfaces';
+import { Interval, Ticks, TickFormat } from './interfaces';
 
 export interface IndexBounds {
   firstIndex: number;
   lastIndex: number;
 }
+
+export type ValueAccessor<T> = string | ((value: T) => number);
 
 function adjustBounds(firstIndex: number, lastIndex: number, dataLength: number): IndexBounds {
   if (firstIndex === dataLength || lastIndex === 0) {
@@ -21,28 +23,72 @@ function adjustBounds(firstIndex: number, lastIndex: number, dataLength: number)
   }
 }
 
-// Assumption: data is sorted by `xValuePath` acending.
-export function getIndexBoundsForPointData(data: SeriesData, xValueBounds: Interval, xValuePath: string): IndexBounds {
-  const lowerBound = _.set({}, xValuePath, xValueBounds.min);
-  const upperBound = _.set({}, xValuePath, xValueBounds.max);
+// This is cause sortedIndexBy prefers to have the same shape for the array items and the searched thing. We don't
+// know what that shape is, so we have a sentinel + accompanying function to figure out when it's asking for this value.
+type BoundSentinel = { __boundSentinelBrand: string };
+const LOWER_BOUND_SENTINEL: BoundSentinel = (() => {}) as any;
+const UPPER_BOUND_SENTINEL: BoundSentinel = (() => {}) as any;
 
-  const firstIndex = _.sortedIndexBy(data, lowerBound, xValuePath);
-  const lastIndex = _.sortedLastIndexBy(data, upperBound, xValuePath);
+// Assumption: data is sorted by `xValuePath` acending.
+export function getIndexBoundsForPointData<T>(data: T[], xValueBounds: Interval, xValueAccessor: ValueAccessor<T>): IndexBounds {
+  let lowerBound;
+  let upperBound;
+  let accessor;
+
+  if (_.isString(xValueAccessor)) {
+    lowerBound = _.set({}, xValueAccessor, xValueBounds.min);
+    upperBound = _.set({}, xValueAccessor, xValueBounds.max);
+    accessor = xValueAccessor;
+  } else {
+    lowerBound = LOWER_BOUND_SENTINEL;
+    upperBound = UPPER_BOUND_SENTINEL;
+    accessor = (value: T | BoundSentinel) => {
+      if (value === LOWER_BOUND_SENTINEL) {
+        return xValueBounds.min;
+      } else if (value === UPPER_BOUND_SENTINEL) {
+        return xValueBounds.max;
+      } else {
+        return xValueAccessor(value as T);
+      }
+    };
+  }
+
+  const firstIndex = _.sortedIndexBy(data, lowerBound, accessor);
+  const lastIndex = _.sortedLastIndexBy(data, upperBound, accessor);
 
   return adjustBounds(firstIndex, lastIndex, data.length);
 }
 
 // Assumption: data is sorted by `minXValuePath` ascending.
-export function getIndexBoundsForSpanData(data: SeriesData, xValueBounds: Interval, minXValuePath: string, maxXValuePath: string): IndexBounds {
-  // Note that this is purposely reversed. Think about it.
-  const upperBound = _.set({}, minXValuePath, xValueBounds.max);
+export function getIndexBoundsForSpanData<T>(data: T[], xValueBounds: Interval, minXValueAccessor: ValueAccessor<T>, maxXValueAccessor: ValueAccessor<T>): IndexBounds {
+  let upperBound;
+  let upperBoundAccessor;
+
+  // Note that this purposely mixes the min accessor/max value. Think about it.
+  if (_.isString(minXValueAccessor)) {
+    upperBound = _.set({}, minXValueAccessor, xValueBounds.max);
+    upperBoundAccessor = minXValueAccessor;
+  } else {
+    upperBound = UPPER_BOUND_SENTINEL;
+    upperBoundAccessor = (value: T | BoundSentinel) => {
+      if (value === UPPER_BOUND_SENTINEL) {
+        return xValueBounds.max;
+      } else {
+        return minXValueAccessor(value as T);
+      }
+    }
+  }
+
+  const lowerBoundAccessor = _.isString(maxXValueAccessor)
+    ? (value: T) => _.get(value, maxXValueAccessor)
+    : maxXValueAccessor;
 
   // Also note that this is a loose bound -- there could be spans that start later and end earlier such that
   // they don't actually fit inside the bounds, but this still saves us work in the end.
-  const lastIndex = _.sortedLastIndexBy(data, upperBound, minXValuePath);
+  const lastIndex = _.sortedLastIndexBy(data, upperBound, upperBoundAccessor);
   let firstIndex;
   for (firstIndex = 0; firstIndex < lastIndex; ++firstIndex) {
-    if (_.get(data[firstIndex], maxXValuePath) >= xValueBounds.min) {
+    if (lowerBoundAccessor(data[firstIndex]) >= xValueBounds.min) {
       break;
     }
   }

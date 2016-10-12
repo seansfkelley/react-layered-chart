@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added `loadDataContext` prop to `ChartProvider` for passing along state to the `loadData` function without creating new `Function` instances. [#37](https://github.com/palantir/react-layered-chart/issues/37).
 - Added `chainLoaders` utility method to combine multiple `DataLoader`s into one for easy composition. [#38](https://github.com/palantir/react-layered-chart/issues/38).
 
+### Changed
+
+- `getIndexBoundsForPointData` and `getIndexBoundsForSpanData` now accept function accessors. [#10](https://github.com/palantir/react-layered-chart/issues/10).
+
 ## 1.5.1 (2016-10-11)
 
 ### Fixed

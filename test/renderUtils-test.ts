@@ -1,9 +1,11 @@
 import * as d3Scale from 'd3-scale';
 import {
   Ticks,
-  TickFormat
+  TickFormat,
+  Interval
 } from '../src/core/interfaces';
 import {
+  IndexBounds,
   getIndexBoundsForPointData,
   getIndexBoundsForSpanData,
   computeTicks
@@ -11,150 +13,190 @@ import {
 
 describe('(render utils)', () => {
   describe('getIndexBoundsForPointData', () => {
-    it('should return a half-open interval for the slice of data in bounds, plus one extra on each side', () => {
-      getIndexBoundsForPointData([
+    interface PointTestCase<T> {
+      name: string;
+      data: T[];
+      interval: Interval;
+      bounds: IndexBounds;
+      stringAccessor: string;
+      functionAccessor: (value: T) => number;
+    }
+
+    const TEST_CASES: PointTestCase<any>[] = [{
+      name: 'should return a half-open interval for the slice of data in bounds, plus one extra on each side',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 5
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should return firstIndex === lastIndex === 0 when the data is empty', () => {
-      getIndexBoundsForPointData([], {
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should return firstIndex === lastIndex === 0 when the data is empty',
+      data: [],
+      interval: {
         min: -Infinity,
         max: Infinity
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 0
-      });
-    });
-
-    it('should return firstIndex === lastIndex === 0 when the bounds are completely before the data', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should return firstIndex === lastIndex === 0 when the bounds are completely before the data',
+      data: [
         { timestamp: 0 }
-      ], {
+      ],
+      interval: {
         min: -2,
         max: -1
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 0
-      });
-    });
-
-    it('should return firstIndex === lastIndex === length of data when the bounds are completely after the data', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should return firstIndex === lastIndex === length of data when the bounds are completely after the data',
+      data: [
         { timestamp: 0 }
-      ], {
+      ],
+      interval: {
         min: 1,
         max: 2
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 1
-      });
-    });
-
-    it('should accept arbitrarily deeply nested string accessors', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should accept arbitrarily deeply nested string accessors',
+      data: [
         { outer: { middle: { inner: 0 } } },
         { outer: { middle: { inner: 2 } } },
         { outer: { middle: { inner: 4 } } },
         { outer: { middle: { inner: 6 } } },
         { outer: { middle: { inner: 8 } } }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 5
-      }, 'outer.middle.inner').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should return 0 for firstIndex when the min bound is before the earliest timestamp', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'outer.middle.inner',
+      functionAccessor: (value: any) => value.outer.middle.inner
+    }, {
+      name: 'should return 0 for firstIndex when the min bound is before the earliest timestamp',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 }
-      ], {
+      ],
+      interval: {
         min: -1,
         max: 1
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 2
-      });
-    });
-
-    it('should return the length of the input for lastIndex when the max bound is after the last datapoint', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should return the length of the input for lastIndex when the max bound is after the last datapoint',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 5
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 3
-      });
-    });
-
-    it('should include a value that is equal to the min bound', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include a value that is equal to the min bound',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 2,
         max: 5
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 4
-      });
-    });
-
-    it('should include a value that is equal to the max bound', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include a value that is equal to the max bound',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 4
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include a value that is equal to both bounds', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include a value that is equal to both bounds',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 4,
         max: 4
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include all values at identical timestamps when they are within bounds', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include all values at identical timestamps when they are within bounds',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
@@ -162,17 +204,20 @@ describe('(render utils)', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 5
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 6
-      });
-    });
-
-    it('should include all identical values that are equal to the min bound', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include all identical values that are equal to the min bound',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 2 },
@@ -180,17 +225,20 @@ describe('(render utils)', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 2,
         max: 5
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 6
-      });
-    });
-
-    it('should include all identical values that are equal to the max bound', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include all identical values that are equal to the max bound',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
@@ -198,17 +246,20 @@ describe('(render utils)', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 3,
         max: 4
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 6
-      });
-    });
-
-    it('should include a value that is equal to both bounds', () => {
-      getIndexBoundsForPointData([
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }, {
+      name: 'should include a value that is equal to both bounds',
+      data: [
         { timestamp: 0 },
         { timestamp: 2 },
         { timestamp: 4 },
@@ -216,259 +267,371 @@ describe('(render utils)', () => {
         { timestamp: 4 },
         { timestamp: 6 },
         { timestamp: 8 }
-      ], {
+      ],
+      interval: {
         min: 4,
         max: 4
-      }, 'timestamp').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 6
+      },
+      stringAccessor: 'timestamp',
+      functionAccessor: (value: any) => value.timestamp
+    }];
+
+    describe('with string accessor', () => {
+      TEST_CASES.forEach(testCase => {
+        it(testCase.name, () => {
+          getIndexBoundsForPointData(testCase.data, testCase.interval, testCase.stringAccessor).should.deepEqual(testCase.bounds);
+        });
+      });
+    });
+
+    describe('with function accessor', () => {
+      TEST_CASES.forEach(testCase => {
+        it(testCase.name, () => {
+          getIndexBoundsForPointData(testCase.data, testCase.interval, testCase.functionAccessor).should.deepEqual(testCase.bounds);
+        });
       });
     });
   });
 
   describe('getIndexBoundsForSpanData', () => {
-    it('should return a half-open interval for the slice of data in bounds, plus one extra on each side', () => {
-      getIndexBoundsForSpanData([
+    interface SpanTestCase<T> {
+      name: string;
+      data: T[];
+      interval: Interval;
+      bounds: IndexBounds;
+      stringAccessorMin: string;
+      stringAccessorMax: string;
+      functionAccessorMin: (value: T) => number;
+      functionAccessorMax: (value: T) => number;
+    }
+
+    const TEST_CASES: SpanTestCase<any>[] = [{
+      name: 'should return a half-open interval for the slice of data in bounds, plus one extra on each side',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should return firstIndex === lastIndex === 0 when the data is empty', () => {
-      getIndexBoundsForSpanData([], {
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should return firstIndex === lastIndex === 0 when the data is empty',
+      data: [],
+      interval: {
         min: -Infinity,
         max: Infinity
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 0
-      });
-    });
-
-    it('should return firstIndex === lastIndex === 0 when the bounds are completely before the data', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should return firstIndex === lastIndex === 0 when the bounds are completely before the data',
+      data: [
         { min: 0, max: 1 }
-      ], {
+      ],
+      interval: {
         min: -2,
         max: -1
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 0
-      });
-    });
-
-    it('should return firstIndex === lastIndex === length of data when the bounds are completely after the data', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should return firstIndex === lastIndex === length of data when the bounds are completely after the data',
+      data: [
         { min: 0, max: 1 }
-      ], {
+      ],
+      interval: {
         min: 2,
         max: 3
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 1
-      });
-    });
-
-    it('should accept arbitrarily deeply nested string accessors', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should accept arbitrarily deeply nested string accessors',
+      data: [
         { outer: { inner: { min: 0, max: 1 } } },
         { outer: { inner: { min: 2, max: 3 } } },
         { outer: { inner: { min: 4, max: 5 } } },
         { outer: { inner: { min: 6, max: 7 } } },
         { outer: { inner: { min: 8, max: 9 } } }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'outer.inner.min', 'outer.inner.max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should return 0 for firstIndex when the min bound is strictly before the earliest timestamp', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'outer.inner.min',
+      stringAccessorMax: 'outer.inner.max',
+      functionAccessorMin: (value: any) => value.outer.inner.min,
+      functionAccessorMax: (value: any) => value.outer.inner.max,
+    }, {
+      name: 'should return 0 for firstIndex when the min bound is strictly before the earliest timestamp',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 }
-      ], {
+      ],
+      interval: {
         min: -2,
         max: 1.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 2
-      });
-    });
-
-    it('should return the length of the input for lastIndex when the max bound is strictly after the last datapoint', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should return the length of the input for lastIndex when the max bound is strictly after the last datapoint',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 3
-      });
-    });
-
-    it('should include values that span across the min bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values that span across the min bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 4.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include values that span across the max bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values that span across the max bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 4.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include values whose min is equal to the min bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values whose min is equal to the min bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 4,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include values whose max is equal to the max bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values whose max is equal to the max bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include values whose max is equal to the min bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values whose max is equal to the min bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include values whose min is equal to the max bound', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include values whose min is equal to the max bound',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 4
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 4
-      });
-    });
-
-    it('should include a value that is strictly larger than the bounds', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include a value that is strictly larger than the bounds',
+      data: [
         { min: 0, max: 9 },
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 5
-      });
-    });
-
-    it('should include multiple values that are all larger than the bounds', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include multiple values that are all larger than the bounds',
+      data: [
         { min: 0, max: 9 },
         { min: 1, max: 8 },
         { min: 2, max: 7 },
         { min: 3, max: 6 },
         { min: 4, max: 5 }
-      ], {
+      ],
+      interval: {
         min: 4.25,
         max: 4.75
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 0,
         lastIndex: 5
-      });
-    });
-
-    it('should include a value that is equal to the bounds', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include a value that is equal to the bounds',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 3.5, max: 4 },
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 5
-      });
-    });
-
-    it('should include all values at identical timestamps when they are within bounds', () => {
-      getIndexBoundsForSpanData([
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }, {
+      name: 'should include all values at identical timestamps when they are within bounds',
+      data: [
         { min: 0, max: 1 },
         { min: 2, max: 3 },
         { min: 4, max: 5 },
@@ -476,12 +639,34 @@ describe('(render utils)', () => {
         { min: 4, max: 5 },
         { min: 6, max: 7 },
         { min: 8, max: 9 }
-      ], {
+      ],
+      interval: {
         min: 3.5,
         max: 5.5
-      }, 'min', 'max').should.eql({
+      },
+      bounds: {
         firstIndex: 1,
         lastIndex: 6
+      },
+      stringAccessorMin: 'min',
+      stringAccessorMax: 'max',
+      functionAccessorMin: (value: any) => value.min,
+      functionAccessorMax: (value: any) => value.max,
+    }];
+
+    describe('with string accessor', () => {
+      TEST_CASES.forEach(testCase => {
+        it(testCase.name, () => {
+          getIndexBoundsForSpanData(testCase.data, testCase.interval, testCase.stringAccessorMin, testCase.stringAccessorMax).should.deepEqual(testCase.bounds);
+        });
+      });
+    });
+
+    describe('with function accessor', () => {
+      TEST_CASES.forEach(testCase => {
+        it(testCase.name, () => {
+          getIndexBoundsForSpanData(testCase.data, testCase.interval, testCase.functionAccessorMin, testCase.functionAccessorMax).should.deepEqual(testCase.bounds);
+        });
       });
     });
   });
