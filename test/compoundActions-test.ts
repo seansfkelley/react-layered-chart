@@ -530,7 +530,7 @@ describe('(compound actions)', () => {
       batcher({ b: 2 });
 
       return Promise.resolve()
-      .then(delay(10))
+      .then(delay(15))
       .then(() => {
         callbackSpy.callCount.should.equal(1);
         callbackSpy.firstCall.args[0].should.deepEqual({ a: 1, b: 2 });
