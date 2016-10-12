@@ -4,6 +4,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.5.1 (2016-10-11)
+
+### Fixed
+
+- Added back missing `joinType` props to `ConnectedSimpleLineLayer` and `ConnectedBucketedLineLayer`. [84054e2](https://github.com/palantir/react-layered-chart/commit/84054e2925e5f6694e90fc141e4cdc7b842b1f74).
+
 ## 1.5.0 (2016-10-10)
 
 ### Added
