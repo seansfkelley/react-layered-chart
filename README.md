@@ -27,10 +27,6 @@ npm install --save react-layered-chart
 
 Be sure to include the styles from `react-layered-chart/react-layered-chart.css`. This file is also specified on the `style` key in `package.json` for any toolchains that support it.
 
-### `process.env.NODE_ENV`
-
-Your build should specify a value for `process.env.NODE_ENV`, or at least shim it out so it doesn't fail at runtime. If you would like to get verbose debugging for what's going on inside a `ChartProvider`, specify a value of `"development"` for `process.env.NODE_ENV`.
-
 ### Typings
 
 If you're using Typescript, you must provide typings for a global `Promise`, as this type appears in the API of react-layered-chart. If you're targeting ES6, the standard library typings should suffice. Otherwise, you can install something like [`es6-promise`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/es6-promise) or typings for your library of choice, such as [Bluebird](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/bluebird).
@@ -127,6 +123,8 @@ The included CSS provides some easily-overridden defaults to prevent some issues
 ### Usage with react-redux
 
 `ChartProvider` is implemented under the hood with [Redux](https://github.com/reactjs/redux) and [react-redux](https://github.com/reactjs/react-redux)'s `Provider`. If you are using react-redux elsewhere, watch out for nested `Provider`s: you cannot access the outer provider from a child of a `ChartProvider` component!
+
+`ChartProvider` has a `debugStoreHooks` prop if you want to attach tooling to the underlying store for debugging purposes.
 
 ### Tracking transient state across (un)mount cycles
 
