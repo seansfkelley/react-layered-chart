@@ -82,6 +82,7 @@ For specifics on the exact types of these components/functions/values, please ch
 - `includeResizeSentinel?`: if `false`, prevents the automatic addition of a `ConnectedResizeSentinelLayer`. Use this option if you have layouts or styles that cause the included sentinel layer to incorrectly report the physical chart size. Be sure to replace it with your own `ConnectedResizeSentinelLayer`, otherwise your chart won't render with the correct dimensions!
 - `loadDataContext?`: an arbitrary value passed as-is to `loadData`. All data is reloaded any time this value changes shallowly. You should use this prop to pass along necessary metadata to `loadData` rather than using `Function#bind` or other mechanisms which create new `Function` instances.
 - `loadDataDebounceTimeout?`: debounce interval in milliseconds for calling `loadData` (default `1000`). Use lower numbers if your requests are cheap/fast and higher numbers if they aren't.
+- `debugStoreHooks?`: an object of `{ middlewares?: Function[], enhancers?: Function[] }` to attach debug tools to the underlying Redux store. **Note:** action types are represented as numbers; use `getActionTypeName` to translate it to a string if necessary.
 
 #### Controlled Props
 

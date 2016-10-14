@@ -37,6 +37,7 @@ const CHART = (
     }}
     className='example-chart'
     loadDataDebounceTimeout={0}
+    pixelRatio={window.devicePixelRatio || 1}
   >
     <Stack>
       {/* Render the test data as a simple line chart. */}

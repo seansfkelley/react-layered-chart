@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - `getIndexBoundsForPointData` and `getIndexBoundsForSpanData` now accept function accessors. [#10](https://github.com/palantir/react-layered-chart/issues/10).
+- `ChartProvider` no longer automatically attaches debug tools. Instead, it accepts a `debugStoreHooks` prop to allow customization. [#73](https://github.com/palantir/react-layered-chart/issues/73).
 
 ## 1.5.1 (2016-10-11)
 

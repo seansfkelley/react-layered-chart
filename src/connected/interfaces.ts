@@ -16,3 +16,7 @@ export type DataLoader = (seriesIds: SeriesId[],
                           currentData: TBySeriesId<SeriesData>,
                           currentLoadedData: TBySeriesId<LoadedSeriesData>,
                           context?: any) => TBySeriesId<Promise<LoadedSeriesData>>;
+export interface DebugStoreHooks {
+  middlewares?: Function[];
+  enhancers?: Function[];
+};

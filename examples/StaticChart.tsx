@@ -14,7 +14,10 @@ import {
 
 const CHART = (
   // Everything has to be in a Stack.
-  <Stack className='example-chart'>
+  <Stack
+    className='example-chart'
+    pixelRatio={window.devicePixelRatio || 1}
+  >
     {/* Render a static layer with our static data and view parameters. */}
     <SimpleLineLayer
       data={SIMPLE_LINE_DATA}

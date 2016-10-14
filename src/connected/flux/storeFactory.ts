@@ -1,46 +1,38 @@
 import * as _ from 'lodash';
-import { applyMiddleware, createStore, Store, compose } from 'redux';
+import { applyMiddleware, createStore, Store, compose, Middleware } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
-import * as createLogger from 'redux-logger';
 import createDebounced from 'redux-debounced';
 
 import { ActionType } from './atomicActions';
 import reducer from './reducer';
-import { ChartId } from '../interfaces';
-
-declare var process: any;
+import { ChartId, DebugStoreHooks } from '../interfaces';
 
 // chartId is only used for memoization.
-function _createStore(chartId?: ChartId): Store {
+function _createStore(chartId?: ChartId, debugHooks?: DebugStoreHooks): Store {
   let middlewares: Redux.Middleware[] = [
     createDebounced(),
     ThunkMiddleware
   ];
-
-  if (process.env.NODE_ENV !== 'development') {
-    return applyMiddleware(...middlewares)(createStore)(reducer);
-  } else {
-    middlewares.push(createLogger({
-      actionTransformer: (action) => _.defaults({
-        type: ActionType[ action.type ] || action.type
-      }, action),
-      collapsed: true
-    }));
-    const enhancers = compose(
-      applyMiddleware(...middlewares),
-      // Enable Chrome Redux Extension, see: https://github.com/zalmoxisus/redux-devtools-extension
-      (window as any).devToolsExtension ? (window as any).devToolsExtension() : _.identity
-    );
-    return createStore(reducer, enhancers);
+  if (debugHooks && debugHooks.middlewares) {
+    middlewares = middlewares.concat(debugHooks.middlewares as Middleware[]);
   }
+
+  let enhancers = [
+    applyMiddleware(...middlewares)
+  ];
+  if (debugHooks && debugHooks.enhancers) {
+    enhancers = enhancers.concat(debugHooks.enhancers);
+  }
+
+  return createStore(reducer, compose(...enhancers));
 }
 
 const memoizedCreateStore = _.memoize(_createStore);
 
-export default function(chartId?: ChartId) {
+export default function(chartId?: ChartId, debugHooks?: DebugStoreHooks) {
   if (chartId) {
-    return memoizedCreateStore(chartId);
+    return memoizedCreateStore(chartId, debugHooks);
   } else {
-    return _createStore();
+    return _createStore(chartId, debugHooks);
   }
 }

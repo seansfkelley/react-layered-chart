@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 
 import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
 import storeFactory from './flux/storeFactory';
-import { ChartId, SeriesId, TBySeriesId, DataLoader } from './interfaces';
+import { ChartId, SeriesId, TBySeriesId, DataLoader, DebugStoreHooks } from './interfaces';
 import { DefaultChartState, ChartState } from './model/state';
 import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
 import {
@@ -37,6 +37,7 @@ export interface Props {
   includeResizeSentinel?: boolean;
   loadDataContext?: any;
   loadDataDebounceTimeout?: number;
+  debugStoreHooks?: DebugStoreHooks;
 
   // Controlled props go here.
   xDomain?: Interval;
@@ -85,14 +86,14 @@ export default class ChartProvider extends React.Component<Props, {}> {
   } as any as Props;
 
   componentWillMount() {
-    this._store = storeFactory(this.props.chartId);
+    this._store = storeFactory(this.props.chartId, this.props.debugStoreHooks);
     this._onStoreChange(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.chartId !== this.props.chartId) {
       this._tryUnsubscribe();
-      this._store = storeFactory(this.props.chartId);
+      this._store = storeFactory(this.props.chartId, this.props.debugStoreHooks);
       this._onStoreChange(nextProps);
     } else {
       this._onPropsChange(nextProps);

@@ -5,6 +5,7 @@ demonstrate a more complex chart.
 
 import * as _ from 'lodash';
 import * as React from 'react';
+import * as createLogger from 'redux-logger';
 
 import {
   SIMPLE_LINE_DATA,
@@ -29,7 +30,9 @@ import {
   ConnectedSelectionBrushLayer,
   ConnectedBucketedLineLayer,
   ConnectedXAxis,
-  ConnectedYAxis
+  ConnectedYAxis,
+  DebugStoreHooks,
+  getActionTypeName
 } from '../src';
 
 // All series need to have an ID.
@@ -61,6 +64,20 @@ const DATA_LOADER = createStaticDataLoader({
   [BUCKETED_LINE_SERIES_ID]: BUCKETED_LINE_Y_DOMAIN
 });
 
+const DEBUG_HOOKS: DebugStoreHooks = {
+  middlewares: [
+    createLogger({
+      actionTransformer: (action) => _.defaults({
+        type: getActionTypeName(action.type) || action.type
+      }, action),
+      collapsed: true
+    })
+  ],
+  enhancers: [
+    (window as any).devToolsExtension ? (window as any).devToolsExtension() : _.identity
+  ]
+};
+
 const CHART = (
   <ChartProvider
     // List all the series IDs that exist in this chart.
@@ -73,6 +90,8 @@ const CHART = (
     }}
     className='example-chart complicated'
     loadDataDebounceTimeout={0}
+    debugStoreHooks={DEBUG_HOOKS}
+    pixelRatio={window.devicePixelRatio || 1}
   >
     {/* This stack has all the main views. */}
     <Stack>

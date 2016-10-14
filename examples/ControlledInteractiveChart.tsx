@@ -59,6 +59,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
         // Capture any requested changes, such as from ConnectedInteractionCaptureLayer.
         onXDomainChange={this._onXDomainChange.bind(this)}
         loadDataDebounceTimeout={0}
+        pixelRatio={window.devicePixelRatio || 1}
       >
         <Stack>
           <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
