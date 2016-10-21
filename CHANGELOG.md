@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## 1.6.0 (2016-10-20)
+
 ### Added
 
 - Added `loadDataContext` prop to `ChartProvider` for passing along state to the `loadData` function without creating new `Function` instances. [#37](https://github.com/palantir/react-layered-chart/issues/37).
