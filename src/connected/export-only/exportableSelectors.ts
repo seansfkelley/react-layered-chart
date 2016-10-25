@@ -11,21 +11,21 @@ import {
 } from '../model/selectors';
 import { ChartState } from '../model/state';
 import { ChartProviderState } from './exportableState';
-import { SeriesId, TBySeriesId, StateSelector } from '../interfaces';
+import { SeriesId, TBySeriesId } from '../interfaces';
 
-function _wrapForTypeCast<T>(selector: (state: ChartState) => T): StateSelector<T> {
-  return (state: ChartProviderState) => selector(state as any as ChartState);
+function _castToOpaqueInput<T>(selector: (state: ChartState) => T): (state: ChartProviderState) => T {
+  return selector as any;
 }
 
-export const selectXDomain = _wrapForTypeCast(internalSelectXDomain);
-export const selectYDomains = _wrapForTypeCast(internalSelectYDomains);
-export const selectHover = _wrapForTypeCast(internalSelectHover);
-export const selectSelection = _wrapForTypeCast(internalSelectSelection);
-export const selectData = _wrapForTypeCast(internalSelectData);
+export const selectXDomain = _castToOpaqueInput(internalSelectXDomain);
+export const selectYDomains = _castToOpaqueInput(internalSelectYDomains);
+export const selectHover = _castToOpaqueInput(internalSelectHover);
+export const selectSelection = _castToOpaqueInput(internalSelectSelection);
+export const selectData = _castToOpaqueInput(internalSelectData);
 
-export const selectIsLoading = _wrapForTypeCast((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>);
-export const selectError = _wrapForTypeCast((state: ChartState) => state.errorBySeriesId);
-export const selectChartPixelWidth = _wrapForTypeCast((state: ChartState) => state.physicalChartWidth);
+export const selectIsLoading = _castToOpaqueInput((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>);
+export const selectError = _castToOpaqueInput((state: ChartState) => state.errorBySeriesId);
+export const selectChartPixelWidth = _castToOpaqueInput((state: ChartState) => state.physicalChartWidth);
 
 // We inherit the name of "iterator" from Lodash. I would prefer this to be called a "selector", but obviously that
 // may be confusing in this context.
@@ -35,8 +35,8 @@ export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 // know what that shape is, so we have a sentinel + accompanying function to figure out when it's asking for the hover value.
 function HOVER_VALUE_SENTINEL() {}
 
-export function createSelectDataForHover(xValueSelector: NumericalValueIterator): StateSelector<TBySeriesId<any>> {
-  return _wrapForTypeCast(createSelector(
+export function createSelectDataForHover(xValueSelector: NumericalValueIterator): (state: ChartProviderState) => TBySeriesId<any> {
+  return _castToOpaqueInput(createSelector(
     internalSelectData,
     internalSelectHover,
     (dataBySeriesId: TBySeriesId<any>, hover?: number) => {
