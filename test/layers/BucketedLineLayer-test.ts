@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { bucket, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -30,7 +31,7 @@ describe('BucketedLineLayer', () => {
       bucket(10, 25, 35, 80, 0, 0)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 10, 20, 15, 45 ])
     ]);
   });
@@ -40,7 +41,7 @@ describe('BucketedLineLayer', () => {
       bucket(10.4, 40.6, 0, 100, 0, 0)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 11, 0, 29, 100 ])
     ]);
   });
@@ -50,7 +51,7 @@ describe('BucketedLineLayer', () => {
       bucket(0, 100, 40.4, 60.6, 0, 0)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 0, 40, 100, 20 ])
     ]);
   });
@@ -60,7 +61,7 @@ describe('BucketedLineLayer', () => {
       bucket(50, 50, 0, 100, 0, 100)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 50, 0, 1, 100 ])
     ]);
   });
@@ -70,7 +71,7 @@ describe('BucketedLineLayer', () => {
       bucket(0, 100, 50, 50, 50, 50)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 0, 49, 100, 1 ])
     ]);
   });
@@ -80,7 +81,7 @@ describe('BucketedLineLayer', () => {
       bucket(50, 50, 50, 50, 50, 50)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([]);
+    expect(spy.callsOnly('rect')).to.deep.equal([]);
   });
 
   it('should draw lines between the last and first (respectively) Y values of adjacent rects', () => {
@@ -89,7 +90,7 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45,  0)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 39,  33 ]),
       method('lineTo', [ 60,  55 ]),
       method('moveTo', [ 99, 100 ])
@@ -102,7 +103,7 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45,  0)
     ], JoinType.LEADING);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 39,  33 ]),
       method('lineTo', [ 39,  55 ]),
       method('lineTo', [ 60,  55 ]),
@@ -116,7 +117,7 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45,  0)
     ], JoinType.TRAILING);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 39,  33 ]),
       method('lineTo', [ 60,  33 ]),
       method('lineTo', [ 60,  55 ]),
@@ -130,7 +131,7 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 0, 100, 45.6,    0)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 39,  33 ]),
       method('lineTo', [ 60,  55 ]),
       method('moveTo', [ 99, 100 ])
@@ -143,7 +144,7 @@ describe('BucketedLineLayer', () => {
       bucket(60, 100, 60, 100, 0, 100)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 39, 61 ]),
       method('lineTo', [ 60, 40 ]),
       method('moveTo', [ 99,  1 ])
@@ -156,7 +157,7 @@ describe('BucketedLineLayer', () => {
       bucket(50, 100, 40, 100, 40, 100)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [  50, 40 ]),
       method('moveTo', [ 100,  0 ]),
     ]);
@@ -168,7 +169,7 @@ describe('BucketedLineLayer', () => {
       bucket(51, 100, 40, 100, 40, 100)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [  50, 40 ]),
       method('moveTo', [ 100,  0 ])
     ]);
@@ -180,7 +181,7 @@ describe('BucketedLineLayer', () => {
       bucket(50, 100, 60, 100, 60, 100)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [  50, 60 ]),
       method('lineTo', [  50, 40 ]),
       method('moveTo', [ 100,  0 ])
@@ -193,7 +194,7 @@ describe('BucketedLineLayer', () => {
       bucket(51, 100, 60, 100, 60, 100)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [  50, 60 ]),
       method('lineTo', [  51, 40 ]),
       method('moveTo', [ 100,  0 ])

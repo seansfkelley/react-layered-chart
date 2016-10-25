@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { method, property, xSpan } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -29,7 +30,7 @@ describe('SpanLayer', () => {
       xSpan(25, 75)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 25, -1, 50, 102 ])
     ]);
   });
@@ -39,7 +40,7 @@ describe('SpanLayer', () => {
       xSpan(25, 75)
     ]);
 
-    spy.operations.should.deepEqual([
+    expect(spy.operations).to.deep.equal([
       property('lineWidth', 1),
       property('strokeStyle', '#fff'),
       method('beginPath', []),
@@ -55,7 +56,7 @@ describe('SpanLayer', () => {
       xSpan(25, 75, '#333')
     ]);
 
-    spy.operations.should.deepEqual([
+    expect(spy.operations).to.deep.equal([
       property('lineWidth', 1),
       property('strokeStyle', '#fff'),
       method('beginPath', []),
@@ -72,7 +73,7 @@ describe('SpanLayer', () => {
       xSpan(80, 90)
     ]);
 
-    spy.callsOnly('rect', 'fill', 'stroke').should.deepEqual([
+    expect(spy.callsOnly('rect', 'fill', 'stroke')).to.deep.equal([
       method('rect', [ 10, -1, 10, 102 ]),
       method('fill', []),
       method('stroke', []),
@@ -88,7 +89,7 @@ describe('SpanLayer', () => {
       xSpan(33.4, 84.6)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ 33, -1, 52, 102 ])
     ]);
   });
@@ -101,7 +102,7 @@ describe('SpanLayer', () => {
       xSpan(50, Infinity)
     ]);
 
-    spy.callsOnly('rect').should.deepEqual([
+    expect(spy.callsOnly('rect')).to.deep.equal([
       method('rect', [ NaN, -1, NaN, 102 ]),
       method('rect', [ 50, -1, NaN, 102 ]),
       method('rect', [ -Infinity, -1, Infinity, 102 ]),

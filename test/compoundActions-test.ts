@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as should from 'should';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { applyMiddleware, createStore, Store } from 'redux';
 import ThunkMiddleware from 'redux-thunk';
@@ -76,12 +76,12 @@ describe('(compound actions)', () => {
     it('should be initialized with two series with no pending loads, data, errors, load invocations or context', () => {
       state = store.getState();
 
-      state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
-      state.loadVersionBySeriesId.should.deepEqual({
+      expect(state.seriesIds).to.deep.equal(ALL_SERIES_IDS);
+      expect(state.loadVersionBySeriesId).to.deep.equal({
         [SERIES_A]: null,
         [SERIES_B]: null
       });
-      state.loadedDataBySeriesId.should.deepEqual({
+      expect(state.loadedDataBySeriesId).to.deep.equal({
         [SERIES_A]: {
           data: [],
           yDomain: DEFAULT_Y_DOMAIN
@@ -91,13 +91,13 @@ describe('(compound actions)', () => {
           yDomain: DEFAULT_Y_DOMAIN
         }
       });
-      state.errorBySeriesId.should.deepEqual({
+      expect(state.errorBySeriesId).to.deep.equal({
         [SERIES_A]: null,
         [SERIES_B]: null
       });
-      should(state.loaderContext).be.undefined();
+      expect(state.loaderContext).to.be.undefined;
 
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -109,11 +109,11 @@ describe('(compound actions)', () => {
 
       state = store.getState();
 
-      should(state.loadVersionBySeriesId[SERIES_A]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_C]).not.be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_C]).to.not.be.null;
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
 
     it('should not change state and not call the data loader if the series IDs are deep equal', () => {
@@ -123,8 +123,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
 
     it('should not change state and not call the data loader if the series ID are equal but in a different order', () => {
@@ -134,8 +134,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -147,22 +147,22 @@ describe('(compound actions)', () => {
 
       state = store.getState();
 
-      should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.not.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.not.be.null;
     });
 
     it('should not change state and not call the data loader if the data loader is reference equal', () => {
       store.dispatch(setDataLoader(LOADER));
 
       state = store.getState();
-      state.dataLoader.should.be.exactly(LOADER);
+      expect(state.dataLoader).to.equal(LOADER);
 
       store.dispatch(setDataLoaderAndLoad(state.dataLoader));
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -172,12 +172,12 @@ describe('(compound actions)', () => {
     it('should call the data loader', () => {
       store.dispatch(setDataLoaderContextAndLoad(CONTEXT));
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
 
     it('should not change state and not call the data loader if the value is reference-equals to the current value', () => {
       store.dispatch(setDataLoaderContext(CONTEXT));
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(dataLoaderSpy.callCount).to.equal(0);
 
       state = store.getState();
 
@@ -185,8 +185,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -194,17 +194,17 @@ describe('(compound actions)', () => {
     it('should call the data loader when there is no override set', () => {
       store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
 
     it('should not call the data loader with an override already set', () => {
       store.dispatch(setOverrideXDomain(DUMMY_DOMAIN));
 
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(dataLoaderSpy.callCount).to.equal(0);
 
       store.dispatch(setXDomainAndLoad(DUMMY_DOMAIN));
 
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
 
     it('should not change state and not call the data loader if the X domain is deep-equal to the current internal value', () => {
@@ -214,8 +214,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -223,13 +223,13 @@ describe('(compound actions)', () => {
     it('should call the data loader', () => {
       store.dispatch(setOverrideXDomainAndLoad(DUMMY_DOMAIN));
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
 
     it('should not change state and not call the data loader if the X domain is deep-equal to the current override value', () => {
       store.dispatch(setOverrideXDomainAndLoad(DUMMY_DOMAIN));
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
 
       state = store.getState();
 
@@ -237,8 +237,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
   });
 
@@ -246,7 +246,7 @@ describe('(compound actions)', () => {
     it('should call the data loader', () => {
       store.dispatch(setChartPhysicalWidthAndLoad(1337));
 
-      dataLoaderSpy.callCount.should.equal(1);
+      expect(dataLoaderSpy.callCount).to.equal(1);
     });
 
     it('should not change state and not call the data loader if the value is the same as the current value', () => {
@@ -256,8 +256,8 @@ describe('(compound actions)', () => {
 
       const newState: ChartState = store.getState();
 
-      state.should.be.exactly(newState);
-      dataLoaderSpy.callCount.should.equal(0);
+      expect(state).to.equal(newState);
+      expect(dataLoaderSpy.callCount).to.equal(0);
     });
   });
 
@@ -267,8 +267,8 @@ describe('(compound actions)', () => {
 
       state = store.getState();
 
-      should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.not.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.not.be.null;
     });
 
     it('should mark data requested for the provided series IDs if they exist in the store', () => {
@@ -276,8 +276,8 @@ describe('(compound actions)', () => {
 
       state = store.getState();
 
-      should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.not.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.be.null;
     });
 
     it('should not mark data requested for series IDs that are not in the store', () => {
@@ -287,49 +287,49 @@ describe('(compound actions)', () => {
 
       state = store.getState();
 
-      state.loadVersionBySeriesId.should.not.have.key(SERIES_C);
+      expect(state.loadVersionBySeriesId).to.not.have.key(SERIES_C);
     });
 
     it('should call the data loader', () => {
       store.dispatch(_requestDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
+      expect(dataLoaderSpy.calledOnce).to.be.true;
     });
   });
 
   describe('_performDataLoad', () => {
     it('should provide debounce metadata', () => {
       const action = _performDataLoad()(_.identity, () => ({ debounceTimeout: 1000 }) as ChartState);
-      should.exist(action.meta);
-      should.exist(action.meta.debounce);
-      action.meta.debounce.time.should.be.a.Number();
-      action.meta.debounce.key.should.be.a.String();
+      expect(action.meta).to.exist;
+      expect(action.meta.debounce).to.exist;
+      expect(action.meta.debounce.time).to.be.a('number');
+      expect(action.meta.debounce.key).to.be.a('string');
     });
 
     it('should respect the debounce timeout set on the store', () => {
       store.dispatch(setDataLoaderDebounceTimeout(1337));
 
       const action = _performDataLoad()(_.identity, store.getState);
-      should.exist(action.meta);
-      should.exist(action.meta.debounce);
-      action.meta.debounce.time.should.equal(1337);
+      expect(action.meta).to.exist;
+      expect(action.meta.debounce).to.exist;
+      expect(action.meta.debounce.time).to.equal(1337);
     });
 
     it('should use a debounce timeout of 1 if the store specifies a value of 0', () => {
       store.dispatch(setDataLoaderDebounceTimeout(0));
 
       const action = _performDataLoad()(_.identity, store.getState);
-      should.exist(action.meta);
-      should.exist(action.meta.debounce);
-      action.meta.debounce.time.should.equal(1);
+      expect(action.meta).to.exist;
+      expect(action.meta.debounce).to.exist;
+      expect(action.meta.debounce.time).to.equal(1);
     });
 
     it('should call the data loader with only the series IDs that have requested loads', () => {
       store.dispatch(dataRequested([ SERIES_A ]));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[0].should.deepEqual([ SERIES_A ]);
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[0]).to.deep.equal([ SERIES_A ]);
     });
 
     it('should call the data loader with the overridden X domain if one is set', () => {
@@ -337,8 +337,8 @@ describe('(compound actions)', () => {
       store.dispatch(dataRequested(ALL_SERIES_IDS));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[1].should.be.exactly(DUMMY_DOMAIN);
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[1]).to.equal(DUMMY_DOMAIN);
     });
 
     it('should call the data loader with the previously-loaded Y domains, even if an override is set', () => {
@@ -353,8 +353,8 @@ describe('(compound actions)', () => {
       store.dispatch(dataRequested(ALL_SERIES_IDS));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[2].should.deepEqual({
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[2]).to.deep.equal({
         [SERIES_A]: DEFAULT_Y_DOMAIN,
         [SERIES_B]: DEFAULT_Y_DOMAIN
       });
@@ -364,8 +364,8 @@ describe('(compound actions)', () => {
       store.dispatch(dataRequested(ALL_SERIES_IDS));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[4].should.deepEqual({
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[4]).to.deep.equal({
         [SERIES_A]: [],
         [SERIES_B]: []
       });
@@ -375,8 +375,8 @@ describe('(compound actions)', () => {
       store.dispatch(dataRequested(ALL_SERIES_IDS));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[5].should.deepEqual({
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[5]).to.deep.equal({
         [SERIES_A]: {
           data: [],
           yDomain: DEFAULT_Y_DOMAIN
@@ -394,8 +394,8 @@ describe('(compound actions)', () => {
       store.dispatch(setDataLoaderContext(CONTEXT));
       store.dispatch(_performDataLoad());
 
-      dataLoaderSpy.calledOnce.should.be.true();
-      dataLoaderSpy.firstCall.args[6].should.be.exactly(CONTEXT);
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[6]).to.equal(CONTEXT);
     });
 
     it('should set the data and Y domain as-is from the result of the data loader', () => {
@@ -412,12 +412,12 @@ describe('(compound actions)', () => {
       .then(() => {
         state = store.getState();
 
-        state.loadVersionBySeriesId.should.deepEqual({
+        expect(state.loadVersionBySeriesId).to.deep.equal({
           [SERIES_A]: null,
           [SERIES_B]: null
         });
 
-        state.loadedDataBySeriesId.should.deepEqual({
+        expect(state.loadedDataBySeriesId).to.deep.equal({
           [SERIES_A]: {
             data: DATA_A,
             yDomain: DUMMY_DOMAIN
@@ -442,7 +442,7 @@ describe('(compound actions)', () => {
       return store.dispatch(_performDataLoad(0))
       .then(delay(10))
       .then(() => {
-        store.getState().errorBySeriesId.should.deepEqual({
+        expect(store.getState().errorBySeriesId).to.deep.equal({
           [SERIES_A]: 'a failed',
           [SERIES_B]: 'b failed'
         });
@@ -465,7 +465,7 @@ describe('(compound actions)', () => {
       return loadPromise
       .then(delay(10))
       .then(() => {
-        store.getState().loadedDataBySeriesId.should.deepEqual({
+        expect(store.getState().loadedDataBySeriesId).to.deep.equal({
           [SERIES_A]: {
             data: [],
             yDomain: DEFAULT_Y_DOMAIN
@@ -494,7 +494,7 @@ describe('(compound actions)', () => {
       return loadPromise
       .then(delay(10))
       .then(() => {
-        store.getState().errorBySeriesId.should.deepEqual({
+        expect(store.getState().errorBySeriesId).to.deep.equal({
           [SERIES_A]: null,
           [SERIES_B]: 'b failed'
         });
@@ -517,11 +517,11 @@ describe('(compound actions)', () => {
       return Promise.resolve()
       .then(delay(5))
       .then(() => {
-        callbackSpy.callCount.should.equal(0);
+        expect(callbackSpy.callCount).to.equal(0);
       })
       .then(delay(10))
       .then(() => {
-        callbackSpy.callCount.should.equal(1);
+        expect(callbackSpy.callCount).to.equal(1);
       });
     });
 
@@ -532,8 +532,8 @@ describe('(compound actions)', () => {
       return Promise.resolve()
       .then(delay(15))
       .then(() => {
-        callbackSpy.callCount.should.equal(1);
-        callbackSpy.firstCall.args[0].should.deepEqual({ a: 1, b: 2 });
+        expect(callbackSpy.callCount).to.equal(1);
+        expect(callbackSpy.firstCall.args[0]).to.deep.equal({ a: 1, b: 2 });
       });
     });
   });

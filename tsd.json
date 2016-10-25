@@ -23,9 +23,6 @@
     "mocha/mocha.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
     },
-    "should/should.d.ts": {
-      "commit": "e0e746833c4cd61e07f24d00e32baa9481e7ba59"
-    },
     "redux-debounced/redux-debounced.d.ts": {
       "commit": "edb64e4a35896510ce02b93c0bca5ec3878db738"
     },
@@ -61,6 +58,12 @@
     },
     "react-is-deprecated/react-is-deprecated.d.ts": {
       "commit": "4c15f524ed87a03b5465e9f5717a89baea041b6c"
+    },
+    "chai/chai.d.ts": {
+      "commit": "003c965b31ab9c478937a7b6e56dfb74f94b5c47"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "003c965b31ab9c478937a7b6e56dfb74f94b5c47"
     }
   }
 }

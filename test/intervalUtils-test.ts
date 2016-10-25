@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as should from 'should';
+import { expect } from 'chai';
 
 import { Interval } from '../src/core/interfaces';
 import {
@@ -68,15 +68,15 @@ describe('(interval utils)', () => {
 
     TEST_CASES.forEach(test => {
       it(test.description, () => {
-        enforceIntervalBounds(test.interval, BOUNDS).should.deepEqual(test.output);
+        expect(enforceIntervalBounds(test.interval, BOUNDS)).to.deep.equal(test.output);
       });
     });
 
     it('should not mutate the input interval', () => {
       const input = interval(-1, 1);
       const output = enforceIntervalBounds(input, BOUNDS);
-      input.should.deepEqual(interval(-1, 1));
-      output.should.not.deepEqual(interval(-1, 1));
+      expect(input).to.deep.equal(interval(-1, 1));
+      expect(output).to.not.deep.equal(interval(-1, 1));
     });
   });
 
@@ -101,76 +101,76 @@ describe('(interval utils)', () => {
 
     TEST_CASES.forEach(test => {
       it(test.description, () => {
-        enforceIntervalExtent(test.interval, MIN_EXTENT, MAX_EXTENT).should.deepEqual(test.output);
+        expect(enforceIntervalExtent(test.interval, MIN_EXTENT, MAX_EXTENT)).to.deep.equal(test.output);
       });
     });
 
     it('should not mutate in the input interval', () => {
       const input = interval(0, 10);
       const output = enforceIntervalExtent(input, 1, 5);
-      input.should.deepEqual(interval(0, 10));
-      output.should.not.deepEqual(interval(0, 10));
+      expect(input).to.deep.equal(interval(0, 10));
+      expect(output).to.not.deep.equal(interval(0, 10));
     });
   });
 
   describe('extendInterval', () => {
     it('should increase both endpoints symmetrically as a fraction of the extent', () => {
-      extendInterval(interval(0, 10), 0.5).should.deepEqual(interval(-5, 15));
+      expect(extendInterval(interval(0, 10), 0.5)).to.deep.equal(interval(-5, 15));
     });
 
     it('should not mutate in the input interval', () => {
       const input = interval(0, 10);
       const output = extendInterval(input, 0.5);
-      input.should.deepEqual(interval(0, 10));
-      output.should.not.deepEqual(interval(0, 10));
+      expect(input).to.deep.equal(interval(0, 10));
+      expect(output).to.not.deep.equal(interval(0, 10));
     });
   });
 
   describe('roundInterval', () => {
     it('should round each endpoint of the interval to the nearest integer', () => {
-      roundInterval(interval(1.1, 1.9)).should.deepEqual(interval(1, 2));
+      expect(roundInterval(interval(1.1, 1.9))).to.deep.equal(interval(1, 2));
     });
 
     it('should not mutate in the input interval', () => {
       const input = interval(1.1, 1.9);
       const output = roundInterval(input);
-      input.should.deepEqual(interval(1.1, 1.9));
-      output.should.not.deepEqual(interval(1.1, 1.9));
+      expect(input).to.deep.equal(interval(1.1, 1.9));
+      expect(output).to.not.deep.equal(interval(1.1, 1.9));
     });
   });
 
   describe('mergeIntervals', () => {
     it('should return null when a zero-length array is given', () => {
-      should(mergeIntervals([])).be.null();
+      expect(mergeIntervals([])).to.be.null;
     });
 
     it('should return the default interval when a zero-length array and default is given', () => {
       const i = interval(0, 5);
-      mergeIntervals([], i).should.be.exactly(i);
+      expect(mergeIntervals([], i)).to.equal(i);
     });
 
     it('should return a interval with min-of-mins and max-of-maxes', () => {
-      mergeIntervals([
+      expect(mergeIntervals([
         interval(0, 2),
         interval(1, 3)
-      ]).should.deepEqual(interval(0, 3));
+      ])).to.deep.equal(interval(0, 3));
     });
 
     it('should not mutate the input intervals', () => {
       const i1 = interval(0, 2);
       const i2 = interval(1, 3);
       mergeIntervals([i1, i2]);
-      i1.should.deepEqual(interval(0, 2));
-      i2.should.deepEqual(interval(1, 3));
+      expect(i1).to.deep.equal(interval(0, 2));
+      expect(i2).to.deep.equal(interval(1, 3));
     });
   });
 
   describe('panInterval', () => {
     it('should apply the delta value to both min and max', () => {
-      panInterval({
+      expect(panInterval({
         min: 0,
         max: 10
-      }, 5).should.eql({
+      }, 5)).to.deep.equal({
         min: 5,
         max: 15
       });
@@ -179,57 +179,57 @@ describe('(interval utils)', () => {
     it('should not mutate the input interval', () => {
       const input = interval(0, 10);
       const output = panInterval(input, 5);
-      input.should.deepEqual(interval(0, 10));
-      output.should.not.deepEqual(interval(0, 10));
+      expect(input).to.deep.equal(interval(0, 10));
+      expect(output).to.not.deep.equal(interval(0, 10));
     });
   });
 
   describe('zoomInterval', () => {
     it('should zoom out when given a value less than 1', () => {
-      zoomInterval({
+      expect(zoomInterval({
         min: -1,
         max: 1
-      }, 1 / 4, 0.5).should.eql({
+      }, 1 / 4, 0.5)).to.deep.equal({
         min: -4,
         max: 4
       });
     });
 
     it('should zoom in when given a value greater than 1', () => {
-      zoomInterval({
+      expect(zoomInterval({
         min: -1,
         max: 1
-      }, 4, 0.5).should.eql({
+      }, 4, 0.5)).to.deep.equal({
         min: -1 / 4,
         max: 1 / 4
       });
     });
 
     it('should default to zooming equally on both bounds', () => {
-      zoomInterval({
+      expect(zoomInterval({
         min: -1,
         max: 1
-      }, 1 / 4).should.eql({
+      }, 1 / 4)).to.deep.equal({
         min: -4,
         max: 4
       });
     });
 
     it('should bias a zoom-in towards one end when given an anchor not equal to 1/2', () => {
-      zoomInterval({
+      expect(zoomInterval({
         min: -1,
         max: 1
-      }, 4, 1).should.eql({
+      }, 4, 1)).to.deep.equal({
         min: 1 / 2,
         max: 1
       });
     });
 
     it('should bias a zoom-out towards one end when given an anchor not equal to 1/2', () => {
-      zoomInterval({
+      expect(zoomInterval({
         min: -1,
         max: 1
-      }, 1 / 4, 1).should.eql({
+      }, 1 / 4, 1)).to.deep.equal({
         min: -7,
         max: 1
       });
@@ -238,8 +238,8 @@ describe('(interval utils)', () => {
     it('should not mutate the input interval', () => {
       const input = interval(0, 10);
       const output = zoomInterval(input, 1 / 2, 2);
-      input.should.deepEqual(interval(0, 10));
-      output.should.not.deepEqual(interval(0, 10));
+      expect(input).to.deep.equal(interval(0, 10));
+      expect(output).to.not.deep.equal(interval(0, 10));
     });
   });
 
@@ -248,15 +248,15 @@ describe('(interval utils)', () => {
     const BIG_RANGE = { min: 0, max: 3 };
 
     it('should return true if the first interval is strictly larger than the second interval', () => {
-      intervalContains(BIG_RANGE, SMALL_RANGE).should.be.true();
+      expect(intervalContains(BIG_RANGE, SMALL_RANGE)).to.be.true;
     });
 
     it('should return true if the first interval is equal to the second interval', () => {
-      intervalContains(BIG_RANGE, BIG_RANGE).should.be.true();
+      expect(intervalContains(BIG_RANGE, BIG_RANGE)).to.be.true;
     });
 
     it('should return false if the first interval is strictly smaller than the second interval', () => {
-      intervalContains(SMALL_RANGE, BIG_RANGE).should.be.false();
+      expect(intervalContains(SMALL_RANGE, BIG_RANGE)).to.be.false;
     });
   });
 });

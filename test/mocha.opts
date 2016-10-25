@@ -1,2 +1,2 @@
 --reporter spec
---require should
+--compilers ts:ts-node/register,tsx:ts-node/register

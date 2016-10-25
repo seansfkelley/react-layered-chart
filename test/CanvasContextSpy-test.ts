@@ -1,4 +1,5 @@
 import CanvasContextSpy from '../src/test-util/CanvasContextSpy';
+import { expect } from 'chai';
 
 describe('CanvasContextSpy', () => {
   let spy: typeof CanvasContextSpy;
@@ -17,7 +18,7 @@ describe('CanvasContextSpy', () => {
   it('should support setting properties', () => {
     spy.fillStyle = '#000';
 
-    spy.properties.should.deepEqual([
+    expect(spy.properties).to.deep.equal([
       { property: 'fillStyle', value: '#000' }
     ]);
   });
@@ -25,7 +26,7 @@ describe('CanvasContextSpy', () => {
   it('should support calling methods', () => {
     spy.scale(0, 0);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       { method: 'scale', arguments: [ 0, 0 ] }
     ]);
   });
@@ -33,7 +34,7 @@ describe('CanvasContextSpy', () => {
   it('should provide property sets and method calls in the order they happen via \'operations\'', () => {
     doABunchOfStuff(spy);
 
-    spy.operations.should.deepEqual([
+    expect(spy.operations).to.deep.equal([
       { property: 'fillStyle', value: '#000' },
       { method: 'scale', arguments: [ 0, 0 ] },
       { property: 'lineWidth', value: 1 },
@@ -44,7 +45,7 @@ describe('CanvasContextSpy', () => {
   it('should track only property sets in the order they happen via \'properties\'', () => {
     doABunchOfStuff(spy);
 
-    spy.properties.should.deepEqual([
+    expect(spy.properties).to.deep.equal([
       { property: 'fillStyle', value: '#000' },
       { property: 'lineWidth', value: 1 }
     ]);
@@ -53,7 +54,7 @@ describe('CanvasContextSpy', () => {
   it('should track only method calls in the order they happen via \'calls\'', () => {
     doABunchOfStuff(spy);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       { method: 'scale', arguments: [ 0, 0 ] },
       { method: 'save', arguments: [] }
     ]);
@@ -62,7 +63,7 @@ describe('CanvasContextSpy', () => {
   it('should exclude calls using callsOmit', () => {
     doABunchOfStuff(spy);
 
-    spy.callsOmit('scale').should.deepEqual([
+    expect(spy.callsOmit('scale')).to.deep.equal([
       { method: 'save', arguments: [] }
     ]);
   });
@@ -70,7 +71,7 @@ describe('CanvasContextSpy', () => {
   it('should include calls using callsOnly', () => {
     doABunchOfStuff(spy);
 
-    spy.callsOnly('scale').should.deepEqual([
+    expect(spy.callsOnly('scale')).to.deep.equal([
       { method: 'scale', arguments: [ 0, 0 ] }
     ]);
   });

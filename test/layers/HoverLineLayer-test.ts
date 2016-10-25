@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -25,37 +26,37 @@ describe('HoverLineLayer', () => {
   it('should do nothing if no hover value is provided', () => {
     renderWithSpy(spy, null);
 
-    spy.operations.should.deepEqual([]);
+    expect(spy.operations).to.deep.equal([]);
   });
 
   it('should do nothing if the hover value is NaN', () => {
     renderWithSpy(spy, NaN);
 
-    spy.operations.should.deepEqual([]);
+    expect(spy.operations).to.deep.equal([]);
   });
 
   it('should do nothing if the hover value is infinite', () => {
     renderWithSpy(spy, Infinity);
 
-    spy.operations.should.deepEqual([]);
+    expect(spy.operations).to.deep.equal([]);
   });
 
   it('should do nothing if the hover value is before the X domain', () => {
     renderWithSpy(spy, -100);
 
-    spy.operations.should.deepEqual([]);
+    expect(spy.operations).to.deep.equal([]);
   });
 
   it('should do nothing if the hover value is after the X domain', () => {
     renderWithSpy(spy, 200);
 
-    spy.operations.should.deepEqual([]);
+    expect(spy.operations).to.deep.equal([]);
   });
 
   it('should render a hover line for a hover value in bounds', () => {
     renderWithSpy(spy, 50);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 50, 0 ]),
       method('lineTo', [ 50, 100 ])
     ]);
@@ -64,7 +65,7 @@ describe('HoverLineLayer', () => {
   it('should round the hover value to the integer', () => {
     renderWithSpy(spy, 33.4);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 33, 0 ]),
       method('lineTo', [ 33, 100 ])
     ]);

@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import {
   objectWithKeys,
   replaceValuesWithConstant,
@@ -7,7 +9,7 @@ import {
 describe('(reducer utils)', () => {
   describe('objectWithKeys', () => {
     it('should yield an object with the specified keys', () => {
-      objectWithKeys(['a', 'b'], true).should.deepEqual({
+      expect(objectWithKeys(['a', 'b'], true)).to.deep.equal({
         a: true,
         b: true
       });
@@ -15,7 +17,7 @@ describe('(reducer utils)', () => {
 
     // _.each early-aborts when you return false, which caused an issue earlier.
     it('should work as expected even when the value is false', () => {
-      objectWithKeys(['a', 'b'], false).should.deepEqual({
+      expect(objectWithKeys(['a', 'b'], false)).to.deep.equal({
         a: false,
         b: false
       });
@@ -23,13 +25,13 @@ describe('(reducer utils)', () => {
 
     it('should not clone the default value for each key', () => {
       const { a, b } = objectWithKeys(['a', 'b'], {});
-      a.should.be.exactly(b);
+      expect(a).to.equal(b);
     });
   });
 
   describe('replaceValuesWithConstant', () => {
     it('should replace all the values in the given object with the given value', () => {
-      replaceValuesWithConstant({ a: 1, b: 2 }, true).should.deepEqual({
+      expect(replaceValuesWithConstant({ a: 1, b: 2 }, true)).to.deep.equal({
         a: true,
         b: true
       });
@@ -37,7 +39,7 @@ describe('(reducer utils)', () => {
 
     // _.each early-aborts when you return false, which caused an issue earlier.
     it('should work as expected even when the value is false', () => {
-      replaceValuesWithConstant({ a: 1, b: 2 }, false).should.deepEqual({
+      expect(replaceValuesWithConstant({ a: 1, b: 2 }, false)).to.deep.equal({
         a: false,
         b: false
       });
@@ -46,29 +48,29 @@ describe('(reducer utils)', () => {
     it('should not mutate the input value', () => {
       const input = { a: 1 };
       const output = replaceValuesWithConstant(input, true);
-      input.should.not.be.exactly(output);
-      input.should.deepEqual({ a: 1 });
+      expect(input).to.not.equal(output);
+      expect(input).to.deep.equal({ a: 1 });
     });
 
     it('should not clone the default value for each key', () => {
       const { a, b } = replaceValuesWithConstant({ a: 1, b: 2 }, {});
-      a.should.be.exactly(b);
+      expect(a).to.equal(b);
     });
   });
 
   describe('objectWithKeysFromObject', () => {
     it('should add any missing keys using the default value', () => {
-      objectWithKeysFromObject({}, ['a'], true).should.deepEqual({
+      expect(objectWithKeysFromObject({}, ['a'], true)).to.deep.equal({
         a: true
       });
     });
 
     it('should remove any extraneous keys', () => {
-      objectWithKeysFromObject({ a: 1 }, [], true).should.deepEqual({});
+      expect(objectWithKeysFromObject({ a: 1 }, [], true)).to.deep.equal({});
     });
 
     it('should add and remove keys as necessary, preferring the value of existing keys', () => {
-      objectWithKeysFromObject({ a: 1, b: 2 }, ['b', 'c'], true).should.deepEqual({
+      expect(objectWithKeysFromObject({ a: 1, b: 2 }, ['b', 'c'], true)).to.deep.equal({
         b: 2,
         c: true
       });
@@ -76,15 +78,15 @@ describe('(reducer utils)', () => {
 
     // _.each early-aborts when you return false, which caused an issue earlier.
     it('should work as expected even when the value is false', () => {
-      objectWithKeysFromObject({ a: false }, ['a'], true).should.deepEqual({
+      expect(objectWithKeysFromObject({ a: false }, ['a'], true)).to.deep.equal({
         a: false
       });
 
-      objectWithKeysFromObject({ a: true }, ['a'], false).should.deepEqual({
+      expect(objectWithKeysFromObject({ a: true }, ['a'], false)).to.deep.equal({
         a: true
       });
 
-      objectWithKeysFromObject({}, ['a'], false).should.deepEqual({
+      expect(objectWithKeysFromObject({}, ['a'], false)).to.deep.equal({
         a: false
       });
     });
@@ -92,13 +94,13 @@ describe('(reducer utils)', () => {
     it('should not mutate the input value', () => {
       const input = { a: 1 };
       const output = objectWithKeysFromObject(input, ['a'], true);
-      input.should.not.be.exactly(output);
-      input.should.deepEqual({ a: 1 });
+      expect(input).to.not.equal(output);
+      expect(input).to.deep.equal({ a: 1 });
     });
 
     it('should not clone the default value for each key', () => {
       const { a, b } = objectWithKeysFromObject({}, ['a', 'b'], {});
-      a.should.be.exactly(b);
+      expect(a).to.equal(b);
     });
   });
 });

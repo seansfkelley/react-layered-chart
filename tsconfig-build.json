@@ -4,15 +4,18 @@
     "module": "commonjs",
     "sourceMap": true,
     "jsx": "react",
-    "outDir": "test/build",
+    "rootDir": "src",
+    "outDir": "lib",
+    "declaration": true,
     "experimentalDecorators": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "pretty": true
   },
-
   "exclude": [
     "node_modules",
-    "lib"
+    "lib",
+    "test",
+    "examples"
   ]
 }

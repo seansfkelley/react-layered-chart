@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { span, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -29,7 +30,7 @@ describe('BarLayer', () => {
       span(40, 60, 33)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('rect', [ 40, 100, 20, -33 ]),
       method('fill', [])
@@ -41,7 +42,7 @@ describe('BarLayer', () => {
       span(40, 60, -33)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('rect', [ 40, 100, 20, 33 ]),
       method('fill', [])
@@ -53,7 +54,7 @@ describe('BarLayer', () => {
       span(33.4, 55.6, 84.7)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('rect', [ 33, 100, 23, -85 ]),
       method('fill', [])
@@ -66,7 +67,7 @@ describe('BarLayer', () => {
       span(60, 80, 90)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('rect', [ 20, 100, 20, -10 ]),
       method('rect', [ 60, 100, 20, -90 ]),
@@ -84,7 +85,7 @@ describe('BarLayer', () => {
       span(50, 50, Infinity)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('rect', [ NaN, 100, NaN, -50 ]),
       method('rect', [ 50, 100, NaN, -50 ]),
