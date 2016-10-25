@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { point, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -30,7 +31,7 @@ describe('SimpleLineLayer', () => {
       point(50, 50)
     ]);
 
-    spy.calls.should.deepEqual([]);
+    expect(spy.calls).to.deep.equal([]);
   });
 
   it('should not render anything if all the data is entirely outside the X domain', () => {
@@ -39,7 +40,7 @@ describe('SimpleLineLayer', () => {
       point(-50, 0)
     ]);
 
-    spy.calls.should.deepEqual([]);
+    expect(spy.calls).to.deep.equal([]);
   });
 
   it('should render all the data if all the data fits in the X domain', () => {
@@ -48,7 +49,7 @@ describe('SimpleLineLayer', () => {
       point(75, 50)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 25, 67 ]),
       method('lineTo', [ 75, 50 ])
     ]);
@@ -60,7 +61,7 @@ describe('SimpleLineLayer', () => {
       point(75, 50)
     ], JoinType.LEADING);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 25, 67 ]),
       method('lineTo', [ 25, 50 ]),
       method('lineTo', [ 75, 50 ])
@@ -73,7 +74,7 @@ describe('SimpleLineLayer', () => {
       point(75, 50)
     ], JoinType.TRAILING);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 25, 67 ]),
       method('lineTo', [ 75, 67 ]),
       method('lineTo', [ 75, 50 ])
@@ -89,7 +90,7 @@ describe('SimpleLineLayer', () => {
       point(110, 2)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ -5, 90 ]),
       method('lineTo', [ 50, 85 ]),
       method('lineTo', [ 105, 80 ])
@@ -102,7 +103,7 @@ describe('SimpleLineLayer', () => {
       point(55.4, 84.6)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 35, 78 ]),
       method('lineTo', [ 55, 15 ])
     ]);
@@ -118,7 +119,7 @@ describe('SimpleLineLayer', () => {
       point(100, 50)
     ]);
 
-    spy.callsOnly('moveTo', 'lineTo').should.deepEqual([
+    expect(spy.callsOnly('moveTo', 'lineTo')).to.deep.equal([
       method('moveTo', [ 0, 50 ]),
       method('lineTo', [ 50, -Infinity ]),
       method('lineTo', [ Infinity, 50 ]),

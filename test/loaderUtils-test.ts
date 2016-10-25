@@ -1,4 +1,4 @@
-import * as should from 'should';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { Interval, SeriesData } from '../src/core/interfaces';
@@ -68,10 +68,10 @@ describe('(loader utils)', () => {
         CONTEXT
       ];
 
-      loaderStub1.calledOnce.should.be.true();
-      loaderStub1.firstCall.args.should.deepEqual(args);
-      loaderStub2.calledOnce.should.be.true();
-      loaderStub2.firstCall.args.should.deepEqual(args);
+      expect(loaderStub1.calledOnce).to.be.true;
+      expect(loaderStub1.firstCall.args).to.deep.equal(args);
+      expect(loaderStub2.calledOnce).to.be.true;
+      expect(loaderStub2.firstCall.args).to.deep.equal(args);
     });
 
     it('should call the loaders in order', () => {
@@ -90,7 +90,7 @@ describe('(loader utils)', () => {
 
       callWithArgs(loader);
 
-      callOrder.should.deepEqual([ 0, 1 ]);
+      expect(callOrder).to.deep.equal([ 0, 1 ]);
     });
 
     it('should pass through only series IDs that earlier loaders didn\'t handle', () => {
@@ -101,8 +101,8 @@ describe('(loader utils)', () => {
 
       callWithArgs(loader);
 
-      loaderStub2.calledOnce.should.be.true();
-      loaderStub2.firstCall.args[0].should.deepEqual([ 'b' ]);
+      expect(loaderStub2.calledOnce).to.be.true;
+      expect(loaderStub2.firstCall.args[0]).to.deep.equal([ 'b' ]);
     });
 
     it('should automatically create rejected promises for any unhandled series IDs', () => {

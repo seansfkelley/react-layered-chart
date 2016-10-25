@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
+import { expect } from 'chai';
 
 import { point, method, property } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
@@ -33,7 +34,7 @@ describe('PointLayer', () => {
       point(75, 67)
     ], 0);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('moveTo', [ 25, 67 ]),
       method('arc', [ 25, 67, 5, 0, TWO_PI ]),
@@ -49,11 +50,11 @@ describe('PointLayer', () => {
       point(75, 67)
     ], 3);
 
-    spy.properties.filter(({ property }) => property === 'lineWidth').should.deepEqual([
+    expect(spy.properties.filter(({ property }) => property === 'lineWidth')).to.deep.equal([
       property('lineWidth', 2)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('arc', [ 25, 67, 4, 0, TWO_PI ]),
       method('stroke', []),
@@ -74,7 +75,7 @@ describe('PointLayer', () => {
       point(200, 100)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('moveTo', [ -50, 84 ]),
       method('arc', [ -50, 84, 5, 0, TWO_PI ]),
@@ -93,7 +94,7 @@ describe('PointLayer', () => {
       point(34.6, 22.1)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('moveTo', [ 35, 78 ]),
       method('arc', [ 35, 78, 5, 0, TWO_PI ]),
@@ -109,7 +110,7 @@ describe('PointLayer', () => {
       point(NaN, 50)
     ]);
 
-    spy.calls.should.deepEqual([
+    expect(spy.calls).to.deep.equal([
       method('beginPath', []),
       method('moveTo', [ 50, -Infinity ]),
       method('arc', [ 50, -Infinity, 5, 0, TWO_PI ]),

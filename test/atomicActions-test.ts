@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as should from 'should';
+import { expect } from 'chai';
 
 import { TBySeriesId, LoadedSeriesData } from '../src/connected/interfaces';
 import reducer from '../src/connected/flux/reducer';
@@ -88,8 +88,8 @@ describe('(atomic actions)', () => {
     it('should put defaults in for all fields that are keyed by series ID', () => {
       state = reducer(state, setSeriesIds(ALL_SERIES_IDS));
 
-      state.seriesIds.should.deepEqual(ALL_SERIES_IDS);
-      pickKeyedState(state).should.deepEqual({
+      expect(state.seriesIds).to.deep.equal(ALL_SERIES_IDS);
+      expect(pickKeyedState(state)).to.deep.equal({
         loadedDataBySeriesId: objectWithKeys(ALL_SERIES_IDS, { data: [], yDomain: DEFAULT_Y_DOMAIN }),
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
         errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
@@ -103,8 +103,8 @@ describe('(atomic actions)', () => {
         setSeriesIds(ONLY_SERIES_A)
       );
 
-      state.seriesIds.should.deepEqual(ONLY_SERIES_A);
-      pickKeyedState(state).should.deepEqual({
+      expect(state.seriesIds).to.deep.equal(ONLY_SERIES_A);
+      expect(pickKeyedState(state)).to.deep.equal({
         loadedDataBySeriesId: objectWithKeys(ONLY_SERIES_A, { data: [], yDomain: DEFAULT_Y_DOMAIN }),
         loadVersionBySeriesId: objectWithKeys(ONLY_SERIES_A, null),
         errorBySeriesId: objectWithKeys(ONLY_SERIES_A, null)
@@ -121,7 +121,7 @@ describe('(atomic actions)', () => {
         setDataLoader(dataLoader)
       );
 
-      state.dataLoader.should.be.exactly(dataLoader);
+      expect(state.dataLoader).to.equal(dataLoader);
     });
 
     it('should not unset any already-loaded data', () => {
@@ -130,11 +130,11 @@ describe('(atomic actions)', () => {
         dataReturned(ALL_SERIES_DATA)
       );
 
-      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
+      expect(state.loadedDataBySeriesId).to.deep.equal(ALL_SERIES_DATA);
 
       state = reducer(state, setDataLoader(dataLoader));
 
-      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
+      expect(state.loadedDataBySeriesId).to.deep.equal(ALL_SERIES_DATA);
     });
   });
 
@@ -145,9 +145,9 @@ describe('(atomic actions)', () => {
         dataRequested([ SERIES_A ])
       );
 
-      state.loadVersionBySeriesId.should.have.keys(ALL_SERIES_IDS);
-      should(state.loadVersionBySeriesId[SERIES_A]).not.be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).be.null();
+      expect(state.loadVersionBySeriesId).to.have.keys(ALL_SERIES_IDS);
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.not.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.be.null;
     });
 
     it('should not change anything other than the load versions', () => {
@@ -157,7 +157,7 @@ describe('(atomic actions)', () => {
 
       state = reducer(state, dataRequested(ALL_SERIES_IDS));
 
-      _.omit(state, 'loadVersionBySeriesId').should.deepEqual(_.omit(startingState, 'loadVersionBySeriesId'));
+      expect(_.omit(state, 'loadVersionBySeriesId')).to.deep.equal(_.omit(startingState, 'loadVersionBySeriesId'));
     });
   });
 
@@ -174,9 +174,9 @@ describe('(atomic actions)', () => {
         })
       );
 
-      state.loadVersionBySeriesId.should.have.keys(ALL_SERIES_IDS);
-      should(state.loadVersionBySeriesId[SERIES_A]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+      expect(state.loadVersionBySeriesId).to.have.keys(ALL_SERIES_IDS);
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.not.be.null;
     });
 
     it('should clear the load version and set the data for all series when they return successfully simultaneously', () => {
@@ -186,7 +186,7 @@ describe('(atomic actions)', () => {
         dataReturned(ALL_SERIES_DATA)
       );
 
-      pickKeyedState(state).should.deepEqual({
+      expect(pickKeyedState(state)).to.deep.equal({
         loadedDataBySeriesId: ALL_SERIES_DATA,
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
         errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, null)
@@ -205,7 +205,7 @@ describe('(atomic actions)', () => {
         })
       );
 
-      state.loadedDataBySeriesId.should.deepEqual({
+      expect(state.loadedDataBySeriesId).to.deep.equal({
         [SERIES_A]: {
           data: DATA_A,
           yDomain: INTERVAL_A
@@ -216,8 +216,8 @@ describe('(atomic actions)', () => {
         }
       });
 
-      should(state.loadVersionBySeriesId[SERIES_A]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.not.be.null;
     });
   });
 
@@ -231,7 +231,7 @@ describe('(atomic actions)', () => {
         dataErrored(objectWithKeys(ALL_SERIES_IDS, ERROR))
       );
 
-      pickKeyedState(state).should.deepEqual({
+      expect(pickKeyedState(state)).to.deep.equal({
         loadedDataBySeriesId: ALL_SERIES_DATA,
         loadVersionBySeriesId: objectWithKeys(ALL_SERIES_IDS, null),
         errorBySeriesId: objectWithKeys(ALL_SERIES_IDS, ERROR)
@@ -249,12 +249,12 @@ describe('(atomic actions)', () => {
         })
       );
 
-      state.loadedDataBySeriesId.should.deepEqual(ALL_SERIES_DATA);
+      expect(state.loadedDataBySeriesId).to.deep.equal(ALL_SERIES_DATA);
 
-      should(state.loadVersionBySeriesId[SERIES_A]).be.null();
-      should(state.loadVersionBySeriesId[SERIES_B]).not.be.null();
+      expect(state.loadVersionBySeriesId[SERIES_A]).to.be.null;
+      expect(state.loadVersionBySeriesId[SERIES_B]).to.not.be.null;
 
-      state.errorBySeriesId.should.deepEqual({
+      expect(state.errorBySeriesId).to.deep.equal({
         [SERIES_A]: ERROR,
         [SERIES_B]: null
       });
@@ -359,12 +359,12 @@ describe('(atomic actions)', () => {
 
           state = reducer(state, test.actionCreator(test.actionValue));
 
-          _.get(state, test.valuePath).should.be.exactly(test.actionValue);
+          expect(_.get(state, test.valuePath)).to.equal(test.actionValue);
 
           _.set(previousState, test.valuePath, DUMMY_VALUE);
           _.set(state, test.valuePath, DUMMY_VALUE);
 
-          state.should.deepEqual(previousState);
+          expect(state).to.deep.equal(previousState);
         });
       });
     });
