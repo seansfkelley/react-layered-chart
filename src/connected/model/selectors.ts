@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { Interval } from '../../core';
+import { Interval, SeriesData } from '../../core';
 import { TBySeriesId } from '../interfaces';
 import { ChartState, UiState } from './state';
 
@@ -18,12 +18,12 @@ const selectUiStateOverride = (state: ChartState) => state.uiStateConsumerOverri
 
 export const selectLoadedYDomains = createSelector(
   selectLoadedSeriesData,
-  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.yDomain)
+  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.yDomain) as TBySeriesId<Interval>
 );
 
 export const selectData = createSelector(
   selectLoadedSeriesData,
-  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.data)
+  (loadedSeriesData) => _.mapValues(loadedSeriesData, loadedSeriesData => loadedSeriesData.data) as TBySeriesId<SeriesData>
 );
 
 export const selectXDomain = createSelector(

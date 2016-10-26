@@ -35,8 +35,8 @@ export type NumericalValueIterator = (seriesId: SeriesId, datum: any) => number;
 // know what that shape is, so we have a sentinel + accompanying function to figure out when it's asking for the hover value.
 function HOVER_VALUE_SENTINEL() {}
 
-export function createSelectDataForHover(xValueSelector: NumericalValueIterator): (state: ChartProviderState) => TBySeriesId<any> {
-  return _castToOpaqueInput(createSelector(
+export function createSelectDataForHover(xValueSelector: NumericalValueIterator) {
+  return _castToOpaqueInput<TBySeriesId<any>>(createSelector(
     internalSelectData,
     internalSelectHover,
     (dataBySeriesId: TBySeriesId<any>, hover?: number) => {
