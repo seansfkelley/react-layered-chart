@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
+import * as classNames from 'classnames';
 
 import propTypes from '../propTypes';
 import { Interval, BooleanMouseEventHandler } from '../interfaces';
@@ -22,12 +23,17 @@ export interface Props {
 export interface State {
   isPanning: boolean;
   isBrushing: boolean;
+  zoomCount?: number;
   lastPanClientX?: number;
   startBrushClientX?: number;
 }
 
+let zoomCount = 1;
+
 @PureRender
 export default class InteractionCaptureLayer extends React.Component<Props, State> {
+  private _clearZoomStateTimeout: number;
+
   static propTypes = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,
@@ -50,6 +56,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
   state = {
     isPanning: false,
     isBrushing: false,
+    zoomCount: null,
     lastPanClientX: null,
     startBrushClientX: null
   };
@@ -57,7 +64,11 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
   render() {
     return (
       <div
-        className='interaction-capture interaction-capture-layer'
+        className={classNames('interaction-capture interaction-capture-layer', {
+          'is-panning': this.state.isPanning,
+          'is-brushing': this.state.isBrushing,
+          'is-zooming': !!this.state.zoomCount
+        })}
         onMouseDown={this._onMouseDown}
         onMouseUp={this._onMouseUp}
         onMouseMove={this._onMouseMove}
@@ -100,10 +111,12 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     }
   }
 
-  private _clearPanAndBrushState() {
+  private _clearState() {
+    clearInterval(this._clearZoomStateTimeout);
     this.setState({
       isPanning: false,
       isBrushing: false,
+      zoomCount: null,
       lastPanClientX: null,
       startBrushClientX: null
     });
@@ -121,7 +134,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
 
   private _onMouseUp = (event) => {
     this._dispatchPanAndBrushEvents(event);
-    this._clearPanAndBrushState();
+    this._clearState();
     event.stopPropagation();
   };
 
@@ -136,7 +149,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
 
   private _onMouseLeave = (event) => {
     this._dispatchPanAndBrushEvents(event);
-    this._clearPanAndBrushState();
+    this._clearState();
     if (this.props.onHover) {
       this.props.onHover(null);
     }
@@ -147,6 +160,16 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     if (this.props.onZoom && event.deltaY && this.props.shouldZoom(event)) {
       const boundingClientRect = this._getBoundingClientRect();
       const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
+
+      const currentZoomCount = zoomCount++;
+      clearInterval(this._clearZoomStateTimeout);
+      this._clearZoomStateTimeout = setInterval(() => {
+        if (this.state.zoomCount === currentZoomCount) {
+          this.setState({ zoomCount: null } as any);
+        }
+      }, 250);
+      this.setState({ zoomCount: currentZoomCount } as any);
+
       this.props.onZoom(Math.exp(-event.deltaY * this.props.zoomSpeed), focus);
       event.preventDefault();
     }

@@ -16,6 +16,19 @@
 
 .lc-stack .interaction-capture-layer {
   z-index: 1;
+
+  &.is-panning {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+  }
+
+  &.is-zooming {
+    cursor: ns-resize;
+  }
+
+  &.is-brushing {
+    cursor: col-resize;
+  }
 }
 
 .lc-stack .y-axis-layer {
