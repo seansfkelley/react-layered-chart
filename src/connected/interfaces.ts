@@ -19,3 +19,6 @@ export interface DebugStoreHooks {
   middlewares?: Function[];
   enhancers?: Function[];
 };
+
+// Deprecated. This typename mostly just adds indirection and noise.
+export type StateSelector<T> = (state: ChartProviderState) => T;
