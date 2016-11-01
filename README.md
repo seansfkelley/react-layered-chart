@@ -146,7 +146,7 @@ Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mo
 
 #### Loads are consistently and frequently triggered even when nothing is changing.
 
-This can happen if you provide a functionally-equal but reference-unequal value for `ChartProvider`'s `loadData`. Changing the `loadData` reference triggers a load, which will likely return value-equal but reference-unequal results if nothing else has changed. If you take the direct or indirect result of this load (such as through an "on change" listener) and cause a rerender (such as by setting state) and you end up passing a new instance of a `loadData` function, you will be caught in a very slow infinite loop.
+This generally means you are providing a functionally-equal but reference-unequal value for `ChartProvider`'s `loadData`, such as by using an inline function definition. `loadData` should be a stateless function, and should almost never change reference. If you want to provide extra information to `loadData`, use `ChartProvider`'s `loadDataContext` prop instead of `bind`ing arguments to a function (which creates a new function object). All series are reloaded whenever `loadDataContext` changes shallowly, but if you use deep-checkable types you can tweak `loadData` to prevent extraneous network requests.
 
 #### Textual elements (like axes) are using default fonts.
 
