@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';
@@ -131,7 +132,7 @@ export default class ChartProvider extends React.Component<Props, {}> {
     } else if (props.defaultState && props.defaultState.yDomains) {
       this._store.dispatch(setYDomains(props.defaultState.yDomains));
     }
-    if (props.hover) {
+    if (_.isNumber(props.hover)) {
       this._store.dispatch(setOverrideHover(props.hover));
     }
     if (props.selection) {
