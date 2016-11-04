@@ -53,7 +53,7 @@ export interface Props {
 
 @PureRender
 @PixelRatioContextProvider
-export default class ChartProvider extends React.Component<Props, {}> {
+export default class ChartProvider extends React.Component<Props, void> {
   static propTypes = {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     loadData: React.PropTypes.func.isRequired,
