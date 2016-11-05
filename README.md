@@ -51,7 +51,7 @@ const MY_DATA = [ ... ];
 
 ([View code that implements a chart like this.](/examples/StaticChart.tsx))
 
-Where the `data` prop is an array of objects appropriate for the particular layer (see the [implementations of the included layers](https://github.com/palantir/react-layered-chart/tree/connected-components/src/core/layers) for details).
+Where the `data` prop is an array of objects appropriate for the particular layer (see the [implementations of the included layers](https://github.com/palantir/react-layered-chart/tree/master/src/core/layers) for details).
 
 The `xDomain` and `yDomain` props, which are common to many layers, describe which subset of the data should be rendered. Many layers also include a `yScale` for customizing the scale on the Y domain (e.g. for displaying logarithmic plots).
 
@@ -72,7 +72,7 @@ Charts made in this manner are static. See the [interactive section](#interactiv
 
 react-layered-chart also includes a bunch of somewhat opinionated, stateful components that help you make interactive charts and load new data as necessary. These components require that each of the series you're rendering can be uniquely identified with a string, referred to as the "series ID".
 
-The `ChartProvider` component is a wrapper around a [react-redux `Provider`](https://github.com/reactjs/react-redux) that also exposes a [controlled-input-like](https://facebook.github.io/react/docs/forms.html#controlled-components) interface. A simple chart that includes user interaction might look like this:
+The `ChartProvider` component is a wrapper around a [react-redux `Provider`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#provider-store) that also exposes a [controlled-input-like](https://facebook.github.io/react/docs/forms.html#controlled-components) interface. A simple chart that includes user interaction might look like this:
 
 ```tsx
 // This stateless function receives a bunch of parameters to load data. It's called
