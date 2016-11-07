@@ -638,9 +638,9 @@ computeTicks(scale, 2, '.5');
 
 <hr/>
 
-#### `enforceIntervalBounds(interval, bounds)`
+#### `enforceIntervalBounds(interval, bounds?)`
 
-Adjust `interval` to fit within `bounds` if possible, without changing the length of `interval`. If `interval` is longer than `bounds`, the extent is maintained and `interval` is adjusted to have the same center as `bounds`.
+Adjust `interval` to fit within `bounds` if possible, without changing the length of `interval`. If `interval` is longer than `bounds`, the extent is maintained and `interval` is adjusted to have the same center as `bounds`. If `bounds` is `null` or `undefined`, the input interval will be returned unchanged.
 
 ```tsx
 enforceIntervalBounds({ min: -10, max: 10 }, { min: 0, max: 100 });
@@ -648,13 +648,16 @@ enforceIntervalBounds({ min: -10, max: 10 }, { min: 0, max: 100 });
 
 enforceIntervalBounds({ min: 0, max: 120 }, { min: 0, max: 100 });
 // -> { min: -10, max: 110 }
+
+enforceIntervalBounds({ min: 0, max: 100 }, null);
+// -> { min: 0, max: 100 }
 ```
 
 <hr/>
 
-#### `enforceIntervalExtent(interval, minExtent, maxExtent)`
+#### `enforceIntervalExtent(interval, minExtent?, maxExtent?)`
 
-Adjust `interval` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new interval will be centered on the same point as the input interval.
+Adjust `interval` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new interval will be centered on the same point as the input interval. If either extent is `null` or `undefined`, it will be ignored.
 
 ```tsx
 enforceIntervalExtent({ min: 0, max: 100 }, 20, 80);
@@ -662,6 +665,9 @@ enforceIntervalExtent({ min: 0, max: 100 }, 20, 80);
 
 enforceIntervalExtent({ min: 0, max: 100 }, 120, 200);
 // -> { min: -10, max: 110 }
+
+enforceIntervalExtent({ min: 0, max: 100 }, null, null);
+// -> { min: 0, max: 100 }
 ```
 
 <hr/>

@@ -3,7 +3,11 @@ import * as d3Scale from 'd3-scale';
 
 import { Interval } from '../core';
 
-export function enforceIntervalBounds(interval: Interval, bounds: Interval): Interval {
+export function enforceIntervalBounds(interval: Interval, bounds?: Interval): Interval {
+  if (!bounds) {
+    return interval;
+  }
+
   const extent = interval.max - interval.min;
   const boundsExtent = bounds.max - bounds.min;
   if (extent > boundsExtent) {
@@ -27,15 +31,15 @@ export function enforceIntervalBounds(interval: Interval, bounds: Interval): Int
   }
 }
 
-export function enforceIntervalExtent(interval: Interval, minExtent: number, maxExtent: number): Interval {
+export function enforceIntervalExtent(interval: Interval, minExtent?: number, maxExtent?: number): Interval {
   const extent = interval.max - interval.min;
-  if (minExtent && extent < minExtent) {
+  if (minExtent != null && extent < minExtent) {
     const halfExtentDiff = (minExtent - extent) / 2;
     return {
       min: interval.min - halfExtentDiff,
       max: interval.max + halfExtentDiff
     };
-  } else if (maxExtent && extent > maxExtent) {
+  } else if (maxExtent != null && extent > maxExtent) {
     const halfExtentDiff = (extent - maxExtent) / 2;
     return {
       min: interval.min + halfExtentDiff,

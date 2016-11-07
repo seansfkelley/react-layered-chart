@@ -25,51 +25,61 @@ describe('(interval utils)', () => {
     const TEST_CASES = [
       {
         description: 'should do nothing if the interval is within bounds',
-        interval: interval(1, 9),
+        input: interval(1, 9),
         output: interval(1, 9)
       }, {
         description: 'should slide the interval forward without changing extent if the interval is entirely before the early bound',
-        interval: interval(-3, -1),
+        input: interval(-3, -1),
         output: interval(0, 2)
       }, {
         description: 'should slide the interval forward  without changing extent if the interval starts before the early bound',
-        interval: interval(-1, 1),
+        input: interval(-1, 1),
         output: interval(0, 2)
       }, {
         description: 'should slide the interval back without changing extent if the interval ends after the later bound',
-        interval: interval(9, 11),
+        input: interval(9, 11),
         output: interval(8, 10)
       }, {
         description: 'should slide the interval back without changing extent if the interval is entirely after the later bound',
-        interval: interval(11, 13),
+        input: interval(11, 13),
         output: interval(8, 10)
       }, {
         description: 'should align the interval and bounds by their centers if the interval is longer than the bounds and extends on both ends',
-        interval: interval(-1, 13),
+        input: interval(-1, 13),
         output: interval(-2, 12)
       }, {
         description: 'should align the interval and bounds by their centers if the interval is longer than the bounds and starts before',
-        interval: interval(-10, 2),
+        input: interval(-10, 2),
         output: interval(-1, 11)
       }, {
         description: 'should align the interval and bounds by their centers if the interval is longer than the bounds and is entirely before',
-        interval: interval(-13, -1),
+        input: interval(-13, -1),
         output: interval(-1, 11)
       }, {
         description: 'should align the interval and bounds by their centers if the interval is longer than the bounds and ends after',
-        interval: interval(1, 13),
+        input: interval(1, 13),
         output: interval(-1, 11)
       }, {
         description: 'should align the interval and bounds by their centers if the interval is longer than the bounds and is entirely after',
-        interval: interval(11, 23),
+        input: interval(11, 23),
         output: interval(-1, 11)
+      }, {
+        description: 'should do nothing if the bounds are null',
+        input: interval(0, 10),
+        output: interval(0, 10)
       }
     ];
 
     TEST_CASES.forEach(test => {
       it(test.description, () => {
-        expect(enforceIntervalBounds(test.interval, BOUNDS)).to.deep.equal(test.output);
+        expect(enforceIntervalBounds(test.input, BOUNDS)).to.deep.equal(test.output);
       });
+    });
+
+    it('should return the input interval by reference if no changes occured', () => {
+      const input = interval(1, 9);
+      const output = enforceIntervalBounds(input, BOUNDS);
+      expect(output).to.equal(input);
     });
 
     it('should not mutate the input interval', () => {
@@ -81,28 +91,80 @@ describe('(interval utils)', () => {
   });
 
   describe('enforceIntervalExtent', () => {
-    const MIN_EXTENT = 5, MAX_EXTENT = 10;
-
     const TEST_CASES = [
       {
         description: 'should increase the endpoints symmetrically to match the minimum extent when the interval is too short',
-        interval: interval(1, 2),
+        input: interval(1, 2),
+        min: 5,
+        max: 10,
         output: interval(-1, 4)
       }, {
         description: 'should do nothing if the interval is between the two extents',
-        interval: interval(1, 7),
+        input: interval(1, 7),
+        min: 5,
+        max: 10,
         output: interval(1, 7)
       }, {
         description: 'should decrease the endpoints symmetrically to match the maximum extend when the interval is too long',
-        interval: interval(1, 15),
+        input: interval(1, 15),
+        min: 5,
+        max: 10,
         output: interval(3, 13)
+      }, {
+        description: 'should not enforce a minimum if the min extent is null',
+        input: interval(1, 2),
+        min: null,
+        max: 10,
+        output: interval(1, 2)
+      }, {
+        description: 'should not enforce a minimum if the min extent is 0',
+        input: interval(1, 2),
+        min: 0,
+        max: 10,
+        output: interval(1, 2)
+      }, {
+        description: 'should not enforce a minimum if the min extent is negative',
+        input: interval(1, 2),
+        min: -10,
+        max: 10,
+        output: interval(1, 2)
+      }, {
+        description: 'should not enforce a maximum if the max extent is null',
+        input: interval(1, 2),
+        min: 0,
+        max: null,
+        output: interval(1, 2)
+      }, {
+        description: 'should return the midpoint of the interval if the max extent is 0',
+        input: interval(1, 2),
+        min: null,
+        max: 0,
+        output: interval(1.5, 1.5)
+      }, {
+        description: 'should not enforce a maximum if the max extent is Infinity',
+        input: interval(1, 2),
+        min: null,
+        max: Infinity,
+        output: interval(1, 2)
+      }, {
+        description: 'should do nothing if both the min and max extends are null',
+        input: interval(1, 2),
+        min: null,
+        max: null,
+        output: interval(1, 2)
       }
     ];
 
     TEST_CASES.forEach(test => {
       it(test.description, () => {
-        expect(enforceIntervalExtent(test.interval, MIN_EXTENT, MAX_EXTENT)).to.deep.equal(test.output);
+        expect(enforceIntervalExtent(test.input, test.min, test.max)).to.deep.equal(test.output);
       });
+    });
+
+    it('should return the input interval by reference if no changes occured', () => {
+      const input = interval(0, 10);
+      const output = enforceIntervalExtent(input, null, null);
+      expect(output).to.equal(input);
     });
 
     it('should not mutate in the input interval', () => {
