@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- `enforceIntervalExtent` and `enforceIntervalBounds`'s arguments after the first are now optional. [98a777d](https://github.com/palantir/react-layered-chart/commit/98a777dc86e297ea0b0d0966fd8af5f6697572e8).
+
 ## 1.6.0 (2016-10-20)
 
 ### Added
