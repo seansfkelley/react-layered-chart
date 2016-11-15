@@ -4,6 +4,7 @@ import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
 import { Interval, BooleanMouseEventHandler } from '../interfaces';
+import MouseCapture from '../MouseCapture';
 
 const LEFT_MOUSE_BUTTON = 0;
 
@@ -22,8 +23,8 @@ export interface Props {
 export interface State {
   isPanning: boolean;
   isBrushing: boolean;
-  lastPanClientX?: number;
-  startBrushClientX?: number;
+  lastPanXPct?: number;
+  startBrushXPct?: number;
 }
 
 @PureRender
@@ -47,109 +48,82 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     zoomSpeed: 0.05
   } as any as Props;
 
-  state = {
+  state: State = {
     isPanning: false,
-    isBrushing: false,
-    lastPanClientX: null,
-    startBrushClientX: null
+    isBrushing: false
   };
 
   render() {
     return (
-      <div
+      <MouseCapture
         className='interaction-capture interaction-capture-layer'
-        onMouseDown={this._onMouseDown}
-        onMouseUp={this._onMouseUp}
-        onMouseMove={this._onMouseMove}
-        onMouseLeave={this._onMouseLeave}
-        onWheel={this._onWheel}
-        ref='layer'
+        zoomSpeed={this.props.zoomSpeed}
+        onZoom={this._onZoom}
+        onDragStart={this._onDragStart}
+        onDrag={this._onDrag}
+        onDragEnd={this._onDragEnd}
+        onClick={this._onClick}
+        onHover={this._onHover}
       />
     );
   }
 
-  private _getBoundingClientRect() {
-    return (this.refs['layer'] as Element).getBoundingClientRect();
-  }
-
-  private _createPhysicalToLogicalXScale() {
-    const boundingClientRect = this._getBoundingClientRect();
-    return d3Scale.scaleLinear()
-      .domain([ boundingClientRect.left, boundingClientRect.right ])
-      .range([ this.props.xDomain.min, this.props.xDomain.max ]);
-  }
-
-  private _dispatchPanAndBrushEvents(event) {
+  private _dispatchPanAndBrushEvents(xPct: number, yPct: number, e: React.MouseEvent) {
     if (this.props.onPan && this.state.isPanning) {
-      if (this.state.lastPanClientX !== event.clientX) {
-        const scale = this._createPhysicalToLogicalXScale();
-        this.setState({ lastPanClientX: event.clientX } as any);
-        this.props.onPan(scale(this.state.lastPanClientX) - scale(event.clientX));
-      } else {
-        // Do nothing.
-      }
+      this.setState({ lastPanXPct: xPct } as any);
+      this.props.onPan(this._xPctToDomain(this.state.lastPanXPct) - this._xPctToDomain(xPct));
     } else if (this.props.onBrush && this.state.isBrushing) {
-      if (Math.abs(this.state.startBrushClientX - event.clientX) > 2) {
-        const scale = this._createPhysicalToLogicalXScale();
-        const a = scale(this.state.startBrushClientX);
-        const b = scale(event.clientX);
-        this.props.onBrush({ min: Math.min(a, b), max: Math.max(a, b) });
-      } else {
-        this.props.onBrush(null);
-      }
+      const a = this._xPctToDomain(this.state.startBrushXPct);
+      const b = this._xPctToDomain(xPct);
+      this.props.onBrush({ min: Math.min(a, b), max: Math.max(a, b) });
     }
   }
 
-  private _clearPanAndBrushState() {
+  private _xPctToDomain(xPct: number) {
+    return this.props.xDomain.min + (this.props.xDomain.max - this.props.xDomain.min) * xPct;
+  }
+
+  private _onZoom = (factor: number, xPct: number, yPct: number, e: React.WheelEvent) => {
+    if (this.props.onZoom && this.props.shouldZoom(e)) {
+      this.props.onZoom(factor, xPct);
+    }
+  };
+
+  private _onDragStart = (xPct: number, yPct: number, e: React.MouseEvent) => {
+    if (this.props.onPan && this.props.shouldPan(e)) {
+      this.setState({ isPanning: true, lastPanXPct: xPct } as any);
+    } else if (this.props.onBrush && this.props.shouldBrush(e)) {
+      this.setState({ isBrushing: true, startBrushXPct: xPct } as any);
+    }
+  };
+
+  private _onDrag = (xPct: number, yPct: number, e: React.MouseEvent) => {
+    this._dispatchPanAndBrushEvents(xPct, yPct, e);
+  };
+
+  private _onDragEnd = (xPct: number, yPct: number, e: React.MouseEvent) => {
+    this._dispatchPanAndBrushEvents(xPct, yPct, e);
     this.setState({
       isPanning: false,
       isBrushing: false,
-      lastPanClientX: null,
-      startBrushClientX: null
+      lastPanXPct: null,
+      startBrushXPct: null
     });
-  }
+  };
 
-  private _onMouseDown = (event) => {
-    if (this.props.onPan && this.props.shouldPan(event)) {
-      this.setState({ isPanning: true, lastPanClientX: event.clientX } as any);
-    } else if (this.props.onBrush && this.props.shouldBrush(event)) {
-      this.setState({ isBrushing: true, startBrushClientX: event.clientX } as any);
-      this.props.onHover(null);
+  private _onClick = (xPct: number, yPct: number, e: React.MouseEvent) => {
+    if (this.props.onBrush && this.props.shouldBrush(e)) {
+      this.props.onBrush(null);
     }
-    event.stopPropagation();
   };
 
-  private _onMouseUp = (event) => {
-    this._dispatchPanAndBrushEvents(event);
-    this._clearPanAndBrushState();
-    event.stopPropagation();
-  };
-
-  private _onMouseMove = (event) => {
-    this._dispatchPanAndBrushEvents(event);
-    if (this.props.onHover && !this.state.isPanning && !this.state.isBrushing) {
-      const scale = this._createPhysicalToLogicalXScale();
-      this.props.onHover(scale(event.clientX));
-    }
-    event.stopPropagation();
-  };
-
-  private _onMouseLeave = (event) => {
-    this._dispatchPanAndBrushEvents(event);
-    this._clearPanAndBrushState();
+  private _onHover = (xPct: number, yPct: number, e: React.MouseEvent) => {
     if (this.props.onHover) {
-      this.props.onHover(null);
+      if (xPct != null) {
+        this.props.onHover(this._xPctToDomain(xPct));
+      } else {
+        this.props.onHover(null);
+      }
     }
-    event.stopPropagation();
-  };
-
-  private _onWheel = (event) => {
-    if (this.props.onZoom && event.deltaY && this.props.shouldZoom(event)) {
-      const boundingClientRect = this._getBoundingClientRect();
-      const focus = (event.clientX - boundingClientRect.left) / boundingClientRect.width;
-      this.props.onZoom(Math.exp(-event.deltaY * this.props.zoomSpeed), focus);
-      event.preventDefault();
-    }
-    event.stopPropagation();
   };
 }

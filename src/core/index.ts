@@ -5,5 +5,6 @@ export * from './componentUtils';
 export * from './decorators';
 export * from './layers';
 export * from './axes';
-export { default as Stack } from './Stack';
+export { default as Stack, Props as StackProps } from './Stack';
+export { default as MouseCapture, Props as MouseCaptureProps } from './MouseCapture';
 export { default as propTypes } from './propTypes';

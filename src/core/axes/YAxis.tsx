@@ -35,7 +35,7 @@ class YAxis extends React.Component<Props, void> {
         borderRightColor: this.props.color
       }}>
         {ticks.map((tick, i) =>
-          <div className='tick' style={{ top: `${100 - yScale(tick)}%` }} key={i}>
+          <div className='tick' style={{ top: `calc(${100 - yScale(tick)}% - 0.5px)` }} key={i}>
             <span className='label'>{format(tick)}</span>
             <span className='mark' style={{ borderBottomColor: this.props.color }}/>
           </div>
