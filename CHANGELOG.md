@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- `MouseCapture` as a less opinionated, more composable version of `InteractionCaptureLayer`. [#105](https://github.com/palantir/react-layered-chart/pull/105).
+
 ### Changed
 
 - `enforceIntervalExtent` and `enforceIntervalBounds`'s arguments after the first are now optional. [98a777d](https://github.com/palantir/react-layered-chart/commit/98a777dc86e297ea0b0d0966fd8af5f6697572e8).

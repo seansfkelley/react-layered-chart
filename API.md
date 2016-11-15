@@ -7,6 +7,7 @@ For specifics on the exact types of these components/functions/values, please ch
 * [Core](#core)
   * [`Stack`](#stack)
   * [`ChartProvider`](#chartprovider)
+  * [`MouseCapture`](#mousecapture)
 * [Layers](#layers)
   * [Data Layers](#data-layers)
   * [~~`XAxisLayer`~~](#xaxislayer)
@@ -96,6 +97,23 @@ These props come in read-write pairs and implement the ["controlled component" p
 - `onSelectionChange?()`
 - `hover?`
 - `onHoverChange?()`
+
+### `MouseCapture`
+
+`MouseCapture` is a component that wraps another and interprets mouse gestures at a slightly higher level. All the gesture callbacks return a pair of `xPct` and `yPct` parameters (among others), which is the position of the event as a percentage of the `MouseCapture`'s width/height, relative to the top-left corner.
+
+**Note**: `xPct` and `yPct` are generally values on `[0, 1]`, though they could be outside these bounds if you have unconventional styles like widths greater than 100% or negative margins.
+
+#### Props
+
+- `className?`: space-separated DOM class names to be merged with the default class names.
+- `zoomSpeed?`: a `number` or function `React.WheelEvent => number` to compute the speed of the zoom gesture. Defaults to `0.05`.
+- `onZoom?(factor, xPct, yPct, event)`: the user wants to zoom with the mouse wheel.
+- `onDragStart?(xPct, yPct, event)`: the user has initiated a drag action. Note that only the left mouse button is respected.
+- `onDrag?(xPct, yPct, event)`: the user is continuing a drag action. Note that only the left mouse button is respected.
+- `onDragEnd?(xPct, yPct, event)`: the user finished a drag action. Note that only the left mouse button is respected.
+- `onClick?(xPct, yPct, event)`: the user clicked on this element.
+- `onHover?(xPct?, yPct?, event)`: the user moved the mouse over this element. `xPct` and `yPct` will be `null` if the mouse has left the element.
 
 ## Layers
 
