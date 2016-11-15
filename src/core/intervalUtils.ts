@@ -8,8 +8,8 @@ export function enforceIntervalBounds(interval: Interval, bounds?: Interval): In
     return interval;
   }
 
-  const extent = interval.max - interval.min;
-  const boundsExtent = bounds.max - bounds.min;
+  const extent = intervalExtent(interval);
+  const boundsExtent = intervalExtent(bounds);
   if (extent > boundsExtent) {
     const halfExtentDiff = (extent - boundsExtent) / 2;
     return {
@@ -32,7 +32,7 @@ export function enforceIntervalBounds(interval: Interval, bounds?: Interval): In
 }
 
 export function enforceIntervalExtent(interval: Interval, minExtent?: number, maxExtent?: number): Interval {
-  const extent = interval.max - interval.min;
+  const extent = intervalExtent(interval);
   if (minExtent != null && extent < minExtent) {
     const halfExtentDiff = (minExtent - extent) / 2;
     return {
@@ -50,8 +50,12 @@ export function enforceIntervalExtent(interval: Interval, minExtent?: number, ma
   }
 }
 
+export function intervalExtent(interval: Interval): number {
+  return interval.max - interval.min;
+}
+
 export function extendInterval(interval: Interval, factor: number): Interval {
-  const extent = Math.abs(interval.max - interval.min);
+  const extent = intervalExtent(interval);
   return {
     min: interval.min - extent * factor,
     max: interval.max + extent * factor
@@ -96,7 +100,7 @@ export function panInterval(interval: Interval, delta: number): Interval {
 }
 
 export function zoomInterval(interval: Interval, factor: number, anchorBias: number = 0.5): Interval {
-  const currentExtent = interval.max - interval.min;
+  const currentExtent = intervalExtent(interval);
   const targetExtent = currentExtent / factor;
   const extentDelta = targetExtent - currentExtent;
 

@@ -39,6 +39,7 @@ For specifics on the exact types of these components/functions/values, please ch
     * [`computeTicks(scale, ticks?, tickFormat?)`](#computeticksscale-ticks-tickformat)
     * [`enforceIntervalBounds(interval, bounds)`](#enforceintervalboundsinterval-bounds)
     * [`enforceIntervalExtent(interval, minExtent, maxExtent)`](#enforceintervalextentinterval-minextent-maxextent)
+    * [`intervalExtent(interval)`](#intervalextentinterval)
     * [`extendInterval(interval, factor)`](#extendintervalinterval-factor)
     * [`roundInterval(interval)`](#roundintervalinterval)
     * [`niceInterval(interval)`](#niceintervalinterval)
@@ -675,7 +676,7 @@ enforceIntervalBounds({ min: 0, max: 100 }, null);
 
 #### `enforceIntervalExtent(interval, minExtent?, maxExtent?)`
 
-Adjust `interval` so its length (extent) is between `minExtent` and `maxExtent`. If adjusted, the new interval will be centered on the same point as the input interval. If either extent is `null` or `undefined`, it will be ignored.
+Adjust `interval` so its extent (length) is between `minExtent` and `maxExtent`. If adjusted, the new interval will be centered on the same point as the input interval. If either extent is `null` or `undefined`, it will be ignored.
 
 ```tsx
 enforceIntervalExtent({ min: 0, max: 100 }, 20, 80);
@@ -686,6 +687,20 @@ enforceIntervalExtent({ min: 0, max: 100 }, 120, 200);
 
 enforceIntervalExtent({ min: 0, max: 100 }, null, null);
 // -> { min: 0, max: 100 }
+```
+
+<hr/>
+
+#### `intervalExtent(interval)`
+
+Compute the extent (length) of the given interval. Does not check if your interval is specified backwards, and may return a negative value.
+
+```tsx
+intervalExtent({ min: 0, max: 10 });
+// -> 10
+
+intervalExtent({ min: 10, max: 0 });
+// -> -10
 ```
 
 <hr/>

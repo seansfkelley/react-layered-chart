@@ -5,6 +5,7 @@ import { Interval } from '../src/core/interfaces';
 import {
   enforceIntervalBounds,
   enforceIntervalExtent,
+  intervalExtent,
   extendInterval,
   roundInterval,
   mergeIntervals,
@@ -172,6 +173,16 @@ describe('(interval utils)', () => {
       const output = enforceIntervalExtent(input, 1, 5);
       expect(input).to.deep.equal(interval(0, 10));
       expect(output).to.not.deep.equal(interval(0, 10));
+    });
+  });
+
+  describe('intervalExtent', () => {
+    it('should return the length of the interval', () => {
+      expect(intervalExtent({ min: 0, max: 10 })).to.equal(10);
+    });
+
+    it('should return a negative length if the interval is backwards', () => {
+      expect(intervalExtent({ min: 10, max: 0 })).to.equal(-10);
     });
   });
 
