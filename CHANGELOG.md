@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### Unreleased
+
+### Added
+
+- `intervalExtent` to compute the length of an interval. [5d4e027](https://github.com/palantir/react-layered-chart/commit/5d4e02706f2179b4ce587700165c1455e854239e).
+
 ## 1.7.0 (2016-11-14)
 
 ### Added
