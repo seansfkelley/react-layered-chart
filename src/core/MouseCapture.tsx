@@ -103,8 +103,6 @@ export default class MouseCapture extends React.Component<Props, State> {
         this.props.onDragStart(xScale(e.clientX), yScale(e.clientY), e);
       }
     }
-
-    e.stopPropagation();
   };
 
   private _maybeDispatchDragHandler(e: React.MouseEvent, handler: (xPct: number, yPct: number, e: React.MouseEvent) => void) {
@@ -130,8 +128,6 @@ export default class MouseCapture extends React.Component<Props, State> {
       lastMouseMoveClientX: e.clientX,
       lastMouseMoveClientY: e.clientY
     });
-
-    e.stopPropagation();
   };
 
   private _onMouseUp = (e: React.MouseEvent) => {
@@ -143,7 +139,6 @@ export default class MouseCapture extends React.Component<Props, State> {
     }
 
     this._clearState();
-    e.stopPropagation();
   };
 
   private _onMouseLeave = (e: React.MouseEvent) => {
@@ -154,7 +149,6 @@ export default class MouseCapture extends React.Component<Props, State> {
     }
 
     this._clearState();
-    e.stopPropagation();
   };
 
   private _onWheel = (e: React.WheelEvent) => {
@@ -166,8 +160,6 @@ export default class MouseCapture extends React.Component<Props, State> {
       const zoomFactor = Math.exp(-e.deltaY * zoomSpeed);
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onZoom(zoomFactor, xScale(e.clientX), yScale(e.clientY), e);
-      e.preventDefault();
     }
-    e.stopPropagation();
   };
 }

@@ -105,6 +105,8 @@ These props come in read-write pairs and implement the ["controlled component" p
 
 **Note**: `xPct` and `yPct` are generally values on `[0, 1]`, though they could be outside these bounds if you have unconventional styles like widths greater than 100% or negative margins.
 
+**Note**: none of the events interpreted by this component will have `stopPropagation` or `preventDefault` called on them automatically; your handlers should call these if appropriate.
+
 #### Props
 
 - `className?`: space-separated DOM class names to be merged with the default class names.
@@ -113,7 +115,7 @@ These props come in read-write pairs and implement the ["controlled component" p
 - `onDragStart?(xPct, yPct, event)`: the user has initiated a drag action. Note that only the left mouse button is respected.
 - `onDrag?(xPct, yPct, event)`: the user is continuing a drag action. Note that only the left mouse button is respected.
 - `onDragEnd?(xPct, yPct, event)`: the user finished a drag action. Note that only the left mouse button is respected.
-- `onClick?(xPct, yPct, event)`: the user clicked on this element.
+- `onClick?(xPct, yPct, event)`: the user clicked on this element. A "click" in this context is interpreted as a mouse-up-mouse-down pair where the mouse moved very little or nothing between the events.
 - `onHover?(xPct?, yPct?, event)`: the user moved the mouse over this element. `xPct` and `yPct` will be `null` if the mouse has left the element.
 
 ## Layers
@@ -238,6 +240,8 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 ### `InteractionCaptureLayer`
 
 This layer displays nothing, but captures all mouse events and translates them into callbacks or (in the case of the "connected" variant) fires actions.
+
+**Note**: this layer will call `stopPropagation` or `preventDefault` (or both) as appropriate _only_ on native events that have relevant handlers. All other events will be allowed to propagate as normal.
 
 #### Props
 
