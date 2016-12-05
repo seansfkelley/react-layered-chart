@@ -8,6 +8,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - `intervalExtent` to compute the length of an interval. [5d4e027](https://github.com/palantir/react-layered-chart/commit/5d4e02706f2179b4ce587700165c1455e854239e).
 
+### Changed
+
+- `MouseCapture` no longer calls `preventDefault` or `stopPropagation` automatically. `InteractionCaptureLayer` now does, only when necessary. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
+
+### Fixed
+
+- Wheel events that are not used for zooming (e.g., they have the wrong modifier keys set) are no longer swallowed, allowing the page to scroll. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
+
 ## 1.7.0 (2016-11-14)
 
 ### Added
