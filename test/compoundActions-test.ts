@@ -47,10 +47,10 @@ describe('(compound actions)', () => {
   const DUMMY_DOMAIN = { min: -1, max: 1 };
   const DUMMY_DOMAIN_2 = { min: -10, max: 10 };
 
-  let store: Store;
+  let store: Store<ChartState>;
   let state: ChartState;
-  let dataLoaderSpy: Sinon.SinonSpy;
-  let dataLoaderStub: Sinon.SinonStub;
+  let dataLoaderSpy: sinon.SinonSpy;
+  let dataLoaderStub: sinon.SinonStub;
 
   beforeEach(() => {
     store = applyMiddleware(ThunkMiddleware)(createStore)(reducer);
@@ -504,7 +504,7 @@ describe('(compound actions)', () => {
 
   describe('_makeKeyedDataBatcher', () => {
     let batcher: Function;
-    let callbackSpy: Sinon.SinonSpy;
+    let callbackSpy: sinon.SinonSpy;
 
     beforeEach(() => {
       callbackSpy = sinon.spy();

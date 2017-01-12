@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { defaults } from 'lodash';
 
 import { Color, AxisSpec, YAxisSpec, YAxisLayer } from '../../core';
 import { SeriesId } from '../interfaces';
@@ -23,7 +24,7 @@ export interface ConnectedProps {
 function mapStateToProps(state: ChartState, ownProps: OwnProps): ConnectedProps {
   const yDomainsBySeriesId = selectYDomains(state);
   return {
-    axes: ownProps.axes.map(axis => _.defaults({
+    axes: ownProps.axes.map(axis => defaults({
       yDomain: yDomainsBySeriesId[axis.seriesId],
       axisId: axis.seriesId
     }, axis))

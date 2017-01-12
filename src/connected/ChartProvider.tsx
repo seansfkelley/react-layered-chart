@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';
-import { Store } from 'redux';
+import { Action, Store } from 'redux';
 import { Provider } from 'react-redux';
 
 import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
@@ -78,7 +78,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     onHoverChange: React.PropTypes.func,
   } as React.ValidationMap<Props>;
 
-  private _store: Store;
+  private _store: Store<ChartState>;
   private _lastState: ChartState;
   private _unsubscribeCallback: Function;
 
@@ -187,7 +187,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     this._maybeDispatchChangedProp(this.props.selection,               nextProps.selection,               setOverrideSelection);
   }
 
-  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => void) {
+  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => any) {
     if (prop !== nextProp) {
       this._store.dispatch(actionCreator(nextProp));
     }

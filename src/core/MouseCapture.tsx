@@ -7,13 +7,13 @@ const LEFT_MOUSE_BUTTON = 0;
 
 export interface Props {
   className?: string;
-  zoomSpeed?: number | ((e: React.WheelEvent) => number);
-  onZoom?: (factor: number, xPct: number, yPct: number, e: React.WheelEvent) => void;
-  onDragStart?: (xPct: number, yPct: number, e: React.MouseEvent) => void;
-  onDrag?: (xPct: number, yPct: number, e: React.MouseEvent) => void;
-  onDragEnd?: (xPct: number, yPct: number, e: React.MouseEvent) => void;
-  onClick?: (xPct: number, yPct: number, e: React.MouseEvent) => void;
-  onHover?: (xPct: number, yPct: number, e: React.MouseEvent) => void;
+  zoomSpeed?: number | ((e: React.WheelEvent<HTMLElement>) => number);
+  onZoom?: (factor: number, xPct: number, yPct: number, e: React.WheelEvent<HTMLElement>) => void;
+  onDragStart?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onDrag?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onDragEnd?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onClick?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onHover?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
   children?: React.ReactNode;
 }
 
@@ -89,7 +89,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     });
   }
 
-  private _onMouseDown = (e: React.MouseEvent) => {
+  private _onMouseDown = (e: React.MouseEvent<HTMLElement>) => {
     if (e.button === LEFT_MOUSE_BUTTON) {
       this.setState({
         mouseDownClientX: e.clientX,
@@ -105,7 +105,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     }
   };
 
-  private _maybeDispatchDragHandler(e: React.MouseEvent, handler: (xPct: number, yPct: number, e: React.MouseEvent) => void) {
+  private _maybeDispatchDragHandler(e: React.MouseEvent<HTMLElement>, handler: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void) {
     if (e.button === LEFT_MOUSE_BUTTON && handler && this.state.mouseDownClientX != null) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       handler(
@@ -116,7 +116,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     }
   }
 
-  private _onMouseMove = (e: React.MouseEvent) => {
+  private _onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     this._maybeDispatchDragHandler(e, this.props.onDrag);
 
     if (this.props.onHover) {
@@ -130,7 +130,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     });
   };
 
-  private _onMouseUp = (e: React.MouseEvent) => {
+  private _onMouseUp = (e: React.MouseEvent<HTMLElement>) => {
     this._maybeDispatchDragHandler(e, this.props.onDragEnd);
 
     if (e.button === LEFT_MOUSE_BUTTON && this.props.onClick && Math.abs(this.state.mouseDownClientX - e.clientX) <= 2 && Math.abs(this.state.mouseDownClientY - e.clientY) <= 2) {
@@ -141,7 +141,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     this._clearState();
   };
 
-  private _onMouseLeave = (e: React.MouseEvent) => {
+  private _onMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     this._maybeDispatchDragHandler(e, this.props.onDragEnd);
 
     if (this.props.onHover) {
@@ -151,7 +151,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     this._clearState();
   };
 
-  private _onWheel = (e: React.WheelEvent) => {
+  private _onWheel = (e: React.WheelEvent<HTMLElement>) => {
     if (this.props.onZoom && e.deltaY) {
       const zoomSpeed = typeof this.props.zoomSpeed === 'function'
         // Why doesn't the compiler accept this type guard?

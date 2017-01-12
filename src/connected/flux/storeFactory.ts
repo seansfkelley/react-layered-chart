@@ -6,10 +6,11 @@ import createDebounced from 'redux-debounced';
 import { ActionType } from './atomicActions';
 import reducer from './reducer';
 import { ChartId, DebugStoreHooks } from '../interfaces';
+import { ChartState } from '../model/state';
 
 // chartId is only used for memoization.
-function _createStore(chartId?: ChartId, debugHooks?: DebugStoreHooks): Store {
-  let middlewares: Redux.Middleware[] = [
+function _createStore(chartId?: ChartId, debugHooks?: DebugStoreHooks): Store<ChartState> {
+  let middlewares: Middleware[] = [
     createDebounced(),
     ThunkMiddleware
   ];
@@ -24,7 +25,10 @@ function _createStore(chartId?: ChartId, debugHooks?: DebugStoreHooks): Store {
     enhancers = enhancers.concat(debugHooks.enhancers);
   }
 
-  return createStore(reducer, compose(...enhancers));
+  // hacking typings for `compose` because the redux typings have typings for when
+  // the `compose` method has 1, 2, 3, and 3 + more arguments but no typings for
+  // when the first argument is a spread
+  return createStore(reducer, (compose as (...funcs: Function[]) => any)(...enhancers));
 }
 
 const memoizedCreateStore = _.memoize(_createStore);

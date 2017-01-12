@@ -1,3 +1,4 @@
+import { GenericStoreEnhancer, Middleware } from 'redux';
 import { Interval, SeriesData } from '../core';
 import { ChartProviderState } from './export-only/exportableState';
 
@@ -16,8 +17,8 @@ export type DataLoader = (seriesIds: SeriesId[],
                           currentLoadedData: TBySeriesId<LoadedSeriesData>,
                           context?: any) => TBySeriesId<Promise<LoadedSeriesData>>;
 export interface DebugStoreHooks {
-  middlewares?: Function[];
-  enhancers?: Function[];
+  middlewares?: Middleware[];
+  enhancers?: GenericStoreEnhancer[];
 };
 
 // Deprecated. This typename mostly just adds indirection and noise.

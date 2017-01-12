@@ -68,7 +68,7 @@ function mapStateToProps(state: ChartProviderState): ConnectedProps {
 }
 
 // See react-redux docs for more.
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ChartProviderState>): DispatchProps {
   return bindActionCreators({ setXDomain }, dispatch);
 }
 

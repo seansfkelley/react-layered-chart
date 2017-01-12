@@ -5,6 +5,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { setChartPhysicalWidthAndLoad } from '../flux/compoundActions';
+import { ChartState } from '../model/state';
 
 interface DispatchProps {
   setChartPhysicalWidthAndLoad: typeof setChartPhysicalWidthAndLoad;
@@ -45,7 +46,7 @@ class ConnectedResizeSentinelLayer extends React.Component<DispatchProps, void> 
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ChartState>): DispatchProps {
   return bindActionCreators({ setChartPhysicalWidthAndLoad }, dispatch);
 }
 
