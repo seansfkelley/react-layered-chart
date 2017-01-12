@@ -13,7 +13,6 @@ import {
   Interval,
   Stack,
   ChartProvider,
-  ChartState,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   createStaticDataLoader,
@@ -69,7 +68,7 @@ function mapStateToProps(state: ChartProviderState): ConnectedProps {
 }
 
 // See react-redux docs for more.
-function mapDispatchToProps(dispatch: Dispatch<ChartState>): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ChartProviderState>): DispatchProps {
   return bindActionCreators({ setXDomain }, dispatch);
 }
 
