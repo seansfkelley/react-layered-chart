@@ -14,7 +14,7 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.hot.js --inline --content-base examples/build/ --host 0.0.0.0 --port 8085 --hot true",
     "test": "mocha 'test/**/*.ts'",
-    "prepublish": "tsd install && tsc --project tsconfig-build.json && lessc --source-map styles/index.less react-layered-chart.css"
+    "prepublish": "tsc --project tsconfig-build.json && lessc --source-map styles/index.less react-layered-chart.css"
   },
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
