@@ -30,8 +30,8 @@ describe('(loader utils)', () => {
     };
     const CONTEXT = { foo: 'bar' };
 
-    let loaderStub1: Sinon.SinonStub;
-    let loaderStub2: Sinon.SinonStub;
+    let loaderStub1: sinon.SinonStub;
+    let loaderStub2: sinon.SinonStub;
     let loader: DataLoader;
 
     beforeEach(() => {
