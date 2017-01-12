@@ -1,6 +1,6 @@
-import { GenericStoreEnhancer } from "redux";
-import { Interval, SeriesData } from "../core";
-import { ChartProviderState } from "./export-only/exportableState";
+import { GenericStoreEnhancer } from 'redux';
+import { Interval, SeriesData } from '../core';
+import { ChartProviderState } from './export-only/exportableState';
 
 export type SeriesId = string;
 export type ChartId = string;

@@ -1,29 +1,29 @@
-import * as classNames from "classnames";
-import * as _ from "lodash";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
-import { Provider } from "react-redux";
-import { Action, Store } from "redux";
-import { ThunkAction } from "../../redux-thunk.d";
-import { Interval, PixelRatioContextProvider, Stack, propTypes } from "../core";
+import * as _ from 'lodash';
+import * as React from 'react';
+import * as PureRender from 'pure-render-decorator';
+import * as classNames from 'classnames';
+import { Action, Store } from 'redux';
+import { Provider } from 'react-redux';
+
+import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
+import storeFactory from './flux/storeFactory';
+import { ChartId, SeriesId, TBySeriesId, DataLoader, DebugStoreHooks } from './interfaces';
+import { DefaultChartState, ChartState } from './model/state';
+import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
 import {
-    setDataLoaderDebounceTimeout,
-    setOverrideHover,
-    setOverrideSelection,
-    setOverrideYDomains,
-    setYDomains
-} from "./flux/atomicActions";
+  setYDomains,
+  setOverrideYDomains,
+  setOverrideSelection,
+  setOverrideHover,
+  setDataLoaderDebounceTimeout
+} from './flux/atomicActions';
 import {
-    setDataLoaderAndLoad,
-    setDataLoaderContextAndLoad,
-    setOverrideXDomainAndLoad,
-    setSeriesIdsAndLoad,
-    setXDomainAndLoad
-} from "./flux/compoundActions";
-import storeFactory from "./flux/storeFactory";
-import { ChartId, DataLoader, DebugStoreHooks, SeriesId, TBySeriesId } from "./interfaces";
-import ConnectedResizeSentinelLayer from "./layers/ConnectedResizeSentinelLayer";
-import { ChartState, DefaultChartState } from "./model/state";
+  setXDomainAndLoad,
+  setOverrideXDomainAndLoad,
+  setSeriesIdsAndLoad,
+  setDataLoaderAndLoad,
+  setDataLoaderContextAndLoad
+} from './flux/compoundActions';
 
 export interface Props {
   seriesIds: SeriesId[];

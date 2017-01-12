@@ -1,10 +1,11 @@
-import * as _ from "lodash";
-import * as PureRender from "pure-render-decorator";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "redux";
-import { setChartPhysicalWidthAndLoad } from "../flux/compoundActions";
-import { ChartState } from "../model/state";
+import * as _ from 'lodash';
+import * as React from 'react';
+import * as PureRender from 'pure-render-decorator';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { setChartPhysicalWidthAndLoad } from '../flux/compoundActions';
+import { ChartState } from '../model/state';
 
 interface DispatchProps {
   setChartPhysicalWidthAndLoad: typeof setChartPhysicalWidthAndLoad;
