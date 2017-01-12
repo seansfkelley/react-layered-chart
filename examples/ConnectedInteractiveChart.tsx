@@ -13,6 +13,7 @@ import {
   Interval,
   Stack,
   ChartProvider,
+  ChartState,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   createStaticDataLoader,
@@ -23,7 +24,6 @@ import {
   // This is one such action creator.
   setXDomain
 } from '../src';
-import { ChartState } from '../src/connected/model/state';
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';

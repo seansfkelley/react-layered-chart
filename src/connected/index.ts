@@ -7,4 +7,5 @@ export * from './export-only/exportableState';
 export * from './dataUtils';
 export * from './loaderUtils';
 export * from './model/constants';
+export * from './model/state';
 export { default as ChartProvider, Props as ChartProviderProps } from './ChartProvider';
