@@ -7,14 +7,12 @@ export function createStaticDataLoader(
   dataBySeriesId: TBySeriesId<SeriesData>,
   yDomainBySeriesId: TBySeriesId<Interval>
 ): DataLoader {
-  return () => {
-    return _.mapValues(dataBySeriesId, (data, seriesId) =>
-      new Promise((resolve, reject) => {
-        resolve({
-          data,
-          yDomain: yDomainBySeriesId[seriesId]
-        });
-      })
-    )
-  };
+  return () => _.mapValues(dataBySeriesId, (data, seriesId) =>
+    new Promise((resolve, reject) => {
+      resolve({
+        data,
+        yDomain: yDomainBySeriesId[seriesId]
+      });
+    })
+  );
 }

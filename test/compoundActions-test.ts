@@ -140,7 +140,7 @@ describe('(compound actions)', () => {
   });
 
   describe('setDataLoaderAndLoad', () => {
-    const LOADER: DataLoader =(() => {}) as any;
+    const LOADER: DataLoader = (() => {}) as any;
 
     it('should request a data load for all existing series', () => {
       store.dispatch(setDataLoaderAndLoad(LOADER));

@@ -4,7 +4,7 @@ import { TBySeriesId } from '../interfaces';
 
 export function objectWithKeys<T>(keys: string[], value: T): { [key: string]: T } {
   const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = value });
+  keys.forEach(k => { object[k] = value; });
   return object;
 }
 
@@ -14,6 +14,6 @@ export function replaceValuesWithConstant<T>(anyBySeriesId: TBySeriesId<any>, va
 
 export function objectWithKeysFromObject<T>(anyBySeriesId: TBySeriesId<any>, keys: string[], defaultValue: T): TBySeriesId<T> {
   const object: { [key: string]: T } = {};
-  keys.forEach(k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue });
+  keys.forEach(k => { object[k] = anyBySeriesId[k] !== undefined ? anyBySeriesId[k] : defaultValue; });
   return object;
 }

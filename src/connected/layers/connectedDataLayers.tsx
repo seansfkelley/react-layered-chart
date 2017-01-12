@@ -16,6 +16,7 @@ import { SeriesId } from '../interfaces';
 import { wrapDataLayerWithConnect, SeriesIdProp } from './wrapDataLayerWithConnect';
 
 
+// tslint:disable-next-line:class-name
 export interface _CommonConnectedBarLayerProps {
   color?: Color;
 }
@@ -23,6 +24,7 @@ export type ConnectedBarLayerProps = _CommonConnectedBarLayerProps & SeriesIdPro
 export const ConnectedBarLayer = wrapDataLayerWithConnect<_CommonConnectedBarLayerProps, BarLayerProps>(BarLayer);
 
 
+// tslint:disable-next-line:class-name
 export interface _CommonConnectedBucketedLineLayerProps {
   yScale?: ScaleFunction;
   color?: Color;
@@ -32,6 +34,7 @@ export type ConnectedBucketedLineLayerProps = _CommonConnectedBucketedLineLayerP
 export const ConnectedBucketedLineLayer = wrapDataLayerWithConnect<_CommonConnectedBucketedLineLayerProps, BucketedLineLayerProps>(BucketedLineLayer);
 
 
+// tslint:disable-next-line:class-name
 export interface _CommonConnectedPointLayerProps {
   yScale?: ScaleFunction;
   color?: Color;
@@ -42,6 +45,7 @@ export type ConnectedPointLayerProps = _CommonConnectedPointLayerProps & SeriesI
 export const ConnectedPointLayer = wrapDataLayerWithConnect<_CommonConnectedPointLayerProps, PointLayerProps>(PointLayer);
 
 
+// tslint:disable-next-line:class-name
 export interface _CommonConnectedSimpleLineLayerProps {
   yScale?: ScaleFunction;
   color?: Color;

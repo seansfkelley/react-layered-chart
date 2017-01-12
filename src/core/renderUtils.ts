@@ -76,7 +76,7 @@ export function getIndexBoundsForSpanData<T>(data: T[], xValueBounds: Interval, 
       } else {
         return minXValueAccessor(value as T);
       }
-    }
+    };
   }
 
   const lowerBoundAccessor = _.isString(maxXValueAccessor)

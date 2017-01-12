@@ -74,7 +74,7 @@ export function niceInterval(interval: Interval): Interval {
   return {
     min: nicedInterval[0],
     max: nicedInterval[1]
-  }
+  };
 }
 
 export function mergeIntervals(intervals: Interval[], defaultInterval?: Interval): Interval {
