@@ -4,5 +4,4 @@ examples/build/
 *.sublime-workspace
 *.log
 lib/
-typings/
 react-layered-chart.css*

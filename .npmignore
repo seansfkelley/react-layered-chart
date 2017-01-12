@@ -3,12 +3,9 @@ examples/
 hooks/
 styles/
 test/
-typings/
-*.pdf
 *.sublime-project
 *.sublime-workspace
 circle.yml
 tsconfig*.json
 tsd.json
-extra-typings.d.ts
 webpack.config.*js
