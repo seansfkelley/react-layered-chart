@@ -4,25 +4,22 @@ A button is added underneath the chart that displays the current X domain, and
 if you click it, it will reset the domain to where it started.
 */
 
-import * as React from 'react';
-import { Dispatch, bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch, bindActionCreators } from "redux";
+import { ChartState } from "../src/connected/model/state";
 import {
-  Interval,
-  Stack,
-  ChartProvider,
-  ConnectedSimpleLineLayer,
-  ConnectedInteractionCaptureLayer,
-  createStaticDataLoader,
-  // This type is opaque and should only be interacted with using builtin selectors and action creators.
-  ChartProviderState,
-  // This is one such selector.
-  selectXDomain,
-  // This is one such action creator.
-  setXDomain
-} from '../src';
+    ChartProvider,
+    ChartProviderState,
+    ConnectedInteractionCaptureLayer,
+    ConnectedSimpleLineLayer,
+    Interval,
+    Stack,
+    createStaticDataLoader,
+    selectXDomain,
+    setXDomain
+} from "../src";
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';
@@ -68,7 +65,7 @@ function mapStateToProps(state: ChartProviderState): ConnectedProps {
 }
 
 // See react-redux docs for more.
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ChartState>): DispatchProps {
   return bindActionCreators({ setXDomain }, dispatch);
 }
 

@@ -6,7 +6,7 @@ export type SeriesData = any[];
 
 export type Ticks = ((axisDomain: Interval) => number[] | number) | number[] | number;
 export type TickFormat = ((value: number) => string) | string;
-export type BooleanMouseEventHandler = (event: React.MouseEvent) => boolean;
+export type BooleanMouseEventHandler = (event: React.MouseEvent<HTMLElement>) => boolean;
 
 export interface Interval {
   min: number;

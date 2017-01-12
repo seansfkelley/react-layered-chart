@@ -1,29 +1,29 @@
-import * as _ from 'lodash';
-import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
-import * as classNames from 'classnames';
-import { Store } from 'redux';
-import { Provider } from 'react-redux';
-
-import { Interval, Stack, propTypes, PixelRatioContextProvider } from '../core';
-import storeFactory from './flux/storeFactory';
-import { ChartId, SeriesId, TBySeriesId, DataLoader, DebugStoreHooks } from './interfaces';
-import { DefaultChartState, ChartState } from './model/state';
-import ConnectedResizeSentinelLayer from './layers/ConnectedResizeSentinelLayer';
+import * as classNames from "classnames";
+import * as _ from "lodash";
+import * as PureRender from "pure-render-decorator";
+import * as React from "react";
+import { Provider } from "react-redux";
+import { Action, Store } from "redux";
+import { ThunkAction } from "../../redux-thunk.d";
+import { Interval, PixelRatioContextProvider, Stack, propTypes } from "../core";
 import {
-  setYDomains,
-  setOverrideYDomains,
-  setOverrideSelection,
-  setOverrideHover,
-  setDataLoaderDebounceTimeout
-} from './flux/atomicActions';
+    setDataLoaderDebounceTimeout,
+    setOverrideHover,
+    setOverrideSelection,
+    setOverrideYDomains,
+    setYDomains
+} from "./flux/atomicActions";
 import {
-  setXDomainAndLoad,
-  setOverrideXDomainAndLoad,
-  setSeriesIdsAndLoad,
-  setDataLoaderAndLoad,
-  setDataLoaderContextAndLoad
-} from './flux/compoundActions';
+    setDataLoaderAndLoad,
+    setDataLoaderContextAndLoad,
+    setOverrideXDomainAndLoad,
+    setSeriesIdsAndLoad,
+    setXDomainAndLoad
+} from "./flux/compoundActions";
+import storeFactory from "./flux/storeFactory";
+import { ChartId, DataLoader, DebugStoreHooks, SeriesId, TBySeriesId } from "./interfaces";
+import ConnectedResizeSentinelLayer from "./layers/ConnectedResizeSentinelLayer";
+import { ChartState, DefaultChartState } from "./model/state";
 
 export interface Props {
   seriesIds: SeriesId[];
@@ -78,7 +78,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     onHoverChange: React.PropTypes.func,
   } as React.ValidationMap<Props>;
 
-  private _store: Store;
+  private _store: Store<ChartState>;
   private _lastState: ChartState;
   private _unsubscribeCallback: Function;
 
@@ -187,7 +187,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     this._maybeDispatchChangedProp(this.props.selection,               nextProps.selection,               setOverrideSelection);
   }
 
-  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => void) {
+  private _maybeDispatchChangedProp<T>(prop: T, nextProp: T, actionCreator: (payload: T) => any) {
     if (prop !== nextProp) {
       this._store.dispatch(actionCreator(nextProp));
     }

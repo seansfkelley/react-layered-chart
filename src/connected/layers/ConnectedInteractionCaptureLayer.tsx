@@ -77,7 +77,7 @@ function mapStateToProps(state: ChartState): ConnectedProps {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<ChartState>): DispatchProps {
   return bindActionCreators({
     setXDomainAndLoad,
     setSelection,
