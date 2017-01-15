@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
-import mixinToDecorator from './mixinToDecorator';
+export default function NonReactRender(component: React.ComponentClass<any>) {
+  const prototype = component.prototype as React.ComponentLifecycle<any, any>;
 
-const mixin: React.Mixin<any, any> = {
-  componentDidMount: function (){
+  const oldDidMount = prototype.componentDidMount;
+  prototype.componentDidMount = function() {
     if (!_.isFunction(this.nonReactRender)) {
       throw new Error(this.constructor.name + ' must implement a nonReactRender function to use the NonReactRender decorator');
     }
@@ -15,20 +16,29 @@ const mixin: React.Mixin<any, any> = {
     }.bind(this);
 
     this.__lastRafRequest = requestAnimationFrame(this.__boundNonReactRender);
-  },
 
-  componentDidUpdate: function() {
+    if (oldDidMount) {
+      oldDidMount.call(this);
+    }
+  }
+
+  const oldDidUpdate = prototype.componentDidUpdate;
+  prototype.componentDidUpdate = function() {
     if (!this.__lastRafRequest) {
       this.__lastRafRequest = requestAnimationFrame(this.__boundNonReactRender);
     }
-  },
 
-  componentWillUnmount: function() {
-    cancelAnimationFrame(this.__lastRafRequest);
+    if (oldDidUpdate) {
+      oldDidUpdate.call(this);
+    }
   }
-};
 
-const decorator = mixinToDecorator(mixin);
+  const oldWillUnmount = prototype.componentWillUnmount;
+  prototype.componentWillUnmount = function() {
+    cancelAnimationFrame(this.__lastRafRequest);
 
-export default decorator;
-export { mixin as Mixin };
+    if (oldWillUnmount) {
+      oldWillUnmount.call(this);
+    }
+  }
+}
