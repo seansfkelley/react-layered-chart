@@ -1,14 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "pretty": true
-  },
+  "extends": "./tsconfig-base",
   "exclude": [
     "node_modules",
     "lib",
