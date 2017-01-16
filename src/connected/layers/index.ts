@@ -2,11 +2,6 @@ export * from './wrapDataLayerWithConnect';
 export * from './connectedDataLayers';
 
 export {
-  default as ConnectedBrushLayer,
-  OwnProps as ConnectedBrushLayerProps
-} from './ConnectedBrushLayer';
-
-export {
   default as ConnectedHoverLineLayer,
   OwnProps as ConnectedHoverLineLayerProps
 } from './ConnectedHoverLineLayer';

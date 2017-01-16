@@ -9,11 +9,6 @@ export {
 } from './BarLayer';
 
 export {
-  default as BrushLayer,
-  Props as BrushLayerProps
-} from './BrushLayer';
-
-export {
   default as BucketedLineLayer,
   Props as BucketedLineLayerProps
 } from './BucketedLineLayer';
