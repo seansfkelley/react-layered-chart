@@ -15,7 +15,6 @@ import { Interval, Color, XSpanDatum } from '../interfaces';
 export interface Props {
   data: XSpanDatum[];
   xDomain: Interval;
-  color?: Color;
   fillColor?: Color;
   borderColor?: Color;
 }
@@ -29,7 +28,6 @@ export default class SpanLayer extends React.Component<Props, void> {
   static propTypes = {
     data: React.PropTypes.arrayOf(propTypes.xSpanDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
-    color: deprecate(React.PropTypes.string, 'SpanLayer\'s \'color\' prop is deprecated in favor of \'fillColor\' and/or \'borderColor\''),
     fillColor: React.PropTypes.string,
     borderColor: React.PropTypes.string
   } as React.ValidationMap<Props>;
@@ -63,8 +61,6 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     .domain([ props.xDomain.min, props.xDomain.max ])
     .rangeRound([ 0, width ]);
 
-  const defaultFill = props.color || props.fillColor;
-
   context.lineWidth = 1;
   context.strokeStyle = props.borderColor!;
 
@@ -74,7 +70,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     context.beginPath();
     context.rect(left, -1, right - left, height + 2);
 
-    const fillStyle = props.data[i].color || defaultFill;
+    const fillStyle = props.data[i].color || props.fillColor;
     if (fillStyle) {
       context.fillStyle = fillStyle;
       context.fill();
