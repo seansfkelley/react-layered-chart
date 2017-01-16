@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
@@ -20,10 +19,9 @@ export interface Props {
   joinType?: JoinType;
 }
 
-@PureRender
 @NonReactRender
 @PixelRatioContext
-class BucketedLineLayer extends React.Component<Props, void> {
+class BucketedLineLayer extends React.PureComponent<Props, void> {
   context: Context;
 
   static propTypes = {

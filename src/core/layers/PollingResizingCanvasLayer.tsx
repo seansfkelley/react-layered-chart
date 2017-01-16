@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 
 export interface Props {
   onSizeChange: () => void;
@@ -11,8 +10,7 @@ export interface State {
   height: number;
 }
 
-@PureRender
-export default class PollingResizingCanvasLayer extends React.Component<Props, State> {
+export default class PollingResizingCanvasLayer extends React.PureComponent<Props, State> {
   private __setSizeInterval: number;
 
   static propTypes = {

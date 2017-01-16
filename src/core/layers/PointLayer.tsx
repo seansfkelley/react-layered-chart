@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
@@ -23,10 +22,9 @@ export interface Props {
   innerRadius?: number;
 }
 
-@PureRender
 @NonReactRender
 @PixelRatioContext
-class PointLayer extends React.Component<Props, void> {
+class PointLayer extends React.PureComponent<Props, void> {
   context: Context;
 
   static propTypes = {

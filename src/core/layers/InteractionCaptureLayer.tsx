@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 
 import propTypes from '../propTypes';
 import { Interval, BooleanMouseEventHandler } from '../interfaces';
@@ -26,8 +25,7 @@ export interface State {
   startBrushXPct?: number;
 }
 
-@PureRender
-export default class InteractionCaptureLayer extends React.Component<Props, State> {
+export default class InteractionCaptureLayer extends React.PureComponent<Props, State> {
   static propTypes = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,

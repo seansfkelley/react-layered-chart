@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
@@ -16,10 +15,9 @@ export interface Props {
   color?: Color;
 }
 
-@PureRender
 @NonReactRender
 @PixelRatioContext
-export default class HoverLineLayer extends React.Component<Props, void> {
+export default class HoverLineLayer extends React.PureComponent<Props, void> {
   context: Context;
 
   static propTypes = {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';
 
 import PixelRatioContext from './decorators/PixelRatioContext';
@@ -10,10 +9,9 @@ export interface Props {
   pixelRatio?: number;
 }
 
-@PureRender
 @PixelRatioContext
 @PixelRatioContextProvider
-export default class Stack extends React.Component<Props, void> {
+export default class Stack extends React.PureComponent<Props, void> {
   static propTypes = {
     className: React.PropTypes.string,
     pixelRatio: React.PropTypes.number

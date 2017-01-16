@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
 
@@ -12,8 +11,7 @@ export interface Props extends AxisSpec {
   yDomain: Interval;
 }
 
-@PureRender
-class YAxis extends React.Component<Props, void> {
+class YAxis extends React.PureComponent<Props, void> {
   static propTypes = _.defaults({
     yDomain: propTypes.interval.isRequired
   }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;

@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
@@ -51,9 +50,8 @@ export interface Props {
   onHoverChange?: (hover: number) => void;
 }
 
-@PureRender
 @PixelRatioContextProvider
-export default class ChartProvider extends React.Component<Props, void> {
+export default class ChartProvider extends React.PureComponent<Props, void> {
   static propTypes = {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     loadData: React.PropTypes.func.isRequired,

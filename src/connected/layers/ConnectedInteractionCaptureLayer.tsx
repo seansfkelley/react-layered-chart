@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -36,8 +35,7 @@ export interface DispatchProps {
   setHover: typeof setHover;
 }
 
-@PureRender
-export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps & ConnectedProps & DispatchProps, {}> {
+export class ConnectedInteractionCaptureLayer extends React.PureComponent<OwnProps & ConnectedProps & DispatchProps, {}> {
   render() {
     return (
       <InteractionCaptureLayer

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
@@ -17,10 +16,9 @@ export interface Props {
   borderColor?: Color;
 }
 
-@PureRender
 @NonReactRender
 @PixelRatioContext
-export default class SpanLayer extends React.Component<Props, void> {
+export default class SpanLayer extends React.PureComponent<Props, void> {
   context: Context;
 
   static propTypes = {

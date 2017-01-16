@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,8 +10,7 @@ interface DispatchProps {
   setChartPhysicalWidthAndLoad: typeof setChartPhysicalWidthAndLoad;
 }
 
-@PureRender
-class ConnectedResizeSentinelLayer extends React.Component<DispatchProps, void> {
+class ConnectedResizeSentinelLayer extends React.PureComponent<DispatchProps, void> {
   private __setSizeInterval: number;
   private __lastWidth: number;
 

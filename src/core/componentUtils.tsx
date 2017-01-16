@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { Motion, spring } from 'react-motion';
 
 import { Interval } from './interfaces';
@@ -17,8 +16,7 @@ export interface YDomainProp {
 
 export function wrapWithAnimatedYDomain<Props extends YDomainProp>(Component: React.ComponentClass<Props>): React.ComponentClass<Props> {
 
-  @PureRender
-  class AnimatedYDomainWrapper extends React.Component<Props, void> {
+  class AnimatedYDomainWrapper extends React.PureComponent<Props, void> {
     render() {
       return (
         <Motion style={springifyInterval(this.props.yDomain)}>

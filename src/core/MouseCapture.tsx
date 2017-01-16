@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 
 const LEFT_MOUSE_BUTTON = 0;
@@ -24,8 +23,7 @@ export interface State {
   lastMouseMoveClientY?: number;
 }
 
-@PureRender
-export default class MouseCapture extends React.Component<Props, State> {
+export default class MouseCapture extends React.PureComponent<Props, State> {
   static propTypes = {
     className: React.PropTypes.string,
     zoomSpeed: React.PropTypes.oneOfType([
