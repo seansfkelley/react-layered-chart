@@ -1,9 +1,4 @@
 export {
-  default as AutoresizingCanvasLayer,
-  Props as AutoresizingCanvasLayerProps
-} from './AutoresizingCanvasLayer';
-
-export {
   default as PollingResizingCanvasLayer,
   Props as PollingResizingCanvasLayerProps
 } from './PollingResizingCanvasLayer';
