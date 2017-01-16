@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { deprecate } from 'react-is-deprecated';
 
 export const interval = React.PropTypes.shape({
   min: React.PropTypes.number.isRequired,
