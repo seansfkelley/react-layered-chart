@@ -29,7 +29,6 @@ For specifics on the exact types of these components/functions/values, please ch
     * [`chainLoaders(...loaders)`](#chainloadersloaders)
     * [`createSelectDataForHover(xValueIterator)`](#createselectdataforhoverxvalueiterator)
     * [`wrapWithAnimatedYDomain(ComponentClass)`](#wrapwithanimatedydomaincomponentclass)
-    * [~~`wrapDataLayerWithConnect(component)`~~](#wrapdatalayerwithconnectcomponent)
     * [`getIndexBoundsForPointData(data, interval, xValuePath)`](#getindexboundsforpointdatadata-interval-xvaluepath)
     * [`getIndexBoundsForSpanData(data, interval, minXValuePath, maxXValuePath)`](#getindexboundsforspandatadata-interval-minxvaluepath-maxxvaluepath)
     * [`computeTicks(scale, ticks?, tickFormat?)`](#computeticksscale-ticks-tickformat)
@@ -439,30 +438,6 @@ class ExampleComponent extends React.Component<Props, ...> {
 
 export default wrapWithAnimatedYDomain(ExampleComponent);
 
-```
-
-<hr/>
-
-#### ~~`wrapDataLayerWithConnect(component)`~~
-
-**This function is deprecated. Layers should be individually `connect`ed as appropriate in a type-safe manner.**
-
-Wraps the given component with a new component that accepts a `seriesId` instead of `data`, `xDomain` and `yDomain`. The new component is automatically [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options)ed and will inject these three props based on the value of the `seriesId` prop.
-
-**Note**: If you're using Typescript, you should explicitly parameterize the types for this function, or they may be inferred to be a too-loose value (such as `{}`). You can use `WrappedDataLayerConnectedProps` to refer to the props that will be auto-injected.
-
-```tsx
-import { WrappedDataLayerConnectedProps, wrapDataLayerWithConnect } from 'react-layered-chart';
-
-interface CommonProps {
-  color?: string;
-}
-
-type Props = CommonProps & WrappedDataLayerConnectedProps;
-
-class ExampleComponent extends React.Component<Props, ...> { ... }
-
-const ConnectedExampleComponent = wrapDataLayerWithConnect<CommonProps, Props>(ExampleComponent);
 ```
 
 <hr/>

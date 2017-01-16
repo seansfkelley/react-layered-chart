@@ -1,4 +1,3 @@
-export * from './wrapDataLayerWithConnect';
 export * from './connectedDataLayers';
 
 export {
