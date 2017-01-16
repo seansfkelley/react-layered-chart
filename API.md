@@ -111,7 +111,7 @@ These props come in read-write pairs and implement the ["controlled component" p
 - `onDrag?(xPct, yPct, event)`: the user is continuing a drag action. Note that only the left mouse button is respected.
 - `onDragEnd?(xPct, yPct, event)`: the user finished a drag action. Note that only the left mouse button is respected.
 - `onClick?(xPct, yPct, event)`: the user clicked on this element. A "click" in this context is interpreted as a mouse-up-mouse-down pair where the mouse moved very little or nothing between the events.
-- `onHover?(xPct?, yPct?, event)`: the user moved the mouse over this element. `xPct` and `yPct` will be `null` if the mouse has left the element.
+- `onHover?(xPct?, yPct?, event)`: the user moved the mouse over this element. `xPct` and `yPct` will be `undefined` if the mouse has left the element.
 
 ## Layers
 
@@ -180,7 +180,7 @@ This layer displays nothing, but captures all mouse events and translates them i
 - `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture.
 - `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `zoomInterval` for an explanation of the parameters.
 - `onPan?(logicalUnits)`: fired when the user moves their mouse during a legal pan gesture.
-- `onBrush?(logicalUnitInterval?)`: fired when the user moves their mouse during a legal brush gesture. Called with `null` if the selection is cleared.
+- `onBrush?(logicalUnitInterval?)`: fired when the user moves their mouse during a legal brush gesture. Called with `undefined` if the selection is cleared.
 - `onHover?(logicalPosition)`: fired when the user hovers over the chart.
 - `zoomSpeed?`: a constant factor to adjust the sensitivity of the zooming gesture for different scroll velocities.
 
@@ -625,7 +625,7 @@ niceInterval({ min: 34, max: 1454 });
 
 #### `mergeIntervals(intervals, defaultInterval?)`
 
-Returns a interval that covers all the provided intervals. Returns `defaultInterval` if no intervals are given and `null` if `defaultInterval` is not given either.
+Returns a interval that covers all the provided intervals. Returns `defaultInterval` if no intervals are given and `undefined` if `defaultInterval` is not given either.
 
 ```tsx
 mergeIntervals([ { min: 0, max: 50 }, { min: -10, max: 35 } ]);

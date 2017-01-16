@@ -88,7 +88,7 @@ function myDataLoader(...) {
 >
   <Stack>
     <ConnectedLineLayer seriesId='my-series-id'/>
-    <ConnectedInteractionLayer enablePan={true} enableZoom={true}/>
+    <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
   </Stack>
 </ChartProvider>
 ```
@@ -147,10 +147,6 @@ Specify a globally-unique `chartId` string prop to `ChartProvider` so on next mo
 #### Loads are consistently and frequently triggered even when nothing is changing.
 
 This generally means you are providing a functionally-equal but reference-unequal value for `ChartProvider`'s `loadData`, such as by using an inline function definition. `loadData` should be a stateless function, and should almost never change reference. If you want to provide extra information to `loadData`, use `ChartProvider`'s `loadDataContext` prop instead of `bind`ing arguments to a function (which creates a new function object). All series are reloaded whenever `loadDataContext` changes shallowly, but if you use deep-checkable types you can tweak `loadData` to prevent extraneous network requests.
-
-#### Textual elements (like axes) are using default fonts.
-
-`<canvas>` elements don't inherit the font from CSS. If you're implementing your own such layer, you have to explicitly set [`font`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font). If you're using a layer implemented with `<canvas>`, you likely have to pass a full [CSS `font` declaration](https://developer.mozilla.org/en-US/docs/Web/CSS/font) to it. Lastly, if your font file (of the appropriate style and weight) isn't automatically loaded into the page, ensure you have a `@font-face` declaration for it, or consider using a tool like [Web Font Loader](https://github.com/typekit/webfontloader).
 
 ## Developing
 
