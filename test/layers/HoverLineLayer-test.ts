@@ -19,12 +19,12 @@ describe('HoverLineLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: CanvasRenderingContext2D, hover: number) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, hover?: number) {
     _renderCanvas(_.defaults({ hover }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should do nothing if no hover value is provided', () => {
-    renderWithSpy(spy, null);
+    renderWithSpy(spy, undefined);
 
     expect(spy.operations).to.deep.equal([]);
   });

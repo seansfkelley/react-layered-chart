@@ -72,17 +72,17 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     .domain([ props.xDomain.min, props.xDomain.max ])
     .rangeRound([ 0, width ]);
 
-  const yScale = props.yScale()
+  const yScale = props.yScale!()
     .domain([ props.yDomain.min, props.yDomain.max ])
     .rangeRound([ 0, height ]);
 
   const isFilled = props.innerRadius === 0;
 
-  const radius = isFilled ? props.radius : (props.radius - props.innerRadius) / 2 + props.innerRadius;
+  const radius = isFilled ? props.radius! : (props.radius - props.innerRadius) / 2 + props.innerRadius;
 
   context.lineWidth = props.radius - props.innerRadius;
-  context.strokeStyle = props.color;
-  context.fillStyle = props.color;
+  context.strokeStyle = props.color!;
+  context.fillStyle = props.color!;
 
   if (isFilled) {
     context.beginPath();

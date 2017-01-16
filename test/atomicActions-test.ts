@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { expect } from 'chai';
 
-import { TBySeriesId, LoadedSeriesData } from '../src/connected/interfaces';
+import { TBySeriesId, LoadedSeriesData, DataLoader } from '../src/connected/interfaces';
 import reducer from '../src/connected/flux/reducer';
 import { objectWithKeys } from '../src/connected/flux/reducerUtils';
 import { ChartState, DEFAULT_CHART_STATE } from '../src/connected/model/state';
@@ -75,7 +75,7 @@ describe('(atomic actions)', () => {
       loadedDataBySeriesId: {},
       loadVersionBySeriesId: {},
       errorBySeriesId: {},
-      dataLoader: null,
+      dataLoader: function() {} as any as DataLoader,
       uiState: {
         xDomain: DUMMY_INTERVAL,
         yDomainBySeriesId: {}

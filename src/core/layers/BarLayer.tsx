@@ -75,7 +75,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     context.rect(left, bottom, right - left, top - bottom);
   }
 
-  context.fillStyle = props.color;
+  context.fillStyle = props.color!;
   context.fill();
 }
 

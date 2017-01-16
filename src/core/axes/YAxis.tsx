@@ -23,7 +23,7 @@ class YAxis extends React.Component<Props, void> {
   } as any as Props;
 
   render() {
-    const yScale = this.props.scale()
+    const yScale = this.props.scale!()
       .domain([ this.props.yDomain.min, this.props.yDomain.max ])
       .range([ 0, 100 ]);
 

@@ -13,7 +13,7 @@ export interface Props {
   onDrag?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
   onDragEnd?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
   onClick?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
-  onHover?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onHover?: (xPct: number | undefined, yPct: number | undefined, e: React.MouseEvent<HTMLElement>) => void;
   children?: React.ReactNode;
 }
 
@@ -82,10 +82,10 @@ export default class MouseCapture extends React.Component<Props, State> {
 
   private _clearState() {
     this.setState({
-      mouseDownClientX: null,
-      mouseDownClientY: null,
-      lastMouseMoveClientX: null,
-      lastMouseMoveClientY: null
+      mouseDownClientX: undefined,
+      mouseDownClientY: undefined,
+      lastMouseMoveClientX: undefined,
+      lastMouseMoveClientY: undefined
     });
   }
 
@@ -105,7 +105,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     }
   };
 
-  private _maybeDispatchDragHandler(e: React.MouseEvent<HTMLElement>, handler: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void) {
+  private _maybeDispatchDragHandler(e: React.MouseEvent<HTMLElement>, handler?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void) {
     if (e.button === LEFT_MOUSE_BUTTON && handler && this.state.mouseDownClientX != null) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       handler(
@@ -145,7 +145,7 @@ export default class MouseCapture extends React.Component<Props, State> {
     this._maybeDispatchDragHandler(e, this.props.onDragEnd);
 
     if (this.props.onHover) {
-      this.props.onHover(null, null, e);
+      this.props.onHover(undefined, undefined, e);
     }
 
     this._clearState();

@@ -5,6 +5,7 @@
     "sourceMap": true,
     "jsx": "react",
     "experimentalDecorators": true,
+    "strictNullChecks": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "pretty": true

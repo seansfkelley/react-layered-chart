@@ -114,7 +114,7 @@ describe('(interval utils)', () => {
       }, {
         description: 'should not enforce a minimum if the min extent is null',
         input: interval(1, 2),
-        min: null,
+        min: undefined,
         max: 10,
         output: interval(1, 2)
       }, {
@@ -133,25 +133,25 @@ describe('(interval utils)', () => {
         description: 'should not enforce a maximum if the max extent is null',
         input: interval(1, 2),
         min: 0,
-        max: null,
+        max: undefined,
         output: interval(1, 2)
       }, {
         description: 'should return the midpoint of the interval if the max extent is 0',
         input: interval(1, 2),
-        min: null,
+        min: undefined,
         max: 0,
         output: interval(1.5, 1.5)
       }, {
         description: 'should not enforce a maximum if the max extent is Infinity',
         input: interval(1, 2),
-        min: null,
+        min: undefined,
         max: Infinity,
         output: interval(1, 2)
       }, {
         description: 'should do nothing if both the min and max extends are null',
         input: interval(1, 2),
-        min: null,
-        max: null,
+        min: undefined,
+        max: undefined,
         output: interval(1, 2)
       }
     ];
@@ -164,7 +164,7 @@ describe('(interval utils)', () => {
 
     it('should return the input interval by reference if no changes occured', () => {
       const input = interval(0, 10);
-      const output = enforceIntervalExtent(input, null, null);
+      const output = enforceIntervalExtent(input, undefined, undefined);
       expect(output).to.equal(input);
     });
 
@@ -213,8 +213,8 @@ describe('(interval utils)', () => {
   });
 
   describe('mergeIntervals', () => {
-    it('should return null when a zero-length array is given', () => {
-      expect(mergeIntervals([])).to.be.null;
+    it('should return undefined when a zero-length array is given', () => {
+      expect(mergeIntervals([])).to.be.undefined;
     });
 
     it('should return the default interval when a zero-length array and default is given', () => {

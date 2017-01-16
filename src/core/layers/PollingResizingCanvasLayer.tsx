@@ -54,10 +54,10 @@ export default class PollingResizingCanvasLayer extends React.Component<Props, S
   resetCanvas() {
     const canvas = this.getCanvasElement();
     const { width, height } = this.state;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d')!;
 
     context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
-    context.scale(this.props.pixelRatio, this.props.pixelRatio);
+    context.scale(this.props.pixelRatio!, this.props.pixelRatio!);
     context.clearRect(0, 0, width, height);
 
     return { width, height, context };

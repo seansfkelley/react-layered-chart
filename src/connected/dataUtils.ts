@@ -11,7 +11,7 @@ export function createStaticDataLoader(
     new Promise((resolve, reject) => {
       resolve({
         data,
-        yDomain: yDomainBySeriesId[seriesId]
+        yDomain: yDomainBySeriesId[seriesId!]
       });
     })
   );

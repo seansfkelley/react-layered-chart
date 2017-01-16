@@ -22,7 +22,7 @@ export default class XAxis extends React.Component<Props, void> {
   } as any as Props;
 
   render() {
-    const xScale = this.props.scale()
+    const xScale = this.props.scale!()
       .domain([ this.props.xDomain.min, this.props.xDomain.max ])
       .range([ 0, 100 ]);
 

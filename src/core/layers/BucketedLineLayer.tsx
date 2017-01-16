@@ -71,7 +71,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     .domain([ props.xDomain.min, props.xDomain.max ])
     .range([ 0, width ]);
 
-  const yScale = props.yScale()
+  const yScale = props.yScale!()
     .domain([ props.yDomain.min, props.yDomain.max ])
     .range([ 0, height ]);
 
@@ -112,7 +112,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
       );
     }
   }
-  context.fillStyle = props.color;
+  context.fillStyle = props.color!;
   context.fill();
 
   // Lines
@@ -132,7 +132,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     context.lineTo(computedValues.minX, height - computedValues.firstY);
     context.moveTo(computedValues.maxX - 1, height - computedValues.lastY);
   }
-  context.strokeStyle = props.color;
+  context.strokeStyle = props.color!;
   context.stroke();
 }
 

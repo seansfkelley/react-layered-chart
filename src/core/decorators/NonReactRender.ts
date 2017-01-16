@@ -20,7 +20,7 @@ export default function NonReactRender(component: React.ComponentClass<any>) {
     if (oldDidMount) {
       oldDidMount.call(this);
     }
-  }
+  };
 
   const oldDidUpdate = prototype.componentDidUpdate;
   prototype.componentDidUpdate = function() {
@@ -31,7 +31,7 @@ export default function NonReactRender(component: React.ComponentClass<any>) {
     if (oldDidUpdate) {
       oldDidUpdate.call(this);
     }
-  }
+  };
 
   const oldWillUnmount = prototype.componentWillUnmount;
   prototype.componentWillUnmount = function() {
@@ -40,5 +40,5 @@ export default function NonReactRender(component: React.ComponentClass<any>) {
     if (oldWillUnmount) {
       oldWillUnmount.call(this);
     }
-  }
+  };
 }

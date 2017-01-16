@@ -705,7 +705,7 @@ describe('(render utils)', () => {
 
     it('should return the format function as-is when passed', () => {
       const fn = function(){} as any;
-      expect(computeTicks(scale, null, fn).format).to.equal(fn);
+      expect(computeTicks(scale, undefined, fn).format).to.equal(fn);
     });
   });
 });

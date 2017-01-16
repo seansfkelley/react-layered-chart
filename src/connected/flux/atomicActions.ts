@@ -34,17 +34,17 @@ function createActionCreator<P>(type: ActionType) {
 export const setSeriesIds = createActionCreator<SeriesId[]>(ActionType.SET_SERIES_IDS);
 export const setDataLoader = createActionCreator<DataLoader>(ActionType.SET_DATA_LOADER);
 export const setDataLoaderDebounceTimeout = createActionCreator<number>(ActionType.SET_DATA_LOADER_DEBOUNCE_TIMEOUT);
-export const setDataLoaderContext = createActionCreator<any>(ActionType.SET_DATA_LOADER_CONTEXT);
+export const setDataLoaderContext = createActionCreator<any | undefined>(ActionType.SET_DATA_LOADER_CONTEXT);
 export const setChartPhysicalWidth = createActionCreator<number>(ActionType.SET_CHART_PHYSICAL_WIDTH);
 
 export const setXDomain = createActionCreator<Interval>(ActionType.SET_X_DOMAIN);
-export const setOverrideXDomain = createActionCreator<Interval>(ActionType.SET_OVERRIDE_X_DOMAIN);
+export const setOverrideXDomain = createActionCreator<Interval | undefined>(ActionType.SET_OVERRIDE_X_DOMAIN);
 export const setYDomains = createActionCreator<TBySeriesId<Interval>>(ActionType.SET_Y_DOMAINS);
-export const setOverrideYDomains = createActionCreator<TBySeriesId<Interval>>(ActionType.SET_OVERRIDE_Y_DOMAINS);
-export const setHover = createActionCreator<number>(ActionType.SET_HOVER);
-export const setOverrideHover = createActionCreator<number>(ActionType.SET_OVERRIDE_HOVER);
-export const setSelection = createActionCreator<Interval>(ActionType.SET_SELECTION);
-export const setOverrideSelection = createActionCreator<Interval>(ActionType.SET_OVERRIDE_SELECTION);
+export const setOverrideYDomains = createActionCreator<TBySeriesId<Interval> | undefined>(ActionType.SET_OVERRIDE_Y_DOMAINS);
+export const setHover = createActionCreator<number | undefined>(ActionType.SET_HOVER);
+export const setOverrideHover = createActionCreator<number | undefined>(ActionType.SET_OVERRIDE_HOVER);
+export const setSelection = createActionCreator<Interval | undefined>(ActionType.SET_SELECTION);
+export const setOverrideSelection = createActionCreator<Interval | undefined>(ActionType.SET_OVERRIDE_SELECTION);
 
 export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);
 export const dataReturned = createActionCreator<TBySeriesId<LoadedSeriesData>>(ActionType.DATA_RETURNED);

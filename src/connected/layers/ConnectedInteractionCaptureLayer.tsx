@@ -42,10 +42,10 @@ export class ConnectedInteractionCaptureLayer extends React.Component<OwnProps &
     return (
       <InteractionCaptureLayer
         xDomain={this.props.xDomain}
-        onZoom={this.props.enableZoom && this._zoom}
-        onPan={this.props.enablePan && this._pan}
-        onHover={this.props.enableHover && this._hover}
-        onBrush={this.props.enableBrush && this._brush}
+        onZoom={this.props.enableZoom ? this._zoom : undefined}
+        onPan={this.props.enablePan ? this._pan : undefined}
+        onHover={this.props.enableHover ? this._hover : undefined}
+        onBrush={this.props.enableBrush ? this._brush : undefined}
         shouldZoom={this.props.shouldZoom}
         shouldPan={this.props.shouldPan}
         shouldBrush={this.props.shouldBrush}

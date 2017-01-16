@@ -20,6 +20,6 @@ export const setHover = _castToAnyOutput(internalSetHover);
 export const setSelection = _castToAnyOutput(internalSetSelection);
 export const setXDomain = _castToAnyOutput(internalSetXDomain);
 
-export function getActionTypeName(actionValue: any): string {
-  return ActionType[actionValue] || null;
+export function getActionTypeName(actionValue: any): string | undefined {
+  return ActionType[actionValue] || undefined;
 }

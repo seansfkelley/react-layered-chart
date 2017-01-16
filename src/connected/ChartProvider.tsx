@@ -93,7 +93,7 @@ export default class ChartProvider extends React.Component<Props, void> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.chartId !== this.props.chartId) {
-      this._tryUnsubscribe();
+      this._unsubscribeCallback();
       this._store = storeFactory(this.props.chartId, this.props.debugStoreHooks);
       this._onStoreChange(nextProps);
     } else {
@@ -102,14 +102,7 @@ export default class ChartProvider extends React.Component<Props, void> {
   }
 
   componentWillUnmount() {
-    this._tryUnsubscribe();
-  }
-
-  private _tryUnsubscribe() {
-    if (this._unsubscribeCallback) {
-      this._unsubscribeCallback();
-    }
-    this._lastState = null;
+    this._unsubscribeCallback();
   }
 
   private _onStoreChange(props: Props) {
@@ -118,7 +111,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     this._store.dispatch(setSeriesIdsAndLoad(props.seriesIds));
     this._store.dispatch(setDataLoaderAndLoad(props.loadData));
     this._store.dispatch(setDataLoaderContextAndLoad(props.loadDataContext));
-    if (_.isNumber(this.props.loadDataDebounceTimeout)) {
+    if (_.isNumber(props.loadDataDebounceTimeout)) {
       this._store.dispatch(setDataLoaderDebounceTimeout(props.loadDataDebounceTimeout));
     }
     // These should perhaps be set on the store as explicit "default" fields rather than auto-dispatched on load.

@@ -77,9 +77,13 @@ export function niceInterval(interval: Interval): Interval {
   };
 }
 
-export function mergeIntervals(intervals: Interval[], defaultInterval?: Interval): Interval {
+export function mergeIntervals(intervals: Interval[]): Interval | undefined;
+export function mergeIntervals(intervals: Interval[], defaultInterval: Interval): Interval;
+export function mergeIntervals(intervals: Interval[], defaultInterval: undefined): Interval | undefined;
+
+export function mergeIntervals(intervals: Interval[], defaultInterval?: Interval) {
   if (intervals.length === 0) {
-    return defaultInterval || null;
+    return defaultInterval || undefined;
   } else {
     return {
       min: _.min(_.map<Interval, number>(intervals, 'min')),

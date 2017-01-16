@@ -9,8 +9,8 @@ export interface DefaultChartState {
 }
 
 export interface UiState {
-  xDomain?: Interval;
-  yDomainBySeriesId?: TBySeriesId<Interval>;
+  xDomain: Interval;
+  yDomainBySeriesId: TBySeriesId<Interval>;
   hover?: number;
   selection?: Interval;
 }
@@ -25,7 +25,7 @@ export interface ChartState {
   errorBySeriesId: TBySeriesId<any>;
   dataLoader: DataLoader;
   uiState: UiState;
-  uiStateConsumerOverrides: UiState;
+  uiStateConsumerOverrides: Partial<UiState>;
 }
 
 export const invalidLoader = (() => {

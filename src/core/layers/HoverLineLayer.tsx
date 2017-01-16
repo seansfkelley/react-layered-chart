@@ -58,11 +58,11 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   const xScale = d3Scale.scaleLinear()
     .domain([ props.xDomain.min, props.xDomain.max ])
     .rangeRound([ 0, width ]);
-  const xPos = xScale(props.hover);
+  const xPos = xScale(props.hover!);
 
   if (xPos >= 0 && xPos < width) {
     context.lineWidth = 1;
-    context.strokeStyle = props.stroke || props.color;
+    context.strokeStyle = props.stroke || props.color!;
     context.translate(0.5, -0.5);
     context.beginPath();
     context.moveTo(xPos, 0);

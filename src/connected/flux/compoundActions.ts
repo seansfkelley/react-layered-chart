@@ -31,7 +31,7 @@ export function setXDomainAndLoad(payload: Interval) {
   };
 }
 
-export function setOverrideXDomainAndLoad(payload: Interval) {
+export function setOverrideXDomainAndLoad(payload?: Interval) {
   return (dispatch, getState) => {
     const state: ChartState = getState();
 
@@ -77,7 +77,7 @@ export function setDataLoaderAndLoad(payload: DataLoader) {
   };
 }
 
-export function setDataLoaderContextAndLoad(payload: any) {
+export function setDataLoaderContextAndLoad(payload?: any) {
   return (dispatch, getState) => {
     const state: ChartState = getState();
 

@@ -66,7 +66,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   const defaultFill = props.color || props.fillColor;
 
   context.lineWidth = 1;
-  context.strokeStyle = props.borderColor;
+  context.strokeStyle = props.borderColor!;
 
   for (let i = firstIndex; i < lastIndex; ++i) {
     const left = xScale(props.data[i].minXValue);

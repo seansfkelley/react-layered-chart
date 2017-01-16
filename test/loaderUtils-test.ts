@@ -75,7 +75,7 @@ describe('(loader utils)', () => {
     });
 
     it('should call the loaders in order', () => {
-      const callOrder = [];
+      const callOrder: number[] = [];
 
       loader = chainLoaders(
         () => {

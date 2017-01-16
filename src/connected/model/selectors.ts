@@ -5,10 +5,10 @@ import { Interval, SeriesData } from '../../core';
 import { TBySeriesId } from '../interfaces';
 import { ChartState, UiState } from './state';
 
-function createUiStateSelector<T>(selectUiState: (state: ChartState) => UiState, fieldName: string): (state: ChartState) => T {
+function createSubSelector<S, F extends keyof S>(selectParentState: (state: ChartState) => S, fieldName: F): (state: ChartState) => S[F] {
   return createSelector(
-    selectUiState,
-    (uiState: UiState) => uiState[fieldName]
+    selectParentState,
+    state => state[fieldName]
   );
 }
 
@@ -27,27 +27,26 @@ export const selectData = createSelector(
 );
 
 export const selectXDomain = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'xDomain'),
-  createUiStateSelector<Interval>(selectUiStateOverride, 'xDomain'),
-  (internal: Interval, override: Interval) => override || internal
+  createSubSelector(selectUiStateInternal, 'xDomain'),
+  createSubSelector(selectUiStateOverride, 'xDomain'),
+  (internal, override) => override || internal
 );
 
 export const selectYDomains = createSelector(
   selectLoadedYDomains,
-  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
-  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
+  createSubSelector(selectUiStateInternal, 'yDomainBySeriesId'),
+  createSubSelector(selectUiStateOverride, 'yDomainBySeriesId'),
   (loaded, internal, override) => _.assign({}, loaded, internal, override) as TBySeriesId<Interval>
 );
 
 export const selectHover = createSelector(
-  createUiStateSelector<number>(selectUiStateInternal, 'hover'),
-  createUiStateSelector<number>(selectUiStateOverride, 'hover'),
-  (internal: number, override: number) => _.isNumber(override) ? override : internal
+  createSubSelector(selectUiStateInternal, 'hover'),
+  createSubSelector(selectUiStateOverride, 'hover'),
+  (internal, override) => _.isNumber(override) ? override : internal
 );
 
 export const selectSelection = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'selection'),
-  createUiStateSelector<Interval>(selectUiStateOverride, 'selection'),
-  (internal: Interval, override: Interval) => override || internal
+  createSubSelector(selectUiStateInternal, 'selection'),
+  createSubSelector(selectUiStateOverride, 'selection'),
+  (internal, override) => override || internal
 );
-

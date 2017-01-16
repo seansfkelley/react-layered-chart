@@ -29,7 +29,7 @@ export default class AutoresizingCanvasLayer extends React.Component<Props, Stat
   static resetCanvas(canvasLayer: AutoresizingCanvasLayer, pixelRatio: number = 1) {
     const canvas = canvasLayer.getCanvasElement();
     const { width, height } = canvasLayer.getDimensions();
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d')!;
 
     context.setTransform(1, 0, 0, 1, 0, 0); // Same as resetTransform, but actually part of the spec.
     context.scale(pixelRatio, pixelRatio);
