@@ -26,7 +26,6 @@ For specifics on the exact types of these components/functions/values, please ch
     * [`PixelRatioContext`](#pixelratiocontext)
     * [`PixelRatioContextProvider`](#pixelratiocontextprovider)
   * [Functions](#functions)
-    * [~~`createStaticDataLoader(data, yDomains)`~~](#createstaticdataloaderdata-ydomains)
     * [`chainLoaders(...loaders)`](#chainloadersloaders)
     * [`createSelectDataForHover(xValueIterator)`](#createselectdataforhoverxvalueiterator)
     * [`wrapWithAnimatedYDomain(ComponentClass)`](#wrapwithanimatedydomaincomponentclass)
@@ -379,30 +378,6 @@ class ExampleParentComponent extends React.Component<Props, ...> { ... }
 
 ### Functions
 
-#### ~~`createStaticDataLoader(data, yDomains)`~~
-
-**This function is deprecated. Create a `Promise` and return that from a function instead.**
-
-Create a loader appropriate to pass to `ChartProvider` that unconditionally returns the provided static data. Useful for making simple interactive charts that have static data.
-
-```tsx
-import { createStaticDataLoader } from 'react-layered-chart';
-
-const data = [ ... ];
-const seriesId = '...';
-const yDomain = figureOutYDomainFromData(data);
-
-const dataLoader = createStaticDataLoader({
-  [seriesId]: data,
-}, {
-  [seriesId]: yDomain
-});
-
-<ChartProvider loadData={dataLoader} .../>
-```
-
-<hr/>
-
 #### `chainLoaders(...loaders)`
 
 Chain multiple `DataLoader`s into one, serially. Each loader receives identical arguments, except that the list of requested series IDs will only include those IDs that have not already been handled by an earlier loader. Each loader should include map entries only for those series it understands and leave others absent, `undefined` or `null`. Any series IDs left over after all loaders have been run will be automatically mapped to a rejected promise.
@@ -508,15 +483,15 @@ const data = [
 ]
 
 getIndexBoundsForPointData(
-  data, 
-  { min: 0, max: 1000 }, 
+  data,
+  { min: 0, max: 1000 },
   'metadata.timestamp'
 );
 // -> { firstIndex: 0, lastIndex: ... }
 
 getIndexBoundsForPointData(
-  data, 
-  { min: 0, max: 1000 }, 
+  data,
+  { min: 0, max: 1000 },
   datum => datum.metadata.timestamp + 10
 );
 // -> { firstIndex: 0, lastIndex: ... }
@@ -540,16 +515,16 @@ const data = [
 ]
 
 getIndexBoundsForSpanData(
-  data, 
-  { min: 0, max: 1000 }, 
-  'timeInterval.from', 
+  data,
+  { min: 0, max: 1000 },
+  'timeInterval.from',
   'timeInterval.to'
 );
 // -> { firstIndex: 0, lastIndex: ... }
 
 getIndexBoundsForSpanData(
-  data, 
-  { min: 0, max: 1000 }, 
+  data,
+  { min: 0, max: 1000 },
   datum => datum.timeInterval.from - 10,
   datum => datum.timeInterval.to + 10
 );

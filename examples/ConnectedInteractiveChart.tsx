@@ -15,7 +15,7 @@ import {
   ChartProvider,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
-  createStaticDataLoader,
+  DataLoader,
   // This type is opaque and should only be interacted with using builtin selectors and action creators.
   ChartProviderState,
   // This is one such selector.
@@ -28,10 +28,13 @@ import {
 const SERIES_ID = 'foo';
 
 // Set up a test data loader that will just return this static data.
-const SIMPLE_LINE_DATA_LOADER = createStaticDataLoader({
-  [SERIES_ID]: SIMPLE_LINE_DATA
-}, {
-  [SERIES_ID]: SIMPLE_LINE_Y_DOMAIN
+const SIMPLE_LINE_DATA_LOADER: DataLoader = () => ({
+  [SERIES_ID]: new Promise((resolve, reject) => {
+    resolve({
+      data: SIMPLE_LINE_DATA,
+      yDomain: SIMPLE_LINE_Y_DOMAIN
+    });
+  })
 });
 
 // Props we expect to receive from our our parent component.

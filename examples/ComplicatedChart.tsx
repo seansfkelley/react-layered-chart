@@ -22,7 +22,7 @@ import {
 import {
   ChartProvider,
   Stack,
-  createStaticDataLoader,
+  DataLoader,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
   ConnectedHoverLineLayer,
@@ -54,14 +54,19 @@ function shiftXValues<T extends { minXValue: number, maxXValue: number }>(data: 
 }
 
 // Set up a test data loader that will just return this static data.
-const DATA_LOADER = createStaticDataLoader({
-  [SIMPLE_LINE_SERIES_ID]: SIMPLE_LINE_DATA,
-  [BAR_SERIES_ID]: shiftXValues(BAR_DATA, -SIMPLE_LINE_EXTENT * 1.1),
-  [BUCKETED_LINE_SERIES_ID]: shiftXValues(BUCKETED_LINE_DATA, SIMPLE_LINE_EXTENT * 1.1)
-}, {
-  [SIMPLE_LINE_SERIES_ID]: SIMPLE_LINE_Y_DOMAIN,
-  [BAR_SERIES_ID]: BAR_Y_DOMAIN,
-  [BUCKETED_LINE_SERIES_ID]: BUCKETED_LINE_Y_DOMAIN
+const DATA_LOADER: DataLoader = () => ({
+  [SIMPLE_LINE_SERIES_ID]: new Promise((resolve, reject) => resolve({
+    data: SIMPLE_LINE_DATA,
+    yDomain: SIMPLE_LINE_Y_DOMAIN,
+  })),
+  [BAR_SERIES_ID]: new Promise((resolve, reject) => resolve({
+    data: shiftXValues(BAR_DATA, -SIMPLE_LINE_EXTENT * 1.1),
+    yDomain: BAR_Y_DOMAIN
+  })),
+  [BUCKETED_LINE_SERIES_ID]: new Promise((resolve, reject) => resolve({
+    data: shiftXValues(BUCKETED_LINE_DATA, SIMPLE_LINE_EXTENT * 1.1),
+    yDomain: BUCKETED_LINE_Y_DOMAIN
+  }))
 });
 
 const DEBUG_HOOKS: DebugStoreHooks = {
