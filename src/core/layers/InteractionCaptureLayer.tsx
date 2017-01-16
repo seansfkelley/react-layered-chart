@@ -56,7 +56,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
   render() {
     return (
       <MouseCapture
-        className='interaction-capture interaction-capture-layer'
+        className='interaction-capture-layer'
         zoomSpeed={this.props.zoomSpeed}
         onZoom={this._onZoom}
         onDragStart={this._onDragStart}
