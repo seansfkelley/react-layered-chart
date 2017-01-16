@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Interval } from '../../core';
 import { ChartState} from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
-import { selectXDomain, selectData, selectLoadedYDomains } from '../model/selectors';
+import { selectXDomain } from '../model/selectors';
 
 import {
   setXDomain,
@@ -137,9 +137,7 @@ export function _performDataLoad(batchingTimeout: number = 200) {
       const loadPromiseBySeriesId = dataLoader(
         seriesIdsToLoad,
         selectXDomain(preLoadChartState),
-        selectLoadedYDomains(preLoadChartState),
         preLoadChartState.physicalChartWidth,
-        selectData(preLoadChartState),
         preLoadChartState.loadedDataBySeriesId,
         loaderContext
       );

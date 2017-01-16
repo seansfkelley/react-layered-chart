@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { Interval, SeriesData } from '../src/core/interfaces';
+import { Interval } from '../src/core/interfaces';
 import { TBySeriesId, LoadedSeriesData, DataLoader } from '../src/connected/interfaces';
 import { chainLoaders } from '../src/connected/loaderUtils';
 
@@ -9,15 +9,7 @@ describe('(loader utils)', () => {
   describe('chainLoaders', () => {
     const SERIES_IDS = [ 'a', 'b' ];
     const X_DOMAIN: Interval = { min: 0, max: 1 };
-    const Y_DOMAINS: TBySeriesId<Interval> = {
-      a: { min: 2, max: 3 },
-      b: { min: 4, max: 5 }
-    };
     const CHART_PIXEL_WIDTH = 100;
-    const CURRENT_DATA: TBySeriesId<SeriesData> = {
-      a: [ 1, 2, 3 ],
-      b: [ 4, 5, 6 ]
-    };
     const CURRENT_LOADED_DATA: TBySeriesId<LoadedSeriesData> = {
       a: {
         data: [ 1, 2, 3 ],
@@ -44,9 +36,7 @@ describe('(loader utils)', () => {
       return loader(
         SERIES_IDS,
         X_DOMAIN,
-        Y_DOMAINS,
         CHART_PIXEL_WIDTH,
-        CURRENT_DATA,
         CURRENT_LOADED_DATA,
         CONTEXT
       );
@@ -61,9 +51,7 @@ describe('(loader utils)', () => {
       const args = [
         SERIES_IDS,
         X_DOMAIN,
-        Y_DOMAINS,
         CHART_PIXEL_WIDTH,
-        CURRENT_DATA,
         CURRENT_LOADED_DATA,
         CONTEXT
       ];

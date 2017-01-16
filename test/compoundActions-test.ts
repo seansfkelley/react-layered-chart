@@ -340,7 +340,24 @@ describe('(compound actions)', () => {
       expect(dataLoaderSpy.firstCall.args[1]).to.equal(DUMMY_DOMAIN);
     });
 
-    it('should call the data loader with the previously-loaded Y domains, even if an override is set', () => {
+    it('should call the data loader with the previously-loaded data + Y domains', () => {
+      store.dispatch(dataRequested(ALL_SERIES_IDS));
+      store.dispatch(_performDataLoad());
+
+      expect(dataLoaderSpy.calledOnce).to.be.true;
+      expect(dataLoaderSpy.firstCall.args[3]).to.deep.equal({
+        [SERIES_A]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        },
+        [SERIES_B]: {
+          data: [],
+          yDomain: DEFAULT_Y_DOMAIN
+        }
+      });
+    });
+
+    it('should call the data loader with the previously-loaded data + Y domains, even if an override is set', () => {
       store.dispatch(setYDomains({
         [SERIES_A]: DUMMY_DOMAIN,
         [SERIES_B]: DUMMY_DOMAIN
@@ -353,29 +370,7 @@ describe('(compound actions)', () => {
       store.dispatch(_performDataLoad());
 
       expect(dataLoaderSpy.calledOnce).to.be.true;
-      expect(dataLoaderSpy.firstCall.args[2]).to.deep.equal({
-        [SERIES_A]: DEFAULT_Y_DOMAIN,
-        [SERIES_B]: DEFAULT_Y_DOMAIN
-      });
-    });
-
-    it('should call the data loader with the previously-loaded data', () => {
-      store.dispatch(dataRequested(ALL_SERIES_IDS));
-      store.dispatch(_performDataLoad());
-
-      expect(dataLoaderSpy.calledOnce).to.be.true;
-      expect(dataLoaderSpy.firstCall.args[4]).to.deep.equal({
-        [SERIES_A]: [],
-        [SERIES_B]: []
-      });
-    });
-
-    it('should call the data loader with the previously-loaded data + Y domains', () => {
-      store.dispatch(dataRequested(ALL_SERIES_IDS));
-      store.dispatch(_performDataLoad());
-
-      expect(dataLoaderSpy.calledOnce).to.be.true;
-      expect(dataLoaderSpy.firstCall.args[5]).to.deep.equal({
+      expect(dataLoaderSpy.firstCall.args[3]).to.deep.equal({
         [SERIES_A]: {
           data: [],
           yDomain: DEFAULT_Y_DOMAIN
@@ -394,7 +389,7 @@ describe('(compound actions)', () => {
       store.dispatch(_performDataLoad());
 
       expect(dataLoaderSpy.calledOnce).to.be.true;
-      expect(dataLoaderSpy.firstCall.args[6]).to.equal(CONTEXT);
+      expect(dataLoaderSpy.firstCall.args[4]).to.equal(CONTEXT);
     });
 
     it('should set the data and Y domain as-is from the result of the data loader', () => {

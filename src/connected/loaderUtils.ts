@@ -1,15 +1,13 @@
 import * as _ from 'lodash';
 
-import { Interval, SeriesData } from '../core/interfaces';
+import { Interval } from '../core/interfaces';
 import { SeriesId, DataLoader, TBySeriesId, LoadedSeriesData } from './interfaces';
 
 export function chainLoaders(...loaders: DataLoader[]): DataLoader {
 
   const chainedLoader: DataLoader = (seriesIds: SeriesId[],
                                       xDomain: Interval,
-                                      currentYDomains: TBySeriesId<Interval>,
                                       chartPixelWidth: number,
-                                      currentData: TBySeriesId<SeriesData>,
                                       currentLoadedData: TBySeriesId<LoadedSeriesData>,
                                       context?: any): TBySeriesId<Promise<LoadedSeriesData>> => {
 
@@ -20,9 +18,7 @@ export function chainLoaders(...loaders: DataLoader[]): DataLoader {
       const loadedSeries: TBySeriesId<Promise<LoadedSeriesData>> = loader(
         seriesIdsToLoad,
         xDomain,
-        currentYDomains,
         chartPixelWidth,
-        currentData,
         currentLoadedData,
         context
       );
