@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import * as _ from 'lodash';
 
 import propTypes from '../propTypes';
@@ -17,7 +17,7 @@ class YAxis extends React.PureComponent<Props, void> {
   }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
 
   static defaultProps = {
-    scale: d3Scale.scaleLinear
+    scale: scaleLinear
   } as any as Props;
 
   render() {

@@ -1,7 +1,15 @@
 import * as React from 'react';
 
+// See http://stackoverflow.com/q/41668764/3736239 for more on why this new, simpler type exists.
+interface D3NumericScaleSubset {
+  (value: number): number;
+  domain: (domain: [ number, number ]) => this;
+  range: (range: [ number, number ]) => this;
+  rangeRound: (range: [ number, number ]) => this;
+}
+
 export type Color = string;
-export type ScaleFunction = Function; // TODO: d3 scale function typings.
+export type ScaleFunction = () => D3NumericScaleSubset;
 export type SeriesData = any[];
 
 export type Ticks = ((axisDomain: Interval) => number[] | number) | number[] | number;

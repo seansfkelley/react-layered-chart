@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 import { Interval } from '../core';
 
@@ -70,7 +70,7 @@ export function roundInterval(interval: Interval): Interval {
 }
 
 export function niceInterval(interval: Interval): Interval {
-  const nicedInterval = d3Scale.scaleLinear().domain([ interval.min, interval.max ]).nice().domain();
+  const nicedInterval = scaleLinear().domain([ interval.min, interval.max ]).nice().domain();
   return {
     min: nicedInterval[0],
     max: nicedInterval[1]

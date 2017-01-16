@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { expect } from 'chai';
 
 import { bucket, method } from './layerTestUtils';
@@ -13,7 +13,7 @@ describe('BucketedLineLayer', () => {
   const DEFAULT_PROPS = {
     xDomain: { min: 0, max: 100 },
     yDomain: { min: 0, max: 100 },
-    yScale: d3Scale.scaleLinear,
+    yScale: scaleLinear,
     color: '#000'
   };
 

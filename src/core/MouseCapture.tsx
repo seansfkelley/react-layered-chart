@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 const LEFT_MOUSE_BUTTON = 0;
 
@@ -69,10 +69,10 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
   private _createPhysicalToLogicalScales() {
     const { left, right, top, bottom } = this.element.getBoundingClientRect();
     return {
-      xScale: d3Scale.scaleLinear()
+      xScale: scaleLinear()
         .domain([ left, right ])
         .range([ 0, 1 ]),
-      yScale: d3Scale.scaleLinear()
+      yScale: scaleLinear()
         .domain([ top, bottom ])
         .range([ 0, 1 ])
     };

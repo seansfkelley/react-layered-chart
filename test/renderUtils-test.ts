@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { Interval } from '../src/core/interfaces';
 import {
   IndexBounds,
@@ -669,7 +669,7 @@ describe('(render utils)', () => {
   });
 
   describe('computeTicks', () => {
-    const scale = d3Scale.scaleLinear()
+    const scale = scaleLinear()
       .domain([0, 1])
       .range([0, 1]);
 

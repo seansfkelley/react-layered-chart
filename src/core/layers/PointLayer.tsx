@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -38,7 +38,7 @@ class PointLayer extends React.PureComponent<Props, void> {
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
-    yScale: d3Scale.scaleLinear,
+    yScale: scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)',
     radius: 3,
     innerRadius: 0
@@ -65,7 +65,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     return;
   }
 
-  const xScale = d3Scale.scaleLinear()
+  const xScale = scaleLinear()
     .domain([ props.xDomain.min, props.xDomain.max ])
     .rangeRound([ 0, width ]);
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -33,7 +33,7 @@ class BucketedLineLayer extends React.PureComponent<Props, void> {
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
-    yScale: d3Scale.scaleLinear,
+    yScale: scaleLinear,
     color: '#444',
     joinType: JoinType.DIRECT
   } as any as Props;
@@ -65,7 +65,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   }
 
   // Don't use rangeRound -- it causes flicker as you pan/zoom because it doesn't consistently round in one direction.
-  const xScale = d3Scale.scaleLinear()
+  const xScale = scaleLinear()
     .domain([ props.xDomain.min, props.xDomain.max ])
     .range([ 0, width ]);
 

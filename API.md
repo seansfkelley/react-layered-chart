@@ -524,9 +524,9 @@ Compute the appropriate tick values and tick formatter for the given [d3-scale](
 - `function`: assumed to be a function from number to string and will be passed back as-is
 
 ```tsx
-import * as d3Scale from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
-const scale = d3Scale.scaleLinear()
+const scale = scaleLinear()
   .domain([ 0, 100 ])
   .range([ 20, 40 ]);
 

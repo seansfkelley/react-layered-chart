@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as d3Scale from 'd3-scale';
+import { scaleTime } from 'd3-scale';
 import * as _ from 'lodash';
 
 import propTypes from '../propTypes';
@@ -16,7 +16,7 @@ export default class XAxis extends React.PureComponent<Props, void> {
   }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
 
   static defaultProps = {
-    scale: d3Scale.scaleTime
+    scale: scaleTime
   } as any as Props;
 
   render() {
