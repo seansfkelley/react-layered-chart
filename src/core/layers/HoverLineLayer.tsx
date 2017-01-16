@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as d3Scale from 'd3-scale';
 import * as _ from 'lodash';
-import { deprecate } from 'react-is-deprecated';
 
 import NonReactRender from '../decorators/NonReactRender';
 import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
@@ -14,7 +13,6 @@ import { Interval, Color } from '../interfaces';
 export interface Props {
   xDomain: Interval;
   hover?: number;
-  stroke?: Color;
   color?: Color;
 }
 
@@ -27,7 +25,6 @@ export default class HoverLineLayer extends React.Component<Props, void> {
   static propTypes = {
     hover: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
-    stroke: deprecate(React.PropTypes.string, 'HoverLineLayer\'s \'stroke\' prop is deprecated in favor of \'color\''),
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
@@ -62,7 +59,7 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
 
   if (xPos >= 0 && xPos < width) {
     context.lineWidth = 1;
-    context.strokeStyle = props.stroke || props.color!;
+    context.strokeStyle = props.color!;
     context.translate(0.5, -0.5);
     context.beginPath();
     context.moveTo(xPos, 0);
