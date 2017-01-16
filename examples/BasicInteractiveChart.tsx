@@ -10,7 +10,7 @@ import {
   ChartProvider,
   Stack,
   DataLoader,
-  ConnectedSimpleLineLayer,
+  ConnectedLineLayer,
   ConnectedInteractionCaptureLayer
 } from '../src';
 
@@ -43,7 +43,7 @@ const CHART = (
   >
     <Stack>
       {/* Render the test data as a simple line chart. */}
-      <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
+      <ConnectedLineLayer seriesId={SERIES_ID}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
     </Stack>

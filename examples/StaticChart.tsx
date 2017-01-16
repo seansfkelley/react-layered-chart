@@ -9,7 +9,7 @@ import * as React from 'react';
 import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 import {
   Stack,
-  SimpleLineLayer
+  LineLayer
 } from '../src';
 
 const CHART = (
@@ -19,7 +19,7 @@ const CHART = (
     pixelRatio={window.devicePixelRatio || 1}
   >
     {/* Render a static layer with our static data and view parameters. */}
-    <SimpleLineLayer
+    <LineLayer
       data={SIMPLE_LINE_DATA}
       xDomain={SIMPLE_LINE_X_DOMAIN}
       yDomain={SIMPLE_LINE_Y_DOMAIN}

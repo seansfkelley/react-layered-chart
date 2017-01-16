@@ -6,9 +6,9 @@ import { expect } from 'chai';
 import { point, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
 import { PointDatum, JoinType } from '../../src/core/interfaces';
-import { _renderCanvas, Props } from '../../src/core/layers/SimpleLineLayer';
+import { _renderCanvas, Props } from '../../src/core/layers/LineLayer';
 
-describe('SimpleLineLayer', () => {
+describe('LineLayer', () => {
   let spy: typeof CanvasContextSpy;
 
   const DEFAULT_PROPS = {

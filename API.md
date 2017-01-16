@@ -134,7 +134,7 @@ The layers in this category are:
 - `BucketedLineLayer`
 - `HoverLineLayer`
 - `PointLayer`
-- `SimpleLineLayer`
+- `LineLayer`
 - `SpanLayer`
 
 Additionally, these layers have "connected" variants that replace the `xDomain`, `yDomain` and `data` (or analogous) props with a `seriesId` prop that specifies which data they should read. These layers must be inside a `ChartProvider` to work correctly:
@@ -143,7 +143,7 @@ Additionally, these layers have "connected" variants that replace the `xDomain`,
 - `ConnectedBucketedLineLayer`
 - `ConnectedHoverLineLayer`
 - `ConnectedPointLayer`
-- `ConnectedSimpleLineLayer`
+- `ConnectedLineLayer`
 - `ConnectedSpanLayer`
 - `ConnectedSelectionBrushLayer`
 

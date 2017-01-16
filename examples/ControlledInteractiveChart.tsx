@@ -10,7 +10,7 @@ import {
   Interval,
   ChartProvider,
   Stack,
-  ConnectedSimpleLineLayer,
+  ConnectedLineLayer,
   ConnectedInteractionCaptureLayer,
   // This utility function will do all the logic we need to implement this behavior.
   enforceIntervalBounds,
@@ -65,7 +65,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
         pixelRatio={window.devicePixelRatio || 1}
       >
         <Stack>
-          <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
+          <ConnectedLineLayer seriesId={SERIES_ID}/>
           <ConnectedInteractionCaptureLayer enablePan={true}/>
         </Stack>
       </ChartProvider>

@@ -7,8 +7,8 @@ import {
   BucketedLineLayerProps,
   PointLayer,
   PointLayerProps,
-  SimpleLineLayer,
-  SimpleLineLayerProps,
+  LineLayer,
+  LineLayerProps,
   JoinType
 } from '../../core';
 import { SeriesId } from '../interfaces';
@@ -46,10 +46,10 @@ export const ConnectedPointLayer = wrapDataLayerWithConnect<_CommonConnectedPoin
 
 
 // tslint:disable-next-line:class-name
-export interface _CommonConnectedSimpleLineLayerProps {
+export interface _CommonConnectedLineLayerProps {
   yScale?: ScaleFunction;
   color?: Color;
   joinType?: JoinType;
 }
-export type ConnectedSimpleLineLayerProps = _CommonConnectedSimpleLineLayerProps & SeriesIdProp;
-export const ConnectedSimpleLineLayer = wrapDataLayerWithConnect<_CommonConnectedSimpleLineLayerProps, SimpleLineLayerProps>(SimpleLineLayer);
+export type ConnectedLineLayerProps = _CommonConnectedLineLayerProps & SeriesIdProp;
+export const ConnectedLineLayer = wrapDataLayerWithConnect<_CommonConnectedLineLayerProps, LineLayerProps>(LineLayer);

@@ -23,7 +23,7 @@ export interface Props {
 @PureRender
 @NonReactRender
 @PixelRatioContext
-class SimpleLineLayer extends React.Component<Props, void> {
+class LineLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
@@ -95,4 +95,4 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   context.stroke();
 }
 
-export default wrapWithAnimatedYDomain(SimpleLineLayer);
+export default wrapWithAnimatedYDomain(LineLayer);

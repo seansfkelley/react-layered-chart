@@ -60,7 +60,7 @@ Including multiple layers will cause them to be stacked in the Z direction, so y
 ```tsx
 <Stack>
   <PointLayer data={DATA} .../>
-  <SimpleLineLayer data={DATA} .../>
+  <LineLayer data={DATA} .../>
 </Stack>
 ```
 
@@ -87,7 +87,7 @@ function myDataLoader(...) {
   defaultState={{ xDomain: { min: 0, max: 100 } }}
 >
   <Stack>
-    <ConnectedSimpleLineLayer seriesId='my-series-id'/>
+    <ConnectedLineLayer seriesId='my-series-id'/>
     <ConnectedInteractionLayer enablePan={true} enableZoom={true}/>
   </Stack>
 </ChartProvider>

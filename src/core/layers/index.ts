@@ -29,9 +29,9 @@ export {
 } from './PointLayer';
 
 export {
-  default as SimpleLineLayer,
-  Props as SimpleLineLayerProps
-} from './SimpleLineLayer';
+  default as LineLayer,
+  Props as LineLayerProps
+} from './LineLayer';
 
 export {
   default as SpanLayer,

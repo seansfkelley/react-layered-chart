@@ -23,7 +23,7 @@ import {
   ChartProvider,
   Stack,
   DataLoader,
-  ConnectedSimpleLineLayer,
+  ConnectedLineLayer,
   ConnectedInteractionCaptureLayer,
   ConnectedHoverLineLayer,
   ConnectedBarLayer,
@@ -101,7 +101,7 @@ const CHART = (
     {/* This stack has all the main views. */}
     <Stack>
       {/* Render the test data in a few different ways. */}
-      <ConnectedSimpleLineLayer seriesId={SIMPLE_LINE_SERIES_ID} color={COLOR_1}/>
+      <ConnectedLineLayer seriesId={SIMPLE_LINE_SERIES_ID} color={COLOR_1}/>
       <ConnectedBarLayer seriesId={BAR_SERIES_ID} color={COLOR_2}/>
       <ConnectedBucketedLineLayer seriesId={BUCKETED_LINE_SERIES_ID} color={COLOR_3}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}

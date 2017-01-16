@@ -13,7 +13,7 @@ import {
   Interval,
   Stack,
   ChartProvider,
-  ConnectedSimpleLineLayer,
+  ConnectedLineLayer,
   ConnectedInteractionCaptureLayer,
   DataLoader,
   // This type is opaque and should only be interacted with using builtin selectors and action creators.
@@ -93,7 +93,7 @@ const CHART = (
     pixelRatio={window.devicePixelRatio || 1}
   >
     <Stack>
-      <ConnectedSimpleLineLayer seriesId={SERIES_ID}/>
+      <ConnectedLineLayer seriesId={SERIES_ID}/>
       <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
     </Stack>
     {/* Give the layer its own Stack so it appears visually separate from the main views. */}
