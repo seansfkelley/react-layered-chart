@@ -11,7 +11,6 @@ import {
   LineLayerProps,
   JoinType
 } from '../../core';
-import { SeriesId } from '../interfaces';
 
 import { wrapDataLayerWithConnect, SeriesIdProp } from './wrapDataLayerWithConnect';
 

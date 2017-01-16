@@ -1,8 +1,7 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
-import { Interval, ScaleFunction, SeriesData} from '../../core';
+import { Interval, SeriesData} from '../../core';
 import { SeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectData, selectXDomain, selectYDomains } from '../model/selectors';

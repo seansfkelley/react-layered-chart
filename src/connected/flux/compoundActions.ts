@@ -8,7 +8,6 @@ import { selectXDomain, selectData, selectLoadedYDomains } from '../model/select
 import {
   setXDomain,
   setOverrideXDomain,
-  setYDomains,
   setChartPhysicalWidth,
   setSeriesIds,
   setDataLoader,

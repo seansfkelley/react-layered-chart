@@ -1,12 +1,11 @@
 import * as _ from 'lodash';
-import * as React from 'react';
 import * as d3Scale from 'd3-scale';
 import { expect } from 'chai';
 
 import { point, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
 import { PointDatum, JoinType } from '../../src/core/interfaces';
-import { _renderCanvas, Props } from '../../src/core/layers/LineLayer';
+import { _renderCanvas } from '../../src/core/layers/LineLayer';
 
 describe('LineLayer', () => {
   let spy: typeof CanvasContextSpy;

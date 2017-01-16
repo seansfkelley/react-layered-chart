@@ -1,12 +1,10 @@
 import * as _ from 'lodash';
-import * as React from 'react';
-import * as d3Scale from 'd3-scale';
 import { expect } from 'chai';
 
 import { bar, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
 import { BarDatum } from '../../src/core/interfaces';
-import { _renderCanvas, Props } from '../../src/core/layers/BarLayer';
+import { _renderCanvas } from '../../src/core/layers/BarLayer';
 
 describe('BarLayer', () => {
   let spy: typeof CanvasContextSpy;

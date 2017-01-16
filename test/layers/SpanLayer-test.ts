@@ -1,12 +1,10 @@
 import * as _ from 'lodash';
-import * as React from 'react';
-import * as d3Scale from 'd3-scale';
 import { expect } from 'chai';
 
 import { method, property, span } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
 import { SpanDatum } from '../../src/core/interfaces';
-import { _renderCanvas, Props } from '../../src/core/layers/SpanLayer';
+import { _renderCanvas } from '../../src/core/layers/SpanLayer';
 
 describe('SpanLayer', () => {
   let spy: typeof CanvasContextSpy;

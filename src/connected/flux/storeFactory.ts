@@ -3,13 +3,12 @@ import { applyMiddleware, createStore, Store, compose, Middleware } from 'redux'
 import ThunkMiddleware from 'redux-thunk';
 import createDebounced from 'redux-debounced';
 
-import { ActionType } from './atomicActions';
 import reducer from './reducer';
 import { ChartId, DebugStoreHooks } from '../interfaces';
 import { ChartState } from '../model/state';
 
 // chartId is only used for memoization.
-function _createStore(chartId?: ChartId, debugHooks?: DebugStoreHooks): Store<ChartState> {
+function _createStore(_chartId?: ChartId, debugHooks?: DebugStoreHooks): Store<ChartState> {
   let middlewares: Middleware[] = [
     createDebounced(),
     ThunkMiddleware

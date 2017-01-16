@@ -1,4 +1,3 @@
-import { Interval } from '../../core';
 import { ActionType } from '../flux/atomicActions';
 
 import {

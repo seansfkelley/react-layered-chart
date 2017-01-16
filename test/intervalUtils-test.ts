@@ -1,7 +1,5 @@
-import * as _ from 'lodash';
 import { expect } from 'chai';
 
-import { Interval } from '../src/core/interfaces';
 import {
   enforceIntervalBounds,
   enforceIntervalExtent,
@@ -13,7 +11,6 @@ import {
   panInterval,
   zoomInterval
 } from '../src/core/intervalUtils';
-import { TBySeriesId } from '../src/connected/interfaces';
 
 function interval(min, max) {
   return { min, max };

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
-import * as d3Scale from 'd3-scale';
 
 import propTypes from '../propTypes';
 import { Interval, BooleanMouseEventHandler } from '../interfaces';
@@ -42,7 +41,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
   } as React.ValidationMap<Props>;
 
   static defaultProps = {
-    shouldZoom: (event) => true,
+    shouldZoom: (_event) => true,
     shouldPan: (event) => !event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
     shouldBrush: (event) => event.shiftKey && event.button === LEFT_MOUSE_BUTTON,
     zoomSpeed: 0.05
@@ -68,7 +67,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     );
   }
 
-  private _dispatchPanAndBrushEvents(xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) {
+  private _dispatchPanAndBrushEvents(xPct: number, _yPct: number, e: React.MouseEvent<HTMLElement>) {
     if (this.props.onPan && this.state.isPanning) {
       e.stopPropagation();
       this.setState({ lastPanXPct: xPct } as any);
@@ -85,7 +84,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     return this.props.xDomain.min + (this.props.xDomain.max - this.props.xDomain.min) * xPct;
   }
 
-  private _onZoom = (factor: number, xPct: number, yPct: number, e: React.WheelEvent<HTMLElement>) => {
+  private _onZoom = (factor: number, xPct: number, _yPct: number, e: React.WheelEvent<HTMLElement>) => {
     if (this.props.onZoom && this.props.shouldZoom!(e)) {
       e.stopPropagation();
       e.preventDefault();
@@ -93,7 +92,7 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     }
   };
 
-  private _onDragStart = (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => {
+  private _onDragStart = (xPct: number, _yPct: number, e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onPan && this.props.shouldPan!(e)) {
       e.stopPropagation();
       this.setState({ isPanning: true, lastPanXPct: xPct } as any);
@@ -117,14 +116,14 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
     });
   };
 
-  private _onClick = (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => {
+  private _onClick = (_xPct: number, _yPct: number, e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onBrush && this.props.shouldBrush!(e)) {
       e.stopPropagation();
       this.props.onBrush(undefined);
     }
   };
 
-  private _onHover = (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => {
+  private _onHover = (xPct: number, _yPct: number, e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onHover) {
       e.stopPropagation();
       if (xPct != null) {

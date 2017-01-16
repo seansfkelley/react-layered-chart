@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import * as React from 'react';
 import * as PureRender from 'pure-render-decorator';
 import * as classNames from 'classnames';

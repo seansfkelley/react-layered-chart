@@ -1,10 +1,6 @@
 import { expect } from 'chai';
 import * as d3Scale from 'd3-scale';
-import {
-  Ticks,
-  TickFormat,
-  Interval
-} from '../src/core/interfaces';
+import { Interval } from '../src/core/interfaces';
 import {
   IndexBounds,
   getIndexBoundsForPointData,

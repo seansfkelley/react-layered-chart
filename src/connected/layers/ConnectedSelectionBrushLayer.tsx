@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PureRender from 'pure-render-decorator';
 import { connect } from 'react-redux';
 
 import { Interval, Color, SpanLayer, SpanDatum } from '../../core';

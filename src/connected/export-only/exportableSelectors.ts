@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
 
-import { Interval } from '../../core';
 import {
   selectXDomain as internalSelectXDomain,
   selectYDomains as internalSelectYDomains,

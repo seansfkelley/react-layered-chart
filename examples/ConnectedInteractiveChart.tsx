@@ -29,7 +29,7 @@ const SERIES_ID = 'foo';
 
 // Set up a test data loader that will just return this static data.
 const SIMPLE_LINE_DATA_LOADER: DataLoader = () => ({
-  [SERIES_ID]: new Promise((resolve, reject) => {
+  [SERIES_ID]: new Promise(resolve => {
     resolve({
       data: SIMPLE_LINE_DATA,
       yDomain: SIMPLE_LINE_Y_DOMAIN

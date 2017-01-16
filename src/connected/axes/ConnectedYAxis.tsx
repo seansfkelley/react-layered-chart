@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Interval, Color, AxisSpec, YAxis } from '../../core';
+import { Interval, AxisSpec, YAxis } from '../../core';
 import { SeriesId } from '../interfaces';
 import { ChartState } from '../model/state';
 import { selectYDomains } from '../model/selectors';

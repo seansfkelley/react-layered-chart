@@ -263,7 +263,7 @@ describe('(selectors)', () => {
   });
 
   describe('createSelectDataForHover', () => {
-    const xValueSelector = (seriesId, datum) => datum.x;
+    const xValueSelector = (_seriesId, datum) => datum.x;
     const selectDataForHover = createSelectDataForHover(xValueSelector);
 
     const DATUM_1 = { x: 5 };

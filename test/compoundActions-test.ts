@@ -9,7 +9,6 @@ import { DataLoader } from '../src/connected/interfaces';
 import { ChartState } from '../src/connected/model/state';
 import { DEFAULT_Y_DOMAIN } from '../src/connected/model/constants';
 import {
-  Action,
   setSeriesIds,
   setDataLoader,
   setDataLoaderDebounceTimeout,
@@ -33,7 +32,7 @@ import {
 } from '../src/connected/flux/compoundActions';
 
 function delay(timeout: number) {
-  return () => new Promise((resolve, reject) => {
+  return () => new Promise((resolve, _reject) => {
     setTimeout(resolve, timeout);
   });
 }

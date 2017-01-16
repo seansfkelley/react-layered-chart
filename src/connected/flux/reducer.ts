@@ -7,17 +7,12 @@ update.extend('$assign', (spec, object) => _.assign({}, object, spec));
 
 import { ActionType, Action } from './atomicActions';
 import { ChartState, DEFAULT_CHART_STATE, invalidLoader } from '../model/state';
-import { TBySeriesId } from '../interfaces';
 import { DEFAULT_Y_DOMAIN } from '../model/constants';
 import { objectWithKeys, replaceValuesWithConstant, objectWithKeysFromObject } from './reducerUtils';
 
 export default function(state: ChartState, action: Action<any>): ChartState {
   if (state === undefined) {
     return DEFAULT_CHART_STATE;
-  }
-
-  function createConstantMapForAllSeries<T>(value: T): TBySeriesId<T> {
-    return objectWithKeys(state.seriesIds, value);
   }
 
   switch (action.type) {

@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { Interval, SeriesData } from '../../core';
 import { TBySeriesId } from '../interfaces';
-import { ChartState, UiState } from './state';
+import { ChartState } from './state';
 
 function createSubSelector<S, F extends keyof S>(selectParentState: (state: ChartState) => S, fieldName: F): (state: ChartState) => S[F] {
   return createSelector(

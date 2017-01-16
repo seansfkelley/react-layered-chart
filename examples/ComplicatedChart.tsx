@@ -12,10 +12,8 @@ import {
   SIMPLE_LINE_X_DOMAIN,
   SIMPLE_LINE_Y_DOMAIN,
   BAR_DATA,
-  BAR_X_DOMAIN,
   BAR_Y_DOMAIN,
   BUCKETED_LINE_DATA,
-  BUCKETED_LINE_X_DOMAIN,
   BUCKETED_LINE_Y_DOMAIN
 } from './test-data';
 
@@ -55,15 +53,15 @@ function shiftXValues<T extends { minXValue: number, maxXValue: number }>(data: 
 
 // Set up a test data loader that will just return this static data.
 const DATA_LOADER: DataLoader = () => ({
-  [SIMPLE_LINE_SERIES_ID]: new Promise((resolve, reject) => resolve({
+  [SIMPLE_LINE_SERIES_ID]: new Promise(resolve => resolve({
     data: SIMPLE_LINE_DATA,
     yDomain: SIMPLE_LINE_Y_DOMAIN,
   })),
-  [BAR_SERIES_ID]: new Promise((resolve, reject) => resolve({
+  [BAR_SERIES_ID]: new Promise(resolve => resolve({
     data: shiftXValues(BAR_DATA, -SIMPLE_LINE_EXTENT * 1.1),
     yDomain: BAR_Y_DOMAIN
   })),
-  [BUCKETED_LINE_SERIES_ID]: new Promise((resolve, reject) => resolve({
+  [BUCKETED_LINE_SERIES_ID]: new Promise(resolve => resolve({
     data: shiftXValues(BUCKETED_LINE_DATA, SIMPLE_LINE_EXTENT * 1.1),
     yDomain: BUCKETED_LINE_Y_DOMAIN
   }))
