@@ -11,7 +11,7 @@ export const pointDatum = React.PropTypes.shape({
   yValue: React.PropTypes.number.isRequired
 });
 
-export const spanDatum = React.PropTypes.shape({
+export const barDatum = React.PropTypes.shape({
   minXValue: React.PropTypes.number.isRequired,
   maxXValue: React.PropTypes.number.isRequired,
   yValue: React.PropTypes.number.isRequired
@@ -26,10 +26,9 @@ export const bucketDatum = React.PropTypes.shape({
   lastYValue: React.PropTypes.number.isRequired
 });
 
-export const xSpanDatum = React.PropTypes.shape({
+export const spanDatum = React.PropTypes.shape({
   minXValue: React.PropTypes.number.isRequired,
-  maxXValue: React.PropTypes.number.isRequired,
-  color: deprecate(React.PropTypes.string, 'xSpanDatum\'s \'color\' prop is deprecated and may not be respected by all layers')
+  maxXValue: React.PropTypes.number.isRequired
 });
 
 export const ticks = React.PropTypes.oneOfType([
@@ -58,9 +57,9 @@ export const defaultChartState = React.PropTypes.shape({
 export default {
   interval,
   pointDatum,
-  spanDatum,
+  barDatum,
   bucketDatum,
-  xSpanDatum,
+  spanDatum,
   ticks,
   tickFormat,
   axisSpecPartial,

@@ -9,10 +9,10 @@ import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
 import propTypes from '../propTypes';
-import { Color, Interval, SpanDatum } from '../interfaces';
+import { Color, Interval, BarDatum } from '../interfaces';
 
 export interface Props {
-  data: SpanDatum[];
+  data: BarDatum[];
   xDomain: Interval;
   yDomain: Interval;
   color?: Color;
@@ -25,7 +25,7 @@ class BarLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.spanDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.barDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     yDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string

@@ -10,10 +10,10 @@ import PixelRatioContext, { Context } from '../decorators/PixelRatioContext';
 import PollingResizingCanvasLayer from './PollingResizingCanvasLayer';
 import { getIndexBoundsForSpanData } from '../renderUtils';
 import propTypes from '../propTypes';
-import { Interval, Color, XSpanDatum } from '../interfaces';
+import { Interval, Color, SpanDatum } from '../interfaces';
 
 export interface Props {
-  data: XSpanDatum[];
+  data: SpanDatum[];
   xDomain: Interval;
   fillColor?: Color;
   borderColor?: Color;
@@ -26,7 +26,7 @@ export default class SpanLayer extends React.Component<Props, void> {
   context: Context;
 
   static propTypes = {
-    data: React.PropTypes.arrayOf(propTypes.xSpanDatum).isRequired,
+    data: React.PropTypes.arrayOf(propTypes.spanDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     fillColor: React.PropTypes.string,
     borderColor: React.PropTypes.string
@@ -70,9 +70,8 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
     context.beginPath();
     context.rect(left, -1, right - left, height + 2);
 
-    const fillStyle = props.data[i].color || props.fillColor;
-    if (fillStyle) {
-      context.fillStyle = fillStyle;
+    if (props.fillColor) {
+      context.fillStyle = props.fillColor;
       context.fill();
     }
 

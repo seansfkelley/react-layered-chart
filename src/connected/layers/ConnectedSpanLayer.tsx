@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Interval, Color, SpanLayer, XSpanDatum } from '../../core';
+import { Interval, Color, SpanLayer, SpanDatum } from '../../core';
 import { ChartState } from '../model/state';
 import { selectData, selectXDomain } from '../model/selectors';
 import { SeriesId } from '../interfaces';
@@ -13,7 +13,7 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  data: XSpanDatum[];
+  data: SpanDatum[];
   xDomain: Interval;
 }
 

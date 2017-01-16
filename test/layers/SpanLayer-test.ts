@@ -3,9 +3,9 @@ import * as React from 'react';
 import * as d3Scale from 'd3-scale';
 import { expect } from 'chai';
 
-import { method, property, xSpan } from './layerTestUtils';
+import { method, property, span } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
-import { XSpanDatum } from '../../src/core/interfaces';
+import { SpanDatum } from '../../src/core/interfaces';
 import { _renderCanvas, Props } from '../../src/core/layers/SpanLayer';
 
 describe('SpanLayer', () => {
@@ -21,13 +21,13 @@ describe('SpanLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: CanvasRenderingContext2D, data: XSpanDatum[]) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: SpanDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should render a rect that hides its top and bottom borders just out of view', () => {
     renderWithSpy(spy, [
-      xSpan(25, 75)
+      span(25, 75)
     ]);
 
     expect(spy.callsOnly('rect')).to.deep.equal([
@@ -37,7 +37,7 @@ describe('SpanLayer', () => {
 
   it('should render span using the top-level default colors', () => {
     renderWithSpy(spy, [
-      xSpan(25, 75)
+      span(25, 75)
     ]);
 
     expect(spy.operations).to.deep.equal([
@@ -51,26 +51,10 @@ describe('SpanLayer', () => {
     ]);
   });
 
-  it('should render a span using its specified overridden colors', () => {
-    renderWithSpy(spy, [
-      xSpan(25, 75, '#333')
-    ]);
-
-    expect(spy.operations).to.deep.equal([
-      property('lineWidth', 1),
-      property('strokeStyle', '#fff'),
-      method('beginPath', []),
-      method('rect', [ 25, -1, 50, 102 ]),
-      property('fillStyle', '#333'),
-      method('fill', []),
-      method('stroke', [])
-    ]);
-  });
-
   it('should stroke/fill each span individually', () => {
     renderWithSpy(spy, [
-      xSpan(10, 20),
-      xSpan(80, 90)
+      span(10, 20),
+      span(80, 90)
     ]);
 
     expect(spy.callsOnly('rect', 'fill', 'stroke')).to.deep.equal([
@@ -86,7 +70,7 @@ describe('SpanLayer', () => {
 
   it('should round X values to the nearest integer', () => {
     renderWithSpy(spy, [
-      xSpan(33.4, 84.6)
+      span(33.4, 84.6)
     ]);
 
     expect(spy.callsOnly('rect')).to.deep.equal([
@@ -96,10 +80,10 @@ describe('SpanLayer', () => {
 
   it('should attempt to render spans even if their X values are NaN or infinite', () => {
     renderWithSpy(spy, [
-      xSpan(NaN, 50),
-      xSpan(50, NaN),
-      xSpan(-Infinity, 50),
-      xSpan(50, Infinity)
+      span(NaN, 50),
+      span(50, NaN),
+      span(-Infinity, 50),
+      span(50, Infinity)
     ]);
 
     expect(spy.callsOnly('rect')).to.deep.equal([

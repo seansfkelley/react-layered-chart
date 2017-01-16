@@ -3,9 +3,9 @@ import * as React from 'react';
 import * as d3Scale from 'd3-scale';
 import { expect } from 'chai';
 
-import { span, method } from './layerTestUtils';
+import { bar, method } from './layerTestUtils';
 import CanvasContextSpy from '../../src/test-util/CanvasContextSpy';
-import { SpanDatum } from '../../src/core/interfaces';
+import { BarDatum } from '../../src/core/interfaces';
 import { _renderCanvas, Props } from '../../src/core/layers/BarLayer';
 
 describe('BarLayer', () => {
@@ -21,13 +21,13 @@ describe('BarLayer', () => {
     spy = new CanvasContextSpy();
   });
 
-  function renderWithSpy(spy: CanvasRenderingContext2D, data: SpanDatum[]) {
+  function renderWithSpy(spy: CanvasRenderingContext2D, data: BarDatum[]) {
     _renderCanvas(_.defaults({ data }, DEFAULT_PROPS), 100, 100, spy);
   }
 
   it('should render a bar with a positive value', () => {
     renderWithSpy(spy, [
-      span(40, 60, 33)
+      bar(40, 60, 33)
     ]);
 
     expect(spy.calls).to.deep.equal([
@@ -39,7 +39,7 @@ describe('BarLayer', () => {
 
   it('should render a bar with a negative value', () => {
     renderWithSpy(spy, [
-      span(40, 60, -33)
+      bar(40, 60, -33)
     ]);
 
     expect(spy.calls).to.deep.equal([
@@ -51,7 +51,7 @@ describe('BarLayer', () => {
 
   it('should round X and Y values to the nearest integer', () => {
     renderWithSpy(spy, [
-      span(33.4, 55.6, 84.7)
+      bar(33.4, 55.6, 84.7)
     ]);
 
     expect(spy.calls).to.deep.equal([
@@ -63,8 +63,8 @@ describe('BarLayer', () => {
 
   it('should fill once at the end', () => {
     renderWithSpy(spy, [
-      span(20, 40, 10),
-      span(60, 80, 90)
+      bar(20, 40, 10),
+      bar(60, 80, 90)
     ]);
 
     expect(spy.calls).to.deep.equal([
@@ -77,12 +77,12 @@ describe('BarLayer', () => {
 
   it('should attempt to render points even if their X or Y values are NaN or infinite', () => {
     renderWithSpy(spy, [
-      span(NaN, 50, 50),
-      span(50, NaN, 50),
-      span(50, 50, NaN),
-      span(-Infinity, 50, 50),
-      span(50, Infinity, 50),
-      span(50, 50, Infinity)
+      bar(NaN, 50, 50),
+      bar(50, NaN, 50),
+      bar(50, 50, NaN),
+      bar(-Infinity, 50, 50),
+      bar(50, Infinity, 50),
+      bar(50, 50, Infinity)
     ]);
 
     expect(spy.calls).to.deep.equal([
