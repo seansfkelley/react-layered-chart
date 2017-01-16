@@ -11,8 +11,7 @@ import {
   Stack,
   ConnectedSimpleLineLayer,
   ConnectedInteractionCaptureLayer,
-  createStaticDataLoader,
-  ConnectedXAxisLayer
+  createStaticDataLoader
 } from '../src';
 
 // All series need to have an ID.

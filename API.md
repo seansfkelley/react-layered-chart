@@ -10,8 +10,6 @@ For specifics on the exact types of these components/functions/values, please ch
   * [`MouseCapture`](#mousecapture)
 * [Layers](#layers)
   * [Data Layers](#data-layers)
-  * [~~`XAxisLayer`~~](#xaxislayer)
-  * [~~`YAxisLayer`~~](#yaxislayer)
   * [`PollingResizingCanvasLayer`](#pollingresizingcanvaslayer)
   * [`InteractionCaptureLayer`](#interactioncapturelayer)
   * [`ConnectedResizeSentinelLayer`](#connectedresizesentinellayer)
@@ -152,48 +150,6 @@ Additionally, these layers have "connected" variants that replace the `xDomain`,
 
 <hr/>
 
-### ~~`XAxisLayer`~~
-
-**This component is deprecated. Use [`XAxis`](#xaxis) instead.**
-
-This component renders the X domain. By default, it interprets the numerical value as a timestamp, but you can specify a different scale and set of tick formats to change this behavior.
-
-#### Props
-
-- `xDomain`: the X domain to display on this layer.
-- `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleTime`.
-- `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-- `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-- `color?`: a string specifying the color to use for ticks and labels.
-- ~~`font?`~~ (**deprecated**, use CSS rules instead): a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
-
-There is a `ConnectedXAxisLayer` that accepts the same props except without `xDomain`.
-
-<hr/>
-
-### ~~`YAxisLayer`~~
-
-**This component is deprecated. Use [`YAxis`](#yaxis) instead.**
-
-This component renders one or more Y domains, lined up next to each other on the left side of the rendering area.
-
-**Note**: if you add, remove, rearrange or splice items in the `axes` prop, the animation logic will be unable to figure out that the items have shifted in position or otherwise changed in "identity". This will cause animations to jitter or otherwise look bad as it animates between values that weren't intended to be animated between. Provide locally-unique `axisId` values for each item in `axes` if this happens.
-
-#### Props
-
-- `axes`: an array of all the Y axes to render. Each object has the following fields:
-    - `yDomain`: the `Interval` to render for this axis.
-    - `scale?`: a [d3-scale](https://github.com/d3/d3-scale) constructor function. Only continuous scales are supported. Defaults to `scaleLinear`.
-    - `ticks?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-    - `tickFormat?`: passed through to [`computeTicks`](#computeticksscale-ticks-tickformat).
-    - `color?`: a string specifying the color to use for ticks and labels.
-    - `axisId?`: a unique ID to identify this axis. Used to prevent jittery animations when adding/removing/rearranging axes.
-- ~~`font?`~~ (**deprecated**, use CSS rules instead): a legal [CSS `font` value](https://developer.mozilla.org/en-US/docs/Web/CSS/font), such as `'normal 400 12px Helvetica'`.
-- `backgroundColor?`: a string specifying a color to draw behind the axis, which is useful since the Y axis often overlaps the data. Defaults to `rgba(255, 255, 255, 0.8)`.
-
-There is a `ConnectedYAxisLayer` that accepts the same props, except each item in `axes` should specify a `seriesId` instead of both `yDomain` and `axisId`.
-
-<hr/>
 
 ### `PollingResizingCanvasLayer`
 

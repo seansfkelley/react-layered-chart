@@ -24,13 +24,3 @@ export {
   default as ConnectedSpanLayer,
   OwnProps as ConnectedSpanLayerProps
 } from './ConnectedSpanLayer';
-
-export {
-  default as ConnectedXAxisLayer,
-  OwnProps as ConnectedXAxisLayerProps
-} from './ConnectedXAxisLayer';
-
-export {
-  default as ConnectedYAxisLayer,
-  OwnProps as ConnectedYAxisLayerProps
-} from './ConnectedYAxisLayer';

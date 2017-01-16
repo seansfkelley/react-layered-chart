@@ -37,14 +37,3 @@ export {
   default as SpanLayer,
   Props as SpanLayerProps
 } from './SpanLayer';
-
-export {
-  default as XAxisLayer,
-  Props as XAxisLayerProps
-} from './XAxisLayer';
-
-export {
-  default as YAxisLayer,
-  Props as YAxisLayerProps,
-  YAxisSpec
-} from './YAxisLayer';
