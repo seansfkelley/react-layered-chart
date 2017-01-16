@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `selectError` renamed to `selectErrors`. [#102](https://github.com/palantir/react-layered-chart/issues/102).
 - `SimpleLineLayer` renamed to `LineLayer`. [#87](https://github.com/palantir/react-layered-chart/issues/87).
 - `SpanDatum` renamed to `BarDatum`, `XSpanDatum` to `SpanDatum`. [#48](https://github.com/palantir/react-layered-chart/issues/48).
+- `DataLoader`'s signature has had its signature rewritten to remove redundant arguments. [#82](https://github.com/palantir/react-layered-chart/issues/82).
 
 ### Fixed
 
