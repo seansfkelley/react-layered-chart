@@ -254,7 +254,7 @@ These [selectors](https://github.com/reactjs/reselect) take the entire `ChartPro
 - `selectSelection(state)`
 - `selectData(state)`
 - `selectIsLoading(state)`
-- `selectError(state)`
+- `selectErrors(state)`
 - `selectChartPixelWidth(state)`
 
 You can use these in a [`connect`](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options)ed component like so (assuming the component will be used inside a `ChartProvider`):

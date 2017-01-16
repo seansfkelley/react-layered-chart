@@ -24,7 +24,7 @@ export const selectSelection = _castToOpaqueInput(internalSelectSelection);
 export const selectData = _castToOpaqueInput(internalSelectData);
 
 export const selectIsLoading = _castToOpaqueInput((state: ChartState) => _.mapValues(state.loadVersionBySeriesId, v => !!v) as TBySeriesId<boolean>);
-export const selectError = _castToOpaqueInput((state: ChartState) => state.errorBySeriesId);
+export const selectErrors = _castToOpaqueInput((state: ChartState) => state.errorBySeriesId);
 export const selectChartPixelWidth = _castToOpaqueInput((state: ChartState) => state.physicalChartWidth);
 
 // We inherit the name of "iterator" from Lodash. I would prefer this to be called a "selector", but obviously that
