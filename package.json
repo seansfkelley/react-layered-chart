@@ -29,7 +29,6 @@
     "@types/react-motion": "0.0.20",
     "@types/redux-debounced": "^0.2.16",
     "@types/redux-logger": "^2.6.32",
-    "@types/redux-thunk": "^2.1.32",
     "@types/reselect": "^2.0.27",
     "@types/sinon": "^1.16.34",
     "chai": "^3.5.0",
@@ -65,7 +64,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-debounced": "^0.2.0",
-    "redux-thunk": "^2.1.0",
+    "redux-thunk": "^2.1.1",
     "reselect": "^2.5.1"
   },
   "peerDependencies": {
