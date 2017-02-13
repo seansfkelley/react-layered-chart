@@ -158,7 +158,7 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
         // Why doesn't the compiler accept this type guard?
         ? (this.props.zoomSpeed as any as Function)(e)
         : this.props.zoomSpeed;
-      const zoomFactor = Math.exp(delta * zoomSpeed);
+      const zoomFactor = Math.exp(-delta * zoomSpeed);
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onZoom(zoomFactor, xScale(e.clientX), yScale(e.clientY), e);
     }
