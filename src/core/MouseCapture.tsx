@@ -154,7 +154,7 @@ export default class MouseCapture extends React.Component<Props, State> {
   private _onWheel = (e: React.WheelEvent) => {
     // In Chrome, shift + wheel results in horizontal scrolling and
     // deltaY == 0 while deltaX != 0, and deltaX should be used instead
-    const delta = e.deltaY || e.deltaX;
+    const delta = e.shiftKey ? e.deltaY || e.deltaX : e.deltaY;
     if (this.props.onZoom && delta) {
       const zoomSpeed = typeof this.props.zoomSpeed === 'function'
         // Why doesn't the compiler accept this type guard?
