@@ -109,4 +109,16 @@ describe('SpanLayer', () => {
       method('rect', [ 50, -1, Infinity, 102 ])
     ]);
   });
+
+  it('should render spans at least one pixel wide even if their X values are on the same pixel', () => {
+    renderWithSpy(spy, [
+      xSpan(10, 10),
+      xSpan(30.02, 30.05)
+    ]);
+
+    expect(spy.callsOnly('rect')).to.deep.equal([
+      method('rect', [ 10, -1, 1, 102 ]),
+      method('rect', [ 30, -1, 1, 102 ])
+    ]);
+  });
 });
