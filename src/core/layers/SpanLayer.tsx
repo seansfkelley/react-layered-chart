@@ -63,8 +63,9 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
   for (let i = firstIndex; i < lastIndex; ++i) {
     const left = xScale(props.data[i].minXValue);
     const right = xScale(props.data[i].maxXValue);
+    const width = right - left;
     context.beginPath();
-    context.rect(left, -1, right - left, height + 2);
+    context.rect(left, -1, width <= 0 ? 1 : width, height + 2);
 
     if (props.fillColor) {
       context.fillStyle = props.fillColor;
