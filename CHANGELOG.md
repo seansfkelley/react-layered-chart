@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### Unreleased
+## 1.8.0 (2017-03-01)
 
 ### Added
 
@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Wheel events that are not used for zooming (e.g., they have the wrong modifier keys set) are no longer swallowed, allowing the page to scroll. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
+- `SpanLayer` always renders every span at least a pixel wide. [#124](https://github.com/palantir/react-layered-chart/pull/124).
 
 ## 1.7.0 (2016-11-14)
 
