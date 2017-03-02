@@ -71,8 +71,8 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
   private _dispatchPanAndBrushEvents(xPct: number, yPct: number, e: React.MouseEvent) {
     if (this.props.onPan && this.state.isPanning) {
       e.stopPropagation();
-      this.setState({ lastPanXPct: xPct } as any);
       this.props.onPan(this._xPctToDomain(this.state.lastPanXPct) - this._xPctToDomain(xPct));
+      this.setState({ lastPanXPct: xPct } as any);
     } else if (this.props.onBrush && this.state.isBrushing) {
       e.stopPropagation();
       const a = this._xPctToDomain(this.state.startBrushXPct);
