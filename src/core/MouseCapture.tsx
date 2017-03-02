@@ -138,11 +138,6 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
     if (this.props.onHover) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onHover(xScale(e.clientX), yScale(e.clientY), e);
-
-      // If onHover exists, event.stopPropagation is called and the window event does not get called.
-      if (this.state.mouseDownClientX != null) {
-        this._onMouseMoveInWindow(e.nativeEvent as MouseEvent);
-      }
     }
   };
 
