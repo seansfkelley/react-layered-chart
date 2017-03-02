@@ -8,9 +8,9 @@ export interface Props {
   className?: string;
   zoomSpeed?: number | ((e: React.WheelEvent<HTMLElement>) => number);
   onZoom?: (factor: number, xPct: number, yPct: number, e: React.WheelEvent<HTMLElement>) => void;
-  onDragStart?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
-  onDrag?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
-  onDragEnd?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
+  onDragStart?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
+  onDrag?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
+  onDragEnd?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement> | MouseEvent) => void;
   onClick?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void;
   onHover?: (xPct: number | undefined, yPct: number | undefined, e: React.MouseEvent<HTMLElement>) => void;
   children?: React.ReactNode;
@@ -50,14 +50,18 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
 
   state: State = {};
 
+  componentWillUnmount() {
+    this._removeWindowMouseEventHandlers();
+  }
+
   render() {
     return (
       <div
         className={classNames('lc-mouse-capture', this.props.className)}
-        onMouseDown={this._onMouseDown}
-        onMouseUp={this._onMouseUp}
-        onMouseMove={this._onMouseMove}
-        onMouseLeave={this._onMouseLeave}
+        onMouseDown={this._onMouseDownInCaptureArea}
+        onMouseMove={this._onMouseMoveInCaptureArea}
+        onMouseUp={this._onMouseUpInCaptureArea}
+        onMouseLeave={this._onMouseLeaveCaptureArea}
         onWheel={this._onWheel}
         ref={element => { this.element = element; }}
       >
@@ -87,7 +91,32 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
     });
   }
 
-  private _onMouseDown = (e: React.MouseEvent<HTMLElement>) => {
+  private _maybeDispatchDragHandler(
+    e: React.MouseEvent<HTMLElement> | MouseEvent,
+    handler?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement> | MouseEvent) => void
+  ) {
+    if (e.button === LEFT_MOUSE_BUTTON && handler && this.state.mouseDownClientX != null) {
+      const { xScale, yScale } = this._createPhysicalToLogicalScales();
+      const { left, right, top, bottom } = this.element.getBoundingClientRect();
+      handler(
+        xScale(Math.min(Math.max(e.clientX, left), right)),
+        yScale(Math.min(Math.max(e.clientY, bottom), top)),
+        e
+      );
+    }
+  }
+
+  private _addWindowMouseEventHandlers = () => {
+    window.addEventListener('mousemove', this._onMouseMoveInWindow);
+    window.addEventListener('mouseup', this._onMouseUpInWindow);
+  }
+
+  private _removeWindowMouseEventHandlers = () => {
+    window.removeEventListener('mousemove', this._onMouseMoveInWindow);
+    window.removeEventListener('mouseup', this._onMouseUpInWindow);
+  }
+
+  private _onMouseDownInCaptureArea = (e: React.MouseEvent<HTMLElement>) => {
     if (e.button === LEFT_MOUSE_BUTTON) {
       this.setState({
         mouseDownClientX: e.clientX,
@@ -100,53 +129,52 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
         const { xScale, yScale } = this._createPhysicalToLogicalScales();
         this.props.onDragStart(xScale(e.clientX), yScale(e.clientY), e);
       }
+
+      this._removeWindowMouseEventHandlers();
+      this._addWindowMouseEventHandlers();
     }
   };
 
-  private _maybeDispatchDragHandler(e: React.MouseEvent<HTMLElement>, handler?: (xPct: number, yPct: number, e: React.MouseEvent<HTMLElement>) => void) {
-    if (e.button === LEFT_MOUSE_BUTTON && handler && this.state.mouseDownClientX != null) {
-      const { xScale, yScale } = this._createPhysicalToLogicalScales();
-      handler(
-        xScale(e.clientX),
-        yScale(e.clientY),
-        e
-      );
-    }
-  }
-
-  private _onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    this._maybeDispatchDragHandler(e, this.props.onDrag);
-
+  private _onMouseMoveInCaptureArea = (e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onHover) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onHover(xScale(e.clientX), yScale(e.clientY), e);
+
+      // If onHover exists, event.stopPropagation is called and the window event does not get called.
+      if (this.state.mouseDownClientX != null) {
+        this._onMouseMoveInWindow(e.nativeEvent as MouseEvent);
+      }
     }
+  };
+
+  private _onMouseUpInCaptureArea = (e: React.MouseEvent<HTMLElement>) => {
+    if (e.button === LEFT_MOUSE_BUTTON && this.props.onClick && Math.abs(this.state.mouseDownClientX! - e.clientX) <= 2 && Math.abs(this.state.mouseDownClientY - e.clientY) <= 2) {
+      const { xScale, yScale } = this._createPhysicalToLogicalScales();
+      this.props.onClick(xScale(e.clientX), yScale(e.clientY), e);
+    }
+
+    this._onMouseUpInWindow(e.nativeEvent as MouseEvent);
+  }
+
+  private _onMouseMoveInWindow = (e: MouseEvent) => {
+    this._maybeDispatchDragHandler(e, this.props.onDrag);
 
     this.setState({
       lastMouseMoveClientX: e.clientX,
       lastMouseMoveClientY: e.clientY
     });
-  };
+  }
 
-  private _onMouseUp = (e: React.MouseEvent<HTMLElement>) => {
+  private _onMouseUpInWindow = (e: MouseEvent) => {
     this._maybeDispatchDragHandler(e, this.props.onDragEnd);
-
-    if (e.button === LEFT_MOUSE_BUTTON && this.props.onClick && Math.abs(this.state.mouseDownClientX - e.clientX) <= 2 && Math.abs(this.state.mouseDownClientY - e.clientY) <= 2) {
-      const { xScale, yScale } = this._createPhysicalToLogicalScales();
-      this.props.onClick(xScale(e.clientX), yScale(e.clientY), e);
-    }
-
+    this._removeWindowMouseEventHandlers();
     this._clearState();
   };
 
-  private _onMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
-    this._maybeDispatchDragHandler(e, this.props.onDragEnd);
-
+  private _onMouseLeaveCaptureArea = (e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onHover) {
       this.props.onHover(undefined, undefined, e);
     }
-
-    this._clearState();
   };
 
   private _onWheel = (e: React.WheelEvent<HTMLElement>) => {
