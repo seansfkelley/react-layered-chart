@@ -148,8 +148,6 @@ export default class MouseCapture extends React.Component<Props, State> {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onClick(xScale(e.clientX), yScale(e.clientY), e);
     }
-
-    this._onMouseUpInWindow(e.nativeEvent as MouseEvent);
   }
 
   private _onMouseMoveInWindow = (e: MouseEvent) => {
