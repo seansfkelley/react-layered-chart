@@ -99,10 +99,9 @@ export default class MouseCapture extends React.Component<Props, State> {
   ) {
     if (e.button === LEFT_MOUSE_BUTTON && handler && this.state.mouseDownClientX != null) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
-      const { left, right, top, bottom } = this.element.getBoundingClientRect();
       handler(
-        xScale(Math.min(Math.max(e.clientX, left), right)),
-        yScale(Math.min(Math.max(e.clientY, bottom), top)),
+        xScale(e.clientX),
+        yScale(e.clientY),
         e
       );
     }
