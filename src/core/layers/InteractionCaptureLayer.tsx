@@ -70,11 +70,9 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
 
   private _dispatchPanAndBrushEvents(xPct: number, yPct: number, e: React.MouseEvent) {
     if (this.props.onPan && this.state.isPanning) {
-      e.stopPropagation();
-      this.setState({ lastPanXPct: xPct } as any);
       this.props.onPan(this._xPctToDomain(this.state.lastPanXPct) - this._xPctToDomain(xPct));
+      this.setState({ lastPanXPct: xPct } as any);
     } else if (this.props.onBrush && this.state.isBrushing) {
-      e.stopPropagation();
       const a = this._xPctToDomain(this.state.startBrushXPct);
       const b = this._xPctToDomain(xPct);
       this.props.onBrush({ min: Math.min(a, b), max: Math.max(a, b) });
@@ -95,10 +93,8 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
 
   private _onDragStart = (xPct: number, yPct: number, e: React.MouseEvent) => {
     if (this.props.onPan && this.props.shouldPan(e)) {
-      e.stopPropagation();
       this.setState({ isPanning: true, lastPanXPct: xPct } as any);
     } else if (this.props.onBrush && this.props.shouldBrush(e)) {
-      e.stopPropagation();
       this.setState({ isBrushing: true, startBrushXPct: xPct } as any);
     }
   };
@@ -119,14 +115,12 @@ export default class InteractionCaptureLayer extends React.Component<Props, Stat
 
   private _onClick = (xPct: number, yPct: number, e: React.MouseEvent) => {
     if (this.props.onBrush && this.props.shouldBrush(e)) {
-      e.stopPropagation();
       this.props.onBrush(null);
     }
   };
 
   private _onHover = (xPct: number, yPct: number, e: React.MouseEvent) => {
     if (this.props.onHover) {
-      e.stopPropagation();
       if (xPct != null) {
         this.props.onHover(this._xPctToDomain(xPct));
       } else {
