@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.8.1 (2017-03-02)
+
+### Changed
+
+- `MouseCapture` now tracks drag gestures even when the mouse leaves the `MouseCapture` element. [#124](https://github.com/palantir/react-layered-chart/pull/124).
+- `InteractionCaptureLayer` no longer calls any `stopPropagation`. [#126](https://github.com/palantir/react-layered-chart/pull/126).
+
 ## 1.8.0 (2017-03-01)
 
 ### Added
