@@ -241,7 +241,7 @@ A component that wraps and exposes a `<canvas>` that (via polling) matches the s
 
 This layer displays nothing, but captures all mouse events and translates them into callbacks or (in the case of the "connected" variant) fires actions.
 
-**Note**: this layer will call `stopPropagation` or `preventDefault` (or both) as appropriate _only_ on native events that have relevant handlers. All other events will be allowed to propagate as normal.
+**Note**: this layer will not call `stopPropagation` or `preventDefault` on any events.
 
 #### Props
 
