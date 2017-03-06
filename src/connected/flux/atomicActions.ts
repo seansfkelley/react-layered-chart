@@ -42,9 +42,9 @@ export const setOverrideXDomain = createActionCreator<Interval>(ActionType.SET_O
 export const setYDomains = createActionCreator<TBySeriesId<Interval>>(ActionType.SET_Y_DOMAINS);
 export const setOverrideYDomains = createActionCreator<TBySeriesId<Interval>>(ActionType.SET_OVERRIDE_Y_DOMAINS);
 export const setHover = createActionCreator<number>(ActionType.SET_HOVER);
-export const setOverrideHover = createActionCreator<number>(ActionType.SET_OVERRIDE_HOVER);
+export const setOverrideHover = createActionCreator<number | 'none'>(ActionType.SET_OVERRIDE_HOVER);
 export const setSelection = createActionCreator<Interval>(ActionType.SET_SELECTION);
-export const setOverrideSelection = createActionCreator<Interval>(ActionType.SET_OVERRIDE_SELECTION);
+export const setOverrideSelection = createActionCreator<Interval | 'none'>(ActionType.SET_OVERRIDE_SELECTION);
 
 export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);
 export const dataReturned = createActionCreator<TBySeriesId<LoadedSeriesData>>(ActionType.DATA_RETURNED);

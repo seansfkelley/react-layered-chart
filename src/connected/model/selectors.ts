@@ -3,12 +3,19 @@ import { createSelector } from 'reselect';
 
 import { Interval, SeriesData } from '../../core';
 import { TBySeriesId } from '../interfaces';
-import { ChartState, UiState } from './state';
+import { ChartState, OverriddenUiState, UiState } from './state';
 
-function createUiStateSelector<T>(selectUiState: (state: ChartState) => UiState, fieldName: string): (state: ChartState) => T {
+function createUiStateSelector<T>(fieldName: string): (state: ChartState) => T {
   return createSelector(
-    selectUiState,
+    selectUiStateInternal,
     (uiState: UiState) => uiState[fieldName]
+  );
+}
+
+function createOverriddenUiStateSelector<T>(fieldName: string): (state: ChartState) => T {
+  return createSelector(
+      selectUiStateOverride,
+      (uiState: OverriddenUiState) => uiState[fieldName]
   );
 }
 
@@ -27,27 +34,39 @@ export const selectData = createSelector(
 );
 
 export const selectXDomain = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'xDomain'),
-  createUiStateSelector<Interval>(selectUiStateOverride, 'xDomain'),
+  createUiStateSelector<Interval>('xDomain'),
+  createOverriddenUiStateSelector<Interval>('xDomain'),
   (internal: Interval, override: Interval) => override || internal
 );
 
 export const selectYDomains = createSelector(
   selectLoadedYDomains,
-  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateInternal, 'yDomainBySeriesId'),
-  createUiStateSelector<TBySeriesId<Interval>>(selectUiStateOverride, 'yDomainBySeriesId'),
+  createUiStateSelector<TBySeriesId<Interval>>('yDomainBySeriesId'),
+  createOverriddenUiStateSelector<TBySeriesId<Interval>>('yDomainBySeriesId'),
   (loaded, internal, override) => _.assign({}, loaded, internal, override) as TBySeriesId<Interval>
 );
 
 export const selectHover = createSelector(
-  createUiStateSelector<number>(selectUiStateInternal, 'hover'),
-  createUiStateSelector<number>(selectUiStateOverride, 'hover'),
-  (internal: number, override: number) => _.isNumber(override) ? override : internal
+  createUiStateSelector<number>('hover'),
+  createOverriddenUiStateSelector<number | 'none'>('hover'),
+  (internal: number, override: number | 'none'): number => {
+    if (override != null) {
+      return override === 'none' ? null : (override as number);
+    } else {
+      return internal;
+    }
+  }
 );
 
 export const selectSelection = createSelector(
-  createUiStateSelector<Interval>(selectUiStateInternal, 'selection'),
-  createUiStateSelector<Interval>(selectUiStateOverride, 'selection'),
-  (internal: Interval, override: Interval) => override || internal
+  createUiStateSelector<Interval>('selection'),
+  createOverriddenUiStateSelector<Interval | 'none'>('selection'),
+  (internal: Interval, override: Interval | 'none'): Interval => {
+      if (override != null) {
+        return override === 'none' ? null : (override as Interval);
+      } else {
+        return internal;
+      }
+  }
 );
 

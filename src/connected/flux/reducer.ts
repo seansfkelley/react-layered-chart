@@ -122,7 +122,7 @@ export default function(state: ChartState, action: Action<any>): ChartState {
       });
 
     case ActionType.SET_OVERRIDE_HOVER:
-      if (_.isNumber(action.payload)) {
+      if (action.payload != null) {
         return update(state, {
           uiStateConsumerOverrides: {
             hover: { $set: action.payload }
