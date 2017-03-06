@@ -15,6 +15,13 @@ export interface UiState {
   selection?: Interval;
 }
 
+export interface OverriddenUiState {
+  xDomain?: Interval;
+  yDomainBySeriesId?: TBySeriesId<Interval>;
+  hover?: number | 'none';
+  selection?: Interval | 'none';
+}
+
 export interface ChartState {
   debounceTimeout: number;
   loaderContext?: any;
@@ -25,7 +32,7 @@ export interface ChartState {
   errorBySeriesId: TBySeriesId<any>;
   dataLoader: DataLoader;
   uiState: UiState;
-  uiStateConsumerOverrides: UiState;
+  uiStateConsumerOverrides: OverriddenUiState;
 }
 
 export const invalidLoader = (() => {

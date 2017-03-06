@@ -45,9 +45,9 @@ export interface Props {
   onXDomainChange?: (xDomain: Interval) => void;
   yDomains?: TBySeriesId<Interval>;
   onYDomainsChange?: (yDomains: TBySeriesId<Interval>) => void;
-  selection?: Interval;
+  selection?: Interval | 'none';
   onSelectionChange?: (selection: Interval) => void;
-  hover?: number;
+  hover?: number | 'none';
   onHoverChange?: (hover: number) => void;
 }
 
@@ -132,7 +132,7 @@ export default class ChartProvider extends React.Component<Props, void> {
     } else if (props.defaultState && props.defaultState.yDomains) {
       this._store.dispatch(setYDomains(props.defaultState.yDomains));
     }
-    if (_.isNumber(props.hover)) {
+    if (props.hover != null) {
       this._store.dispatch(setOverrideHover(props.hover));
     }
     if (props.selection) {
