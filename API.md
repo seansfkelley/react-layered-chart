@@ -94,9 +94,9 @@ These props come in read-write pairs and implement the ["controlled component" p
 - `onXDomainChange?()`
 - `yDomains?`
 - `onYDomainsChange?()`
-- `selection?`
+- `selection?` (also accepts `'none'` for controlled-but-absent)
 - `onSelectionChange?()`
-- `hover?`
+- `hover?` (also accepts `'none'` for controlled-but-absent)
 - `onHoverChange?()`
 
 ### `MouseCapture`
