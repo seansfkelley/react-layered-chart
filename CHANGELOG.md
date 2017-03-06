@@ -2,6 +2,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.8.2 (2017-03-06)
+
+### Changed
+
+- `ChartProvider`'s `hover` and `selection` props now accept `'none'`. Previously, you could not differentiate between "uncontrolled" and "controlled but absent" because both `null` and `undefined` are considered uncontrolled. [#129](https://github.com/palantir/react-layered-chart/pull/129).
+
 ## 1.8.1 (2017-03-02)
 
 ### Changed
