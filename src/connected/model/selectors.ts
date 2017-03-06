@@ -42,11 +42,23 @@ export const selectYDomains = createSelector(
 export const selectHover = createSelector(
   createSubSelector(selectUiStateInternal, 'hover'),
   createSubSelector(selectUiStateOverride, 'hover'),
-  (internal, override) => _.isNumber(override) ? override : internal
+  (internal, override) => {
+    if (override != null) {
+      return override === 'none' ? undefined : override;
+    } else {
+      return internal;
+    }
+  }
 );
 
 export const selectSelection = createSelector(
   createSubSelector(selectUiStateInternal, 'selection'),
   createSubSelector(selectUiStateOverride, 'selection'),
-  (internal, override) => override || internal
+  (internal, override) => {
+    if (override != null) {
+      return override === 'none' ? undefined : override;
+    } else {
+      return internal;
+    }
+  }
 );

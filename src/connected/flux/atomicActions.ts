@@ -42,8 +42,8 @@ export const setOverrideXDomain = createActionCreator<Interval | undefined>(Acti
 export const setYDomains = createActionCreator<TBySeriesId<Interval>>(ActionType.SET_Y_DOMAINS);
 export const setOverrideYDomains = createActionCreator<TBySeriesId<Interval> | undefined>(ActionType.SET_OVERRIDE_Y_DOMAINS);
 export const setHover = createActionCreator<number | undefined>(ActionType.SET_HOVER);
-export const setOverrideHover = createActionCreator<number | undefined>(ActionType.SET_OVERRIDE_HOVER);
-export const setSelection = createActionCreator<Interval | undefined>(ActionType.SET_SELECTION);
+export const setOverrideHover = createActionCreator<number | undefined | 'none'>(ActionType.SET_OVERRIDE_HOVER);
+export const setSelection = createActionCreator<Interval | undefined | 'none'>(ActionType.SET_SELECTION);
 export const setOverrideSelection = createActionCreator<Interval | undefined>(ActionType.SET_OVERRIDE_SELECTION);
 
 export const dataRequested = createActionCreator<SeriesId[]>(ActionType.DATA_REQUESTED);

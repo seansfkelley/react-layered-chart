@@ -184,6 +184,17 @@ describe('(selectors)', () => {
         }
       } as any)).to.equal(0);
     });
+
+    it('should not exist when the override is set to \'none\'', () => {
+      expect(selectHover({
+        uiState: {
+          hover: 5
+        },
+        uiStateConsumerOverrides: {
+          hover: 'none'
+        }
+      } as any)).to.not.exist;
+    });
   });
 
   describe('selectSelection', () => {
@@ -205,6 +216,17 @@ describe('(selectors)', () => {
           selection: INTERVAL_B
         }
       } as any)).to.equal(INTERVAL_B);
+    });
+
+    it('should not exist when the override is set to \'none\'', () => {
+      expect(selectHover({
+        uiState: {
+          selection: INTERVAL_A
+        },
+        uiStateConsumerOverrides: {
+          selection: 'none'
+        }
+      } as any)).to.not.exist;
     });
   });
 
