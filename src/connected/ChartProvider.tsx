@@ -70,9 +70,9 @@ export default class ChartProvider extends React.PureComponent<Props, void> {
     onXDomainChange: React.PropTypes.func,
     yDomains: React.PropTypes.objectOf(propTypes.interval),
     onYDomainsChange: React.PropTypes.func,
-    selection: propTypes.interval,
+    selection: propTypes.controlledInterval,
     onSelectionChange: React.PropTypes.func,
-    hover: React.PropTypes.number,
+    hover: propTypes.controlledHover,
     onHoverChange: React.PropTypes.func,
   } as React.ValidationMap<Props>;
 

@@ -5,6 +5,16 @@ export const interval = React.PropTypes.shape({
   max: React.PropTypes.number.isRequired
 });
 
+export const controlledInterval = React.PropTypes.oneOfType([
+  interval,
+  React.PropTypes.oneOf(['none'])
+]);
+
+export const controlledHover = React.PropTypes.oneOfType([
+  React.PropTypes.number,
+  React.PropTypes.oneOf(['none'])
+]);
+
 export const pointDatum = React.PropTypes.shape({
   xValue: React.PropTypes.number.isRequired,
   yValue: React.PropTypes.number.isRequired
@@ -55,6 +65,8 @@ export const defaultChartState = React.PropTypes.shape({
 
 export default {
   interval,
+  controlledInterval,
+  controlledHover,
   pointDatum,
   barDatum,
   bucketDatum,
