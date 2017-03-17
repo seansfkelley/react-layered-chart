@@ -86,7 +86,6 @@ export default class InteractionCaptureLayer extends React.PureComponent<Props, 
 
   private _onZoom = (factor: number, xPct: number, _yPct: number, e: React.WheelEvent<HTMLElement>) => {
     if (this.props.onZoom && this.props.shouldZoom && this.props.shouldZoom(e)) {
-      e.stopPropagation();
       e.preventDefault();
       this.props.onZoom(factor, xPct);
     }
