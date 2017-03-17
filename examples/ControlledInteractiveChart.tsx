@@ -3,7 +3,7 @@ This example implements a chart with custom behavior. It doesn't let you pan
 a week beyond the data, on either end.
 */
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ChartProvider,
   ConnectedInteractionCaptureLayer,
@@ -13,8 +13,8 @@ import {
   Stack,
   enforceIntervalBounds,
   DEFAULT_SHOULD_PAN
-} from "../src";
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
+} from '../src';
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7;
 

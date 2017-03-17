@@ -3,7 +3,7 @@ This chart implements the basic interactions using built-in layers and state
 management. It's pannable and zoomable.
 */
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ChartProvider,
   ConnectedInteractionCaptureLayer,
@@ -12,8 +12,8 @@ import {
   DEFAULT_SHOULD_ZOOM,
   DataLoader,
   Stack
-} from "../src";
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
+} from '../src';
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';

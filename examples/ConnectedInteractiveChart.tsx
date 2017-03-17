@@ -4,9 +4,9 @@ A button is added underneath the chart that displays the current X domain, and
 if you click it, it will reset the domain to where it started.
 */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "redux";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
 import {
   ChartProvider,
   ChartProviderState,
@@ -19,8 +19,8 @@ import {
   setXDomain,
   DEFAULT_SHOULD_PAN,
   DEFAULT_SHOULD_ZOOM
-} from "../src";
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
+} from '../src';
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';
