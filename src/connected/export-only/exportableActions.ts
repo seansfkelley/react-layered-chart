@@ -1,3 +1,4 @@
+import { Interval } from '../../core';
 import { ActionType } from '../flux/atomicActions';
 
 import {
@@ -9,6 +10,8 @@ import {
 import {
   setXDomainAndLoad as internalSetXDomain
 } from '../flux/compoundActions';
+
+let _unusedToMakeTscQuiet: Interval = null as any; _unusedToMakeTscQuiet = _unusedToMakeTscQuiet;
 
 function _castToAnyOutput<T>(actionCreator: (payload: T) => any): (payload: T) => any {
   return actionCreator;

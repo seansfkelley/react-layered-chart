@@ -1,16 +1,18 @@
 import * as _ from 'lodash';
 import { createSelector } from 'reselect';
-
+import { Interval } from '../../core';
 import {
-  selectXDomain as internalSelectXDomain,
-  selectYDomains as internalSelectYDomains,
+  selectData as internalSelectData,
   selectHover as internalSelectHover,
   selectSelection as internalSelectSelection,
-  selectData as internalSelectData
+  selectXDomain as internalSelectXDomain,
+  selectYDomains as internalSelectYDomains
 } from '../model/selectors';
 import { ChartState } from '../model/state';
-import { ChartProviderState } from './exportableState';
 import { SeriesId, TBySeriesId } from '../interfaces';
+import { ChartProviderState } from './exportableState';
+
+let _unusedToMakeTscQuiet: Interval = null as any; _unusedToMakeTscQuiet = _unusedToMakeTscQuiet;
 
 function _castToOpaqueInput<T>(selector: (state: ChartState) => T): (state: ChartProviderState) => T {
   return selector as any;
