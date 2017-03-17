@@ -142,7 +142,7 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
   };
 
   private _onMouseUpInCaptureArea = (e: React.MouseEvent<HTMLElement>) => {
-    if (e.button === LEFT_MOUSE_BUTTON && this.props.onClick && Math.abs(this.state.mouseDownClientX! - e.clientX) <= 2 && Math.abs(this.state.mouseDownClientY - e.clientY) <= 2) {
+    if (e.button === LEFT_MOUSE_BUTTON && this.props.onClick && Math.abs(this.state.mouseDownClientX! - e.clientX) <= 2 && Math.abs(this.state.mouseDownClientY! - e.clientY) <= 2) {
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onClick(xScale(e.clientX), yScale(e.clientY), e);
     }

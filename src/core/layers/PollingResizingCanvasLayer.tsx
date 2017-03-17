@@ -32,8 +32,8 @@ export default class PollingResizingCanvasLayer extends React.PureComponent<Prop
       <canvas
         className='lc-polling-resizing-canvas-layer'
         ref='canvas'
-        width={this.state.width * this.props.pixelRatio}
-        height={this.state.height * this.props.pixelRatio}
+        width={this.state.width * this.props.pixelRatio!}
+        height={this.state.height * this.props.pixelRatio!}
       />
     );
   }

@@ -75,9 +75,9 @@ export function _renderCanvas(props: Props, width: number, height: number, conte
 
   const isFilled = props.innerRadius === 0;
 
-  const radius = isFilled ? props.radius! : (props.radius - props.innerRadius) / 2 + props.innerRadius;
+  const radius = isFilled ? props.radius! : (props.radius! - props.innerRadius!) / 2 + props.innerRadius!;
 
-  context.lineWidth = props.radius - props.innerRadius;
+  context.lineWidth = props.radius! - props.innerRadius!;
   context.strokeStyle = props.color!;
   context.fillStyle = props.color!;
 
