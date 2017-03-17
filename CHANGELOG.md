@@ -6,14 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- `intervalExtent` to compute the length of an interval. [5d4e027](https://github.com/palantir/react-layered-chart/commit/5d4e02706f2179b4ce587700165c1455e854239e).
 - `ChartProvider` has both a default width and height. [#59](https://github.com/palantir/react-layered-chart/issues/59).
 
 ### Changed
 
 - Switched to Typescript 2.0 and `@types`. [#107](https://github.com/palantir/react-layered-chart/pull/107).
 - Tweaked signatures to adhere to `--strictNullChecks`. Replaced `null` by `undefined` in most usages. [#110](https://github.com/palantir/react-layered-chart/issues/110).
-- `MouseCapture` no longer calls `preventDefault` or `stopPropagation` automatically. `InteractionCaptureLayer` now does, only when necessary. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
 - `selectError` renamed to `selectErrors`. [#102](https://github.com/palantir/react-layered-chart/issues/102).
 - `SimpleLineLayer` renamed to `LineLayer`. [#87](https://github.com/palantir/react-layered-chart/issues/87).
 - `SpanDatum` renamed to `BarDatum`, `XSpanDatum` to `SpanDatum`. [#48](https://github.com/palantir/react-layered-chart/issues/48).
@@ -29,14 +27,42 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `NonReactRenderMixin`, `PixelRatioContextMixin` and `PixelRatioContextProviderMixin` in favor of their decorators. [#112](https://github.com/palantir/react-layered-chart/issues/112).
 - `AutoresizingCanvasLayer` in favor of `PollingResizingCanvasLayer`. [#36](https://github.com/palantir/react-layered-chart/issues/36).
 - `BrushLayer` and `ConnectedBrushLayer` in favor of `ConnectedSelectionBrushLayer`. [#46](https://github.com/palantir/react-layered-chart/issues/46).
-- `HoverLineLayer`'s `stroke` prop in favor of `color`. [#43](https://github.com/palantir/react-layered-chart/issues/43).
+- `VerticalLineLayer` (previously: `HoverLineLayer`)'s `stroke` prop in favor of `color`. [#43](https://github.com/palantir/react-layered-chart/issues/43).
 - `SpanLayer`'s `color` prop in favor of `fillColor` and `borderColor`. [#47](https://github.com/palantir/react-layered-chart/issues/47).
 - `XAxisLayer` and `YAxisLayer` in favor of `XAxis` and `YAxis`. [#75](https://github.com/palantir/react-layered-chart/issues/75).
 - `createStaticDataLoader` with no replacement. [#79](https://github.com/palantir/react-layered-chart/issues/79).
 - `wrapDataLayerWithConnect` with no replacement. [#84](https://github.com/palantir/react-layered-chart/issues/84).
 - `SpanDatum`'s (previously: `XSpanDatum`'s) `color` prop with no replacement. [#48](https://github.com/palantir/react-layered-chart/issues/48).
 - `StateSelector` typename with no replacement. [188ef55](https://github.com/palantir/react-layered-chart/commit/188ef55e191864e3645f69745911194c5307c09b).
-- `InteractionCaptureLayer` and `ConnectedInteractionCaptureLayer` no longer default to handling any events. `ConnectedInteractionCaptureLayer`'s `enable*` props are all removed. [#115](https://github.com/palantir/react-layered-chart/issues/115).
+- `InteractionCaptureLayer` and `ConnectedInteractionCaptureLayer` by default handles no events and the `enable*` props were removed. Use the `should*` props instead. [#115](https://github.com/palantir/react-layered-chart/issues/115).
+
+## 1.8.2 (2017-03-06)
+
+### Changed
+
+- `ChartProvider`'s `hover` and `selection` props now accept `'none'`. Previously, you could not differentiate between "uncontrolled" and "controlled but absent" because both `null` and `undefined` are considered uncontrolled. [#129](https://github.com/palantir/react-layered-chart/pull/129).
+
+## 1.8.1 (2017-03-02)
+
+### Changed
+
+- `MouseCapture` now tracks drag gestures even when the mouse leaves the `MouseCapture` element. [#124](https://github.com/palantir/react-layered-chart/pull/124).
+- `InteractionCaptureLayer` no longer calls any `stopPropagation`. [#126](https://github.com/palantir/react-layered-chart/pull/126).
+
+## 1.8.0 (2017-03-01)
+
+### Added
+
+- `intervalExtent` to compute the length of an interval. [5d4e027](https://github.com/palantir/react-layered-chart/commit/5d4e02706f2179b4ce587700165c1455e854239e).
+
+### Changed
+
+- `MouseCapture` no longer calls `preventDefault` or `stopPropagation` automatically. `InteractionCaptureLayer` now does, only when necessary. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
+
+### Fixed
+
+- Wheel events that are not used for zooming (e.g., they have the wrong modifier keys set) are no longer swallowed, allowing the page to scroll. [3ae353c](https://github.com/palantir/react-layered-chart/commit/3ae353cfaef28b307de5d9db081dcce6a2957684).
+- `SpanLayer` always renders every span at least a pixel wide. [#124](https://github.com/palantir/react-layered-chart/pull/124).
 
 ## 1.7.0 (2016-11-14)
 
