@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Interval, HoverLineLayer } from '../../core';
+import { Interval, VerticalLineLayer } from '../../core';
 import { ChartState } from '../model/state';
 import { selectHover, selectXDomain } from '../model/selectors';
 
@@ -21,4 +21,4 @@ function mapStateToProps(state: ChartState): ConnectedProps {
   };
 }
 
-export default connect(mapStateToProps)(HoverLineLayer) as React.ComponentClass<OwnProps>;
+export default connect(mapStateToProps)(VerticalLineLayer) as React.ComponentClass<OwnProps>;

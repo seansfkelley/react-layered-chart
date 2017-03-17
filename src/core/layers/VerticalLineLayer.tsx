@@ -11,17 +11,17 @@ import { Interval, Color } from '../interfaces';
 
 export interface Props {
   xDomain: Interval;
-  hover?: number;
+  xValue?: number;
   color?: Color;
 }
 
 @NonReactRender
 @PixelRatioContext
-export default class HoverLineLayer extends React.PureComponent<Props, void> {
+export default class VerticalLineLayer extends React.PureComponent<Props, void> {
   context: Context;
 
   static propTypes = {
-    hover: React.PropTypes.number,
+    xValue: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
@@ -46,14 +46,14 @@ export default class HoverLineLayer extends React.PureComponent<Props, void> {
 
 // Export for testing.
 export function _renderCanvas(props: Props, width: number, height: number, context: CanvasRenderingContext2D) {
-  if (!_.isFinite(props.hover)) {
+  if (!_.isFinite(props.xValue)) {
     return;
   }
 
   const xScale = d3Scale.scaleLinear()
     .domain([ props.xDomain.min, props.xDomain.max ])
     .rangeRound([ 0, width ]);
-  const xPos = xScale(props.hover!);
+  const xPos = xScale(props.xValue!);
 
   if (xPos >= 0 && xPos < width) {
     context.lineWidth = 1;

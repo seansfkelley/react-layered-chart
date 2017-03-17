@@ -131,7 +131,7 @@ The layers in this category are:
 
 - `BarLayer`
 - `BucketedLineLayer`
-- `HoverLineLayer`
+- `VerticalLineLayer`
 - `PointLayer`
 - `LineLayer`
 - `SpanLayer`
