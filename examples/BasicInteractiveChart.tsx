@@ -3,16 +3,17 @@ This chart implements the basic interactions using built-in layers and state
 management. It's pannable and zoomable.
 */
 
-import * as React from 'react';
-
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
+import * as React from "react";
 import {
   ChartProvider,
-  Stack,
-  DataLoader,
+  ConnectedInteractionCaptureLayer,
   ConnectedLineLayer,
-  ConnectedInteractionCaptureLayer
-} from '../src';
+  DEFAULT_SHOULD_PAN,
+  DEFAULT_SHOULD_ZOOM,
+  DataLoader,
+  Stack
+} from "../src";
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';
@@ -45,7 +46,7 @@ const CHART = (
       {/* Render the test data as a simple line chart. */}
       <ConnectedLineLayer seriesId={SERIES_ID}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
-      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
+      <ConnectedInteractionCaptureLayer shouldPan={DEFAULT_SHOULD_PAN} shouldZoom={DEFAULT_SHOULD_ZOOM}/>
     </Stack>
   </ChartProvider>
 );

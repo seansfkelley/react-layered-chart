@@ -15,12 +15,9 @@ import { ChartState } from '../model/state';
 import { selectXDomain } from '../model/selectors';
 
 export interface OwnProps {
-  enablePan?: boolean;
-  enableZoom?: boolean;
-  enableHover?: boolean;
-  enableBrush?: boolean;
   shouldZoom?: BooleanMouseEventHandler;
   shouldPan?: BooleanMouseEventHandler;
+  shouldHover?: BooleanMouseEventHandler;
   shouldBrush?: BooleanMouseEventHandler;
   zoomSpeed?: number;
 }
@@ -40,12 +37,13 @@ export class ConnectedInteractionCaptureLayer extends React.PureComponent<OwnPro
     return (
       <InteractionCaptureLayer
         xDomain={this.props.xDomain}
-        onZoom={this.props.enableZoom ? this._zoom : undefined}
-        onPan={this.props.enablePan ? this._pan : undefined}
-        onHover={this.props.enableHover ? this._hover : undefined}
-        onBrush={this.props.enableBrush ? this._brush : undefined}
+        onZoom={!!this.props.shouldZoom ? this._zoom : undefined}
+        onPan={!!this.props.shouldPan ? this._pan : undefined}
+        onHover={!!this.props.shouldHover ? this._hover : undefined}
+        onBrush={!!this.props.shouldBrush ? this._brush : undefined}
         shouldZoom={this.props.shouldZoom}
         shouldPan={this.props.shouldPan}
+        shouldHover={this.props.shouldHover}
         shouldBrush={this.props.shouldBrush}
         zoomSpeed={this.props.zoomSpeed}
       />

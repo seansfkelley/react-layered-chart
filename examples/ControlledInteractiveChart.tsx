@@ -3,19 +3,18 @@ This example implements a chart with custom behavior. It doesn't let you pan
 a week beyond the data, on either end.
 */
 
-import * as React from 'react';
-
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
+import * as React from "react";
 import {
-  Interval,
   ChartProvider,
-  Stack,
-  ConnectedLineLayer,
   ConnectedInteractionCaptureLayer,
-  // This utility function will do all the logic we need to implement this behavior.
+  ConnectedLineLayer,
+  DataLoader,
+  Interval,
+  Stack,
   enforceIntervalBounds,
-  DataLoader
-} from '../src';
+  DEFAULT_SHOULD_PAN
+} from "../src";
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7;
 
@@ -66,7 +65,7 @@ class ControlledInteractiveChart extends React.Component<{}, State> {
       >
         <Stack>
           <ConnectedLineLayer seriesId={SERIES_ID}/>
-          <ConnectedInteractionCaptureLayer enablePan={true}/>
+          <ConnectedInteractionCaptureLayer shouldPan={DEFAULT_SHOULD_PAN}/>
         </Stack>
       </ChartProvider>
     );

@@ -175,9 +175,10 @@ This layer displays nothing, but captures all mouse events and translates them i
 #### Props
 
 - `xDomain`: specifies the X domain this layer currently covers so it can translate mouse positions to logical values.
-- `shouldZoom?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming.
-- `shouldPan?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture.
-- `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture.
+- `shouldZoom?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event should be used for zooming. Default: `undefined`. A default implementation is provided as `DEFAULT_SHOULD_ZOOM`.
+- `shouldPan?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a pan gesture. Default: `undefined`. A default implementation is provided as `DEFAULT_SHOULD_PAN`.
+- `shouldBrush?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes the beginning of a brush (selection) gesture. Default: `undefined`. A default implementation is provided as `DEFAULT_SHOULD_BRUSH`.
+- `shouldHover?(event)`: a callback that accepts a `MouseEvent` and returns a boolean specifying if this event constitutes a hover gesture. Default: `undefined`. A default implementation is provided as `DEFAULT_SHOULD_HOVER`.
 - `onZoom?(factor, anchorBias)`: fired when the user performs a legal zoom gesture. See `zoomInterval` for an explanation of the parameters.
 - `onPan?(logicalUnits)`: fired when the user moves their mouse during a legal pan gesture.
 - `onBrush?(logicalUnitInterval?)`: fired when the user moves their mouse during a legal brush gesture. Called with `undefined` if the selection is cleared.
@@ -186,15 +187,12 @@ This layer displays nothing, but captures all mouse events and translates them i
 
 #### `ConnectedInteractionCaptureLayer` Props
 
-This variant of the layer replaces the callbacks with simple `true`/`false` settings to enable different types of gestures. The interpreted results are automatically fired as actions on containing `ChartProvider`.
+This variant of the layer removes the `on*` methods, and instead fires actions on a containing `ChartProvider`.
 
-- `enablePan?`: whether or not to fire events for pan gestures. Default `false`.
-- `enableZoom?`: whether or not to fire events for zoom gestures. Default `false`.
-- `enableHover?`: whether or not to fire events for hover gestures. Default `false`.
-- `enableBrush?`: whether or not to fire events for brush gestures. Default `false`.
-- `shouldZoom?()`: same as above.
-- `shouldPan?()`: same as above.
-- `shouldBrush?()`: same as above.
+- `shouldZoom?`: same as above.
+- `shouldPan?`: same as above.
+- `shouldHover?`: same as above.
+- `shouldBrush?`: same as above.
 - `zoomSpeed?`: same as above.
 
 <hr/>

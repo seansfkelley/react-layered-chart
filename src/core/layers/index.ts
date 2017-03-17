@@ -20,7 +20,11 @@ export {
 
 export {
   default as InteractionCaptureLayer,
-  Props as InteractionCaptureLayerProps
+  Props as InteractionCaptureLayerProps,
+  DEFAULT_SHOULD_ZOOM,
+  DEFAULT_SHOULD_PAN,
+  DEFAULT_SHOULD_BRUSH,
+  DEFAULT_SHOULD_HOVER
 } from './InteractionCaptureLayer';
 
 export {

@@ -30,7 +30,11 @@ import {
   ConnectedXAxis,
   ConnectedYAxis,
   DebugStoreHooks,
-  getActionTypeName
+  getActionTypeName,
+  DEFAULT_SHOULD_PAN,
+  DEFAULT_SHOULD_ZOOM,
+  DEFAULT_SHOULD_HOVER,
+  DEFAULT_SHOULD_BRUSH
 } from '../src';
 
 // All series need to have an ID.
@@ -103,7 +107,12 @@ const CHART = (
       <ConnectedBarLayer seriesId={BAR_SERIES_ID} color={COLOR_2}/>
       <ConnectedBucketedLineLayer seriesId={BUCKETED_LINE_SERIES_ID} color={COLOR_3}/>
       {/* Capture any mouse interactions and automatically trigger changes on the chart. */}
-      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true} enableHover={true} enableBrush={true}/>
+      <ConnectedInteractionCaptureLayer
+        shouldPan={DEFAULT_SHOULD_PAN}
+        shouldZoom={DEFAULT_SHOULD_ZOOM}
+        shouldHover={DEFAULT_SHOULD_HOVER}
+        shouldBrush={DEFAULT_SHOULD_BRUSH}
+      />
       {/* Show a reference line for hover as the mouse moves around. */}
       <ConnectedHoverLineLayer color='green'/>
       {/* Show a mostly-transparent box indicating the user's selection. */}

@@ -4,25 +4,23 @@ A button is added underneath the chart that displays the current X domain, and
 if you click it, it will reset the domain to where it started.
 */
 
-import * as React from 'react';
-import { Dispatch, bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from './test-data';
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch, bindActionCreators } from "redux";
 import {
+  ChartProvider,
+  ChartProviderState,
+  ConnectedInteractionCaptureLayer,
+  ConnectedLineLayer,
+  DataLoader,
   Interval,
   Stack,
-  ChartProvider,
-  ConnectedLineLayer,
-  ConnectedInteractionCaptureLayer,
-  DataLoader,
-  // This type is opaque and should only be interacted with using builtin selectors and action creators.
-  ChartProviderState,
-  // This is one such selector.
   selectXDomain,
-  // This is one such action creator.
-  setXDomain
-} from '../src';
+  setXDomain,
+  DEFAULT_SHOULD_PAN,
+  DEFAULT_SHOULD_ZOOM
+} from "../src";
+import { SIMPLE_LINE_DATA, SIMPLE_LINE_X_DOMAIN, SIMPLE_LINE_Y_DOMAIN } from "./test-data";
 
 // All series need to have an ID.
 const SERIES_ID = 'foo';
@@ -94,7 +92,7 @@ const CHART = (
   >
     <Stack>
       <ConnectedLineLayer seriesId={SERIES_ID}/>
-      <ConnectedInteractionCaptureLayer enablePan={true} enableZoom={true}/>
+      <ConnectedInteractionCaptureLayer shouldPan={DEFAULT_SHOULD_PAN} shouldZoom={DEFAULT_SHOULD_ZOOM}/>
     </Stack>
     {/* Give the layer its own Stack so it appears visually separate from the main views. */}
     <Stack className='snap-to-x-domain-button-stack'>

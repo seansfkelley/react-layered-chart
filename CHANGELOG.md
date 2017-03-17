@@ -36,6 +36,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `wrapDataLayerWithConnect` with no replacement. [#84](https://github.com/palantir/react-layered-chart/issues/84).
 - `SpanDatum`'s (previously: `XSpanDatum`'s) `color` prop with no replacement. [#48](https://github.com/palantir/react-layered-chart/issues/48).
 - `StateSelector` typename with no replacement. [188ef55](https://github.com/palantir/react-layered-chart/commit/188ef55e191864e3645f69745911194c5307c09b).
+- `InteractionCaptureLayer` and `ConnectedInteractionCaptureLayer` no longer default to handling any events. `ConnectedInteractionCaptureLayer`'s `enable*` props are all removed. [#115](https://github.com/palantir/react-layered-chart/issues/115).
 
 ## 1.7.0 (2016-11-14)
 
