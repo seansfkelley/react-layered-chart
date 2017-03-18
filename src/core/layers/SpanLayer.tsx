@@ -28,9 +28,9 @@ export default class SpanLayer extends React.PureComponent<Props, void> {
     borderColor: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     fillColor: 'rgba(0, 0, 0, 0.1)'
-  } as any as Props;
+  };
 
   render() {
     return <PollingResizingCanvasLayer

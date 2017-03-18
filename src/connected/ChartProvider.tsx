@@ -80,9 +80,9 @@ export default class ChartProvider extends React.PureComponent<Props, void> {
   private _lastState: ChartState;
   private _unsubscribeCallback: Function;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     includeResizeSentinel: true
-  } as any as Props;
+  };
 
   componentWillMount() {
     this._store = storeFactory(this.props.chartId, this.props.debugStoreHooks);

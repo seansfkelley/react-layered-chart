@@ -46,15 +46,15 @@
   dependencies:
     moment "*"
 
-"@types/react-motion@0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.20.tgz#c703645cc3a1f88dad59b7c7346c04732e1c4b74"
+"@types/react-motion@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.21.tgz#4d341968c541de7ab5fee7814e2edc3c737b3eba"
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.0.tgz#33eb3438130614f25c07c09e46ebec5a8d45b3b0"
+"@types/react@*", "@types/react@^15.0.16":
+  version "15.0.16"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.16.tgz#78e39511a9cfcabf7f74ecd55180522f4290a0c1"
 
 "@types/redux-debounced@^0.2.16":
   version "0.2.16"

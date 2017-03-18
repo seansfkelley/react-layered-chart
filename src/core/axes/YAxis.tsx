@@ -16,9 +16,9 @@ class YAxis extends React.PureComponent<Props, void> {
     yDomain: propTypes.interval.isRequired
   }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     scale: d3Scale.scaleLinear
-  } as any as Props;
+  };
 
   render() {
     const yScale = this.props.scale!()

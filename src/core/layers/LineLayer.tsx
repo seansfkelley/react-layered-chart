@@ -32,11 +32,11 @@ class LineLayer extends React.PureComponent<Props, void> {
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)',
     joinType: JoinType.DIRECT
-  } as any as Props;
+  };
 
   render() {
     return <PollingResizingCanvasLayer

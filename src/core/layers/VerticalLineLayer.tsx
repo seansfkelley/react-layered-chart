@@ -26,9 +26,9 @@ export default class VerticalLineLayer extends React.PureComponent<Props, void> 
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     color: 'rgba(0, 0, 0, 1)'
-  } as any as Props;
+  };
 
   render() {
     return <PollingResizingCanvasLayer

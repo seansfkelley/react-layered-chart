@@ -32,11 +32,11 @@ class BucketedLineLayer extends React.PureComponent<Props, void> {
     color: React.PropTypes.string
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     yScale: d3Scale.scaleLinear,
     color: '#444',
     joinType: JoinType.DIRECT
-  } as any as Props;
+  };
 
   render() {
     return <PollingResizingCanvasLayer

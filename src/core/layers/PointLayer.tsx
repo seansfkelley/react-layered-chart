@@ -37,12 +37,12 @@ class PointLayer extends React.PureComponent<Props, void> {
     innerRadius: React.PropTypes.number
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     yScale: d3Scale.scaleLinear,
     color: 'rgba(0, 0, 0, 0.7)',
     radius: 3,
     innerRadius: 0
-  } as any as Props;
+  };
 
   render() {
     return <PollingResizingCanvasLayer

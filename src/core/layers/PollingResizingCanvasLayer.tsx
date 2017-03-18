@@ -18,9 +18,9 @@ export default class PollingResizingCanvasLayer extends React.PureComponent<Prop
     pixelRatio: React.PropTypes.number
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     pixelRatio: 1
-  } as any as Props;
+  };
 
   state = {
     width: 0,

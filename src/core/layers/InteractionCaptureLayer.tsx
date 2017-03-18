@@ -45,9 +45,9 @@ export default class InteractionCaptureLayer extends React.PureComponent<Props, 
     zoomSpeed: React.PropTypes.number
   } as React.ValidationMap<Props>;
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     zoomSpeed: 0.05
-  } as any as Props;
+  };
 
   state: State = {
     isPanning: false,

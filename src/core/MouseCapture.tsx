@@ -42,9 +42,9 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
     ])
   };
 
-  static defaultProps = {
+  static defaultProps: Partial<Props> = {
     zoomSpeed: 0.05
-  } as any as Props;
+  };
 
   private element: HTMLDivElement;
 
@@ -175,10 +175,9 @@ export default class MouseCapture extends React.PureComponent<Props, State> {
     const delta = e.shiftKey ? e.deltaY || e.deltaX : e.deltaY;
     if (this.props.onZoom && delta) {
       const zoomSpeed = typeof this.props.zoomSpeed === 'function'
-        // Why doesn't the compiler accept this type guard?
-        ? (this.props.zoomSpeed as any as Function)(e)
+        ? this.props.zoomSpeed(e)
         : this.props.zoomSpeed;
-      const zoomFactor = Math.exp(-delta * zoomSpeed);
+      const zoomFactor = Math.exp(-delta * zoomSpeed!);
       const { xScale, yScale } = this._createPhysicalToLogicalScales();
       this.props.onZoom(zoomFactor, xScale(e.clientX), yScale(e.clientY), e);
     }
