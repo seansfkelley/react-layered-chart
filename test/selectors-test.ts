@@ -1,18 +1,19 @@
 import { expect } from 'chai';
-
-import { Interval } from '../src/core/interfaces';
 import {
-  selectXDomain,
-  selectYDomains,
-  selectHover,
-  selectSelection,
-  selectLoadedYDomains,
-  selectData
-} from '../src/connected/model/selectors';
-import {
-  selectIsLoading,
-  createSelectDataForHover
+  createSelectDataForHover,
+  selectIsLoading
 } from '../src/connected/export-only/exportableSelectors';
+import { ChartProviderState } from '../src/connected/export-only/exportableState';
+import {
+  selectData,
+  selectHover,
+  selectLoadedYDomains,
+  selectSelection,
+  selectXDomain,
+  selectYDomains
+} from '../src/connected/model/selectors';
+import { ChartState } from '../src/connected/model/state';
+import { Interval } from '../src/core/interfaces';
 
 describe('(selectors)', () => {
   const SERIES_A = 'a';
@@ -30,7 +31,7 @@ describe('(selectors)', () => {
           xDomain: INTERVAL_A
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.equal(INTERVAL_A);
+      } as any as ChartState)).to.equal(INTERVAL_A);
     });
 
     it('should use the override if set', () => {
@@ -41,7 +42,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           xDomain: INTERVAL_B
         }
-      } as any)).to.equal(INTERVAL_B);
+      } as any as ChartState)).to.equal(INTERVAL_B);
     });
   });
 
@@ -56,7 +57,7 @@ describe('(selectors)', () => {
         },
         uiState: {},
         uiStateConsumerOverrides: {}
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A
       });
     });
@@ -75,7 +76,7 @@ describe('(selectors)', () => {
           }
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A
       });
     });
@@ -98,7 +99,7 @@ describe('(selectors)', () => {
             [SERIES_A]: INTERVAL_A
           }
         }
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A
       });
     });
@@ -117,7 +118,7 @@ describe('(selectors)', () => {
             [SERIES_A]: INTERVAL_A
           }
         }
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A
       });
     });
@@ -145,7 +146,7 @@ describe('(selectors)', () => {
             [SERIES_C]: INTERVAL_C
           }
         }
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A,
         [SERIES_B]: INTERVAL_B,
         [SERIES_C]: INTERVAL_C
@@ -160,7 +161,7 @@ describe('(selectors)', () => {
           hover: 5
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.equal(5);
+      } as any as ChartState)).to.equal(5);
     });
 
     it('should use the override if set', () => {
@@ -171,7 +172,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           hover: 10
         }
-      } as any)).to.equal(10);
+      } as any as ChartState)).to.equal(10);
     });
 
     it('should use the override even if it\'s set to 0', () => {
@@ -182,7 +183,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           hover: 0
         }
-      } as any)).to.equal(0);
+      } as any as ChartState)).to.equal(0);
     });
 
     it('should not exist when the override is set to \'none\'', () => {
@@ -193,7 +194,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           hover: 'none'
         }
-      } as any)).to.not.exist;
+      } as any as ChartState)).to.not.exist;
     });
   });
 
@@ -204,7 +205,7 @@ describe('(selectors)', () => {
           selection: INTERVAL_A
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.equal(INTERVAL_A);
+      } as any as ChartState)).to.equal(INTERVAL_A);
     });
 
     it('should use the override if set', () => {
@@ -215,7 +216,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           selection: INTERVAL_B
         }
-      } as any)).to.equal(INTERVAL_B);
+      } as any as ChartState)).to.equal(INTERVAL_B);
     });
 
     it('should not exist when the override is set to \'none\'', () => {
@@ -226,7 +227,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           selection: 'none'
         }
-      } as any)).to.not.exist;
+      } as any as ChartState)).to.not.exist;
     });
   });
 
@@ -249,7 +250,7 @@ describe('(selectors)', () => {
             [SERIES_A]: INTERVAL_B
           }
         }
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: INTERVAL_A
       });
     });
@@ -264,7 +265,7 @@ describe('(selectors)', () => {
             yDomain: INTERVAL_A
           }
         }
-      } as any)).to.deep.equal({
+      } as any as ChartState)).to.deep.equal({
         [SERIES_A]: DATA_A
       });
     });
@@ -277,7 +278,7 @@ describe('(selectors)', () => {
           [SERIES_A]: null,
           [SERIES_B]: 'foo'
         }
-      } as any)).to.deep.equal({
+      } as any as ChartProviderState)).to.deep.equal({
         [SERIES_A]: false,
         [SERIES_B]: true
       });
@@ -304,7 +305,7 @@ describe('(selectors)', () => {
           hover: null
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.deep.equal({
+      } as any as ChartProviderState)).to.deep.equal({
         [SERIES_A]: undefined
       });
     });
@@ -321,7 +322,7 @@ describe('(selectors)', () => {
           hover: 10
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.deep.equal({
+      } as any as ChartProviderState)).to.deep.equal({
         [SERIES_A]: undefined
       });
     });
@@ -338,7 +339,7 @@ describe('(selectors)', () => {
           hover: 10
         },
         uiStateConsumerOverrides: {}
-      } as any)[SERIES_A]).to.equal(DATUM_1);
+      } as any as ChartProviderState)[SERIES_A]).to.equal(DATUM_1);
     });
 
     it('should return undefined for series whose earilest datum is after the hover', () => {
@@ -353,7 +354,7 @@ describe('(selectors)', () => {
           hover: 0
         },
         uiStateConsumerOverrides: {}
-      } as any)).to.deep.equal({
+      } as any as ChartProviderState)).to.deep.equal({
         [SERIES_A]: undefined
       });
     });
@@ -372,7 +373,7 @@ describe('(selectors)', () => {
         uiStateConsumerOverrides: {
           hover: 10
         }
-      } as any)[SERIES_A]).to.equal(DATUM_1);
+      } as any as ChartProviderState)[SERIES_A]).to.equal(DATUM_1);
     });
   });
 });
