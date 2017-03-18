@@ -72,7 +72,7 @@ export default class InteractionCaptureLayer extends React.PureComponent<Props, 
   private _dispatchPanAndBrushEvents(xPct: number, _yPct: number, _e: React.MouseEvent<HTMLElement>) {
     if (this.props.onPan && this.state.isPanning) {
       this.props.onPan(this._xPctToDomain(this.state.lastPanXPct!) - this._xPctToDomain(xPct));
-      this.setState({ lastPanXPct: xPct } as any);
+      this.setState({ lastPanXPct: xPct });
     } else if (this.props.onBrush && this.state.isBrushing) {
       const a = this._xPctToDomain(this.state.startBrushXPct!);
       const b = this._xPctToDomain(xPct);
@@ -93,9 +93,9 @@ export default class InteractionCaptureLayer extends React.PureComponent<Props, 
 
   private _onDragStart = (xPct: number, _yPct: number, e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onPan && this.props.shouldPan && this.props.shouldPan(e)) {
-      this.setState({ isPanning: true, lastPanXPct: xPct } as any);
+      this.setState({ isPanning: true, lastPanXPct: xPct });
     } else if (this.props.onBrush && this.props.shouldBrush && this.props.shouldBrush(e)) {
-      this.setState({ isBrushing: true, startBrushXPct: xPct } as any);
+      this.setState({ isBrushing: true, startBrushXPct: xPct });
     }
   };
 
