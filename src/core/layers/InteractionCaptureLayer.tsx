@@ -32,7 +32,7 @@ export interface State {
 }
 
 export default class InteractionCaptureLayer extends React.PureComponent<Props, State> {
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     shouldZoom: React.PropTypes.func,
     shouldPan: React.PropTypes.func,
     shouldBrush: React.PropTypes.func,
@@ -43,7 +43,7 @@ export default class InteractionCaptureLayer extends React.PureComponent<Props, 
     onHover: React.PropTypes.func,
     xDomain: propTypes.interval.isRequired,
     zoomSpeed: React.PropTypes.number
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     zoomSpeed: 0.05

@@ -24,13 +24,13 @@ export interface Props {
 class BucketedLineLayer extends React.PureComponent<Props, void> {
   context: Context;
 
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     data: React.PropTypes.arrayOf(propTypes.bucketDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     yDomain: propTypes.interval.isRequired,
     yScale: React.PropTypes.func,
     color: React.PropTypes.string
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     yScale: d3Scale.scaleLinear,

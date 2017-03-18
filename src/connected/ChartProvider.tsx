@@ -52,7 +52,7 @@ export interface Props {
 
 @PixelRatioContextProvider
 export default class ChartProvider extends React.PureComponent<Props, void> {
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     seriesIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     loadData: React.PropTypes.func.isRequired,
 
@@ -74,7 +74,7 @@ export default class ChartProvider extends React.PureComponent<Props, void> {
     onSelectionChange: React.PropTypes.func,
     hover: propTypes.controlledHover,
     onHoverChange: React.PropTypes.func,
-  } as React.ValidationMap<Props>;
+  };
 
   private _store: Store<ChartState>;
   private _lastState: ChartState;

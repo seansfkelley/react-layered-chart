@@ -24,7 +24,7 @@ export interface State {
 }
 
 export default class MouseCapture extends React.PureComponent<Props, State> {
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     className: React.PropTypes.string,
     zoomSpeed: React.PropTypes.oneOfType([
        React.PropTypes.number,

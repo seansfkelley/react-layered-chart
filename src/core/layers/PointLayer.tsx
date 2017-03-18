@@ -27,7 +27,7 @@ export interface Props {
 class PointLayer extends React.PureComponent<Props, void> {
   context: Context;
 
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     data: React.PropTypes.arrayOf(propTypes.pointDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     yDomain: propTypes.interval.isRequired,
@@ -35,7 +35,7 @@ class PointLayer extends React.PureComponent<Props, void> {
     color: React.PropTypes.string,
     radius: React.PropTypes.number,
     innerRadius: React.PropTypes.number
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     yScale: d3Scale.scaleLinear,

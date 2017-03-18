@@ -20,11 +20,11 @@ export interface Props {
 export default class VerticalLineLayer extends React.PureComponent<Props, void> {
   context: Context;
 
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     xValue: React.PropTypes.number,
     xDomain: propTypes.interval.isRequired,
     color: React.PropTypes.string
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     color: 'rgba(0, 0, 0, 1)'

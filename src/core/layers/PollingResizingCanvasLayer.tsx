@@ -13,10 +13,10 @@ export interface State {
 export default class PollingResizingCanvasLayer extends React.PureComponent<Props, State> {
   private __setSizeInterval: number;
 
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     onSizeChange: React.PropTypes.func.isRequired,
     pixelRatio: React.PropTypes.number
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     pixelRatio: 1

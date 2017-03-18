@@ -21,12 +21,12 @@ export interface Props {
 export default class SpanLayer extends React.PureComponent<Props, void> {
   context: Context;
 
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     data: React.PropTypes.arrayOf(propTypes.spanDatum).isRequired,
     xDomain: propTypes.interval.isRequired,
     fillColor: React.PropTypes.string,
     borderColor: React.PropTypes.string
-  } as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     fillColor: 'rgba(0, 0, 0, 0.1)'

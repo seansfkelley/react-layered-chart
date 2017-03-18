@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
-import * as _ from 'lodash';
 
 import propTypes from '../propTypes';
 import { wrapWithAnimatedYDomain } from '../componentUtils';
@@ -12,9 +11,10 @@ export interface Props extends AxisSpec {
 }
 
 class YAxis extends React.PureComponent<Props, void> {
-  static propTypes = _.defaults({
+  static propTypes: React.ValidationMap<Props> = {
+    ...propTypes.axisSpecPartial,
     yDomain: propTypes.interval.isRequired
-  }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
+  };
 
   static defaultProps: Partial<Props> = {
     scale: d3Scale.scaleLinear

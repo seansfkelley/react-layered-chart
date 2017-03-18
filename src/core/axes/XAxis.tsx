@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as d3Scale from 'd3-scale';
-import * as _ from 'lodash';
 
 import propTypes from '../propTypes';
 import { computeTicks } from '../renderUtils';
@@ -11,9 +10,10 @@ export interface Props extends AxisSpec {
 }
 
 export default class XAxis extends React.PureComponent<Props, void> {
-  static propTypes = _.defaults({
-    xDomain: propTypes.interval.isRequired,
-  }, propTypes.axisSpecPartial) as any as React.ValidationMap<Props>;
+  static propTypes: React.ValidationMap<Props> = {
+    ...propTypes.axisSpecPartial,
+    xDomain: propTypes.interval.isRequired
+  };
 
   static defaultProps: Partial<Props> = {
     scale: d3Scale.scaleTime

@@ -12,7 +12,7 @@ export interface Props {
 @PixelRatioContext
 @PixelRatioContextProvider
 export default class Stack extends React.PureComponent<Props, void> {
-  static propTypes = {
+  static propTypes: React.ValidationMap<Props> = {
     className: React.PropTypes.string,
     pixelRatio: React.PropTypes.number
   };
