@@ -12,7 +12,7 @@ import {
   zoomInterval
 } from '../src/core/intervalUtils';
 
-function interval(min, max) {
+function interval(min: number, max: number) {
   return { min, max };
 }
 

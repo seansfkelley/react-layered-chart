@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { applyMiddleware, createStore, Store } from 'redux';
-import ThunkMiddleware from 'redux-thunk';
+import { applyMiddleware, createStore, Store, Dispatch } from 'redux';
+import ThunkMiddleware, { ThunkAction } from 'redux-thunk';
 
 import reducer from '../src/connected/flux/reducer';
 import { DataLoader } from '../src/connected/interfaces';
@@ -36,6 +36,8 @@ function delay(timeout: number) {
     setTimeout(resolve, timeout);
   });
 }
+
+const mockedDispatch: Dispatch<ChartState> = (asyncAction: ThunkAction<void, ChartState, void>) => asyncAction;
 
 describe('(compound actions)', () => {
   const SERIES_A = 'a';
@@ -298,7 +300,7 @@ describe('(compound actions)', () => {
 
   describe('_performDataLoad', () => {
     it('should provide debounce metadata', () => {
-      const action = _performDataLoad()(_.identity, () => ({ debounceTimeout: 1000 }) as ChartState);
+      const action = _performDataLoad()(mockedDispatch, () => ({ debounceTimeout: 1000 }) as ChartState, undefined) as any as { meta?: any };
       expect(action.meta).to.exist;
       expect(action.meta.debounce).to.exist;
       expect(action.meta.debounce.time).to.be.a('number');
@@ -308,7 +310,7 @@ describe('(compound actions)', () => {
     it('should respect the debounce timeout set on the store', () => {
       store.dispatch(setDataLoaderDebounceTimeout(1337));
 
-      const action = _performDataLoad()(_.identity, store.getState);
+      const action = _performDataLoad()(mockedDispatch, store.getState, undefined) as any as { meta?: any };
       expect(action.meta).to.exist;
       expect(action.meta.debounce).to.exist;
       expect(action.meta.debounce.time).to.equal(1337);
@@ -317,7 +319,7 @@ describe('(compound actions)', () => {
     it('should use a debounce timeout of 1 if the store specifies a value of 0', () => {
       store.dispatch(setDataLoaderDebounceTimeout(0));
 
-      const action = _performDataLoad()(_.identity, store.getState);
+      const action = _performDataLoad()(mockedDispatch, store.getState, undefined) as any as { meta?: any };
       expect(action.meta).to.exist;
       expect(action.meta.debounce).to.exist;
       expect(action.meta.debounce.time).to.equal(1);

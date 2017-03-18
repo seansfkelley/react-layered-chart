@@ -97,7 +97,7 @@ PROPERTY_NAMES.forEach(property => {
 });
 
 METHOD_NAMES.forEach(method => {
-  CanvasContextSpyExtensions.prototype[method] = function() {
+  (CanvasContextSpyExtensions.prototype as any)[method] = function() {
     const call = { method, arguments: Array.prototype.slice.apply(arguments) };
     this.calls.push(call);
     this.operations.push(call);

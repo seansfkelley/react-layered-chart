@@ -20,7 +20,7 @@ export function wrapWithAnimatedYDomain<Props extends YDomainProp>(Component: Re
     render() {
       return (
         <Motion style={springifyInterval(this.props.yDomain)}>
-          {interpolatedYDomain => <Component {...this.props} yDomain={interpolatedYDomain}/>}
+          {(interpolatedYDomain: Interval) => <Component {...this.props} yDomain={interpolatedYDomain}/>}
         </Motion>
       );
     }

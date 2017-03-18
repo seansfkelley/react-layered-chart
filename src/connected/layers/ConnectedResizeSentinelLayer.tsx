@@ -48,4 +48,4 @@ function mapDispatchToProps(dispatch: Dispatch<ChartState>): DispatchProps {
   return bindActionCreators({ setChartPhysicalWidthAndLoad }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(ConnectedResizeSentinelLayer) as any as React.ComponentClass<void>;
+export default connect(undefined, mapDispatchToProps)(ConnectedResizeSentinelLayer) as any as React.ComponentClass<void>;

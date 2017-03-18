@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
+import { ThunkAction } from 'redux-thunk';
 
 import { Interval } from '../../core';
-import { ChartState} from '../model/state';
+import { ChartState } from '../model/state';
 import { SeriesId, TBySeriesId, DataLoader, LoadedSeriesData } from '../interfaces';
 import { selectXDomain } from '../model/selectors';
 
@@ -17,9 +18,9 @@ import {
   dataErrored
 } from './atomicActions';
 
-export function setXDomainAndLoad(payload: Interval) {
+export function setXDomainAndLoad(payload: Interval): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
 
     if (!_.isEqual(payload, state.uiState.xDomain)) {
       dispatch(setXDomain(payload));
@@ -30,9 +31,9 @@ export function setXDomainAndLoad(payload: Interval) {
   };
 }
 
-export function setOverrideXDomainAndLoad(payload?: Interval) {
+export function setOverrideXDomainAndLoad(payload?: Interval): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
 
     if (!_.isEqual(payload, state.uiStateConsumerOverrides.xDomain)) {
       dispatch(setOverrideXDomain(payload));
@@ -41,9 +42,9 @@ export function setOverrideXDomainAndLoad(payload?: Interval) {
   };
 }
 
-export function setChartPhysicalWidthAndLoad(payload: number) {
+export function setChartPhysicalWidthAndLoad(payload: number): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
 
     if (payload !== state.physicalChartWidth) {
       dispatch(setChartPhysicalWidth(payload));
@@ -52,9 +53,9 @@ export function setChartPhysicalWidthAndLoad(payload: number) {
   };
 }
 
-export function setSeriesIdsAndLoad(payload: SeriesId[]) {
+export function setSeriesIdsAndLoad(payload: SeriesId[]): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
     const orderedSeriesIds = _.sortBy(payload);
 
     if (!_.isEqual(orderedSeriesIds, state.seriesIds)) {
@@ -65,9 +66,9 @@ export function setSeriesIdsAndLoad(payload: SeriesId[]) {
   };
 }
 
-export function setDataLoaderAndLoad(payload: DataLoader) {
+export function setDataLoaderAndLoad(payload: DataLoader): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
 
     if (state.dataLoader !== payload) {
       dispatch(setDataLoader(payload));
@@ -76,9 +77,9 @@ export function setDataLoaderAndLoad(payload: DataLoader) {
   };
 }
 
-export function setDataLoaderContextAndLoad(payload?: any) {
+export function setDataLoaderContextAndLoad(payload?: any): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
-    const state: ChartState = getState();
+    const state = getState();
 
     if (payload !== state.loaderContext) {
       dispatch(setDataLoaderContext(payload));
@@ -88,7 +89,7 @@ export function setDataLoaderContextAndLoad(payload?: any) {
 }
 
 // Exported for testing.
-export function _requestDataLoad(seriesIds?: SeriesId[]) {
+export function _requestDataLoad(seriesIds?: SeriesId[]): ThunkAction<void, ChartState, void> {
   return (dispatch, getState) => {
     const existingSeriesIds: SeriesId[] = getState().seriesIds;
     const seriesIdsToLoad = seriesIds
@@ -118,8 +119,8 @@ export function _makeKeyedDataBatcher<T>(onBatch: (batchData: TBySeriesId<T>) =>
 }
 
 // Exported for testing.
-export function _performDataLoad(batchingTimeout: number = 200) {
-  return (dispatch, getState: () => ChartState) => {
+export function _performDataLoad(batchingTimeout: number = 200): ThunkAction<Promise<any>, ChartState, void> & { meta?: any } {
+  return (dispatch, getState) => {
     let { debounceTimeout } = getState();
 
     // redux-debounced checks falsy-ness, so 0 will behave as if there is no debouncing!
@@ -127,7 +128,7 @@ export function _performDataLoad(batchingTimeout: number = 200) {
 
     const adjustedBatchingTimeout = Math.min(batchingTimeout, debounceTimeout);
 
-    const thunk: any = (dispatch, getState: () => ChartState) => {
+    const thunk: ThunkAction<Promise<any>, ChartState, void> & { meta?: any } = (dispatch, getState) => {
       const preLoadChartState = getState();
       const dataLoader = preLoadChartState.dataLoader;
       const loaderContext = preLoadChartState.loaderContext;
