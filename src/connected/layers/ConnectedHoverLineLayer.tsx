@@ -10,13 +10,13 @@ export interface OwnProps {
 }
 
 export interface ConnectedProps {
-  hover?: number;
+  xValue?: number;
   xDomain: Interval;
 }
 
 function mapStateToProps(state: ChartState): ConnectedProps {
   return {
-    hover: selectHover(state),
+    xValue: selectHover(state),
     xDomain: selectXDomain(state)
   };
 }
