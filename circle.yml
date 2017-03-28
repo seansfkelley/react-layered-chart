@@ -1,7 +1,3 @@
-dependencies:
-  pre:
-    - 'if [ -n "$GITHUB_OAUTH_TOKEN" ]; then echo ''{ "token": "''$GITHUB_OAUTH_TOKEN''" }'' > .tsdrc; fi'
-
 machine:
   node:
     version: 6.2.2
