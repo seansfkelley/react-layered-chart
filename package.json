@@ -30,7 +30,6 @@
     "@types/react-dom": "^0.14.23",
     "@types/react-motion": "^0.0.21",
     "@types/react-redux": "^4.4.37",
-    "@types/redux-thunk": "^2.1.0",
     "@types/redux-debounced": "^0.2.16",
     "@types/redux-logger": "^2.6.32",
     "@types/reselect": "^2.0.27",

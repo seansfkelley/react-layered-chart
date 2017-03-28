@@ -81,12 +81,6 @@
   dependencies:
     "@types/redux" "*"
 
-"@types/redux-thunk@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@types/redux-thunk/-/redux-thunk-2.1.0.tgz#bc2b6e972961831afb82a9bf4f06726e351f9416"
-  dependencies:
-    redux-thunk "*"
-
 "@types/redux@*":
   version "3.6.31"
   resolved "https://registry.yarnpkg.com/@types/redux/-/redux-3.6.31.tgz#40eafa7575db36b912ce0059b85de98c205b0708"
@@ -2862,7 +2856,7 @@ redux-logger@^2.6.1:
   dependencies:
     deep-diff "0.3.4"
 
-redux-thunk@*, redux-thunk@^2.1.1:
+redux-thunk@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.1.1.tgz#f4e1adfa164e41637cf6396b13fac130fe5febdf"
 
