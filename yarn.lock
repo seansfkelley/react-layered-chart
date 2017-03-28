@@ -46,6 +46,12 @@
   dependencies:
     moment "*"
 
+"@types/react-dom@^0.14.23":
+  version "0.14.23"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-0.14.23.tgz#cecfcfad754b4c2765fe5d29b81b301889ad6c2e"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-motion@^0.0.21":
   version "0.0.21"
   resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.21.tgz#4d341968c541de7ab5fee7814e2edc3c737b3eba"
