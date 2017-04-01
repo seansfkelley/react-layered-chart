@@ -2,20 +2,25 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 import { Interval } from '../core';
 
-interface State {
+export interface ChartState {
   xDomain: Interval;
   yDomains: Record<string, Interval>;
+  data: Record<string, any[]>;
 }
 
-interface RenderableProps extends State {
+export interface OnChangeHandlers {
   onXDomainChange: (xDomain: Interval) => void;
   onYDomainsChange: (yDomains: Record<string, Interval>) => void;
+  onDataChange: (data: Record<string, any[]>) => void;
 }
 
-interface Props extends Partial<RenderableProps> {
+export interface RenderableProps extends ChartState, OnChangeHandlers {}
+
+export interface ChartProps extends Partial<RenderableProps> {
   render: (props: RenderableProps) => React.ReactChild;
   defaultXDomain?: Interval;
   defaultYDomains?: Record<string, Interval>;
+  defaultData?: Record<string, any[]>;
   className?: string;
 }
 
@@ -26,42 +31,46 @@ export const DEFAULT_X_DOMAIN: Interval = {
 
 export const DEFAULT_Y_DOMAINS: Record<string, Interval> = {};
 
-export class Chart extends React.PureComponent<Props, State> {
-  state: State = {
+export const DEFAULT_DATA: Record<string, any[]> = {};
+
+export class Chart extends React.PureComponent<ChartProps, ChartState> {
+  state: ChartState = {
     xDomain: this.props.xDomain || this.props.defaultXDomain || DEFAULT_X_DOMAIN,
-    yDomains: this.props.yDomains || this.props.defaultYDomains || DEFAULT_Y_DOMAINS
+    yDomains: this.props.yDomains || this.props.defaultYDomains || DEFAULT_Y_DOMAINS,
+    data: this.props.data || this.props.defaultData || DEFAULT_DATA
   };
 
-  componentWillReceiveProps(props: Props) {
-    if (props.xDomain) {
-      this.setState({ xDomain: props.xDomain });
-    }
-    if (props.yDomains) {
-      this.setState({ yDomains: props.yDomains });
+  private setStateFromProp(props: ChartState, valueName: keyof ChartState) {
+    if (props[valueName]) {
+      this.setState({ [valueName]: props[valueName] } as any);
     }
   }
 
-  private onXDomainChange = (xDomain: Interval) => {
-    if (this.props.onXDomainChange) {
-      this.props.onXDomainChange(xDomain);
-    }
-    if (!this.props.xDomain) {
-      this.setState({ xDomain });
-    }
-  };
+  componentWillReceiveProps(props: ChartState) {
+    this.setStateFromProp(props, 'xDomain');
+    this.setStateFromProp(props, 'yDomains');
+    this.setStateFromProp(props, 'data');
+  }
 
-  private onYDomainsChange = (yDomains: Record<string, Interval>) => {
-    if (this.props.onYDomainsChange) {
-      this.props.onYDomainsChange(yDomains);
+  private makeOnChangeHandler<S extends keyof ChartState, H extends keyof OnChangeHandlers>(valueName: S, handlerName: H) {
+    return (value: ChartState[S]) => {
+      if (this.props[handlerName]) {
+        (this.props[handlerName] as any)(value);
+      }
+      if (this.props[valueName] == null) {
+        this.setState({ [valueName as any]: value });
+      }
     }
-    if (!this.props.yDomains) {
-      this.setState({ yDomains });
-    }
-  };
+  }
+
+  private onXDomainChange = this.makeOnChangeHandler('xDomain', 'onXDomainChange');
+  private onYDomainsChange = this.makeOnChangeHandler('yDomains', 'onYDomainsChange');
+  private onDataChange = this.makeOnChangeHandler('data', 'onDataChange');
 
   private stateChangeHandlers = {
     onXDomainChange: this.onXDomainChange,
-    onYDomainsChange: this.onYDomainsChange
+    onYDomainsChange: this.onYDomainsChange,
+    onDataChange: this.onDataChange
   };
 
   render() {
@@ -71,22 +80,5 @@ export class Chart extends React.PureComponent<Props, State> {
         {this.props.render({ ...this.state, ...this.stateChangeHandlers })}
       </div>
     );
-  }
-}
-
-
-function controlledComponent<P, T, Value extends string>(Component: React.ComponentClass<P>, valueName: string) {
-  interface Props {
-    [valueName]: T;
-  }
-
-  interface State {
-    value?: T;
-  }
-
-  return class extends React.PureComponent<Props, State> {
-    render() {
-      return <Component />;
-    }
   }
 }
