@@ -3,13 +3,13 @@ import * as classNames from 'classnames';
 import { Interval } from '../core';
 
 export interface ChartState {
-  xDomain: Interval;
+  xDomains: Record<string, Interval>;
   yDomains: Record<string, Interval>;
   data: Record<string, any[]>;
 }
 
 export interface OnChangeHandlers {
-  onXDomainChange: (xDomain: Interval) => void;
+  onXDomainsChange: (xDomains: Record<string, Interval>) => void;
   onYDomainsChange: (yDomains: Record<string, Interval>) => void;
   onDataChange: (data: Record<string, any[]>) => void;
 }
@@ -18,24 +18,19 @@ export interface RenderableProps extends ChartState, OnChangeHandlers {}
 
 export interface ChartProps extends Partial<RenderableProps> {
   render: (props: RenderableProps) => React.ReactChild;
-  defaultXDomain?: Interval;
+  defaultXDomains?: Record<string, Interval>;
   defaultYDomains?: Record<string, Interval>;
   defaultData?: Record<string, any[]>;
   className?: string;
 }
 
-export const DEFAULT_X_DOMAIN: Interval = {
-  min: 0,
-  max: 100
-};
-
+export const DEFAULT_X_DOMAINS: Record<string, Interval> = {};
 export const DEFAULT_Y_DOMAINS: Record<string, Interval> = {};
-
 export const DEFAULT_DATA: Record<string, any[]> = {};
 
 export class Chart extends React.PureComponent<ChartProps, ChartState> {
   state: ChartState = {
-    xDomain: this.props.xDomain || this.props.defaultXDomain || DEFAULT_X_DOMAIN,
+    xDomains: this.props.xDomains || this.props.defaultXDomains || DEFAULT_X_DOMAINS,
     yDomains: this.props.yDomains || this.props.defaultYDomains || DEFAULT_Y_DOMAINS,
     data: this.props.data || this.props.defaultData || DEFAULT_DATA
   };
@@ -47,7 +42,7 @@ export class Chart extends React.PureComponent<ChartProps, ChartState> {
   }
 
   componentWillReceiveProps(props: ChartState) {
-    this.setStateFromProp(props, 'xDomain');
+    this.setStateFromProp(props, 'xDomains');
     this.setStateFromProp(props, 'yDomains');
     this.setStateFromProp(props, 'data');
   }
@@ -63,12 +58,12 @@ export class Chart extends React.PureComponent<ChartProps, ChartState> {
     }
   }
 
-  private onXDomainChange = this.makeOnChangeHandler('xDomain', 'onXDomainChange');
+  private onXDomainsChange = this.makeOnChangeHandler('xDomains', 'onXDomainsChange');
   private onYDomainsChange = this.makeOnChangeHandler('yDomains', 'onYDomainsChange');
   private onDataChange = this.makeOnChangeHandler('data', 'onDataChange');
 
   private stateChangeHandlers = {
-    onXDomainChange: this.onXDomainChange,
+    onXDomainsChange: this.onXDomainsChange,
     onYDomainsChange: this.onYDomainsChange,
     onDataChange: this.onDataChange
   };

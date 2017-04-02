@@ -14,7 +14,7 @@ interface LoadableChartProps extends ChartProps {
 
 export class Component extends React.PureComponent<LoadableChartProps, void> {
   private onXDomainChange = (xDomain: Interval) => {
-    if (this)
+
   };
 
   render() {
