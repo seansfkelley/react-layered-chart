@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   pre:
-    - npm install yarn
+    - npm install yarn@0.20.3
     - ./node_modules/.bin/yarn config set cache-folder /home/ubuntu/.cache/yarn
 
   override:
