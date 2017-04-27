@@ -2,6 +2,18 @@ machine:
   node:
     version: 6.2.2
 
+dependencies:
+  pre:
+    - npm install yarnpkg
+    - ./node_modules/.bin/yarn config set cache-folder /home/ubuntu/.cache/yarn
+
+  override:
+    - ./node_modules/.bin/yarn install
+
+  cache_directories:
+    - /home/ubuntu/.cache/yarn
+    - node_modules
+
 test:
   override:
     - npm test
